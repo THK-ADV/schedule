@@ -3,6 +3,8 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+GET           /                     controllers.IndexController.index()
+
 GET           /semesters            controllers.SemesterController.all()
 GET           /semesters/:id        controllers.SemesterController.get(id: java.util.UUID)
 POST          /semesters            controllers.SemesterController.create()

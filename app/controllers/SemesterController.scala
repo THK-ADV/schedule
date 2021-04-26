@@ -6,9 +6,10 @@ import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.SemesterService
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
+@Singleton
 class SemesterController @Inject() (
     cc: ControllerComponents,
     val service: SemesterService,
