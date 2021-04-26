@@ -11,18 +11,23 @@ lazy val `schedule` = (project in file("."))
     maintainer := "Alexander Dobrynin <alexander.dobrynin@th-koeln.de>",
     version := "1.0",
     scalaVersion := "2.13.5",
-    libraryDependencies ++= playDependencies,
-    libraryDependencies ++= databaseDependendies
+    libraryDependencies ++= play,
+    libraryDependencies ++= database,
+    libraryDependencies ++= date
   )
 
-lazy val playDependencies = Seq(
+lazy val play = Seq(
   specs2 % Test,
   guice,
   "com.typesafe.play" %% "play-json" % "2.9.2"
 )
 
-lazy val databaseDependendies = Seq(
+lazy val database = Seq(
   "com.typesafe.play" %% "play-slick" % playSlickVersion,
   "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion,
   "org.postgresql" % "postgresql" % "42.2.19"
+)
+
+lazy val date = Seq(
+  "joda-time" % "joda-time" % "2.10.10"
 )
