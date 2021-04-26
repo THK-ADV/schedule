@@ -29,5 +29,11 @@ POST          /teachingUnitsAssociations            controllers.TeachingUnitAsso
 PUT           /teachingUnitsAssociations/:id        controllers.TeachingUnitAssociationController.update(id: java.util.UUID)
 DELETE        /teachingUnitsAssociations/:id        controllers.TeachingUnitAssociationController.delete(id: java.util.UUID)
 
+GET           /studyPrograms                        controllers.StudyProgramController.all()
+GET           /studyPrograms/:id                    controllers.StudyProgramController.get(id: java.util.UUID)
+POST          /studyPrograms                        controllers.StudyProgramController.create()
+PUT           /studyPrograms/:id                    controllers.StudyProgramController.update(id: java.util.UUID)
+DELETE        /studyPrograms/:id                    controllers.StudyProgramController.delete(id: java.util.UUID)
+
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                         controllers.Assets.versioned(path="/public", file: Asset)

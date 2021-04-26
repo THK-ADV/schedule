@@ -29,6 +29,5 @@ class TeachingUnitService @Inject() (val repo: TeachingUnitRepository)
   override protected def uniqueCols(
       json: TeachingUnitJson,
       table: TeachingUnitTable
-  ) =
-    List(table.hasLabel(json.label), table.hasNumber(json.number))
+  ) = List(table.hasLabel(json.label), table.hasNumber(json.number))
 }
