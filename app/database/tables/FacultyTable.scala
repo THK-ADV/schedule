@@ -3,7 +3,6 @@ package database.tables
 import database.cols.{AbbreviationColumn, IDColumn, LabelColumn}
 import models.Faculty
 import slick.jdbc.PostgresProfile.api._
-import slick.lifted.Tag
 
 import java.util.UUID
 

@@ -4,7 +4,6 @@ import database.SQLDateConverter
 import database.cols.{AbbreviationColumn, IDColumn, LabelColumn, StartEndColumn}
 import models.Semester
 import slick.jdbc.PostgresProfile.api._
-import slick.lifted.Tag
 
 import java.sql.Date
 import java.util.UUID
