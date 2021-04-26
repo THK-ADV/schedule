@@ -1,19 +1,21 @@
-package database
+package database.tables
 
+import database.SQLDateConverter
+import database.cols.{AbbreviationColumn, IDColumn, LabelColumn, StartEndColumn}
 import models.Semester
-import slick.lifted.Tag
 import slick.jdbc.PostgresProfile.api._
+import slick.lifted.Tag
+
 import java.sql.Date
 import java.util.UUID
 
 class SemesterTable(tag: Tag)
     extends Table[Semester](tag, "semester")
+    with IDColumn
     with SQLDateConverter
-    with StartEndTable {
-
-  def id = column[UUID]("id", O.PrimaryKey)
-  def label = column[String]("label")
-  def abbreviation = column[String]("abbreviation")
+    with LabelColumn
+    with AbbreviationColumn
+    with StartEndColumn {
 
   def examStart = column[Date]("exam_start")
 

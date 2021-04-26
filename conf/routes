@@ -3,10 +3,19 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+GET           /                     controllers.IndexController.index()
+
 GET           /semesters            controllers.SemesterController.all()
+GET           /semesters/:id        controllers.SemesterController.get(id: java.util.UUID)
 POST          /semesters            controllers.SemesterController.create()
 PUT           /semesters/:id        controllers.SemesterController.update(id: java.util.UUID)
 DELETE        /semesters/:id        controllers.SemesterController.delete(id: java.util.UUID)
+
+GET           /faculties            controllers.FacultyController.all()
+GET           /faculties/:id        controllers.FacultyController.get(id: java.util.UUID)
+POST          /faculties            controllers.FacultyController.create()
+PUT           /faculties/:id        controllers.FacultyController.update(id: java.util.UUID)
+DELETE        /faculties/:id        controllers.FacultyController.delete(id: java.util.UUID)
 
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file         controllers.Assets.versioned(path="/public", file: Asset)

@@ -13,7 +13,7 @@ case class Semester(
     end: LocalDate,
     examStart: LocalDate,
     id: UUID
-)
+) extends UniqueEntity
 
 object Semester extends LocalDateFormat {
   implicit val format: OFormat[Semester] = Json.format[Semester]

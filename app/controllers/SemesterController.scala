@@ -1,33 +1,23 @@
 package controllers
 
-import models.SemesterJson
+import database.tables.SemesterTable
+import models.{Semester, SemesterJson}
+import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.SemesterService
 
-import java.util.UUID
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
+@Singleton
 class SemesterController @Inject() (
     cc: ControllerComponents,
-    service: SemesterService,
+    val service: SemesterService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with JsonHttpResponse {
+    with Controller[SemesterJson, Semester, SemesterTable] {
+  override protected implicit def writes: Writes[Semester] = Semester.format
 
-  def all() = Action.async { r =>
-    okSeq(service.all(r.queryString))
-  }
-
-  def delete(id: UUID) = Action.async {
-    ok(service.delete(id))
-  }
-
-  def create() = Action.async(parse.json[SemesterJson]) { r =>
-    created(service.create(r.body))
-  }
-
-  def update(id: UUID) = Action.async(parse.json[SemesterJson]) { r =>
-    ok(service.update(r.body, id))
-  }
+  override protected implicit def reads: Reads[SemesterJson] =
+    SemesterJson.format
 }
