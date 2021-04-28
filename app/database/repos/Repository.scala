@@ -93,7 +93,7 @@ trait Repository[E <: UniqueEntity, T <: Table[E] with IDColumn] {
   ): Option[List[T => Rep[Boolean]]] = {
     filter.foldLeft(Option.apply(List.empty[T => Rep[Boolean]])) {
       case (xs, x) =>
-        if (makeFilter.isDefinedAt(x))
+        if (x._2.nonEmpty && makeFilter.isDefinedAt(x))
           xs.map(makeFilter.apply(x) :: _)
         else
           xs

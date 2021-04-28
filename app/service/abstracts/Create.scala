@@ -9,7 +9,7 @@ import scala.concurrent.Future
 trait Create[Json, Model <: UniqueEntity, T <: Table[Model] with IDColumn] {
   self: JsonConverter[Json, Model] with Core[Model, T] =>
 
-  protected def validate(json: Json): Option[Throwable] = None
+  protected def validate(json: Json): Option[Throwable]
 
   protected def uniqueCols(json: Json, table: T): List[Rep[Boolean]]
 
