@@ -36,4 +36,6 @@ class TeachingUnitAssociationService @Inject() (
       json: TeachingUnitAssociationJson,
       table: TeachingUnitAssociationTable
   ) = List.empty
+
+  override protected def validate(json: TeachingUnitAssociationJson) = None
 }

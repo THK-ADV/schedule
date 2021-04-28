@@ -30,4 +30,6 @@ class TeachingUnitService @Inject() (val repo: TeachingUnitRepository)
       json: TeachingUnitJson,
       table: TeachingUnitTable
   ) = List(table.hasLabel(json.label), table.hasNumber(json.number))
+
+  override protected def validate(json: TeachingUnitJson) = None
 }

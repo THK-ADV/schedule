@@ -47,5 +47,11 @@ POST          /examinationRegulations               controllers.ExaminationRegul
 PUT           /examinationRegulations/:id           controllers.ExaminationRegulationController.update(id: java.util.UUID)
 DELETE        /examinationRegulations/:id           controllers.ExaminationRegulationController.delete(id: java.util.UUID)
 
+GET           /modules                              controllers.ModuleController.all()
+GET           /modules/:id                          controllers.ModuleController.get(id: java.util.UUID)
+POST          /modules                              controllers.ModuleController.create()
+PUT           /modules/:id                          controllers.ModuleController.update(id: java.util.UUID)
+DELETE        /modules/:id                          controllers.ModuleController.delete(id: java.util.UUID)
+
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                         controllers.Assets.versioned(path="/public", file: Asset)

@@ -35,4 +35,6 @@ class StudyProgramAssociationService @Inject() (
       json: StudyProgramAssociationJson,
       table: StudyProgramAssociationTable
   ) = List.empty
+
+  override protected def validate(json: StudyProgramAssociationJson) = None
 }
