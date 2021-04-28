@@ -12,11 +12,8 @@ class ModuleTable(tag: Tag)
     with AbbreviationColumn
     with LabelColumn
     with CreditsColumn
-    with DescriptionUrlColumn {
-
-  def examinationRegulation = column[UUID]("examination_regulation")
-
-  def hasExaminationRegulation(id: UUID) = examinationRegulation === id
+    with DescriptionUrlColumn
+    with ExaminationRegulationColumn {
 
   def * = (
     examinationRegulation,

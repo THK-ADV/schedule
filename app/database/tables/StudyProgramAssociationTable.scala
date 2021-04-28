@@ -1,6 +1,6 @@
 package database.tables
 
-import database.cols.{IDColumn, StudyProgramColumn}
+import database.cols.{IDColumn, StudyProgramColumn, TeachingUnitColumn}
 import models.StudyProgramAssociation
 import slick.jdbc.PostgresProfile.api._
 
@@ -9,9 +9,8 @@ import java.util.UUID
 class StudyProgramAssociationTable(tag: Tag)
     extends Table[StudyProgramAssociation](tag, "study_program_association")
     with IDColumn
-    with StudyProgramColumn {
-
-  def teachingUnit = column[UUID]("teaching_unit")
+    with StudyProgramColumn
+    with TeachingUnitColumn {
 
   def * = (
     teachingUnit,

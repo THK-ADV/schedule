@@ -12,13 +12,10 @@ class SubModuleTable(tag: Tag)
     with AbbreviationColumn
     with LabelColumn
     with CreditsColumn
-    with DescriptionUrlColumn {
-
-  def module = column[UUID]("module")
+    with DescriptionUrlColumn
+    with ModuleColumn {
 
   def recommendedSemester = column[Int]("recommended_semester")
-
-  def hasModule(id: UUID) = module === id
 
   def * = (
     module,
