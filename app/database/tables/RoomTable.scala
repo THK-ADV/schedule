@@ -15,7 +15,7 @@ class RoomTable(tag: Tag)
 
   def seats = column[Int]("seats")
 
-  def roomType = column[String]("roomType")
+  def roomType = column[String]("type")
 
   def hasNumber(number: String) = this.number === number
 

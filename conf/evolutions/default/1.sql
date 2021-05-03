@@ -98,7 +98,7 @@ create table course
     "lecturer"    uuid not null,
     "semester"    uuid not null,
     "submodule"   uuid not null,
-    "intervall"   text not null,
+    "interval"    text not null,
     "course_type" text not null,
     FOREIGN KEY (lecturer) REFERENCES people (id),
     FOREIGN KEY (semester) REFERENCES semester (id),

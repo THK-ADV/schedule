@@ -17,7 +17,7 @@ class CourseTable(tag: Tag)
 
   def interval = column[String]("interval")
 
-  def courseType = column[String]("courseType")
+  def courseType = column[String]("course_type")
 
   def * = (
     user,
