@@ -1,6 +1,5 @@
 package controllers
 
-import database.tables.FacultyTable
 import models.{Faculty, FacultyJson}
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -15,7 +14,7 @@ class FacultyController @Inject() (
     val service: FacultyService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Controller[FacultyJson, Faculty, FacultyTable] {
+    with Controller[FacultyJson, Faculty] {
   override protected implicit def writes: Writes[Faculty] = Faculty.format
 
   override protected implicit def reads: Reads[FacultyJson] =

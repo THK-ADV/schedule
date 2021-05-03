@@ -1,6 +1,5 @@
 package controllers
 
-import database.tables.StudyProgramAssociationTable
 import models.{StudyProgramAssociation, StudyProgramAssociationJson}
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -15,11 +14,7 @@ class StudyProgramAssociationController @Inject() (
     val service: StudyProgramAssociationService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Controller[
-      StudyProgramAssociationJson,
-      StudyProgramAssociation,
-      StudyProgramAssociationTable
-    ] {
+    with Controller[StudyProgramAssociationJson, StudyProgramAssociation] {
   override protected implicit def writes: Writes[StudyProgramAssociation] =
     StudyProgramAssociation.format
 

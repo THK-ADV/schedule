@@ -1,6 +1,5 @@
 package controllers
 
-import database.tables.TeachingUnitAssociationTable
 import models.{TeachingUnitAssociation, TeachingUnitAssociationJson}
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -15,11 +14,7 @@ class TeachingUnitAssociationController @Inject() (
     val service: TeachingUnitAssociationService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Controller[
-      TeachingUnitAssociationJson,
-      TeachingUnitAssociation,
-      TeachingUnitAssociationTable
-    ] {
+    with Controller[TeachingUnitAssociationJson, TeachingUnitAssociation] {
   override protected implicit def writes: Writes[TeachingUnitAssociation] =
     TeachingUnitAssociation.format
 

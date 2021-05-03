@@ -1,6 +1,5 @@
 package controllers
 
-import database.tables.ExaminationRegulationTable
 import models.{ExaminationRegulation, ExaminationRegulationJson}
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -15,11 +14,7 @@ class ExaminationRegulationController @Inject() (
     val service: ExaminationRegulationService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Controller[
-      ExaminationRegulationJson,
-      ExaminationRegulation,
-      ExaminationRegulationTable
-    ] {
+    with Controller[ExaminationRegulationJson, ExaminationRegulation] {
   override protected implicit def writes: Writes[ExaminationRegulation] =
     ExaminationRegulation.format
 
