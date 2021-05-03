@@ -41,3 +41,5 @@ build
 
 #general
 *.class
+
+.env
