@@ -15,6 +15,7 @@ class ModuleService @Inject() (val repo: ModuleRepository)
   override protected def toModel(json: ModuleJson, id: Option[UUID]) =
     Module(
       json.examinationRegulation,
+      json.courseManager,
       json.label,
       json.abbreviation,
       json.credits,

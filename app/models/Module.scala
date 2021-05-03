@@ -6,6 +6,7 @@ import java.util.UUID
 
 case class Module(
     examinationRegulation: UUID,
+    courseManager: UUID,
     label: String,
     abbreviation: String,
     credits: Double,

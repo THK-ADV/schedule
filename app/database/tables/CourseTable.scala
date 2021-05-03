@@ -13,7 +13,7 @@ class CourseTable(tag: Tag)
     with SemesterColumn
     with SubModuleColumn {
 
-  def userColumnName = "lecturer"
+  override protected def userColumnName = "lecturer"
 
   def interval = column[String]("interval")
 

@@ -5,6 +5,7 @@ import models.Module
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
+import java.util.UUID
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
@@ -23,5 +24,7 @@ class ModuleRepository @Inject() (
     case ("label", vs)        => t => t.hasLabel(vs.head)
     case ("abbreviation", vs) => t => t.hasAbbreviation(vs.head)
     case ("credits", vs)      => t => t.hasCredits(vs.head.toDouble)
+    case ("courseManager", vs) =>
+      t => Option(UUID.fromString(vs.head)).map(t.hasUser) getOrElse false
   }
 }

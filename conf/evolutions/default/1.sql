@@ -57,11 +57,13 @@ create table module
 (
     "id"                     uuid PRIMARY KEY,
     "examination_regulation" uuid    not null,
+    "course_manager"         uuid    not null,
     "label"                  text    not null,
     "abbreviation"           text    not null,
     "ects"                   decimal not null,
     "description_file_url"   text    not null,
-    FOREIGN KEY (examination_regulation) REFERENCES examination_regulation (id)
+    FOREIGN KEY (examination_regulation) REFERENCES examination_regulation (id),
+    FOREIGN KEY (course_manager) REFERENCES user (id)
 );
 
 create table submodule
