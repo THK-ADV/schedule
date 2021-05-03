@@ -123,12 +123,12 @@ create table room
 
 create table schedule
 (
-    "id"         uuid PRIMARY KEY,
-    "course"     uuid not null,
-    "room"       uuid not null,
-    "date"       date not null,
-    "start_time" time without time zone not null,
-    "end_time"   time without time zone not null,
+    "id"     uuid PRIMARY KEY,
+    "course" uuid not null,
+    "room"   uuid not null,
+    "date"   date not null,
+    "start"  time without time zone not null,
+    "end"    time without time zone not null,
     FOREIGN KEY (course) REFERENCES course (id),
     FOREIGN KEY (room) REFERENCES room (id)
 );
