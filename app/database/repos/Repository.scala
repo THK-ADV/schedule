@@ -101,4 +101,10 @@ trait Repository[E <: UniqueEntity, T <: Table[E] with IDColumn] {
         None
     }
   }
+
+  protected final def parseUUID(
+      s: Seq[String],
+      p: UUID => Rep[Boolean]
+  ): Rep[Boolean] =
+    Option(UUID.fromString(s.head)).map(p) getOrElse false
 }

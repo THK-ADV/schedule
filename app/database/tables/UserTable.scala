@@ -6,7 +6,7 @@ import slick.jdbc.PostgresProfile.api._
 
 import java.util.UUID
 
-class UserTable(tag: Tag) extends Table[User](tag, "user") with IDColumn {
+class UserTable(tag: Tag) extends Table[User](tag, "people") with IDColumn {
 
   def firstname = column[String]("firstname")
 

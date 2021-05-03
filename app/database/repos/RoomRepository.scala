@@ -1,7 +1,7 @@
 package database.repos
 
-import database.tables.CourseTable
-import models.Course
+import database.tables.RoomTable
+import models.Room
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -9,19 +9,18 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class CourseRepository @Inject() (
+class RoomRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Repository[Course, CourseTable] {
+    with Repository[Room, RoomTable] {
 
   import profile.api._
 
-  protected val tableQuery = TableQuery[CourseTable]
+  protected val tableQuery = TableQuery[RoomTable]
 
   override protected def makeFilter = {
-    case ("lecturer", vs)  => t => parseUUID(vs, t.hasUser)
-    case ("semester", vs)  => t => parseUUID(vs, t.hasSemester)
-    case ("subModule", vs) => t => parseUUID(vs, t.hasSubModule)
+    case ("label", vs)  => t => t.hasLabel(vs.head)
+    case ("number", vs) => t => t.hasNumber(vs.head)
   }
 }

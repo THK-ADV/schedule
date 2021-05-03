@@ -14,6 +14,6 @@ trait SQLDateConverter {
   implicit def toSQLDate(date: LocalDate): Date =
     Date.valueOf(date.toString(dateFormatter))
 
-  implicit def toSQLTime(time: LocalTime): LocalTime =
+  implicit def toSQLTime(time: LocalTime): Time =
     Time.valueOf(time.toString(timeFormatter))
 }
