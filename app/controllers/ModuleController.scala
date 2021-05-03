@@ -1,6 +1,5 @@
 package controllers
 
-import database.tables.ModuleTable
 import models.{Module, ModuleJson}
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -15,7 +14,7 @@ class ModuleController @Inject() (
     val service: ModuleService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Controller[ModuleJson, Module, ModuleTable] {
+    with Controller[ModuleJson, Module] {
   override protected implicit def writes: Writes[Module] = Module.format
 
   override protected implicit def reads: Reads[ModuleJson] = ModuleJson.format

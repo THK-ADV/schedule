@@ -1,19 +1,16 @@
 package controllers
 
-import database.cols.IDColumn
 import models.UniqueEntity
 import play.api.libs.json.Reads
 import play.api.mvc.AbstractController
 import service.abstracts.Service
-import slick.jdbc.PostgresProfile.api.Table
 
 import java.util.UUID
 
-trait Controller[Json, Model <: UniqueEntity, T <: Table[Model] with IDColumn]
-    extends JsonHttpResponse[Model] {
+trait Controller[Json, Model <: UniqueEntity] extends JsonHttpResponse[Model] {
   self: AbstractController =>
 
-  protected def service: Service[Json, Model, T]
+  protected def service: Service[Json, Model, _]
 
   protected implicit def reads: Reads[Json]
 

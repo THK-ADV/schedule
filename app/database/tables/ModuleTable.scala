@@ -13,10 +13,14 @@ class ModuleTable(tag: Tag)
     with LabelColumn
     with CreditsColumn
     with DescriptionUrlColumn
-    with ExaminationRegulationColumn {
+    with ExaminationRegulationColumn
+    with UserColumn {
+
+  override protected def userColumnName = "course_manager"
 
   def * = (
     examinationRegulation,
+    user,
     label,
     abbreviation,
     credits,
@@ -24,16 +28,34 @@ class ModuleTable(tag: Tag)
     id
   ) <> (mapRow, unmapRow)
 
-  def mapRow: ((UUID, String, String, Double, String, UUID)) => Module = {
-    case (examinationRegulation, label, abbreviation, credits, url, id) =>
-      Module(examinationRegulation, label, abbreviation, credits, url, id)
+  def mapRow: ((UUID, UUID, String, String, Double, String, UUID)) => Module = {
+    case (
+          examinationRegulation,
+          courseManager,
+          label,
+          abbreviation,
+          credits,
+          url,
+          id
+        ) =>
+      Module(
+        examinationRegulation,
+        courseManager,
+        label,
+        abbreviation,
+        credits,
+        url,
+        id
+      )
   }
 
-  def unmapRow: Module => Option[(UUID, String, String, Double, String, UUID)] =
+  def unmapRow
+      : Module => Option[(UUID, UUID, String, String, Double, String, UUID)] =
     a =>
       Option(
         (
           a.examinationRegulation,
+          a.courseManager,
           a.label,
           a.abbreviation,
           a.credits,
