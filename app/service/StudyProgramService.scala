@@ -14,6 +14,7 @@ class StudyProgramService @Inject() (val repo: StudyProgramRepository)
 
   override protected def toModel(json: StudyProgramJson, id: Option[UUID]) =
     StudyProgram(
+      json.teachingUnit,
       json.label,
       json.abbreviation,
       json.graduation,
@@ -23,13 +24,20 @@ class StudyProgramService @Inject() (val repo: StudyProgramRepository)
   override protected def canUpdate(
       json: StudyProgramJson,
       existing: StudyProgram
-  ): Boolean =
-    json.label == existing.label && json.graduation == existing.graduation
+  ): Boolean = {
+    json.teachingUnit == existing.teachingUnit &&
+    json.label == existing.label &&
+    json.graduation == existing.graduation
+  }
 
   override protected def uniqueCols(
       json: StudyProgramJson,
       table: StudyProgramTable
-  ) = List(table.hasLabel(json.label), table.hasGraduation(json.graduation))
+  ) = List(
+    table.hasTeachingUnit(json.teachingUnit),
+    table.hasLabel(json.label),
+    table.hasGraduation(json.graduation)
+  )
 
   override protected def validate(json: StudyProgramJson): Option[Throwable] =
     Option.unless(json.graduation == "BA" || json.graduation == "MA")(

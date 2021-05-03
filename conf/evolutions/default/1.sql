@@ -26,19 +26,12 @@ create table teaching_unit_association
 
 create table study_program
 (
-    "id"           uuid PRIMARY KEY,
-    "label"        text not null,
-    "abbreviation" text not null,
-    "graduation"   text not null
-);
-
-create table study_program_association
-(
     "id"            uuid PRIMARY KEY,
     "teaching_unit" uuid not null,
-    "study_program" uuid not null,
-    FOREIGN KEY (teaching_unit) REFERENCES teaching_unit (id),
-    FOREIGN KEY (study_program) REFERENCES study_program (id)
+    "label"         text not null,
+    "abbreviation"  text not null,
+    "graduation"    text not null,
+    FOREIGN KEY (teaching_unit) REFERENCES teaching_unit (id)
 );
 
 create table examination_regulation
@@ -49,8 +42,19 @@ create table examination_regulation
     "abbreviation"       text not null,
     "accreditation_date" date not null,
     "activation_date"    date not null,
-    "expiring_date"      date,
+    "expiring_date"      date null,
     FOREIGN KEY (study_program) REFERENCES study_program (id)
+);
+
+create table people
+(
+    "id"        uuid PRIMARY KEY,
+    "firstname" text not null,
+    "lastname"  text not null,
+    "status"    text not null,
+    "email"     text not null,
+    "title"     text null,
+    "initials"  text null
 );
 
 create table module
@@ -63,7 +67,7 @@ create table module
     "ects"                   decimal not null,
     "description_file_url"   text    not null,
     FOREIGN KEY (examination_regulation) REFERENCES examination_regulation (id),
-    FOREIGN KEY (course_manager) REFERENCES user (id)
+    FOREIGN KEY (course_manager) REFERENCES people (id)
 );
 
 create table submodule
@@ -88,17 +92,6 @@ create table semester
     "exam_start"   date not null
 );
 
-create table user
-(
-    "id"        uuid PRIMARY KEY,
-    "firstname" text not null,
-    "lastname"  text not null,
-    "status"    text not null,
-    "email"     text not null,
-    "title"     text,
-    "initials"  text
-);
-
 create table course
 (
     "id"          uuid PRIMARY KEY,
@@ -107,7 +100,7 @@ create table course
     "submodule"   uuid not null,
     "intervall"   text not null,
     "course_type" text not null,
-    FOREIGN KEY (lecturer) REFERENCES user (id),
+    FOREIGN KEY (lecturer) REFERENCES people (id),
     FOREIGN KEY (semester) REFERENCES semester (id),
     FOREIGN KEY (submodule) REFERENCES submodule (id)
 );
@@ -138,7 +131,7 @@ create table student_schedule
     "id"       uuid PRIMARY KEY,
     "student"  uuid not null,
     "schedule" uuid not null,
-    FOREIGN KEY (student) REFERENCES user (id),
+    FOREIGN KEY (student) REFERENCES people (id),
     FOREIGN KEY (schedule) REFERENCES schedule (id)
 );
 
@@ -147,12 +140,11 @@ drop table student_schedule if exists;
 drop table schedule if exists;
 drop table room if exists;
 drop table course if exists;
-drop table user if exists;
 drop table semester if exists;
 drop table submodule if exists
 drop table module if exists;
+drop table people if exists;
 drop table examination_regulation if exists;
-drop table study_program_association if exists;
 drop table study_program if exists;
 drop table teaching_unit_association if exists;
 drop table teaching_unit if exists;
