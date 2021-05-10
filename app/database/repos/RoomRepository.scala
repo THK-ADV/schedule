@@ -20,7 +20,7 @@ class RoomRepository @Inject() (
   protected val tableQuery = TableQuery[RoomTable]
 
   override protected def makeFilter = {
-    case ("label", vs)  => t => t.hasLabel(vs.head)
-    case ("number", vs) => t => t.hasNumber(vs.head)
+    case ("label", vs)        => t => t.hasLabel(vs.head)
+    case ("abbreviation", vs) => t => t.hasAbbreviation(vs.head)
   }
 }

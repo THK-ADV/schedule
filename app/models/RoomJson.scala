@@ -4,9 +4,7 @@ import play.api.libs.json.{Json, OFormat}
 
 case class RoomJson(
     label: String,
-    number: String,
-    seats: Int,
-    roomType: String
+    abbreviation: String
 )
 
 object RoomJson {

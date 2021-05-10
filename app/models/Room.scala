@@ -6,9 +6,7 @@ import java.util.UUID
 
 case class Room(
     label: String,
-    number: String,
-    seats: Int,
-    roomType: String,
+    abbreviation: String,
     id: UUID
 ) extends UniqueEntity
 

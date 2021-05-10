@@ -116,9 +116,9 @@ create table course
 
 create table room
 (
-    "id"          uuid PRIMARY KEY,
-    "label"       text not null,
-    "description" text not null
+    "id"           uuid PRIMARY KEY,
+    "label"        text not null,
+    "abbreviation" text not null
 );
 
 create table schedule
