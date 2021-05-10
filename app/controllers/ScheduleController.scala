@@ -1,4 +1,3 @@
-/*
 package controllers
 
 import models.{Schedule, ScheduleJson}
@@ -16,9 +15,8 @@ class ScheduleController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Controller[ScheduleJson, Schedule] {
-  override protected implicit def writes: Writes[Schedule] = Schedule.format
+  override protected implicit def writes: Writes[Schedule] = Schedule.writes
 
   override protected implicit def reads: Reads[models.ScheduleJson] =
     ScheduleJson.format
 }
-*/

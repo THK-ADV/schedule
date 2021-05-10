@@ -1,7 +1,8 @@
-/*
 package service
 
-import database.tables.ScheduleTable
+import database.SQLDateConverter
+import database.repos.ScheduleRepository
+import database.tables.{ScheduleDbEntry, ScheduleTable}
 import models.{Schedule, ScheduleJson}
 import service.abstracts.Service
 
@@ -10,27 +11,29 @@ import javax.inject.{Inject, Singleton}
 
 @Singleton
 class ScheduleService @Inject() (val repo: ScheduleRepository)
-    extends Service[ScheduleJson, Schedule, ScheduleTable] {
+    extends Service[ScheduleJson, Schedule, ScheduleDbEntry, ScheduleTable]
+    with SQLDateConverter {
 
   override protected def toUniqueDbEntry(json: ScheduleJson, id: Option[UUID]) =
-    Schedule(
+    ScheduleDbEntry(
       json.course,
       json.room,
       json.date,
       json.start,
       json.end,
+      now(),
       id getOrElse UUID.randomUUID
     )
 
   override protected def canUpdate(
       json: ScheduleJson,
-      existing: Schedule
+      existing: ScheduleDbEntry
   ): Boolean =
     existing.course == json.course &&
       existing.room == json.room &&
-      existing.date == json.date &&
-      existing.start == json.start &&
-      existing.end == json.end
+      toLocalDate(existing.date) == json.date &&
+      toLocalTime(existing.start) == json.start &&
+      toLocalTime(existing.end) == json.end
 
   override protected def uniqueCols(json: ScheduleJson, table: ScheduleTable) =
     List(
@@ -48,4 +51,3 @@ class ScheduleService @Inject() (val repo: ScheduleRepository)
       )
     )
 }
-*/

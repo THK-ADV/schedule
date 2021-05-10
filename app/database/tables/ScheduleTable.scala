@@ -1,19 +1,29 @@
 package database.tables
 
+import database.UniqueDbEntry
 import database.cols.{
   CourseColumn,
   DateStartEndColumn,
-  UniqueEntityColumn,
-  RoomColumn
+  RoomColumn,
+  UniqueEntityColumn
 }
-import models.Schedule
 import slick.jdbc.PostgresProfile.api._
 
-import java.sql.{Date, Time}
+import java.sql.{Date, Time, Timestamp}
 import java.util.UUID
 
+case class ScheduleDbEntry(
+    course: UUID,
+    room: UUID,
+    date: Date,
+    start: Time,
+    end: Time,
+    lastModified: Timestamp,
+    id: UUID
+) extends UniqueDbEntry
+
 class ScheduleTable(tag: Tag)
-    extends Table[Schedule](tag, "schedule")
+    extends Table[ScheduleDbEntry](tag, "schedule")
     with UniqueEntityColumn
     with CourseColumn
     with RoomColumn
@@ -25,16 +35,19 @@ class ScheduleTable(tag: Tag)
     date,
     start,
     end,
+    lastModified,
     id
   ) <> (mapRow, unmapRow)
 
-  def mapRow: ((UUID, UUID, Date, Time, Time, UUID)) => Schedule = {
-    case (course, room, date, start, end, id) =>
-      Schedule(course, room, date, start, end, id)
+  def mapRow
+      : ((UUID, UUID, Date, Time, Time, Timestamp, UUID)) => ScheduleDbEntry = {
+    case (course, room, date, start, end, lastModified, id) =>
+      ScheduleDbEntry(course, room, date, start, end, lastModified, id)
   }
 
-  def unmapRow: Schedule => Option[(UUID, UUID, Date, Time, Time, UUID)] = {
-    a =>
-      Option((a.course, a.room, a.date, a.start, a.end, a.id))
+  def unmapRow: ScheduleDbEntry => Option[
+    (UUID, UUID, Date, Time, Time, Timestamp, UUID)
+  ] = { a =>
+    Option((a.course, a.room, a.date, a.start, a.end, a.lastModified, a.id))
   }
 }
