@@ -53,11 +53,11 @@ POST          /modules                              controllers.ModuleController
 PUT           /modules/:id                          controllers.ModuleController.update(id: java.util.UUID)
 DELETE        /modules/:id                          controllers.ModuleController.delete(id: java.util.UUID)
 
-# GET           /subModules                           controllers.SubModuleController.all()
-# GET           /subModules/:id                       controllers.SubModuleController.get(id: java.util.UUID)
-# POST          /subModules                           controllers.SubModuleController.create()
-# PUT           /subModules/:id                       controllers.SubModuleController.update(id: java.util.UUID)
-# DELETE        /subModules/:id                       controllers.SubModuleController.delete(id: java.util.UUID)
+GET           /subModules                           controllers.SubModuleController.all()
+GET           /subModules/:id                       controllers.SubModuleController.get(id: java.util.UUID)
+POST          /subModules                           controllers.SubModuleController.create()
+PUT           /subModules/:id                       controllers.SubModuleController.update(id: java.util.UUID)
+DELETE        /subModules/:id                       controllers.SubModuleController.delete(id: java.util.UUID)
 
 GET           /users                                controllers.UserController.all()
 GET           /users/:id                            controllers.UserController.get(id: java.util.UUID)

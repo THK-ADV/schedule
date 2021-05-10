@@ -1,5 +1,6 @@
 package models
 
+import database.tables.ModuleDbEntry
 import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
@@ -55,5 +56,16 @@ object Module {
 
     override def courseManagerId = courseManager.id
   }
+
+  def apply(db: ModuleDbEntry): ModuleDefault =
+    ModuleDefault(
+      db.examinationRegulation,
+      db.courseManager,
+      db.label,
+      db.abbreviation,
+      db.credits,
+      db.descriptionUrl,
+      db.id
+    )
 
 }

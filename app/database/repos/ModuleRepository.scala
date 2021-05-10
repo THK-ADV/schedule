@@ -1,7 +1,7 @@
 package database.repos
 
 import database.tables.{ModuleDbEntry, ModuleTable}
-import models.Module.{ModuleAtom, ModuleDefault}
+import models.Module.ModuleAtom
 import models.{ExaminationRegulation, Module, User}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
@@ -51,13 +51,5 @@ class ModuleRepository @Inject() (
     db.run(action)
   }
 
-  override protected def toUniqueEntity(e: ModuleDbEntry) = ModuleDefault(
-    e.examinationRegulation,
-    e.courseManager,
-    e.label,
-    e.abbreviation,
-    e.credits,
-    e.descriptionUrl,
-    e.id
-  )
+  override protected def toUniqueEntity(e: ModuleDbEntry) = Module(e)
 }
