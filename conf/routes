@@ -41,12 +41,12 @@ POST          /studyPrograms                        controllers.StudyProgramCont
 PUT           /studyPrograms/:id                    controllers.StudyProgramController.update(id: java.util.UUID)
 DELETE        /studyPrograms/:id                    controllers.StudyProgramController.delete(id: java.util.UUID)
 
-# GET           /examinationRegulations               controllers.ExaminationRegulationController.all()
-# GET           /examinationRegulations/:id           controllers.ExaminationRegulationController.get(id: java.util.UUID)
-# POST          /examinationRegulations               controllers.ExaminationRegulationController.create()
-# PUT           /examinationRegulations/:id           controllers.ExaminationRegulationController.update(id: java.util.UUID)
-# DELETE        /examinationRegulations/:id           controllers.ExaminationRegulationController.delete(id: java.util.UUID)
-#
+GET           /examinationRegulations               controllers.ExaminationRegulationController.all()
+GET           /examinationRegulations/:id           controllers.ExaminationRegulationController.get(id: java.util.UUID)
+POST          /examinationRegulations               controllers.ExaminationRegulationController.create()
+PUT           /examinationRegulations/:id           controllers.ExaminationRegulationController.update(id: java.util.UUID)
+DELETE        /examinationRegulations/:id           controllers.ExaminationRegulationController.delete(id: java.util.UUID)
+
 # GET           /modules                              controllers.ModuleController.all()
 # GET           /modules/:id                          controllers.ModuleController.get(id: java.util.UUID)
 # POST          /modules                              controllers.ModuleController.create()
