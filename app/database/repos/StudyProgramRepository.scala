@@ -1,7 +1,7 @@
 package database.repos
 
 import database.tables.{StudyProgramDBEntry, StudyProgramTable}
-import models.StudyProgram.{StudyProgramAtom, StudyProgramDefault}
+import models.StudyProgram.StudyProgramAtom
 import models.{Graduation, StudyProgram, TeachingUnit}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
@@ -28,13 +28,7 @@ class StudyProgramRepository @Inject() (
   }
 
   override protected def toUniqueEntity(e: StudyProgramDBEntry) =
-    StudyProgramDefault(
-      e.teachingUnit,
-      e.graduation,
-      e.label,
-      e.abbreviation,
-      e.id
-    )
+    StudyProgram(e)
 
   override protected def retrieveAtom(
       query: Query[StudyProgramTable, StudyProgramDBEntry, Seq]
@@ -46,9 +40,13 @@ class StudyProgramRepository @Inject() (
     } yield (q, tu, g)
 
     val action = result.result.map(_.map { case (sp, tu, g) =>
-      val tu0 = TeachingUnit(tu.label, tu.abbreviation, tu.number, tu.id)
-      val g0 = Graduation(g.label, g.abbreviation, g.id)
-      StudyProgramAtom(tu0, g0, sp.label, sp.abbreviation, sp.id)
+      StudyProgramAtom(
+        TeachingUnit(tu),
+        Graduation(g),
+        sp.label,
+        sp.abbreviation,
+        sp.id
+      )
     })
 
     db.run(action)

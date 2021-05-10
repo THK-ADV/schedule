@@ -32,6 +32,5 @@ class UserRepository @Inject() (
   ) =
     retrieveDefault(query)
 
-  override protected def toUniqueEntity(e: UserDbEntry) =
-    User(e.firstname, e.lastname, e.status, e.email, e.title, e.initials, e.id)
+  override protected def toUniqueEntity(e: UserDbEntry) = User(e)
 }

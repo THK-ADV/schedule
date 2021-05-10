@@ -21,12 +21,12 @@ sealed trait Module extends UniqueEntity {
 object Module {
   implicit val writes: Writes[Module] = Writes.apply {
     case default: ModuleDefault => writesDefault.writes(default)
-    case atom: ModuleAtom       => wrtiesAtom.writes(atom)
+    case atom: ModuleAtom       => writesAtom.writes(atom)
   }
 
   implicit val writesDefault: Writes[ModuleDefault] = Json.writes[ModuleDefault]
 
-  implicit val wrtiesAtom: Writes[ModuleAtom] = Json.writes[ModuleAtom]
+  implicit val writesAtom: Writes[ModuleAtom] = Json.writes[ModuleAtom]
 
   case class ModuleDefault(
       examinationRegulation: UUID,

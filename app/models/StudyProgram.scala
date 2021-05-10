@@ -1,5 +1,6 @@
 package models
 
+import database.tables.StudyProgramDBEntry
 import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
@@ -49,5 +50,14 @@ object StudyProgram {
 
     override def graduationId = graduation.id
   }
+
+  def apply(db: StudyProgramDBEntry): StudyProgramDefault =
+    StudyProgramDefault(
+      db.teachingUnit,
+      db.graduation,
+      db.label,
+      db.abbreviation,
+      db.id
+    )
 
 }

@@ -4,7 +4,11 @@ import database.tables.{
   ExaminationRegulationDbEntry,
   ExaminationRegulationTable
 }
-import models.ExaminationRegulation
+import models.ExaminationRegulation.{
+  ExaminationRegulationAtom,
+  ExaminationRegulationDefault
+}
+import models.{ExaminationRegulation, StudyProgram}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -37,15 +41,26 @@ class ExaminationRegulationRepository @Inject() (
         ExaminationRegulationDbEntry,
         Seq
       ]
-  ) = ???
+  ) = {
+    val result = for {
+      q <- query
+      s <- q.studyProgramFk
+    } yield (q, s)
+
+    val action = result.result.map(_.map { case (e, s) =>
+      ExaminationRegulationAtom(
+        StudyProgram(s),
+        e.label,
+        e.abbreviation,
+        e.start,
+        e.end,
+        e.id
+      )
+    })
+
+    db.run(action)
+  }
 
   override protected def toUniqueEntity(e: ExaminationRegulationDbEntry) =
-    ExaminationRegulation(
-      e.studyProgram,
-      e.label,
-      e.abbreviation,
-      e.start,
-      e.end,
-      e.id
-    )
+    ExaminationRegulation(e)
 }
