@@ -11,11 +11,11 @@ POST          /graduations                          controllers.GraduationContro
 PUT           /graduations/:id                      controllers.GraduationController.update(id: java.util.UUID)
 DELETE        /graduations/:id                      controllers.GraduationController.delete(id: java.util.UUID)
 
-# GET           /semesters                            controllers.SemesterController.all()
-# GET           /semesters/:id                        controllers.SemesterController.get(id: java.util.UUID)
-# POST          /semesters                            controllers.SemesterController.create()
-# PUT           /semesters/:id                        controllers.SemesterController.update(id: java.util.UUID)
-# DELETE        /semesters/:id                        controllers.SemesterController.delete(id: java.util.UUID)
+GET           /semesters                            controllers.SemesterController.all()
+GET           /semesters/:id                        controllers.SemesterController.get(id: java.util.UUID)
+POST          /semesters                            controllers.SemesterController.create()
+PUT           /semesters/:id                        controllers.SemesterController.update(id: java.util.UUID)
+DELETE        /semesters/:id                        controllers.SemesterController.delete(id: java.util.UUID)
 
 GET           /faculties                            controllers.FacultyController.all()
 GET           /faculties/:id                        controllers.FacultyController.get(id: java.util.UUID)

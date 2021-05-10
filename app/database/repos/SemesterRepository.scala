@@ -1,7 +1,6 @@
-/*
 package database.repos
 
-import database.tables.SemesterTable
+import database.tables.{SemesterDbEntry, SemesterTable}
 import models.Semester
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
@@ -14,7 +13,7 @@ class SemesterRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Repository[Semester, SemesterTable] {
+    with Repository[Semester, SemesterDbEntry, SemesterTable] {
 
   import profile.api._
 
@@ -23,5 +22,11 @@ class SemesterRepository @Inject() (
   override protected def makeFilter = { case ("label", vs) =>
     t => t.hasLabel(vs.head)
   }
+
+  override protected def retrieveAtom(
+      query: Query[SemesterTable, SemesterDbEntry, Seq]
+  ) =
+    retrieveDefault(query)
+
+  override protected def toUniqueEntity(e: SemesterDbEntry) = Semester(e)
 }
-*/
