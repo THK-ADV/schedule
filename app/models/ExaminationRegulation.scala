@@ -1,5 +1,6 @@
 package models
 
+import database.tables.ExaminationRegulationDbEntry
 import date.LocalDateFormat
 import org.joda.time.LocalDate
 import play.api.libs.json.{Json, OFormat}
@@ -18,4 +19,14 @@ case class ExaminationRegulation(
 object ExaminationRegulation extends LocalDateFormat {
   implicit val format: OFormat[ExaminationRegulation] =
     Json.format[ExaminationRegulation]
+
+  def apply(db: ExaminationRegulationDbEntry): ExaminationRegulation =
+    ExaminationRegulation(
+      db.studyProgram,
+      db.label,
+      db.abbreviation,
+      db.start,
+      db.end,
+      db.id
+    )
 }

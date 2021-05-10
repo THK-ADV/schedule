@@ -1,4 +1,3 @@
-/*
 package controllers
 
 import models.{Module, ModuleJson}
@@ -16,8 +15,7 @@ class ModuleController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Controller[ModuleJson, Module] {
-  override protected implicit def writes: Writes[Module] = Module.format
+  override protected implicit def writes: Writes[Module] = Module.writes
 
   override protected implicit def reads: Reads[ModuleJson] = ModuleJson.format
 }
-*/

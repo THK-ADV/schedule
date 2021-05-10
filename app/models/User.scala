@@ -1,5 +1,6 @@
 package models
 
+import database.tables.UserDbEntry
 import play.api.libs.json.{JsError, Json, OFormat}
 
 import java.util.UUID
@@ -27,6 +28,16 @@ object User {
     case LecturerStatus =>
       Lecturer(firstname, lastname, email, title.get, initials.get, id)
   }
+
+  def apply(db: UserDbEntry): User = apply(
+    db.firstname,
+    db.lastname,
+    db.status,
+    db.email,
+    db.title,
+    db.initials,
+    db.id
+  )
 
   val StudentStatus = "student"
 
