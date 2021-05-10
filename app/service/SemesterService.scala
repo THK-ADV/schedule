@@ -20,7 +20,8 @@ class SemesterService @Inject() (val repo: SemesterRepository)
       json.abbreviation,
       json.start,
       json.end,
-      json.examStart,
+      json.lectureStart,
+      json.lectureEnd,
       id getOrElse UUID.randomUUID
     )
 
@@ -34,7 +35,7 @@ class SemesterService @Inject() (val repo: SemesterRepository)
     List(table.onStart(json.start), table.onEnd(json.end))
 
   override protected def validate(json: SemesterJson) = Option.when(
-    json.end.isBefore(json.start)
+    json.end.isBefore(json.start) && json.lectureEnd.isBefore(json.lectureStart)
   )(
     new Throwable(
       s"semester start should be before semester end, but was ${json.start} - ${json.end}"
