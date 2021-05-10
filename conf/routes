@@ -16,13 +16,13 @@ GET           /                         controllers.IndexController.index()
 # POST          /semesters                            controllers.SemesterController.create()
 # PUT           /semesters/:id                        controllers.SemesterController.update(id: java.util.UUID)
 # DELETE        /semesters/:id                        controllers.SemesterController.delete(id: java.util.UUID)
-#
-# GET           /faculties                            controllers.FacultyController.all()
-# GET           /faculties/:id                        controllers.FacultyController.get(id: java.util.UUID)
-# POST          /faculties                            controllers.FacultyController.create()
-# PUT           /faculties/:id                        controllers.FacultyController.update(id: java.util.UUID)
-# DELETE        /faculties/:id                        controllers.FacultyController.delete(id: java.util.UUID)
-#
+
+GET           /faculties                controllers.FacultyController.all()
+GET           /faculties/:id            controllers.FacultyController.get(id: java.util.UUID)
+POST          /faculties                controllers.FacultyController.create()
+PUT           /faculties/:id            controllers.FacultyController.update(id: java.util.UUID)
+DELETE        /faculties/:id            controllers.FacultyController.delete(id: java.util.UUID)
+
 # GET           /teachingUnits                        controllers.TeachingUnitController.all()
 # GET           /teachingUnits/:id                    controllers.TeachingUnitController.get(id: java.util.UUID)
 # POST          /teachingUnits                        controllers.TeachingUnitController.create()

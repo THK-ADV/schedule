@@ -12,7 +12,7 @@ case class StudyProgramDBEntry(
     graduation: UUID,
     label: String,
     abbreviation: String,
-    lastModified: Timestamp = new Timestamp(System.currentTimeMillis()),
+    lastModified: Timestamp,
     id: UUID
 ) extends UniqueDbEntry
 

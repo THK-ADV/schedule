@@ -1,7 +1,7 @@
-/*
 package service
 
-import database.tables.FacultyTable
+import database.repos.FacultyRepository
+import database.tables.{FacultyDbEntry, FacultyTable}
 import models.{Faculty, FacultyJson}
 import service.abstracts.Service
 
@@ -10,14 +10,19 @@ import javax.inject.{Inject, Singleton}
 
 @Singleton
 class FacultyService @Inject() (val repo: FacultyRepository)
-    extends Service[FacultyJson, Faculty, FacultyTable] {
+    extends Service[FacultyJson, Faculty, FacultyDbEntry, FacultyTable] {
 
   override protected def toUniqueDbEntry(json: FacultyJson, id: Option[UUID]) =
-    Faculty(json.label, json.abbreviation, id getOrElse UUID.randomUUID)
+    FacultyDbEntry(
+      json.label,
+      json.abbreviation,
+      now(),
+      id getOrElse UUID.randomUUID
+    )
 
   override protected def canUpdate(
       json: FacultyJson,
-      existing: Faculty
+      existing: FacultyDbEntry
   ): Boolean =
     json.label == existing.label
 
@@ -25,4 +30,4 @@ class FacultyService @Inject() (val repo: FacultyRepository)
     List(table.hasLabel(json.label))
 
   override protected def validate(json: FacultyJson) = None
-}*/
+}
