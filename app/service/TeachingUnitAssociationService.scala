@@ -1,7 +1,10 @@
-/*
 package service
 
-import database.tables.TeachingUnitAssociationTable
+import database.repos.TeachingUnitAssociationRepository
+import database.tables.{
+  TeachingUnitAssociationDbEntry,
+  TeachingUnitAssociationTable
+}
 import models.{TeachingUnitAssociation, TeachingUnitAssociationJson}
 import service.abstracts.Service
 
@@ -14,6 +17,7 @@ class TeachingUnitAssociationService @Inject() (
 ) extends Service[
       TeachingUnitAssociationJson,
       TeachingUnitAssociation,
+      TeachingUnitAssociationDbEntry,
       TeachingUnitAssociationTable
     ] {
 
@@ -21,15 +25,16 @@ class TeachingUnitAssociationService @Inject() (
       json: TeachingUnitAssociationJson,
       id: Option[UUID]
   ) =
-    TeachingUnitAssociation(
+    TeachingUnitAssociationDbEntry(
       json.faculty,
       json.teachingUnit,
+      now(),
       id getOrElse UUID.randomUUID
     )
 
   override protected def canUpdate(
       json: TeachingUnitAssociationJson,
-      existing: TeachingUnitAssociation
+      existing: TeachingUnitAssociationDbEntry
   ): Boolean = true
 
   override protected def uniqueCols(
@@ -38,4 +43,4 @@ class TeachingUnitAssociationService @Inject() (
   ) = List.empty
 
   override protected def validate(json: TeachingUnitAssociationJson) = None
-}*/
+}
