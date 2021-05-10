@@ -1,4 +1,3 @@
-/*
 package controllers
 
 import models.{StudentSchedule, StudentScheduleJson}
@@ -17,9 +16,8 @@ class StudentScheduleController @Inject() (
 ) extends AbstractController(cc)
     with Controller[StudentScheduleJson, StudentSchedule] {
   override protected implicit def writes: Writes[StudentSchedule] =
-    StudentSchedule.format
+    StudentSchedule.writes
 
   override protected implicit def reads: Reads[models.StudentScheduleJson] =
     StudentScheduleJson.format
 }
-*/

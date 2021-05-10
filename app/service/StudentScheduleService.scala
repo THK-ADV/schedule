@@ -1,7 +1,7 @@
-/*
 package service
 
-import database.tables.StudentScheduleTable
+import database.repos.StudentScheduleRepository
+import database.tables.{StudentScheduleDbEntry, StudentScheduleTable}
 import models.{StudentSchedule, StudentScheduleJson}
 import service.abstracts.Service
 
@@ -13,6 +13,7 @@ class StudentScheduleService @Inject() (val repo: StudentScheduleRepository)
     extends Service[
       StudentScheduleJson,
       StudentSchedule,
+      StudentScheduleDbEntry,
       StudentScheduleTable
     ] {
 
@@ -20,11 +21,16 @@ class StudentScheduleService @Inject() (val repo: StudentScheduleRepository)
       json: StudentScheduleJson,
       id: Option[UUID]
   ) =
-    StudentSchedule(json.student, json.schedule, id getOrElse UUID.randomUUID)
+    StudentScheduleDbEntry(
+      json.student,
+      json.schedule,
+      now(),
+      id getOrElse UUID.randomUUID
+    )
 
   override protected def canUpdate(
       json: StudentScheduleJson,
-      existing: StudentSchedule
+      existing: StudentScheduleDbEntry
   ): Boolean =
     existing.student == json.student && existing.schedule == json.schedule
 
@@ -35,4 +41,4 @@ class StudentScheduleService @Inject() (val repo: StudentScheduleRepository)
     List(table.hasSchedule(json.schedule), table.hasUser(json.student))
 
   override protected def validate(json: StudentScheduleJson) = None
-}*/
+}
