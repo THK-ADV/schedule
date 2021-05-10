@@ -23,12 +23,12 @@ POST          /faculties                controllers.FacultyController.create()
 PUT           /faculties/:id            controllers.FacultyController.update(id: java.util.UUID)
 DELETE        /faculties/:id            controllers.FacultyController.delete(id: java.util.UUID)
 
-# GET           /teachingUnits                        controllers.TeachingUnitController.all()
-# GET           /teachingUnits/:id                    controllers.TeachingUnitController.get(id: java.util.UUID)
-# POST          /teachingUnits                        controllers.TeachingUnitController.create()
-# PUT           /teachingUnits/:id                    controllers.TeachingUnitController.update(id: java.util.UUID)
-# DELETE        /teachingUnits/:id                    controllers.TeachingUnitController.delete(id: java.util.UUID)
-#
+GET           /teachingUnits            controllers.TeachingUnitController.all()
+GET           /teachingUnits/:id        controllers.TeachingUnitController.get(id: java.util.UUID)
+POST          /teachingUnits            controllers.TeachingUnitController.create()
+PUT           /teachingUnits/:id        controllers.TeachingUnitController.update(id: java.util.UUID)
+DELETE        /teachingUnits/:id        controllers.TeachingUnitController.delete(id: java.util.UUID)
+
 # GET           /teachingUnitsAssociations            controllers.TeachingUnitAssociationController.all()
 # GET           /teachingUnitsAssociations/:id        controllers.TeachingUnitAssociationController.get(id: java.util.UUID)
 # POST          /teachingUnitsAssociations            controllers.TeachingUnitAssociationController.create()

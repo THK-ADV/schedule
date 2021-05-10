@@ -1,8 +1,8 @@
 package database.repos
 
 import database.tables.{StudyProgramDBEntry, StudyProgramTable}
-import models.StudyProgram
 import models.StudyProgram.{StudyProgramAtom, StudyProgramDefault}
+import models.{StudyProgram, TeachingUnit}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -46,7 +46,8 @@ class StudyProgramRepository @Inject() (
     } yield (q, tu, g)
 
     val action = result.result.map(_.map { case (sp, tu, g) =>
-      StudyProgramAtom(tu, g, sp.label, sp.abbreviation, sp.id)
+      val tu0 = TeachingUnit(tu.label, tu.abbreviation, tu.number, tu.id)
+      StudyProgramAtom(tu0, g, sp.label, sp.abbreviation, sp.id)
     })
 
     db.run(action)

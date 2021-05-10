@@ -1,13 +1,22 @@
 package database.tables
 
-import database.cols.{AbbreviationColumn, UniqueEntityColumn, LabelColumn}
-import models.TeachingUnit
+import database.UniqueDbEntry
+import database.cols.{AbbreviationColumn, LabelColumn, UniqueEntityColumn}
 import slick.jdbc.PostgresProfile.api._
 
+import java.sql.Timestamp
 import java.util.UUID
 
+case class TeachingUnitDbEntry(
+    label: String,
+    abbreviation: String,
+    number: Int,
+    lastModified: Timestamp,
+    id: UUID
+) extends UniqueDbEntry
+
 class TeachingUnitTable(tag: Tag)
-    extends Table[TeachingUnit](tag, "teaching_unit")
+    extends Table[TeachingUnitDbEntry](tag, "teaching_unit")
     with UniqueEntityColumn
     with AbbreviationColumn
     with LabelColumn {
@@ -20,14 +29,17 @@ class TeachingUnitTable(tag: Tag)
     label,
     abbreviation,
     number,
+    lastModified,
     id
   ) <> (mapRow, unmapRow)
 
-  def mapRow: ((String, String, Int, UUID)) => TeachingUnit = {
-    case (label, abbreviation, number, id) =>
-      TeachingUnit(label, abbreviation, number, id)
+  def mapRow
+      : ((String, String, Int, Timestamp, UUID)) => TeachingUnitDbEntry = {
+    case (label, abbreviation, number, lastModified, id) =>
+      TeachingUnitDbEntry(label, abbreviation, number, lastModified, id)
   }
 
-  def unmapRow: TeachingUnit => Option[(String, String, Int, UUID)] = a =>
-    Option((a.label, a.abbreviation, a.number, a.id))
+  def unmapRow
+      : TeachingUnitDbEntry => Option[(String, String, Int, Timestamp, UUID)] =
+    a => Option((a.label, a.abbreviation, a.number, a.lastModified, a.id))
 }
