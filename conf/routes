@@ -58,10 +58,10 @@ DELETE        /examinationRegulations/:id           controllers.ExaminationRegul
 # POST          /subModules                           controllers.SubModuleController.create()
 # PUT           /subModules/:id                       controllers.SubModuleController.update(id: java.util.UUID)
 # DELETE        /subModules/:id                       controllers.SubModuleController.delete(id: java.util.UUID)
-#
-# GET           /users                                controllers.UserController.all()
-# GET           /users/:id                            controllers.UserController.get(id: java.util.UUID)
-#
+
+GET           /users                                controllers.UserController.all()
+GET           /users/:id                            controllers.UserController.get(id: java.util.UUID)
+
 # GET           /courses                              controllers.CourseController.all()
 # GET           /courses/:id                          controllers.CourseController.get(id: java.util.UUID)
 # POST          /courses                              controllers.CourseController.create()
