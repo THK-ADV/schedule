@@ -16,24 +16,38 @@ class SemesterTable(tag: Tag)
     with AbbreviationColumn
     with StartEndColumn {
 
-  def examStart = column[Date]("exam_start")
+  def lectureStart = column[Date]("lecture_start")
+
+  def lectureEnd = column[Date]("lecture_end")
 
   def * = (
     label,
     abbreviation,
     start,
     end,
-    examStart,
+    lectureStart,
+    lectureEnd,
     id
   ) <> (mapRow, unmapRow)
 
-  def mapRow: ((String, String, Date, Date, Date, UUID)) => Semester = {
-    case (label, abbreviation, start, end, examStart, id) =>
-      Semester(label, abbreviation, start, end, examStart, id)
+  def mapRow: ((String, String, Date, Date, Date, Date, UUID)) => Semester = {
+    case (label, abbreviation, start, end, lectureStart, lectureEnd, id) =>
+      Semester(label, abbreviation, start, end, lectureStart, lectureEnd, id)
   }
 
-  def unmapRow: Semester => Option[(String, String, Date, Date, Date, UUID)] = {
+  def unmapRow
+      : Semester => Option[(String, String, Date, Date, Date, Date, UUID)] = {
     s =>
-      Option((s.label, s.abbreviation, s.start, s.end, s.examStart, s.id))
+      Option(
+        (
+          s.label,
+          s.abbreviation,
+          s.start,
+          s.end,
+          s.lectureStart,
+          s.lectureEnd,
+          s.id
+        )
+      )
   }
 }

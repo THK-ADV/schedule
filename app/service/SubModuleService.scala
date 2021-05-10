@@ -17,6 +17,7 @@ class SubModuleService @Inject() (val repo: SubModuleRepository)
       json.module,
       json.label,
       json.abbreviation,
+      json.mandatory,
       json.recommendedSemester,
       json.credits,
       json.descriptionUrl,

@@ -24,25 +24,32 @@ create table teaching_unit_association
     FOREIGN KEY (teaching_unit) REFERENCES teaching_unit (id)
 );
 
+create table graduation
+(
+    "id"           uuid PRIMARY KEY,
+    "label"        text not null,
+    "abbreviation" text not null
+);
+
 create table study_program
 (
     "id"            uuid PRIMARY KEY,
     "teaching_unit" uuid not null,
     "label"         text not null,
     "abbreviation"  text not null,
-    "graduation"    text not null,
-    FOREIGN KEY (teaching_unit) REFERENCES teaching_unit (id)
+    "graduation"    uuid not null,
+    FOREIGN KEY (teaching_unit) REFERENCES teaching_unit (id),
+    FOREIGN KEY (graduation) REFERENCES graduation (id)
 );
 
 create table examination_regulation
 (
-    "id"                 uuid PRIMARY KEY,
-    "study_program"      uuid not null,
-    "label"              text not null,
-    "abbreviation"       text not null,
-    "accreditation_date" date not null,
-    "activation_date"    date not null,
-    "expiring_date"      date null,
+    "id"            uuid PRIMARY KEY,
+    "study_program" uuid not null,
+    "label"         text not null,
+    "abbreviation"  text not null,
+    "start"         date not null,
+    "end"           date not null,
     FOREIGN KEY (study_program) REFERENCES study_program (id)
 );
 
@@ -76,6 +83,7 @@ create table submodule
     "module"               uuid    not null,
     "label"                text    not null,
     "abbreviation"         text    not null,
+    "mandatory"            boolean not null,
     "recommended_semester" integer not null,
     "description_file_url" text    not null,
     "ects"                 decimal not null,
@@ -84,12 +92,13 @@ create table submodule
 
 create table semester
 (
-    "id"           uuid PRIMARY KEY,
-    "label"        text not null,
-    "abbreviation" text not null,
-    "start"        date not null,
-    "end"          date not null,
-    "exam_start"   date not null
+    "id"            uuid PRIMARY KEY,
+    "label"         text not null,
+    "abbreviation"  text not null,
+    "start"         date not null,
+    "end"           date not null,
+    "lecture_start" date not null,
+    "lecture_end"   date not null
 );
 
 create table course
@@ -107,11 +116,9 @@ create table course
 
 create table room
 (
-    "id"     uuid PRIMARY KEY,
-    "label"  text    not null,
-    "number" text    not null,
-    "seats"  integer not null,
-    "type"   text    not null
+    "id"           uuid PRIMARY KEY,
+    "label"        text not null,
+    "abbreviation" text not null
 );
 
 create table schedule
@@ -146,6 +153,7 @@ drop table module if exists;
 drop table people if exists;
 drop table examination_regulation if exists;
 drop table study_program if exists;
+drop table graduation if exists;
 drop table teaching_unit_association if exists;
 drop table teaching_unit if exists;
 drop table faculty if exists;

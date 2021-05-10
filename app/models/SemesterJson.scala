@@ -9,7 +9,8 @@ case class SemesterJson(
     abbreviation: String,
     start: LocalDate,
     end: LocalDate,
-    examStart: LocalDate
+    lectureStart: LocalDate,
+    lectureEnd: LocalDate
 )
 
 object SemesterJson extends LocalDateFormat {

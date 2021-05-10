@@ -1,16 +1,16 @@
 package database.tables
 
 import database.cols.{AbbreviationColumn, IDColumn, LabelColumn}
-import models.Room
+import models.Graduation
 import slick.jdbc.PostgresProfile.api._
 
 import java.util.UUID
 
-class RoomTable(tag: Tag)
-    extends Table[Room](tag, "room")
+class GraduationTable(tag: Tag)
+    extends Table[Graduation](tag, "graduation")
     with IDColumn
-    with LabelColumn
-    with AbbreviationColumn {
+    with AbbreviationColumn
+    with LabelColumn {
 
   def * = (
     label,
@@ -18,12 +18,11 @@ class RoomTable(tag: Tag)
     id
   ) <> (mapRow, unmapRow)
 
-  def mapRow: ((String, String, UUID)) => Room = {
+  def mapRow: ((String, String, UUID)) => Graduation = {
     case (label, abbreviation, id) =>
-      Room(label, abbreviation, id)
+      Graduation(label, abbreviation, id)
   }
 
-  def unmapRow: Room => Option[(String, String, UUID)] = { a =>
+  def unmapRow: Graduation => Option[(String, String, UUID)] = a =>
     Option((a.label, a.abbreviation, a.id))
-  }
 }

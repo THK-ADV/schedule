@@ -6,9 +6,9 @@ import java.util.UUID
 
 case class StudyProgram(
     teachingUnit: UUID,
+    graduation: UUID,
     label: String,
     abbreviation: String,
-    graduation: String,
     id: UUID
 ) extends UniqueEntity
 

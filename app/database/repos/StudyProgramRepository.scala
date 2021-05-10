@@ -22,7 +22,7 @@ class StudyProgramRepository @Inject() (
   override protected def makeFilter = {
     case ("label", vs)        => t => t.hasLabel(vs.head)
     case ("abbreviation", vs) => t => t.hasAbbreviation(vs.head)
-    case ("graduation", vs)   => t => t.hasGraduation(vs.head)
+    case ("graduation", vs)   => t => parseUUID(vs, t.hasGraduation)
     case ("teachingUnit", vs) => t => parseUUID(vs, t.hasTeachingUnit)
   }
 }

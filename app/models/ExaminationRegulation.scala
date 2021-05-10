@@ -10,9 +10,8 @@ case class ExaminationRegulation(
     studyProgram: UUID,
     label: String,
     abbreviation: String,
-    accreditation: LocalDate,
-    activation: LocalDate,
-    expiring: LocalDate,
+    start: LocalDate,
+    end: LocalDate,
     id: UUID
 ) extends UniqueEntity
 

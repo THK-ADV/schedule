@@ -11,7 +11,8 @@ case class Semester(
     abbreviation: String,
     start: LocalDate,
     end: LocalDate,
-    examStart: LocalDate,
+    lectureStart: LocalDate,
+    lectureEnd: LocalDate,
     id: UUID
 ) extends UniqueEntity
 
