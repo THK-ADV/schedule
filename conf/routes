@@ -5,12 +5,12 @@
 
 GET           /                                     controllers.IndexController.index()
 
-# GET           /graduations                          controllers.GraduationController.all()
-# GET           /graduations/:id                      controllers.GraduationController.get(id: java.util.UUID)
-# POST          /graduations                          controllers.GraduationController.create()
-# PUT           /graduations/:id                      controllers.GraduationController.update(id: java.util.UUID)
-# DELETE        /graduations/:id                      controllers.GraduationController.delete(id: java.util.UUID)
-#
+GET           /graduations                          controllers.GraduationController.all()
+GET           /graduations/:id                      controllers.GraduationController.get(id: java.util.UUID)
+POST          /graduations                          controllers.GraduationController.create()
+PUT           /graduations/:id                      controllers.GraduationController.update(id: java.util.UUID)
+DELETE        /graduations/:id                      controllers.GraduationController.delete(id: java.util.UUID)
+
 # GET           /semesters                            controllers.SemesterController.all()
 # GET           /semesters/:id                        controllers.SemesterController.get(id: java.util.UUID)
 # POST          /semesters                            controllers.SemesterController.create()
