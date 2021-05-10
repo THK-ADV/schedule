@@ -27,9 +27,8 @@ class ExaminationRegulationService @Inject() (
       json.studyProgram,
       json.label,
       json.abbreviation,
-      json.accreditation,
-      json.activation,
-      json.expiring,
+      json.start,
+      json.end,
       id getOrElse UUID.randomUUID
     )
 
@@ -38,25 +37,18 @@ class ExaminationRegulationService @Inject() (
       existing: ExaminationRegulation
   ): Boolean =
     json.studyProgram == existing.studyProgram &&
-      json.accreditation == existing.accreditation &&
-      json.activation == existing.activation &&
-      json.expiring == existing.expiring
+      json.abbreviation == existing.abbreviation
 
   override protected def uniqueCols(
       json: ExaminationRegulationJson,
       table: ExaminationRegulationTable
   ) = List(
-    table.isUniqueTo(
-      json.studyProgram,
-      json.accreditation,
-      json.activation,
-      json.expiring
-    )
+    table.hasStudyProgram(json.studyProgram),
+    table.hasAbbreviation(json.abbreviation)
   )
 
   override protected def validate(json: ExaminationRegulationJson) =
-    Option.unless(
-      json.accreditation.isBefore(json.expiring) &&
-        json.activation.isAfter(json.accreditation) // TODO is this correct?
-    )(new Throwable(s"invalid date boundaries"))
+    Option.unless(json.start.isBefore(json.end))(
+      new Throwable(s"invalid date boundaries")
+    )
 }

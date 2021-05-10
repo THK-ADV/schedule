@@ -1,11 +1,6 @@
 package database.tables
 
-import database.cols.{
-  AbbreviationColumn,
-  IDColumn,
-  LabelColumn,
-  TeachingUnitColumn
-}
+import database.cols._
 import models.StudyProgram
 import slick.jdbc.PostgresProfile.api._
 
@@ -16,25 +11,22 @@ class StudyProgramTable(tag: Tag)
     with IDColumn
     with AbbreviationColumn
     with LabelColumn
-    with TeachingUnitColumn {
-
-  def graduation = column[String]("graduation")
-
-  def hasGraduation(g: String) = graduation === g
+    with TeachingUnitColumn
+    with GraduationColumn {
 
   def * = (
     teachingUnit,
+    graduation,
     label,
     abbreviation,
-    graduation,
     id
   ) <> (mapRow, unmapRow)
 
-  def mapRow: ((UUID, String, String, String, UUID)) => StudyProgram = {
-    case (teachingUnit, label, abbreviation, graduation, id) =>
-      StudyProgram(teachingUnit, label, abbreviation, graduation, id)
+  def mapRow: ((UUID, UUID, String, String, UUID)) => StudyProgram = {
+    case (teachingUnit, graduation, label, abbreviation, id) =>
+      StudyProgram(teachingUnit, graduation, label, abbreviation, id)
   }
 
-  def unmapRow: StudyProgram => Option[(UUID, String, String, String, UUID)] =
-    a => Option((a.teachingUnit, a.label, a.abbreviation, a.graduation, a.id))
+  def unmapRow: StudyProgram => Option[(UUID, UUID, String, String, UUID)] =
+    a => Option((a.teachingUnit, a.graduation, a.label, a.abbreviation, a.id))
 }

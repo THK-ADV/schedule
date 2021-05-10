@@ -6,9 +6,9 @@ import java.util.UUID
 
 case class StudyProgramJson(
     teachingUnit: UUID,
-    label: String,
+    graduation: UUID,
     abbreviation: String,
-    graduation: String
+    label: String
 )
 
 object StudyProgramJson {

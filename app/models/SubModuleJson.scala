@@ -8,6 +8,7 @@ case class SubModuleJson(
     module: UUID,
     label: String,
     abbreviation: String,
+    mandatory: Boolean,
     recommendedSemester: Int,
     credits: Double,
     descriptionUrl: String

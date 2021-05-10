@@ -10,9 +10,8 @@ case class ExaminationRegulationJson(
     studyProgram: UUID,
     label: String,
     abbreviation: String,
-    accreditation: LocalDate,
-    activation: LocalDate,
-    expiring: LocalDate
+    start: LocalDate,
+    end: LocalDate
 )
 
 object ExaminationRegulationJson extends LocalDateFormat {

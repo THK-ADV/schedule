@@ -15,9 +15,9 @@ class StudyProgramService @Inject() (val repo: StudyProgramRepository)
   override protected def toModel(json: StudyProgramJson, id: Option[UUID]) =
     StudyProgram(
       json.teachingUnit,
+      json.graduation,
       json.label,
       json.abbreviation,
-      json.graduation,
       id getOrElse UUID.randomUUID
     )
 
@@ -39,8 +39,5 @@ class StudyProgramService @Inject() (val repo: StudyProgramRepository)
     table.hasGraduation(json.graduation)
   )
 
-  override protected def validate(json: StudyProgramJson): Option[Throwable] =
-    Option.unless(json.graduation == "BA" || json.graduation == "MA")(
-      new Throwable("graduation must be either 'BA' or 'MA'")
-    )
+  override protected def validate(json: StudyProgramJson) = None
 }
