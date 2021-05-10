@@ -1,3 +1,4 @@
+/*
 package database.repos
 
 import database.tables.SemesterTable
@@ -23,3 +24,4 @@ class SemesterRepository @Inject() (
     t => t.hasLabel(vs.head)
   }
 }
+*/

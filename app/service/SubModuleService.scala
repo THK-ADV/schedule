@@ -1,6 +1,6 @@
+/*
 package service
 
-import database.repos.SubModuleRepository
 import database.tables.SubModuleTable
 import models.{SubModule, SubModuleJson}
 import service.abstracts.Service
@@ -12,7 +12,10 @@ import javax.inject.{Inject, Singleton}
 class SubModuleService @Inject() (val repo: SubModuleRepository)
     extends Service[SubModuleJson, SubModule, SubModuleTable] {
 
-  override protected def toModel(json: SubModuleJson, id: Option[UUID]) =
+  override protected def toUniqueDbEntry(
+      json: SubModuleJson,
+      id: Option[UUID]
+  ) =
     SubModule(
       json.module,
       json.label,
@@ -41,3 +44,4 @@ class SubModuleService @Inject() (val repo: SubModuleRepository)
 
   override protected def validate(json: SubModuleJson) = None
 }
+*/

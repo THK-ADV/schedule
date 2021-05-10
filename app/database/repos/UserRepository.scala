@@ -1,3 +1,4 @@
+/*
 package database.repos
 
 import database.tables.UserTable
@@ -27,3 +28,4 @@ class UserRepository @Inject() (
     case ("status", vs) => t => t.status.toLowerCase === vs.head.toLowerCase()
   }
 }
+*/

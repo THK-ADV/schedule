@@ -10,7 +10,7 @@ import java.util.UUID
 
 class ExaminationRegulationTable(tag: Tag)
     extends Table[ExaminationRegulation](tag, "examination_regulation")
-    with IDColumn
+    with UniqueEntityColumn
     with SQLDateConverter
     with LabelColumn
     with AbbreviationColumn

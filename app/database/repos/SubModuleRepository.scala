@@ -1,3 +1,4 @@
+/*
 package database.repos
 
 import database.tables.SubModuleTable
@@ -25,3 +26,4 @@ class SubModuleRepository @Inject() (
     case ("credits", vs)      => t => t.hasCredits(vs.head.toDouble)
   }
 }
+*/

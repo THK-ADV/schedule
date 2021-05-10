@@ -1,6 +1,6 @@
+/*
 package service
 
-import database.repos.ModuleRepository
 import database.tables.ModuleTable
 import models.{Module, ModuleJson}
 import service.abstracts.Service
@@ -8,11 +8,12 @@ import service.abstracts.Service
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
 
+
 @Singleton
 class ModuleService @Inject() (val repo: ModuleRepository)
     extends Service[ModuleJson, Module, ModuleTable] {
 
-  override protected def toModel(json: ModuleJson, id: Option[UUID]) =
+  override protected def toUniqueDbEntry(json: ModuleJson, id: Option[UUID]) =
     Module(
       json.examinationRegulation,
       json.courseManager,
@@ -36,4 +37,4 @@ class ModuleService @Inject() (val repo: ModuleRepository)
     )
 
   override protected def validate(json: ModuleJson) = None
-}
+}*/

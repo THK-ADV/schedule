@@ -1,6 +1,6 @@
 package database.tables
 
-import database.cols.{AbbreviationColumn, IDColumn, LabelColumn}
+import database.cols.{AbbreviationColumn, UniqueEntityColumn, LabelColumn}
 import models.Room
 import slick.jdbc.PostgresProfile.api._
 
@@ -8,7 +8,7 @@ import java.util.UUID
 
 class RoomTable(tag: Tag)
     extends Table[Room](tag, "room")
-    with IDColumn
+    with UniqueEntityColumn
     with LabelColumn
     with AbbreviationColumn {
 

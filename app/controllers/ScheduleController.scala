@@ -1,3 +1,4 @@
+/*
 package controllers
 
 import models.{Schedule, ScheduleJson}
@@ -20,3 +21,4 @@ class ScheduleController @Inject() (
   override protected implicit def reads: Reads[models.ScheduleJson] =
     ScheduleJson.format
 }
+*/

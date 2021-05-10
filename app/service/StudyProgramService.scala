@@ -1,7 +1,7 @@
 package service
 
 import database.repos.StudyProgramRepository
-import database.tables.StudyProgramTable
+import database.tables.{StudyProgramDBEntry, StudyProgramTable}
 import models.{StudyProgram, StudyProgramJson}
 import service.abstracts.Service
 
@@ -10,20 +10,28 @@ import javax.inject.{Inject, Singleton}
 
 @Singleton
 class StudyProgramService @Inject() (val repo: StudyProgramRepository)
-    extends Service[StudyProgramJson, StudyProgram, StudyProgramTable] {
+    extends Service[
+      StudyProgramJson,
+      StudyProgram,
+      StudyProgramDBEntry,
+      StudyProgramTable
+    ] {
 
-  override protected def toModel(json: StudyProgramJson, id: Option[UUID]) =
-    StudyProgram(
+  override protected def toUniqueDbEntry(
+      json: StudyProgramJson,
+      id: Option[UUID]
+  ) =
+    StudyProgramDBEntry(
       json.teachingUnit,
       json.graduation,
       json.label,
       json.abbreviation,
-      id getOrElse UUID.randomUUID
+      id = id getOrElse UUID.randomUUID
     )
 
   override protected def canUpdate(
       json: StudyProgramJson,
-      existing: StudyProgram
+      existing: StudyProgramDBEntry
   ): Boolean = {
     json.teachingUnit == existing.teachingUnit &&
     json.label == existing.label &&

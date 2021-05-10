@@ -1,6 +1,6 @@
+/*
 package service
 
-import database.repos.StudentScheduleRepository
 import database.tables.StudentScheduleTable
 import models.{StudentSchedule, StudentScheduleJson}
 import service.abstracts.Service
@@ -16,7 +16,10 @@ class StudentScheduleService @Inject() (val repo: StudentScheduleRepository)
       StudentScheduleTable
     ] {
 
-  override protected def toModel(json: StudentScheduleJson, id: Option[UUID]) =
+  override protected def toUniqueDbEntry(
+      json: StudentScheduleJson,
+      id: Option[UUID]
+  ) =
     StudentSchedule(json.student, json.schedule, id getOrElse UUID.randomUUID)
 
   override protected def canUpdate(
@@ -32,4 +35,4 @@ class StudentScheduleService @Inject() (val repo: StudentScheduleRepository)
     List(table.hasSchedule(json.schedule), table.hasUser(json.student))
 
   override protected def validate(json: StudentScheduleJson) = None
-}
+}*/

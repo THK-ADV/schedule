@@ -1,3 +1,4 @@
+/*
 package database.repos
 
 import database.tables.RoomTable
@@ -24,3 +25,4 @@ class RoomRepository @Inject() (
     case ("abbreviation", vs) => t => t.hasAbbreviation(vs.head)
   }
 }
+*/

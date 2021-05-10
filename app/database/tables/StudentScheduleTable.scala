@@ -1,6 +1,6 @@
 package database.tables
 
-import database.cols.{IDColumn, ScheduleColumn, UserColumn}
+import database.cols.{UniqueEntityColumn, ScheduleColumn, UserColumn}
 import models.StudentSchedule
 import slick.jdbc.PostgresProfile.api._
 
@@ -8,7 +8,7 @@ import java.util.UUID
 
 class StudentScheduleTable(tag: Tag)
     extends Table[StudentSchedule](tag, "student_schedule")
-    with IDColumn
+    with UniqueEntityColumn
     with UserColumn
     with ScheduleColumn {
 

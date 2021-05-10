@@ -1,6 +1,11 @@
 package database.tables
 
-import database.cols.{IDColumn, SemesterColumn, SubModuleColumn, UserColumn}
+import database.cols.{
+  UniqueEntityColumn,
+  SemesterColumn,
+  SubModuleColumn,
+  UserColumn
+}
 import models.Course
 import slick.jdbc.PostgresProfile.api._
 
@@ -8,7 +13,7 @@ import java.util.UUID
 
 class CourseTable(tag: Tag)
     extends Table[Course](tag, "course")
-    with IDColumn
+    with UniqueEntityColumn
     with UserColumn
     with SemesterColumn
     with SubModuleColumn {

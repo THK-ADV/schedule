@@ -1,3 +1,4 @@
+/*
 package database.repos
 
 import database.tables.CourseTable
@@ -25,3 +26,4 @@ class CourseRepository @Inject() (
     case ("subModule", vs) => t => parseUUID(vs, t.hasSubModule)
   }
 }
+*/

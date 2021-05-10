@@ -1,6 +1,6 @@
+/*
 package service
 
-import database.repos.UserRepository
 import database.tables.UserTable
 import models.{User, UserJson}
 import service.abstracts.Service
@@ -12,7 +12,7 @@ import javax.inject.{Inject, Singleton}
 class UserService @Inject() (val repo: UserRepository)
     extends Service[UserJson, User, UserTable] {
 
-  override protected def toModel(json: UserJson, id: Option[UUID]) =
+  override protected def toUniqueDbEntry(json: UserJson, id: Option[UUID]) =
     User(
       json.firstname,
       json.lastname,
@@ -36,4 +36,4 @@ class UserService @Inject() (val repo: UserRepository)
   override protected def validate(json: UserJson) = Some(
     new Throwable("user creation is not allowed")
   )
-}
+}*/

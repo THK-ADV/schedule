@@ -1,3 +1,4 @@
+/*
 package controllers
 
 import models.{User, UserJson}
@@ -21,3 +22,4 @@ class UserController @Inject() (
   override protected implicit def reads: Reads[UserJson] =
     UserJson.format
 }
+*/

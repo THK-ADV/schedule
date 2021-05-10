@@ -1,7 +1,12 @@
 package database.tables
 
 import database.SQLDateConverter
-import database.cols.{AbbreviationColumn, IDColumn, LabelColumn, StartEndColumn}
+import database.cols.{
+  AbbreviationColumn,
+  UniqueEntityColumn,
+  LabelColumn,
+  StartEndColumn
+}
 import models.Semester
 import slick.jdbc.PostgresProfile.api._
 
@@ -10,7 +15,7 @@ import java.util.UUID
 
 class SemesterTable(tag: Tag)
     extends Table[Semester](tag, "semester")
-    with IDColumn
+    with UniqueEntityColumn
     with SQLDateConverter
     with LabelColumn
     with AbbreviationColumn

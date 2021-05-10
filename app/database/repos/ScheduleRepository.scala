@@ -1,3 +1,4 @@
+/*
 package database.repos
 
 import database.tables.ScheduleTable
@@ -24,3 +25,4 @@ class ScheduleRepository @Inject() (
     case ("room", vs)   => t => parseUUID(vs, t.hasRoom)
   }
 }
+*/

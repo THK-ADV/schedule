@@ -1,6 +1,6 @@
+/*
 package service
 
-import database.repos.ScheduleRepository
 import database.tables.ScheduleTable
 import models.{Schedule, ScheduleJson}
 import service.abstracts.Service
@@ -12,7 +12,7 @@ import javax.inject.{Inject, Singleton}
 class ScheduleService @Inject() (val repo: ScheduleRepository)
     extends Service[ScheduleJson, Schedule, ScheduleTable] {
 
-  override protected def toModel(json: ScheduleJson, id: Option[UUID]) =
+  override protected def toUniqueDbEntry(json: ScheduleJson, id: Option[UUID]) =
     Schedule(
       json.course,
       json.room,
@@ -48,3 +48,4 @@ class ScheduleService @Inject() (val repo: ScheduleRepository)
       )
     )
 }
+*/

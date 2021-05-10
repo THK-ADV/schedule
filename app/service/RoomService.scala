@@ -1,6 +1,6 @@
+/*
 package service
 
-import database.repos.RoomRepository
 import database.tables.RoomTable
 import models.{Room, RoomJson}
 import service.abstracts.Service
@@ -8,11 +8,12 @@ import service.abstracts.Service
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
 
+
 @Singleton
 class RoomService @Inject() (val repo: RoomRepository)
     extends Service[RoomJson, Room, RoomTable] {
 
-  override protected def toModel(json: RoomJson, id: Option[UUID]) =
+  override protected def toUniqueDbEntry(json: RoomJson, id: Option[UUID]) =
     Room(
       json.label,
       json.abbreviation,
@@ -29,4 +30,4 @@ class RoomService @Inject() (val repo: RoomRepository)
     List(table.hasAbbreviation(json.abbreviation))
 
   override protected def validate(json: RoomJson) = None
-}
+}*/

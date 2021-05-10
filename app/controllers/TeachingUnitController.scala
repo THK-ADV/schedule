@@ -1,3 +1,4 @@
+/*
 package controllers
 
 import models.{TeachingUnit, TeachingUnitJson}
@@ -21,3 +22,4 @@ class TeachingUnitController @Inject() (
   override protected implicit def reads: Reads[TeachingUnitJson] =
     TeachingUnitJson.format
 }
+*/

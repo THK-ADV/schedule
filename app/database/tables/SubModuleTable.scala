@@ -8,7 +8,7 @@ import java.util.UUID
 
 class SubModuleTable(tag: Tag)
     extends Table[SubModule](tag, "submodule")
-    with IDColumn
+    with UniqueEntityColumn
     with AbbreviationColumn
     with LabelColumn
     with CreditsColumn

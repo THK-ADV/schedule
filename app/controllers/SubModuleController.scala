@@ -1,3 +1,4 @@
+/*
 package controllers
 
 import models.{SubModule, SubModuleJson}
@@ -20,3 +21,4 @@ class SubModuleController @Inject() (
   override protected implicit def reads: Reads[SubModuleJson] =
     SubModuleJson.format
 }
+*/

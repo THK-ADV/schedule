@@ -1,6 +1,6 @@
 package database.tables
 
-import database.cols.{AbbreviationColumn, IDColumn, LabelColumn}
+import database.cols.{AbbreviationColumn, UniqueEntityColumn, LabelColumn}
 import models.Faculty
 import slick.jdbc.PostgresProfile.api._
 
@@ -8,7 +8,7 @@ import java.util.UUID
 
 class FacultyTable(tag: Tag)
     extends Table[Faculty](tag, "faculty")
-    with IDColumn
+    with UniqueEntityColumn
     with AbbreviationColumn
     with LabelColumn {
 

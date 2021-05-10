@@ -1,7 +1,8 @@
 package database.repos
 
-import database.tables.StudyProgramTable
+import database.tables.{StudyProgramDBEntry, StudyProgramTable}
 import models.StudyProgram
+import models.StudyProgram.{StudyProgramAtom, StudyProgramDefault}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -13,7 +14,7 @@ class StudyProgramRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Repository[StudyProgram, StudyProgramTable] {
+    with Repository[StudyProgram, StudyProgramDBEntry, StudyProgramTable] {
 
   import profile.api._
 
@@ -24,5 +25,30 @@ class StudyProgramRepository @Inject() (
     case ("abbreviation", vs) => t => t.hasAbbreviation(vs.head)
     case ("graduation", vs)   => t => parseUUID(vs, t.hasGraduation)
     case ("teachingUnit", vs) => t => parseUUID(vs, t.hasTeachingUnit)
+  }
+
+  override protected def toUniqueEntity(e: StudyProgramDBEntry) =
+    StudyProgramDefault(
+      e.teachingUnit,
+      e.graduation,
+      e.label,
+      e.abbreviation,
+      e.id
+    )
+
+  override protected def retrieveAtom(
+      query: Query[StudyProgramTable, StudyProgramDBEntry, Seq]
+  ) = {
+    val result = for {
+      q <- query
+      tu <- q.teachingUnitFk
+      g <- q.graduationFk
+    } yield (q, tu, g)
+
+    val action = result.result.map(_.map { case (sp, tu, g) =>
+      StudyProgramAtom(tu, g, sp.label, sp.abbreviation, sp.id)
+    })
+
+    db.run(action)
   }
 }

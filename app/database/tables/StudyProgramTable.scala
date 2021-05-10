@@ -1,14 +1,24 @@
 package database.tables
 
+import database.UniqueDbEntry
 import database.cols._
-import models.StudyProgram
 import slick.jdbc.PostgresProfile.api._
 
+import java.sql.Timestamp
 import java.util.UUID
 
+case class StudyProgramDBEntry(
+    teachingUnit: UUID,
+    graduation: UUID,
+    label: String,
+    abbreviation: String,
+    lastModified: Timestamp = new Timestamp(System.currentTimeMillis()),
+    id: UUID
+) extends UniqueDbEntry
+
 class StudyProgramTable(tag: Tag)
-    extends Table[StudyProgram](tag, "study_program")
-    with IDColumn
+    extends Table[StudyProgramDBEntry](tag, "study_program")
+    with UniqueEntityColumn
     with AbbreviationColumn
     with LabelColumn
     with TeachingUnitColumn
@@ -19,14 +29,36 @@ class StudyProgramTable(tag: Tag)
     graduation,
     label,
     abbreviation,
+    lastModified,
     id
   ) <> (mapRow, unmapRow)
 
-  def mapRow: ((UUID, UUID, String, String, UUID)) => StudyProgram = {
-    case (teachingUnit, graduation, label, abbreviation, id) =>
-      StudyProgram(teachingUnit, graduation, label, abbreviation, id)
+  def mapRow: (
+      (UUID, UUID, String, String, Timestamp, UUID)
+  ) => StudyProgramDBEntry = {
+    case (teachingUnit, graduation, label, abbreviation, lastModified, id) =>
+      StudyProgramDBEntry(
+        teachingUnit,
+        graduation,
+        label,
+        abbreviation,
+        lastModified,
+        id
+      )
   }
 
-  def unmapRow: StudyProgram => Option[(UUID, UUID, String, String, UUID)] =
-    a => Option((a.teachingUnit, a.graduation, a.label, a.abbreviation, a.id))
+  def unmapRow: StudyProgramDBEntry => Option[
+    (UUID, UUID, String, String, Timestamp, UUID)
+  ] =
+    a =>
+      Option(
+        (
+          a.teachingUnit,
+          a.graduation,
+          a.label,
+          a.abbreviation,
+          a.lastModified,
+          a.id
+        )
+      )
 }

@@ -16,7 +16,7 @@ class StudyProgramController @Inject() (
 ) extends AbstractController(cc)
     with Controller[StudyProgramJson, StudyProgram] {
   override protected implicit def writes: Writes[StudyProgram] =
-    StudyProgram.format
+    StudyProgram.writes
 
   override protected implicit def reads: Reads[StudyProgramJson] =
     StudyProgramJson.format

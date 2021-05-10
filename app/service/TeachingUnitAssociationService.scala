@@ -1,6 +1,6 @@
+/*
 package service
 
-import database.repos.TeachingUnitAssociationRepository
 import database.tables.TeachingUnitAssociationTable
 import models.{TeachingUnitAssociation, TeachingUnitAssociationJson}
 import service.abstracts.Service
@@ -17,7 +17,7 @@ class TeachingUnitAssociationService @Inject() (
       TeachingUnitAssociationTable
     ] {
 
-  override protected def toModel(
+  override protected def toUniqueDbEntry(
       json: TeachingUnitAssociationJson,
       id: Option[UUID]
   ) =
@@ -38,4 +38,4 @@ class TeachingUnitAssociationService @Inject() (
   ) = List.empty
 
   override protected def validate(json: TeachingUnitAssociationJson) = None
-}
+}*/

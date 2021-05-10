@@ -1,12 +1,14 @@
 package database.tables
 
-import database.cols.IDColumn
+import database.cols.UniqueEntityColumn
 import models.User
 import slick.jdbc.PostgresProfile.api._
 
 import java.util.UUID
 
-class UserTable(tag: Tag) extends Table[User](tag, "people") with IDColumn {
+class UserTable(tag: Tag)
+    extends Table[User](tag, "people")
+    with UniqueEntityColumn {
 
   def firstname = column[String]("firstname")
 

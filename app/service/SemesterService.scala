@@ -1,7 +1,7 @@
+/*
 package service
 
 import database.SQLDateConverter
-import database.repos.SemesterRepository
 import database.tables.SemesterTable
 import models.{Semester, SemesterJson}
 import service.abstracts.Service
@@ -9,12 +9,13 @@ import service.abstracts.Service
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
 
+
 @Singleton
 class SemesterService @Inject() (val repo: SemesterRepository)
     extends SQLDateConverter
     with Service[SemesterJson, Semester, SemesterTable] {
 
-  override protected def toModel(json: SemesterJson, id: Option[UUID]) =
+  override protected def toUniqueDbEntry(json: SemesterJson, id: Option[UUID]) =
     Semester(
       json.label,
       json.abbreviation,
@@ -41,4 +42,4 @@ class SemesterService @Inject() (val repo: SemesterRepository)
       s"semester start should be before semester end, but was ${json.start} - ${json.end}"
     )
   )
-}
+}*/

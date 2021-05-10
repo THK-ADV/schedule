@@ -1,3 +1,4 @@
+/*
 package database.repos
 
 import database.tables.TeachingUnitAssociationTable
@@ -21,3 +22,4 @@ class TeachingUnitAssociationRepository @Inject() (
 
   override protected def makeFilter = PartialFunction.empty
 }
+*/

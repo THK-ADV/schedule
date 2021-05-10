@@ -1,3 +1,4 @@
+/*
 package database.repos
 
 import database.tables.ModuleTable
@@ -28,3 +29,4 @@ class ModuleRepository @Inject() (
       t => Option(UUID.fromString(vs.head)).map(t.hasUser) getOrElse false
   }
 }
+*/

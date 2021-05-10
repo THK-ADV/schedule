@@ -1,7 +1,9 @@
 package service.abstracts
 
+import database.UniqueDbEntry
+
 import java.util.UUID
 
-trait JsonConverter[Json, Model] {
-  protected def toModel(json: Json, id: Option[UUID]): Model
+trait JsonConverter[Json, DbEntry <: UniqueDbEntry] {
+  protected def toUniqueDbEntry(json: Json, id: Option[UUID]): DbEntry
 }

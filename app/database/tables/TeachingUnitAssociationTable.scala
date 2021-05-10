@@ -1,6 +1,6 @@
 package database.tables
 
-import database.cols.IDColumn
+import database.cols.UniqueEntityColumn
 import models.TeachingUnitAssociation
 import slick.jdbc.PostgresProfile.api._
 
@@ -8,7 +8,7 @@ import java.util.UUID
 
 class TeachingUnitAssociationTable(tag: Tag)
     extends Table[TeachingUnitAssociation](tag, "teaching_unit_association")
-    with IDColumn {
+    with UniqueEntityColumn {
 
   def faculty = column[UUID]("faculty")
 

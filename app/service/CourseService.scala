@@ -1,6 +1,6 @@
+/*
 package service
 
-import database.repos.CourseRepository
 import database.tables.CourseTable
 import models.{Course, CourseJson}
 import service.abstracts.Service
@@ -12,7 +12,7 @@ import javax.inject.{Inject, Singleton}
 class CourseService @Inject() (val repo: CourseRepository)
     extends Service[CourseJson, Course, CourseTable] {
 
-  override protected def toModel(json: CourseJson, id: Option[UUID]) =
+  override protected def toUniqueDbEntry(json: CourseJson, id: Option[UUID]) =
     Course(
       json.lecturer,
       json.semester,
@@ -37,3 +37,4 @@ class CourseService @Inject() (val repo: CourseRepository)
 
   override protected def validate(json: CourseJson) = None
 }
+*/

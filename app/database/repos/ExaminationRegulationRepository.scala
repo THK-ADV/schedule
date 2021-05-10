@@ -1,3 +1,4 @@
+/*
 package database.repos
 
 import database.tables.ExaminationRegulationTable
@@ -24,3 +25,4 @@ class ExaminationRegulationRepository @Inject() (
     case ("abbreviation", vs) => t => t.hasAbbreviation(vs.head)
   }
 }
+*/
