@@ -1,4 +1,3 @@
-/*
 package controllers
 
 import models.{Room, RoomJson}
@@ -21,4 +20,3 @@ class RoomController @Inject() (
 
   override protected implicit def reads: Reads[RoomJson] = RoomJson.format
 }
-*/

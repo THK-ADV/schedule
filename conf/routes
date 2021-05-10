@@ -68,12 +68,12 @@ POST          /courses                              controllers.CourseController
 PUT           /courses/:id                          controllers.CourseController.update(id: java.util.UUID)
 DELETE        /courses/:id                          controllers.CourseController.delete(id: java.util.UUID)
 
-# GET           /rooms                                controllers.RoomController.all()
-# GET           /rooms/:id                            controllers.RoomController.get(id: java.util.UUID)
-# POST          /rooms                                controllers.RoomController.create()
-# PUT           /rooms/:id                            controllers.RoomController.update(id: java.util.UUID)
-# DELETE        /rooms/:id                            controllers.RoomController.delete(id: java.util.UUID)
-#
+GET           /rooms                                controllers.RoomController.all()
+GET           /rooms/:id                            controllers.RoomController.get(id: java.util.UUID)
+POST          /rooms                                controllers.RoomController.create()
+PUT           /rooms/:id                            controllers.RoomController.update(id: java.util.UUID)
+DELETE        /rooms/:id                            controllers.RoomController.delete(id: java.util.UUID)
+
 # GET           /schedules                            controllers.ScheduleController.all()
 # GET           /schedules/:id                        controllers.ScheduleController.get(id: java.util.UUID)
 # POST          /schedules                            controllers.ScheduleController.create()
