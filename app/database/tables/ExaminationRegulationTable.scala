@@ -2,7 +2,6 @@ package database.tables
 
 import database.cols._
 import database.{SQLDateConverter, UniqueDbEntry}
-import org.joda.time.LocalDate
 import slick.jdbc.PostgresProfile.api._
 
 import java.sql.{Date, Timestamp}
@@ -12,8 +11,8 @@ case class ExaminationRegulationDbEntry(
     studyProgram: UUID,
     label: String,
     abbreviation: String,
-    start: LocalDate,
-    end: LocalDate,
+    start: Date,
+    end: Date,
     lastModified: Timestamp,
     id: UUID
 ) extends UniqueDbEntry

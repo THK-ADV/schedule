@@ -1,13 +1,11 @@
 package database.repos
 
+import database.SQLDateConverter
 import database.tables.{
   ExaminationRegulationDbEntry,
   ExaminationRegulationTable
 }
-import models.ExaminationRegulation.{
-  ExaminationRegulationAtom,
-  ExaminationRegulationDefault
-}
+import models.ExaminationRegulation.ExaminationRegulationAtom
 import models.{ExaminationRegulation, StudyProgram}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
@@ -24,7 +22,8 @@ class ExaminationRegulationRepository @Inject() (
       ExaminationRegulation,
       ExaminationRegulationDbEntry,
       ExaminationRegulationTable
-    ] {
+    ]
+    with SQLDateConverter {
 
   import profile.api._
 

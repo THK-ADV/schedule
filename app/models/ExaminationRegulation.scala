@@ -1,5 +1,6 @@
 package models
 
+import database.SQLDateConverter
 import database.tables.ExaminationRegulationDbEntry
 import date.LocalDateFormat
 import org.joda.time.LocalDate
@@ -19,7 +20,7 @@ sealed trait ExaminationRegulation extends UniqueEntity {
   def end: LocalDate
 }
 
-object ExaminationRegulation extends LocalDateFormat {
+object ExaminationRegulation extends LocalDateFormat with SQLDateConverter {
   implicit val writes: Writes[ExaminationRegulation] = Writes.apply {
     case default: ExaminationRegulationDefault => writesDefault.writes(default)
     case atom: ExaminationRegulationAtom       => writesAtom.writes(atom)

@@ -1,26 +1,24 @@
 package database.tables
 
+import database.UniqueDbEntry
 import database.cols.{
   AbbreviationColumn,
   LabelColumn,
   StartEndColumn,
   UniqueEntityColumn
 }
-import database.{SQLDateConverter, UniqueDbEntry}
-import org.joda.time.LocalDate
 import slick.jdbc.PostgresProfile.api._
 
 import java.sql.{Date, Timestamp}
 import java.util.UUID
 
-// TODO change date types
 case class SemesterDbEntry(
     label: String,
     abbreviation: String,
-    start: LocalDate,
-    end: LocalDate,
-    lectureStart: LocalDate,
-    lectureEnd: LocalDate,
+    start: Date,
+    end: Date,
+    lectureStart: Date,
+    lectureEnd: Date,
     lastModified: Timestamp,
     id: UUID
 ) extends UniqueDbEntry
@@ -28,7 +26,6 @@ case class SemesterDbEntry(
 class SemesterTable(tag: Tag)
     extends Table[SemesterDbEntry](tag, "semester")
     with UniqueEntityColumn
-    with SQLDateConverter
     with LabelColumn
     with AbbreviationColumn
     with StartEndColumn {
