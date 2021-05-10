@@ -1,17 +1,31 @@
 package database.tables
 
-import database.SQLDateConverter
-import database.cols.{AbbreviationColumn, IDColumn, LabelColumn, StartEndColumn}
-import models.Semester
+import database.UniqueDbEntry
+import database.cols.{
+  AbbreviationColumn,
+  LabelColumn,
+  StartEndColumn,
+  UniqueEntityColumn
+}
 import slick.jdbc.PostgresProfile.api._
 
-import java.sql.Date
+import java.sql.{Date, Timestamp}
 import java.util.UUID
 
+case class SemesterDbEntry(
+    label: String,
+    abbreviation: String,
+    start: Date,
+    end: Date,
+    lectureStart: Date,
+    lectureEnd: Date,
+    lastModified: Timestamp,
+    id: UUID
+) extends UniqueDbEntry
+
 class SemesterTable(tag: Tag)
-    extends Table[Semester](tag, "semester")
-    with IDColumn
-    with SQLDateConverter
+    extends Table[SemesterDbEntry](tag, "semester")
+    with UniqueEntityColumn
     with LabelColumn
     with AbbreviationColumn
     with StartEndColumn {
@@ -27,27 +41,49 @@ class SemesterTable(tag: Tag)
     end,
     lectureStart,
     lectureEnd,
+    lastModified,
     id
   ) <> (mapRow, unmapRow)
 
-  def mapRow: ((String, String, Date, Date, Date, Date, UUID)) => Semester = {
-    case (label, abbreviation, start, end, lectureStart, lectureEnd, id) =>
-      Semester(label, abbreviation, start, end, lectureStart, lectureEnd, id)
+  def mapRow: (
+      (String, String, Date, Date, Date, Date, Timestamp, UUID)
+  ) => SemesterDbEntry = {
+    case (
+          label,
+          abbreviation,
+          start,
+          end,
+          lectureStart,
+          lectureEnd,
+          lastModified,
+          id
+        ) =>
+      SemesterDbEntry(
+        label,
+        abbreviation,
+        start,
+        end,
+        lectureStart,
+        lectureEnd,
+        lastModified,
+        id
+      )
   }
 
-  def unmapRow
-      : Semester => Option[(String, String, Date, Date, Date, Date, UUID)] = {
-    s =>
-      Option(
-        (
-          s.label,
-          s.abbreviation,
-          s.start,
-          s.end,
-          s.lectureStart,
-          s.lectureEnd,
-          s.id
-        )
+  def unmapRow: SemesterDbEntry => Option[
+    (String, String, Date, Date, Date, Date, Timestamp, UUID)
+  ] = { s =>
+    Option(
+      (
+        s.label,
+        s.abbreviation,
+        s.start,
+        s.end,
+        s.lectureStart,
+        s.lectureEnd,
+        s.lastModified,
+        s.id
       )
+    )
   }
 }

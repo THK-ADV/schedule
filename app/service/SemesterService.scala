@@ -2,7 +2,7 @@ package service
 
 import database.SQLDateConverter
 import database.repos.SemesterRepository
-import database.tables.SemesterTable
+import database.tables.{SemesterDbEntry, SemesterTable}
 import models.{Semester, SemesterJson}
 import service.abstracts.Service
 
@@ -12,22 +12,23 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class SemesterService @Inject() (val repo: SemesterRepository)
     extends SQLDateConverter
-    with Service[SemesterJson, Semester, SemesterTable] {
+    with Service[SemesterJson, Semester, SemesterDbEntry, SemesterTable] {
 
-  override protected def toModel(json: SemesterJson, id: Option[UUID]) =
-    Semester(
+  override protected def toUniqueDbEntry(json: SemesterJson, id: Option[UUID]) =
+    SemesterDbEntry(
       json.label,
       json.abbreviation,
       json.start,
       json.end,
       json.lectureStart,
       json.lectureEnd,
+      now(),
       id getOrElse UUID.randomUUID
     )
 
   override protected def canUpdate(
       json: SemesterJson,
-      existing: Semester
+      existing: SemesterDbEntry
   ): Boolean =
     existing.start == json.start && existing.end == json.end
 

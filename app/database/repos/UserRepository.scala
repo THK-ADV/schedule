@@ -1,6 +1,6 @@
 package database.repos
 
-import database.tables.UserTable
+import database.tables.{UserDbEntry, UserTable}
 import models.User
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
@@ -13,7 +13,7 @@ class UserRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Repository[User, UserTable] {
+    with Repository[User, UserDbEntry, UserTable] {
 
   import profile.api._
 
@@ -26,4 +26,11 @@ class UserRepository @Inject() (
       t => t.lastname.toLowerCase === vs.head.toLowerCase()
     case ("status", vs) => t => t.status.toLowerCase === vs.head.toLowerCase()
   }
+
+  override protected def retrieveAtom(
+      query: Query[UserTable, UserDbEntry, Seq]
+  ) =
+    retrieveDefault(query)
+
+  override protected def toUniqueEntity(e: UserDbEntry) = User(e)
 }

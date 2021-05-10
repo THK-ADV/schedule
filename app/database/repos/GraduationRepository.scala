@@ -1,6 +1,6 @@
 package database.repos
 
-import database.tables.GraduationTable
+import database.tables.{GraduationDbEntry, GraduationTable}
 import models.Graduation
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
@@ -13,7 +13,7 @@ class GraduationRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Repository[Graduation, GraduationTable] {
+    with Repository[Graduation, GraduationDbEntry, GraduationTable] {
 
   import profile.api._
 
@@ -23,4 +23,12 @@ class GraduationRepository @Inject() (
     case ("label", vs)        => t => t.hasLabel(vs.head)
     case ("abbreviation", vs) => t => t.hasAbbreviation(vs.head)
   }
+
+  override protected def retrieveAtom(
+      query: Query[GraduationTable, GraduationDbEntry, Seq]
+  ) =
+    retrieveDefault(query)
+
+  override protected def toUniqueEntity(e: GraduationDbEntry) =
+    Graduation(e.label, e.abbreviation, e.id)
 }

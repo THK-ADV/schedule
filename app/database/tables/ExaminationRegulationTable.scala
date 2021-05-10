@@ -1,16 +1,25 @@
 package database.tables
 
-import database.SQLDateConverter
 import database.cols._
-import models.ExaminationRegulation
+import database.{SQLDateConverter, UniqueDbEntry}
 import slick.jdbc.PostgresProfile.api._
 
-import java.sql.Date
+import java.sql.{Date, Timestamp}
 import java.util.UUID
 
+case class ExaminationRegulationDbEntry(
+    studyProgram: UUID,
+    label: String,
+    abbreviation: String,
+    start: Date,
+    end: Date,
+    lastModified: Timestamp,
+    id: UUID
+) extends UniqueDbEntry
+
 class ExaminationRegulationTable(tag: Tag)
-    extends Table[ExaminationRegulation](tag, "examination_regulation")
-    with IDColumn
+    extends Table[ExaminationRegulationDbEntry](tag, "examination_regulation")
+    with UniqueEntityColumn
     with SQLDateConverter
     with LabelColumn
     with AbbreviationColumn
@@ -23,32 +32,35 @@ class ExaminationRegulationTable(tag: Tag)
     abbreviation,
     start,
     end,
+    lastModified,
     id
   ) <> (mapRow, unmapRow)
 
   def mapRow: (
-      (UUID, String, String, Date, Date, UUID)
-  ) => ExaminationRegulation = {
+      (UUID, String, String, Date, Date, Timestamp, UUID)
+  ) => ExaminationRegulationDbEntry = {
     case (
           studyProgram,
           label,
           abbreviation,
           start,
           end,
+          lastModified,
           id
         ) =>
-      ExaminationRegulation(
+      ExaminationRegulationDbEntry(
         studyProgram,
         label,
         abbreviation,
         start,
         end,
+        lastModified,
         id
       )
   }
 
-  def unmapRow: ExaminationRegulation => Option[
-    (UUID, String, String, Date, Date, UUID)
+  def unmapRow: ExaminationRegulationDbEntry => Option[
+    (UUID, String, String, Date, Date, Timestamp, UUID)
   ] = s =>
     Option(
       (
@@ -57,6 +69,7 @@ class ExaminationRegulationTable(tag: Tag)
         s.abbreviation,
         s.start,
         s.end,
+        s.lastModified,
         s.id
       )
     )

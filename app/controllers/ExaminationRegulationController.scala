@@ -16,7 +16,7 @@ class ExaminationRegulationController @Inject() (
 ) extends AbstractController(cc)
     with Controller[ExaminationRegulationJson, ExaminationRegulation] {
   override protected implicit def writes: Writes[ExaminationRegulation] =
-    ExaminationRegulation.format
+    ExaminationRegulation.writes
 
   override protected implicit def reads: Reads[ExaminationRegulationJson] =
     ExaminationRegulationJson.format

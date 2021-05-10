@@ -1,12 +1,26 @@
 package database.tables
 
-import database.cols.IDColumn
-import models.User
+import database.UniqueDbEntry
+import database.cols.UniqueEntityColumn
 import slick.jdbc.PostgresProfile.api._
 
+import java.sql.Timestamp
 import java.util.UUID
 
-class UserTable(tag: Tag) extends Table[User](tag, "people") with IDColumn {
+case class UserDbEntry(
+    firstname: String,
+    lastname: String,
+    status: String,
+    email: String,
+    title: Option[String],
+    initials: Option[String],
+    lastModified: Timestamp,
+    id: UUID
+) extends UniqueDbEntry
+
+class UserTable(tag: Tag)
+    extends Table[UserDbEntry](tag, "people")
+    with UniqueEntityColumn {
 
   def firstname = column[String]("firstname")
 
@@ -27,18 +41,55 @@ class UserTable(tag: Tag) extends Table[User](tag, "people") with IDColumn {
     email,
     title,
     initials,
+    lastModified,
     id
   ) <> (mapRow, unmapRow)
 
   def mapRow: (
-      (String, String, String, String, Option[String], Option[String], UUID)
-  ) => User = {
-    case (firstname, lastname, status, email, title, initials, id) =>
-      User(firstname, lastname, status, email, title, initials, id)
+      (
+          String,
+          String,
+          String,
+          String,
+          Option[String],
+          Option[String],
+          Timestamp,
+          UUID
+      )
+  ) => UserDbEntry = {
+    case (
+          firstname,
+          lastname,
+          status,
+          email,
+          title,
+          initials,
+          lastModified,
+          id
+        ) =>
+      UserDbEntry(
+        firstname,
+        lastname,
+        status,
+        email,
+        title,
+        initials,
+        lastModified,
+        id
+      )
   }
 
-  def unmapRow: User => Option[
-    (String, String, String, String, Option[String], Option[String], UUID)
+  def unmapRow: UserDbEntry => Option[
+    (
+        String,
+        String,
+        String,
+        String,
+        Option[String],
+        Option[String],
+        Timestamp,
+        UUID
+    )
   ] =
     a =>
       Option(
@@ -47,8 +98,9 @@ class UserTable(tag: Tag) extends Table[User](tag, "people") with IDColumn {
           a.lastname,
           a.status,
           a.email,
-          a.optTitle,
-          a.optInitials,
+          a.title,
+          a.initials,
+          a.lastModified,
           a.id
         )
       )

@@ -1,7 +1,7 @@
 package service
 
 import database.repos.StudentScheduleRepository
-import database.tables.StudentScheduleTable
+import database.tables.{StudentScheduleDbEntry, StudentScheduleTable}
 import models.{StudentSchedule, StudentScheduleJson}
 import service.abstracts.Service
 
@@ -13,15 +13,24 @@ class StudentScheduleService @Inject() (val repo: StudentScheduleRepository)
     extends Service[
       StudentScheduleJson,
       StudentSchedule,
+      StudentScheduleDbEntry,
       StudentScheduleTable
     ] {
 
-  override protected def toModel(json: StudentScheduleJson, id: Option[UUID]) =
-    StudentSchedule(json.student, json.schedule, id getOrElse UUID.randomUUID)
+  override protected def toUniqueDbEntry(
+      json: StudentScheduleJson,
+      id: Option[UUID]
+  ) =
+    StudentScheduleDbEntry(
+      json.student,
+      json.schedule,
+      now(),
+      id getOrElse UUID.randomUUID
+    )
 
   override protected def canUpdate(
       json: StudentScheduleJson,
-      existing: StudentSchedule
+      existing: StudentScheduleDbEntry
   ): Boolean =
     existing.student == json.student && existing.schedule == json.schedule
 

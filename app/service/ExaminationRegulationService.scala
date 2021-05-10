@@ -2,7 +2,10 @@ package service
 
 import database.SQLDateConverter
 import database.repos.ExaminationRegulationRepository
-import database.tables.ExaminationRegulationTable
+import database.tables.{
+  ExaminationRegulationDbEntry,
+  ExaminationRegulationTable
+}
 import models.{ExaminationRegulation, ExaminationRegulationJson}
 import service.abstracts.Service
 
@@ -16,25 +19,27 @@ class ExaminationRegulationService @Inject() (
     with Service[
       ExaminationRegulationJson,
       ExaminationRegulation,
+      ExaminationRegulationDbEntry,
       ExaminationRegulationTable
     ] {
 
-  override protected def toModel(
+  override protected def toUniqueDbEntry(
       json: ExaminationRegulationJson,
       id: Option[UUID]
   ) =
-    ExaminationRegulation(
+    ExaminationRegulationDbEntry(
       json.studyProgram,
       json.label,
       json.abbreviation,
       json.start,
       json.end,
+      now(),
       id getOrElse UUID.randomUUID
     )
 
   override protected def canUpdate(
       json: ExaminationRegulationJson,
-      existing: ExaminationRegulation
+      existing: ExaminationRegulationDbEntry
   ): Boolean =
     json.studyProgram == existing.studyProgram &&
       json.abbreviation == existing.abbreviation

@@ -1,7 +1,7 @@
 package service
 
 import database.repos.ModuleRepository
-import database.tables.ModuleTable
+import database.tables.{ModuleDbEntry, ModuleTable}
 import models.{Module, ModuleJson}
 import service.abstracts.Service
 
@@ -10,22 +10,23 @@ import javax.inject.{Inject, Singleton}
 
 @Singleton
 class ModuleService @Inject() (val repo: ModuleRepository)
-    extends Service[ModuleJson, Module, ModuleTable] {
+    extends Service[ModuleJson, Module, ModuleDbEntry, ModuleTable] {
 
-  override protected def toModel(json: ModuleJson, id: Option[UUID]) =
-    Module(
+  override protected def toUniqueDbEntry(json: ModuleJson, id: Option[UUID]) =
+    ModuleDbEntry(
       json.examinationRegulation,
       json.courseManager,
       json.label,
       json.abbreviation,
       json.credits,
       json.descriptionUrl,
+      now(),
       id getOrElse UUID.randomUUID
     )
 
   override protected def canUpdate(
       json: ModuleJson,
-      existing: Module
+      existing: ModuleDbEntry
   ): Boolean =
     json.label == existing.label && json.examinationRegulation == existing.examinationRegulation
 

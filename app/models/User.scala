@@ -1,18 +1,17 @@
 package models
 
+import database.tables.UserDbEntry
 import play.api.libs.json.{JsError, Json, OFormat}
 
 import java.util.UUID
 
-abstract class User(
-    val firstname: String,
-    val lastname: String,
-    val status: String,
-    val email: String,
-    val optTitle: Option[String],
-    val optInitials: Option[String],
-    val id: UUID
-) extends UniqueEntity
+sealed trait User extends UniqueEntity {
+  val firstname: String
+  val lastname: String
+  val status: String
+  val email: String
+  val id: UUID
+}
 
 object User {
   def apply(
@@ -29,6 +28,16 @@ object User {
     case LecturerStatus =>
       Lecturer(firstname, lastname, email, title.get, initials.get, id)
   }
+
+  def apply(db: UserDbEntry): User = apply(
+    db.firstname,
+    db.lastname,
+    db.status,
+    db.email,
+    db.title,
+    db.initials,
+    db.id
+  )
 
   val StudentStatus = "student"
 
@@ -56,27 +65,23 @@ object User {
   implicit val formatStudent: OFormat[Student] = Json.format[Student]
 
   case class Lecturer(
-      override val firstname: String,
-      override val lastname: String,
-      override val email: String,
+      firstname: String,
+      lastname: String,
+      email: String,
       title: String,
       initials: String,
-      override val id: UUID
-  ) extends User(
-        firstname,
-        lastname,
-        LecturerStatus,
-        email,
-        Some(title),
-        Some(initials),
-        id
-      )
+      id: UUID
+  ) extends User {
+    override val status = LecturerStatus
+  }
 
   case class Student(
-      override val firstname: String,
-      override val lastname: String,
-      override val email: String,
-      override val id: UUID
-  ) extends User(firstname, lastname, StudentStatus, email, None, None, id)
+      firstname: String,
+      lastname: String,
+      email: String,
+      id: UUID
+  ) extends User {
+    override val status = StudentStatus
+  }
 
 }

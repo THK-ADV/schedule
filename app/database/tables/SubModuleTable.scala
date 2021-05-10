@@ -1,14 +1,27 @@
 package database.tables
 
+import database.UniqueDbEntry
 import database.cols._
-import models.SubModule
 import slick.jdbc.PostgresProfile.api._
 
+import java.sql.Timestamp
 import java.util.UUID
 
+case class SubModuleDbEntry(
+    module: UUID,
+    label: String,
+    abbreviation: String,
+    mandatory: Boolean,
+    recommendedSemester: Int,
+    credits: Double,
+    descriptionUrl: String,
+    lastModified: Timestamp,
+    id: UUID
+) extends UniqueDbEntry
+
 class SubModuleTable(tag: Tag)
-    extends Table[SubModule](tag, "submodule")
-    with IDColumn
+    extends Table[SubModuleDbEntry](tag, "submodule")
+    with UniqueEntityColumn
     with AbbreviationColumn
     with LabelColumn
     with CreditsColumn
@@ -27,14 +40,25 @@ class SubModuleTable(tag: Tag)
     recommendedSemester,
     credits,
     descriptionUrl,
+    lastModified,
     id
   ) <> (mapRow, unmapRow)
 
   def mapRow: (
-      (UUID, String, String, Boolean, Int, Double, String, UUID)
-  ) => SubModule = {
-    case (module, label, abbreviation, mandatory, semester, credits, url, id) =>
-      SubModule(
+      (UUID, String, String, Boolean, Int, Double, String, Timestamp, UUID)
+  ) => SubModuleDbEntry = {
+    case (
+          module,
+          label,
+          abbreviation,
+          mandatory,
+          semester,
+          credits,
+          url,
+          lastModified,
+          id
+        ) =>
+      SubModuleDbEntry(
         module,
         label,
         abbreviation,
@@ -42,12 +66,13 @@ class SubModuleTable(tag: Tag)
         semester,
         credits,
         url,
+        lastModified,
         id
       )
   }
 
-  def unmapRow: SubModule => Option[
-    (UUID, String, String, Boolean, Int, Double, String, UUID)
+  def unmapRow: SubModuleDbEntry => Option[
+    (UUID, String, String, Boolean, Int, Double, String, Timestamp, UUID)
   ] =
     a =>
       Option(
@@ -59,6 +84,7 @@ class SubModuleTable(tag: Tag)
           a.recommendedSemester,
           a.credits,
           a.descriptionUrl,
+          a.lastModified,
           a.id
         )
       )

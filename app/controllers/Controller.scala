@@ -10,16 +10,16 @@ import java.util.UUID
 trait Controller[Json, Model <: UniqueEntity] extends JsonHttpResponse[Model] {
   self: AbstractController =>
 
-  protected def service: Service[Json, Model, _]
+  protected def service: Service[Json, Model, _, _]
 
   protected implicit def reads: Reads[Json]
 
   def all() = Action.async { r =>
-    okSeq(service.all(r.queryString))
+    okSeq(service.all(r.queryString, parseAtomic(r.queryString)))
   }
 
-  def get(id: UUID) = Action.async {
-    okOpt(service.get(id))
+  def get(id: UUID) = Action.async { r =>
+    okOpt(service.get(id, parseAtomic(r.queryString)))
   }
 
   def delete(id: UUID) = Action.async {
@@ -33,4 +33,10 @@ trait Controller[Json, Model <: UniqueEntity] extends JsonHttpResponse[Model] {
   def update(id: UUID) = Action.async(parse.json[Json]) { r =>
     ok(service.update(r.body, id))
   }
+
+  private def parseAtomic(f: Map[String, Seq[String]]): Boolean =
+    f.get("atomic")
+      .flatMap(_.headOption)
+      .flatMap(_.toBooleanOption)
+      .getOrElse(false)
 }
