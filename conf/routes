@@ -62,12 +62,12 @@ DELETE        /subModules/:id                       controllers.SubModuleControl
 GET           /users                                controllers.UserController.all()
 GET           /users/:id                            controllers.UserController.get(id: java.util.UUID)
 
-# GET           /courses                              controllers.CourseController.all()
-# GET           /courses/:id                          controllers.CourseController.get(id: java.util.UUID)
-# POST          /courses                              controllers.CourseController.create()
-# PUT           /courses/:id                          controllers.CourseController.update(id: java.util.UUID)
-# DELETE        /courses/:id                          controllers.CourseController.delete(id: java.util.UUID)
-#
+GET           /courses                              controllers.CourseController.all()
+GET           /courses/:id                          controllers.CourseController.get(id: java.util.UUID)
+POST          /courses                              controllers.CourseController.create()
+PUT           /courses/:id                          controllers.CourseController.update(id: java.util.UUID)
+DELETE        /courses/:id                          controllers.CourseController.delete(id: java.util.UUID)
+
 # GET           /rooms                                controllers.RoomController.all()
 # GET           /rooms/:id                            controllers.RoomController.get(id: java.util.UUID)
 # POST          /rooms                                controllers.RoomController.create()

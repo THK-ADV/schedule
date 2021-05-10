@@ -1,18 +1,29 @@
 package database.tables
 
+import database.UniqueDbEntry
 import database.cols.{
-  UniqueEntityColumn,
   SemesterColumn,
   SubModuleColumn,
+  UniqueEntityColumn,
   UserColumn
 }
-import models.Course
 import slick.jdbc.PostgresProfile.api._
 
+import java.sql.Timestamp
 import java.util.UUID
 
+case class CourseDbEntry(
+    lecturer: UUID,
+    semester: UUID,
+    subModule: UUID,
+    interval: String,
+    courseType: String,
+    lastModified: Timestamp,
+    id: UUID
+) extends UniqueDbEntry
+
 class CourseTable(tag: Tag)
-    extends Table[Course](tag, "course")
+    extends Table[CourseDbEntry](tag, "course")
     with UniqueEntityColumn
     with UserColumn
     with SemesterColumn
@@ -30,17 +41,46 @@ class CourseTable(tag: Tag)
     subModule,
     interval,
     courseType,
+    lastModified,
     id
   ) <> (mapRow, unmapRow)
 
-  def mapRow: ((UUID, UUID, UUID, String, String, UUID)) => Course = {
-    case (lecturer, semester, subModule, interval, courseType, id) =>
-      Course(lecturer, semester, subModule, interval, courseType, id)
+  def mapRow: (
+      (UUID, UUID, UUID, String, String, Timestamp, UUID)
+  ) => CourseDbEntry = {
+    case (
+          lecturer,
+          semester,
+          subModule,
+          interval,
+          courseType,
+          lastModified,
+          id
+        ) =>
+      CourseDbEntry(
+        lecturer,
+        semester,
+        subModule,
+        interval,
+        courseType,
+        lastModified,
+        id
+      )
   }
 
-  def unmapRow: Course => Option[(UUID, UUID, UUID, String, String, UUID)] =
+  def unmapRow: CourseDbEntry => Option[
+    (UUID, UUID, UUID, String, String, Timestamp, UUID)
+  ] =
     a =>
       Option(
-        (a.lecturer, a.semester, a.subModule, a.interval, a.courseType, a.id)
+        (
+          a.lecturer,
+          a.semester,
+          a.subModule,
+          a.interval,
+          a.courseType,
+          a.lastModified,
+          a.id
+        )
       )
 }

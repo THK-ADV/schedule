@@ -1,4 +1,3 @@
-/*
 package controllers
 
 import models.{Course, CourseJson}
@@ -17,9 +16,8 @@ class CourseController @Inject() (
 ) extends AbstractController(cc)
     with Controller[CourseJson, Course] {
   override protected implicit def writes: Writes[Course] =
-    Course.format
+    Course.writes
 
   override protected implicit def reads: Reads[CourseJson] =
     CourseJson.format
 }
-*/
