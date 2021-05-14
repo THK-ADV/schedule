@@ -14,7 +14,8 @@ class CourseRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Repository[Course, CourseDbEntry, CourseTable] {
+    with Repository[Course, CourseDbEntry, CourseTable]
+    with FilterValueParser {
 
   import profile.api._
 

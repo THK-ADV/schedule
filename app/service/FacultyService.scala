@@ -16,6 +16,7 @@ class FacultyService @Inject() (val repo: FacultyRepository)
     FacultyDbEntry(
       json.label,
       json.abbreviation,
+      json.number,
       now(),
       id getOrElse UUID.randomUUID
     )
@@ -24,10 +25,10 @@ class FacultyService @Inject() (val repo: FacultyRepository)
       json: FacultyJson,
       existing: FacultyDbEntry
   ): Boolean =
-    json.label == existing.label
+    json.label == existing.label && json.number == existing.number
 
   override protected def uniqueCols(json: FacultyJson, table: FacultyTable) =
-    List(table.hasLabel(json.label))
+    List(table.hasLabel(json.label), table.hasNumber(json.number))
 
   override protected def validate(json: FacultyJson) = None
 }

@@ -5,7 +5,8 @@ create table faculty
     "id"            uuid PRIMARY KEY,
     "last_modified" timestamp not null,
     "label"         text      not null,
-    "abbreviation"  text      not null
+    "abbreviation"  text      not null,
+    "number"        integer   not null
 );
 
 create table teaching_unit

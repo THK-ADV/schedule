@@ -1,7 +1,12 @@
 package database.tables
 
 import database.UniqueDbEntry
-import database.cols.{AbbreviationColumn, LabelColumn, UniqueEntityColumn}
+import database.cols.{
+  AbbreviationColumn,
+  LabelColumn,
+  NumberColumn,
+  UniqueEntityColumn
+}
 import slick.jdbc.PostgresProfile.api._
 
 import java.sql.Timestamp
@@ -19,11 +24,8 @@ class TeachingUnitTable(tag: Tag)
     extends Table[TeachingUnitDbEntry](tag, "teaching_unit")
     with UniqueEntityColumn
     with AbbreviationColumn
-    with LabelColumn {
-
-  def number = column[Int]("number")
-
-  def hasNumber(n: Int) = number === n
+    with LabelColumn
+    with NumberColumn {
 
   def * = (
     label,

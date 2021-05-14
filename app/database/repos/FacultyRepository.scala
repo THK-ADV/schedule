@@ -13,7 +13,8 @@ class FacultyRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Repository[Faculty, FacultyDbEntry, FacultyTable] {
+    with Repository[Faculty, FacultyDbEntry, FacultyTable]
+    with FilterValueParser {
 
   import profile.api._
 
@@ -22,6 +23,7 @@ class FacultyRepository @Inject() (
   override protected def makeFilter = {
     case ("label", vs)        => t => t.hasLabel(vs.head)
     case ("abbreviation", vs) => t => t.hasAbbreviation(vs.head)
+    case ("number", vs)       => t => parseInt(vs, t.hasNumber)
   }
 
   override protected def retrieveAtom(
@@ -30,5 +32,5 @@ class FacultyRepository @Inject() (
     retrieveDefault(query)
 
   override protected def toUniqueEntity(e: FacultyDbEntry) =
-    Faculty(e.label, e.abbreviation, e.id)
+    Faculty(e.label, e.abbreviation, e.number, e.id)
 }

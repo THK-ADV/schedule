@@ -129,10 +129,4 @@ trait Repository[M <: UniqueEntity, E <: UniqueDbEntry, T <: Table[
   private def retrieve(atomic: Boolean)(q: Query[T, E, Seq]) =
     if (atomic) retrieveAtom(q)
     else retrieveDefault(q)
-
-  protected final def parseUUID(
-      s: Seq[String],
-      p: UUID => Rep[Boolean]
-  ): Rep[Boolean] =
-    Option(UUID.fromString(s.head)).map(p) getOrElse false
 }
