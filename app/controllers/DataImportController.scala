@@ -2,7 +2,10 @@ package controllers
 
 import database.repos.UserRepository
 import database.tables.UserDbEntry
-import models.{FacultyJson, TeachingUnitJson}
+import date.LocalDateFormat
+import models.{FacultyJson, RoomJson, SemesterJson, TeachingUnitJson}
+import org.joda.time.LocalDate
+import org.joda.time.format.DateTimeFormat
 import play.api.libs.json.{JsResult, _}
 import play.api.mvc.{AbstractController, ControllerComponents}
 
@@ -15,7 +18,10 @@ class DataImportController @Inject() (
     cc: ControllerComponents,
     implicit val ctx: ExecutionContext,
     val userRepo: UserRepository
-) extends AbstractController(cc) {
+) extends AbstractController(cc)
+    with LocalDateFormat {
+
+  val dayPattern = DateTimeFormat.forPattern("dd.MM.yy")
 
   def bootstrap() = Action.async { r =>
     val user = UserDbEntry(
@@ -35,7 +41,7 @@ class DataImportController @Inject() (
   }
 
   def faculties() = Action(parse.text) { r =>
-    toResult(parseCSV[FacultyJson](r.body) {
+    toResult(parseCSV(r.body, FacultyJson.format) {
       case ("number", value)       => JsNumber(value.toInt)
       case ("label", value)        => JsString(value)
       case ("abbreviation", value) => JsString(value)
@@ -43,8 +49,24 @@ class DataImportController @Inject() (
   }
 
   def teachingUnits() = Action(parse.text) { r =>
-    toResult(parseCSV[TeachingUnitJson](r.body) {
+    toResult(parseCSV(r.body, TeachingUnitJson.format) {
       case ("number", value)       => JsNumber(value.toInt)
+      case ("label", value)        => JsString(value)
+      case ("abbreviation", value) => JsString(value)
+    })
+  }
+
+  def semesters() = Action(parse.text) { r =>
+    toResult(parseCSV(r.body, SemesterJson.format) {
+      case ("label", value)        => JsString(value)
+      case ("abbreviation", value) => JsString(value)
+      case (_, value) =>
+        localDateFormat.writes(LocalDate.parse(value, dayPattern))
+    })
+  }
+
+  def rooms() = Action(parse.text) { r =>
+    toResult(parseCSV(r.body, RoomJson.format) {
       case ("label", value)        => JsString(value)
       case ("abbreviation", value) => JsString(value)
     })
@@ -60,14 +82,12 @@ class DataImportController @Inject() (
 
   private def now = new Timestamp(System.currentTimeMillis())
 
-  private def toProtocol[A](array: JsArray)(implicit
-      reads: Reads[A]
-  ): JsResult[Seq[A]] =
+  private def toProtocol[A](array: JsArray, reads: Reads[A]): JsResult[Seq[A]] =
     Reads.list(reads).reads(array)
 
-  private def parseCSV[A](body: String)(
+  private def parseCSV[A](body: String, reads: Reads[A])(
       f: (String, String) => JsValue
-  )(implicit reads: Reads[A]): JsResult[(JsArray, Seq[A])] = {
+  ): JsResult[(JsArray, Seq[A])] = {
     val all = body.linesIterator.toVector
     val header = all.head.split(";")
     val rows = all.drop(1)
@@ -84,6 +104,6 @@ class DataImportController @Inject() (
 
     val array = JsArray(res)
 
-    toProtocol(array).map(seq => (array, seq))
+    toProtocol(array, reads).map(seq => (array, seq))
   }
 }

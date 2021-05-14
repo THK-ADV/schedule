@@ -89,6 +89,8 @@ DELETE        /studentSchedules/:id                 controllers.StudentScheduleC
 POST          /imports/bootstrap                    controllers.DataImportController.bootstrap()
 POST          /imports/faculties                    controllers.DataImportController.faculties()
 POST          /imports/teachingUnits                controllers.DataImportController.teachingUnits()
+POST          /imports/semesters                    controllers.DataImportController.semesters()
+POST          /imports/rooms                        controllers.DataImportController.rooms()
 
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                         controllers.Assets.versioned(path="/public", file: Asset)
