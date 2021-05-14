@@ -2,7 +2,7 @@ package controllers
 
 import database.repos.UserRepository
 import database.tables.UserDbEntry
-import models.FacultyJson
+import models.{FacultyJson, TeachingUnitJson}
 import play.api.libs.json.{JsResult, _}
 import play.api.mvc.{AbstractController, ControllerComponents}
 
@@ -42,8 +42,16 @@ class DataImportController @Inject() (
     })
   }
 
+  def teachingUnits() = Action(parse.text) { r =>
+    toResult(parseCSV[TeachingUnitJson](r.body) {
+      case ("number", value)       => JsNumber(value.toInt)
+      case ("label", value)        => JsString(value)
+      case ("abbreviation", value) => JsString(value)
+    })
+  }
+
   private def toResult[A](json: JsResult[(JsArray, Seq[A])]) = json match {
-    case JsSuccess((json, protocols), path) =>
+    case JsSuccess((json, protocols), _) =>
       println(protocols)
       Ok(json)
     case JsError(errors) =>
