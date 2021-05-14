@@ -45,11 +45,10 @@ class ExaminationRegulationService @Inject() (
       json.abbreviation == existing.abbreviation
 
   override protected def uniqueCols(
-      json: ExaminationRegulationJson,
-      table: ExaminationRegulationTable
+      json: ExaminationRegulationJson
   ) = List(
-    table.hasStudyProgram(json.studyProgram),
-    table.hasAbbreviation(json.abbreviation)
+    _.hasStudyProgram(json.studyProgram),
+    _.hasAbbreviation(json.abbreviation)
   )
 
   override protected def validate(json: ExaminationRegulationJson) =

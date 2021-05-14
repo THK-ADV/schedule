@@ -35,12 +35,11 @@ class GraduationService @Inject() (val repo: GraduationRepository)
     json.label == existing.label && json.abbreviation == existing.abbreviation
 
   override protected def uniqueCols(
-      json: GraduationJson,
-      table: GraduationTable
+      json: GraduationJson
   ) =
     List(
-      table.hasLabel(json.label),
-      table.hasAbbreviation(json.abbreviation)
+      _.hasLabel(json.label),
+      _.hasAbbreviation(json.abbreviation)
     )
 
   override protected def validate(json: GraduationJson) = None

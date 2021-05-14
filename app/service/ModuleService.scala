@@ -30,10 +30,10 @@ class ModuleService @Inject() (val repo: ModuleRepository)
   ): Boolean =
     json.label == existing.label && json.examinationRegulation == existing.examinationRegulation
 
-  override protected def uniqueCols(json: ModuleJson, table: ModuleTable) =
+  override protected def uniqueCols(json: ModuleJson) =
     List(
-      table.hasLabel(json.label),
-      table.hasExaminationRegulation(json.examinationRegulation)
+      _.hasLabel(json.label),
+      _.hasExaminationRegulation(json.examinationRegulation)
     )
 
   override protected def validate(json: ModuleJson) = None

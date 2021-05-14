@@ -100,17 +100,28 @@ trait Repository[M <: UniqueEntity, E <: UniqueDbEntry, T <: Table[
     }
   }
 
-  final def create(elem: E, uniqueCols: T => List[Rep[Boolean]]): Future[M] =
-    db.run {
+  final def create(
+      elem: E,
+      uniqueCols: List[T => Rep[Boolean]]
+  ): Future[M] = {
+    def create0 =
+      tableQuery returning tableQuery += elem
+
+    def createIfUnique =
       for {
         exists <- tableQuery
-          .filter(uniqueCols(_).reduce(_ && _))
+          .filter(t =>
+            uniqueCols.foldLeft(uniqueCols.head(t))((acc, f) => acc && f(t))
+          )
           .result
         create <-
-          if (exists.isEmpty) tableQuery returning tableQuery += elem
+          if (exists.isEmpty) create0
           else DBIO.failed(ModelAlreadyExistsException(elem, exists.head))
-      } yield toUniqueEntity(create)
-    }
+      } yield create
+
+    val action = if (uniqueCols.isEmpty) create0 else createIfUnique
+    db.run(action.map(toUniqueEntity))
+  }
 
   private def parseFilter(
       filter: Filter
