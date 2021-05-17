@@ -29,12 +29,6 @@ POST          /teachingUnits                        controllers.TeachingUnitCont
 PUT           /teachingUnits/:id                    controllers.TeachingUnitController.update(id: java.util.UUID)
 DELETE        /teachingUnits/:id                    controllers.TeachingUnitController.delete(id: java.util.UUID)
 
-GET           /teachingUnitsAssociations            controllers.TeachingUnitAssociationController.all()
-GET           /teachingUnitsAssociations/:id        controllers.TeachingUnitAssociationController.get(id: java.util.UUID)
-POST          /teachingUnitsAssociations            controllers.TeachingUnitAssociationController.create()
-PUT           /teachingUnitsAssociations/:id        controllers.TeachingUnitAssociationController.update(id: java.util.UUID)
-DELETE        /teachingUnitsAssociations/:id        controllers.TeachingUnitAssociationController.delete(id: java.util.UUID)
-
 GET           /studyPrograms                        controllers.StudyProgramController.all()
 GET           /studyPrograms/:id                    controllers.StudyProgramController.get(id: java.util.UUID)
 POST          /studyPrograms                        controllers.StudyProgramController.create()

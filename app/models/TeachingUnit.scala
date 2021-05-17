@@ -6,6 +6,7 @@ import play.api.libs.json.{Json, OFormat}
 import java.util.UUID
 
 case class TeachingUnit(
+    faculty: UUID,
     label: String,
     abbreviation: String,
     number: Int,
@@ -16,5 +17,5 @@ object TeachingUnit {
   implicit val format: OFormat[TeachingUnit] = Json.format[TeachingUnit]
 
   def apply(db: TeachingUnitDbEntry): TeachingUnit =
-    TeachingUnit(db.label, db.abbreviation, db.number, db.id)
+    TeachingUnit(db.faculty, db.label, db.abbreviation, db.number, db.id)
 }

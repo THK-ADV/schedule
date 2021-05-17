@@ -13,19 +13,11 @@ create table teaching_unit
 (
     "id"            uuid PRIMARY KEY,
     "last_modified" timestamp not null,
+    "faculty"       uuid      not null,
     "label"         text      not null,
     "abbreviation"  text      not null,
-    "number"        integer   not null
-);
-
-create table teaching_unit_association
-(
-    "id"            uuid PRIMARY KEY,
-    "last_modified" timestamp not null,
-    "faculty"       uuid      not null,
-    "teaching_unit" uuid      not null,
-    FOREIGN KEY (faculty) REFERENCES faculty (id),
-    FOREIGN KEY (teaching_unit) REFERENCES teaching_unit (id)
+    "number"        integer   not null,
+    FOREIGN KEY (faculty) REFERENCES faculty (id)
 );
 
 create table graduation
@@ -169,6 +161,5 @@ drop table people if exists;
 drop table examination_regulation if exists;
 drop table study_program if exists;
 drop table graduation if exists;
-drop table teaching_unit_association if exists;
 drop table teaching_unit if exists;
 drop table faculty if exists;

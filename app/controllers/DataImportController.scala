@@ -32,7 +32,8 @@ class DataImportController @Inject() (
     val studyProgramRepository: StudyProgramRepository,
     val studyProgramService: StudyProgramService,
     val examinationRegulationRepository: ExaminationRegulationRepository,
-    val moduleService: ModuleService
+    val moduleService: ModuleService,
+    val facultyRepository: FacultyRepository
 ) extends AbstractController(cc)
     with LocalDateFormat {
 
@@ -55,7 +56,9 @@ class DataImportController @Inject() (
       GraduationDbEntry("Master", "MA", now, UUID.randomUUID())
     )
 
-    val tu = TeachingUnitDbEntry("???", "???", -1, now, UUID.randomUUID())
+    val fac = FacultyDbEntry("???", "???", -1, now, UUID.randomUUID())
+    val tu =
+      TeachingUnitDbEntry(fac.id, "???", "???", -1, now, UUID.randomUUID())
     val sp = StudyProgramDBEntry(
       tu.id,
       graduations.head.id,
@@ -77,6 +80,7 @@ class DataImportController @Inject() (
     for {
       gs <- Future.sequence(graduations.map(a => graduationRepo.create(a, Nil)))
       u <- userRepo.create(user, Nil)
+      fac <- facultyRepository.create(fac, Nil)
       tu <- teachingUnitRepository.create(tu, Nil)
       sp <- studyProgramRepository.create(sp, Nil)
       er <- examinationRegulationRepository.create(er, Nil)
@@ -84,6 +88,7 @@ class DataImportController @Inject() (
       Json.obj(
         "user" -> u,
         "graduations" -> gs,
+        "faculty" -> fac,
         "teachingUnit" -> tu,
         "studyProgram" -> sp,
         "examinationRegulation" -> er
