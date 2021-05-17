@@ -34,4 +34,6 @@ class UserService @Inject() (val repo: UserRepository)
   )
 
   override protected def uniqueCols(json: UserJson) = Nil
+
+  def allLecturer() = all(Map("status" -> Seq("lecturer")), atomic = false)
 }
