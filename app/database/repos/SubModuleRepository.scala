@@ -2,7 +2,7 @@ package database.repos
 
 import database.tables.{SubModuleDbEntry, SubModuleTable}
 import models.SubModule.SubModuleAtom
-import models.{Module, SubModule}
+import models.{Language, Module, Season, SubModule}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -14,7 +14,8 @@ class SubModuleRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Repository[SubModule, SubModuleDbEntry, SubModuleTable] {
+    with Repository[SubModule, SubModuleDbEntry, SubModuleTable]
+    with FilterValueParser {
 
   import profile.api._
 
@@ -24,6 +25,8 @@ class SubModuleRepository @Inject() (
     case ("label", vs)        => t => t.hasLabel(vs.head)
     case ("abbreviation", vs) => t => t.hasAbbreviation(vs.head)
     case ("credits", vs)      => t => t.hasCredits(vs.head.toDouble)
+    case ("language", vs)     => t => parseTry(Language(vs.head), t.hasLanguage)
+    case ("season", vs)       => t => parseTry(Season(vs.head), t.hasSeason)
   }
 
   override protected def retrieveAtom(
@@ -42,6 +45,8 @@ class SubModuleRepository @Inject() (
         s.recommendedSemester,
         s.credits,
         s.descriptionUrl,
+        s.language,
+        s.season,
         s.id
       )
     })

@@ -99,6 +99,8 @@ create table submodule
     "recommended_semester" integer   not null,
     "description_file_url" text      not null,
     "ects"                 decimal   not null,
+    "language"             integer   not null,
+    "season"               integer   not null,
     FOREIGN KEY (module) REFERENCES module (id)
 );
 

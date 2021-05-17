@@ -11,7 +11,9 @@ case class SubModuleJson(
     mandatory: Boolean,
     recommendedSemester: Int,
     credits: Double,
-    descriptionUrl: String
+    descriptionUrl: String,
+    language: Language,
+    season: Season
 )
 
 object SubModuleJson {
