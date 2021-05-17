@@ -21,4 +21,10 @@ trait FilterValueParser {
       p: Int => Rep[Boolean]
   ): Rep[Boolean] =
     s.head.toIntOption.map(p) getOrElse false
+
+  final def parseBoolean(
+      s: Seq[String],
+      p: Boolean => Rep[Boolean]
+  ): Rep[Boolean] =
+    s.head.toBooleanOption.map(p) getOrElse false
 }

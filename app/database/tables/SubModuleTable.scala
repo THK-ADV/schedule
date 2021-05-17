@@ -11,7 +11,6 @@ case class SubModuleDbEntry(
     module: UUID,
     label: String,
     abbreviation: String,
-    mandatory: Boolean,
     recommendedSemester: Int,
     credits: Double,
     descriptionUrl: String,
@@ -28,15 +27,12 @@ class SubModuleTable(tag: Tag)
     with DescriptionUrlColumn
     with ModuleColumn {
 
-  def mandatory = column[Boolean]("mandatory")
-
   def recommendedSemester = column[Int]("recommended_semester")
 
   def * = (
     module,
     label,
     abbreviation,
-    mandatory,
     recommendedSemester,
     credits,
     descriptionUrl,
@@ -45,13 +41,12 @@ class SubModuleTable(tag: Tag)
   ) <> (mapRow, unmapRow)
 
   def mapRow: (
-      (UUID, String, String, Boolean, Int, Double, String, Timestamp, UUID)
+      (UUID, String, String, Int, Double, String, Timestamp, UUID)
   ) => SubModuleDbEntry = {
     case (
           module,
           label,
           abbreviation,
-          mandatory,
           semester,
           credits,
           url,
@@ -62,7 +57,6 @@ class SubModuleTable(tag: Tag)
         module,
         label,
         abbreviation,
-        mandatory,
         semester,
         credits,
         url,
@@ -72,7 +66,7 @@ class SubModuleTable(tag: Tag)
   }
 
   def unmapRow: SubModuleDbEntry => Option[
-    (UUID, String, String, Boolean, Int, Double, String, Timestamp, UUID)
+    (UUID, String, String, Int, Double, String, Timestamp, UUID)
   ] =
     a =>
       Option(
@@ -80,7 +74,6 @@ class SubModuleTable(tag: Tag)
           a.module,
           a.label,
           a.abbreviation,
-          a.mandatory,
           a.recommendedSemester,
           a.credits,
           a.descriptionUrl,

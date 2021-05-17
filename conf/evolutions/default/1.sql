@@ -78,6 +78,17 @@ create table module
     FOREIGN KEY (course_manager) REFERENCES people (id)
 );
 
+create table module_examination_regulation
+(
+    "id"                     uuid PRIMARY KEY,
+    "last_modified"          timestamp not null,
+    "module"                 uuid      not null,
+    "examination_regulation" uuid      not null,
+    "mandatory"              boolean   not null,
+    FOREIGN KEY (examination_regulation) REFERENCES examination_regulation (id),
+    FOREIGN KEY (module) REFERENCES module (id)
+);
+
 create table submodule
 (
     "id"                   uuid PRIMARY KEY,
@@ -85,7 +96,6 @@ create table submodule
     "module"               uuid      not null,
     "label"                text      not null,
     "abbreviation"         text      not null,
-    "mandatory"            boolean   not null,
     "recommended_semester" integer   not null,
     "description_file_url" text      not null,
     "ects"                 decimal   not null,
@@ -156,6 +166,7 @@ drop table room if exists;
 drop table course if exists;
 drop table semester if exists;
 drop table submodule if exists
+drop table module_examination_regulation if exists
 drop table module if exists;
 drop table people if exists;
 drop table examination_regulation if exists;

@@ -12,8 +12,6 @@ sealed trait SubModule extends UniqueEntity {
 
   def abbreviation: String
 
-  def mandatory: Boolean
-
   def recommendedSemester: Int
 
   def credits: Double
@@ -36,7 +34,6 @@ object SubModule {
       module: UUID,
       label: String,
       abbreviation: String,
-      mandatory: Boolean,
       recommendedSemester: Int,
       credits: Double,
       descriptionUrl: String,
@@ -49,7 +46,6 @@ object SubModule {
       module: Module,
       label: String,
       abbreviation: String,
-      mandatory: Boolean,
       recommendedSemester: Int,
       credits: Double,
       descriptionUrl: String,
@@ -63,7 +59,6 @@ object SubModule {
       db.module,
       db.label,
       db.abbreviation,
-      db.mandatory,
       db.recommendedSemester,
       db.credits,
       db.descriptionUrl,

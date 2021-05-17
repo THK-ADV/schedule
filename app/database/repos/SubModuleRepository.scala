@@ -39,7 +39,6 @@ class SubModuleRepository @Inject() (
         Module(m),
         s.label,
         s.abbreviation,
-        s.mandatory,
         s.recommendedSemester,
         s.credits,
         s.descriptionUrl,
