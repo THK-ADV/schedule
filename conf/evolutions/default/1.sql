@@ -13,19 +13,11 @@ create table teaching_unit
 (
     "id"            uuid PRIMARY KEY,
     "last_modified" timestamp not null,
+    "faculty"       uuid      not null,
     "label"         text      not null,
     "abbreviation"  text      not null,
-    "number"        integer   not null
-);
-
-create table teaching_unit_association
-(
-    "id"            uuid PRIMARY KEY,
-    "last_modified" timestamp not null,
-    "faculty"       uuid      not null,
-    "teaching_unit" uuid      not null,
-    FOREIGN KEY (faculty) REFERENCES faculty (id),
-    FOREIGN KEY (teaching_unit) REFERENCES teaching_unit (id)
+    "number"        integer   not null,
+    FOREIGN KEY (faculty) REFERENCES faculty (id)
 );
 
 create table graduation
@@ -86,6 +78,17 @@ create table module
     FOREIGN KEY (course_manager) REFERENCES people (id)
 );
 
+create table module_examination_regulation
+(
+    "id"                     uuid PRIMARY KEY,
+    "last_modified"          timestamp not null,
+    "module"                 uuid      not null,
+    "examination_regulation" uuid      not null,
+    "mandatory"              boolean   not null,
+    FOREIGN KEY (examination_regulation) REFERENCES examination_regulation (id),
+    FOREIGN KEY (module) REFERENCES module (id)
+);
+
 create table submodule
 (
     "id"                   uuid PRIMARY KEY,
@@ -93,10 +96,11 @@ create table submodule
     "module"               uuid      not null,
     "label"                text      not null,
     "abbreviation"         text      not null,
-    "mandatory"            boolean   not null,
     "recommended_semester" integer   not null,
     "description_file_url" text      not null,
     "ects"                 decimal   not null,
+    "language"             integer   not null,
+    "season"               integer   not null,
     FOREIGN KEY (module) REFERENCES module (id)
 );
 
@@ -126,12 +130,22 @@ create table course
     FOREIGN KEY (submodule) REFERENCES submodule (id)
 );
 
-create table room
+create table campus
 (
     "id"            uuid PRIMARY KEY,
     "last_modified" timestamp not null,
     "label"         text      not null,
     "abbreviation"  text      not null
+);
+
+create table room
+(
+    "id"            uuid PRIMARY KEY,
+    "last_modified" timestamp not null,
+    "campus"        uuid      not null,
+    "label"         text      not null,
+    "abbreviation"  text      not null,
+    FOREIGN KEY (campus) REFERENCES campus (id)
 );
 
 create table schedule
@@ -161,14 +175,15 @@ create table student_schedule
 drop table student_schedule if exists;
 drop table schedule if exists;
 drop table room if exists;
+drop table campus if exists;
 drop table course if exists;
 drop table semester if exists;
 drop table submodule if exists
+drop table module_examination_regulation if exists
 drop table module if exists;
 drop table people if exists;
 drop table examination_regulation if exists;
 drop table study_program if exists;
 drop table graduation if exists;
-drop table teaching_unit_association if exists;
 drop table teaching_unit if exists;
 drop table faculty if exists;

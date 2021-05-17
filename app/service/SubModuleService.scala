@@ -25,10 +25,11 @@ class SubModuleService @Inject() (val repo: SubModuleRepository)
       json.module,
       json.label,
       json.abbreviation,
-      json.mandatory,
       json.recommendedSemester,
       json.credits,
       json.descriptionUrl,
+      json.language,
+      json.season,
       now(),
       id getOrElse UUID.randomUUID
     )

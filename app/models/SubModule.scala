@@ -12,13 +12,15 @@ sealed trait SubModule extends UniqueEntity {
 
   def abbreviation: String
 
-  def mandatory: Boolean
-
   def recommendedSemester: Int
 
   def credits: Double
 
   def descriptionUrl: String
+
+  def language: Language
+
+  def season: Season
 }
 
 object SubModule {
@@ -36,10 +38,11 @@ object SubModule {
       module: UUID,
       label: String,
       abbreviation: String,
-      mandatory: Boolean,
       recommendedSemester: Int,
       credits: Double,
       descriptionUrl: String,
+      language: Language,
+      season: Season,
       id: UUID
   ) extends SubModule {
     override def moduleId = module
@@ -49,10 +52,11 @@ object SubModule {
       module: Module,
       label: String,
       abbreviation: String,
-      mandatory: Boolean,
       recommendedSemester: Int,
       credits: Double,
       descriptionUrl: String,
+      language: Language,
+      season: Season,
       id: UUID
   ) extends SubModule {
     override def moduleId = module.id
@@ -63,10 +67,11 @@ object SubModule {
       db.module,
       db.label,
       db.abbreviation,
-      db.mandatory,
       db.recommendedSemester,
       db.credits,
       db.descriptionUrl,
+      db.language,
+      db.season,
       db.id
     )
 }

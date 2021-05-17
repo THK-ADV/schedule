@@ -1,18 +1,46 @@
 package models
 
 import database.tables.RoomDbEntry
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
 
-case class Room(
-    label: String,
-    abbreviation: String,
-    id: UUID
-) extends UniqueEntity
+sealed trait Room extends UniqueEntity {
+  def campusId: UUID
+
+  def label: String
+
+  def abbreviation: String
+}
 
 object Room {
-  implicit val format: OFormat[Room] = Json.format[Room]
+  implicit val writes: Writes[Room] = Writes.apply {
+    case default: RoomDefault => writesDefault.writes(default)
+    case atom: RoomAtom       => writesAtom.writes(atom)
+  }
 
-  def apply(db: RoomDbEntry): Room = Room(db.label, db.abbreviation, db.id)
+  implicit val writesDefault: Writes[RoomDefault] = Json.writes[RoomDefault]
+
+  implicit val writesAtom: Writes[RoomAtom] = Json.writes[RoomAtom]
+
+  case class RoomDefault(
+      campus: UUID,
+      label: String,
+      abbreviation: String,
+      id: UUID
+  ) extends Room {
+    override def campusId = campus
+  }
+
+  case class RoomAtom(
+      campus: Campus,
+      label: String,
+      abbreviation: String,
+      id: UUID
+  ) extends Room {
+    override def campusId = campus.id
+  }
+
+  def apply(db: RoomDbEntry): RoomDefault =
+    RoomDefault(db.campus, db.label, db.abbreviation, db.id)
 }

@@ -14,6 +14,7 @@ class RoomService @Inject() (val repo: RoomRepository)
 
   override protected def toUniqueDbEntry(json: RoomJson, id: Option[UUID]) =
     RoomDbEntry(
+      json.campus,
       json.label,
       json.abbreviation,
       now(),
@@ -24,10 +25,14 @@ class RoomService @Inject() (val repo: RoomRepository)
       json: RoomJson,
       existing: RoomDbEntry
   ): Boolean =
-    json.abbreviation == existing.abbreviation
+    json.abbreviation == existing.abbreviation &&
+      json.campus == existing.campus
 
   override protected def uniqueCols(json: RoomJson) =
-    List(_.hasAbbreviation(json.abbreviation))
+    List(
+      _.hasAbbreviation(json.abbreviation),
+      _.hasCampus(json.campus)
+    )
 
   override protected def validate(json: RoomJson) = None
 }
