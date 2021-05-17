@@ -14,13 +14,13 @@ trait Create[Json, Model <: UniqueEntity, DbEntry <: UniqueDbEntry, T <: Table[
 
   protected def validate(json: Json): Option[Throwable]
 
-  protected def uniqueCols(json: Json, table: T): List[Rep[Boolean]]
+  protected def uniqueCols(json: Json): List[T => Rep[Boolean]]
 
   def create(json: Json): Future[Model] =
     validate(json) match {
       case Some(t) =>
         Future.failed(t)
       case None =>
-        repo.create(toUniqueDbEntry(json, None), t => uniqueCols(json, t))
+        repo.create(toUniqueDbEntry(json, None), uniqueCols(json))
     }
 }

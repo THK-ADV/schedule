@@ -39,13 +39,10 @@ class SubModuleService @Inject() (val repo: SubModuleRepository)
   ): Boolean =
     json.label == existing.label && json.module == existing.module
 
-  override protected def uniqueCols(
-      json: SubModuleJson,
-      table: SubModuleTable
-  ) =
+  override protected def uniqueCols(json: SubModuleJson) =
     List(
-      table.hasLabel(json.label),
-      table.hasModule(json.module)
+      _.hasLabel(json.label),
+      _.hasModule(json.module)
     )
 
   override protected def validate(json: SubModuleJson) = None

@@ -39,13 +39,10 @@ class StudyProgramService @Inject() (val repo: StudyProgramRepository)
     json.graduation == existing.graduation
   }
 
-  override protected def uniqueCols(
-      json: StudyProgramJson,
-      table: StudyProgramTable
-  ) = List(
-    table.hasTeachingUnit(json.teachingUnit),
-    table.hasLabel(json.label),
-    table.hasGraduation(json.graduation)
+  override protected def uniqueCols(json: StudyProgramJson) = List(
+    _.hasTeachingUnit(json.teachingUnit),
+    _.hasLabel(json.label),
+    _.hasGraduation(json.graduation)
   )
 
   override protected def validate(json: StudyProgramJson) = None

@@ -18,7 +18,8 @@ class StudentScheduleRepository @Inject() (
       StudentSchedule,
       StudentScheduleDbEntry,
       StudentScheduleTable
-    ] {
+    ]
+    with FilterValueParser {
 
   import profile.api._
 

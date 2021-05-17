@@ -29,12 +29,11 @@ class UserService @Inject() (val repo: UserRepository)
       existing: UserDbEntry
   ): Boolean = false
 
-  override protected def uniqueCols(
-      json: UserJson,
-      table: UserTable
-  ) = List.empty
-
   override protected def validate(json: UserJson) = Some(
     new Throwable("user creation is not allowed")
   )
+
+  override protected def uniqueCols(json: UserJson) = Nil
+
+  def allLecturer() = all(Map("status" -> Seq("lecturer")), atomic = false)
 }

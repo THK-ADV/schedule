@@ -26,8 +26,8 @@ class RoomService @Inject() (val repo: RoomRepository)
   ): Boolean =
     json.abbreviation == existing.abbreviation
 
-  override protected def uniqueCols(json: RoomJson, table: RoomTable) =
-    List(table.hasAbbreviation(json.abbreviation))
+  override protected def uniqueCols(json: RoomJson) =
+    List(_.hasAbbreviation(json.abbreviation))
 
   override protected def validate(json: RoomJson) = None
 }

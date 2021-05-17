@@ -16,7 +16,8 @@ class ScheduleRepository @Inject() (
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
     with Repository[Schedule, ScheduleDbEntry, ScheduleTable]
-    with SQLDateConverter {
+    with SQLDateConverter
+    with FilterValueParser {
 
   import profile.api._
 

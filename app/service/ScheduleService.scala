@@ -35,13 +35,13 @@ class ScheduleService @Inject() (val repo: ScheduleRepository)
       toLocalTime(existing.start) == json.start &&
       toLocalTime(existing.end) == json.end
 
-  override protected def uniqueCols(json: ScheduleJson, table: ScheduleTable) =
+  override protected def uniqueCols(json: ScheduleJson) =
     List(
-      table.hasCourse(json.course),
-      table.hasRoom(json.room),
-      table.onDate(json.date),
-      table.onStart(json.start),
-      table.onEnd(json.end)
+      _.hasCourse(json.course),
+      _.hasRoom(json.room),
+      _.onDate(json.date),
+      _.onStart(json.start),
+      _.onEnd(json.end)
     )
 
   override protected def validate(json: ScheduleJson) =

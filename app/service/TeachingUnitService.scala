@@ -35,10 +35,8 @@ class TeachingUnitService @Inject() (val repo: TeachingUnitRepository)
   ): Boolean =
     json.label == existing.label && json.number == existing.number
 
-  override protected def uniqueCols(
-      json: TeachingUnitJson,
-      table: TeachingUnitTable
-  ) = List(table.hasLabel(json.label), table.hasNumber(json.number))
+  override protected def uniqueCols(json: TeachingUnitJson) =
+    List(_.hasLabel(json.label), _.hasNumber(json.number))
 
   override protected def validate(json: TeachingUnitJson) = None
 }

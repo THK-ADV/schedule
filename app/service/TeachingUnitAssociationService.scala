@@ -37,10 +37,7 @@ class TeachingUnitAssociationService @Inject() (
       existing: TeachingUnitAssociationDbEntry
   ): Boolean = true
 
-  override protected def uniqueCols(
-      json: TeachingUnitAssociationJson,
-      table: TeachingUnitAssociationTable
-  ) = List.empty
+  override protected def uniqueCols(json: TeachingUnitAssociationJson) = Nil
 
   override protected def validate(json: TeachingUnitAssociationJson) = None
 }

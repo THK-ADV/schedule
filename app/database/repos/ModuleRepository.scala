@@ -14,7 +14,8 @@ class ModuleRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Repository[Module, ModuleDbEntry, ModuleTable] {
+    with Repository[Module, ModuleDbEntry, ModuleTable]
+    with FilterValueParser {
 
   import profile.api._
 
