@@ -130,12 +130,22 @@ create table course
     FOREIGN KEY (submodule) REFERENCES submodule (id)
 );
 
-create table room
+create table campus
 (
     "id"            uuid PRIMARY KEY,
     "last_modified" timestamp not null,
     "label"         text      not null,
     "abbreviation"  text      not null
+);
+
+create table room
+(
+    "id"            uuid PRIMARY KEY,
+    "last_modified" timestamp not null,
+    "campus"        uuid      not null,
+    "label"         text      not null,
+    "abbreviation"  text      not null,
+    FOREIGN KEY (campus) REFERENCES campus (id)
 );
 
 create table schedule
@@ -165,6 +175,7 @@ create table student_schedule
 drop table student_schedule if exists;
 drop table schedule if exists;
 drop table room if exists;
+drop table campus if exists;
 drop table course if exists;
 drop table semester if exists;
 drop table submodule if exists
