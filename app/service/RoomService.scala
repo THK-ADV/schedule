@@ -31,7 +31,7 @@ class RoomService @Inject() (val repo: RoomRepository)
   override protected def uniqueCols(json: RoomJson) =
     List(
       _.hasAbbreviation(json.abbreviation),
-      _.hasCampus(json.campus)
+      _.campus(json.campus)
     )
 
   override protected def validate(json: RoomJson) = None
