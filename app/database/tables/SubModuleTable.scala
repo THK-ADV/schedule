@@ -32,39 +32,15 @@ class SubModuleTable(tag: Tag)
 
   def recommendedSemester = column[Int]("recommended_semester")
 
-  def language = column[Int]("language")
+  def language = column[String]("language")
 
-  def season = column[Int]("season")
+  def season = column[String]("season")
 
   def hasLanguage(l: Language): Rep[Boolean] =
-    this.language === language(l)
+    this.language === l.toString
 
   def hasSeason(s: Season): Rep[Boolean] =
-    this.season === season(s)
-
-  def language(int: Int): Language = int match {
-    case 0 => Language.DE
-    case 1 => Language.EN
-    case 2 => Language.DE_EN
-  }
-
-  def language(lang: Language): Int = lang match {
-    case Language.DE    => 0
-    case Language.EN    => 1
-    case Language.DE_EN => 2
-  }
-
-  def season(int: Int): Season = int match {
-    case 0 => Season.WiSe
-    case 1 => Season.SoSe
-    case 2 => Season.SoSe_WiSe
-  }
-
-  def season(season: Season): Int = season match {
-    case Season.WiSe      => 0
-    case Season.SoSe      => 1
-    case Season.SoSe_WiSe => 2
-  }
+    this.season === s.toString
 
   def * = (
     module,
@@ -80,7 +56,18 @@ class SubModuleTable(tag: Tag)
   ) <> (mapRow, unmapRow)
 
   def mapRow: (
-      (UUID, String, String, Int, Double, String, Int, Int, Timestamp, UUID)
+      (
+          UUID,
+          String,
+          String,
+          Int,
+          Double,
+          String,
+          String,
+          String,
+          Timestamp,
+          UUID
+      )
   ) => SubModuleDbEntry = {
     case (
           module,
@@ -101,15 +88,15 @@ class SubModuleTable(tag: Tag)
         semester,
         credits,
         url,
-        this.language(language),
-        this.season(season),
+        Language(language),
+        Season(season),
         lastModified,
         id
       )
   }
 
   def unmapRow: SubModuleDbEntry => Option[
-    (UUID, String, String, Int, Double, String, Int, Int, Timestamp, UUID)
+    (UUID, String, String, Int, Double, String, String, String, Timestamp, UUID)
   ] =
     a =>
       Option(
@@ -120,8 +107,8 @@ class SubModuleTable(tag: Tag)
           a.recommendedSemester,
           a.credits,
           a.descriptionUrl,
-          language(a.language),
-          season(a.season),
+          a.language.toString,
+          a.season.toString,
           a.lastModified,
           a.id
         )

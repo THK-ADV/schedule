@@ -1,7 +1,7 @@
 package database.tables
 
+import database.UniqueDbEntry
 import database.cols._
-import database.{SQLDateConverter, UniqueDbEntry}
 import slick.jdbc.PostgresProfile.api._
 
 import java.sql.{Date, Timestamp}
@@ -9,10 +9,9 @@ import java.util.UUID
 
 case class ExaminationRegulationDbEntry(
     studyProgram: UUID,
-    label: String,
-    abbreviation: String,
+    number: Int,
     start: Date,
-    end: Date,
+    end: Option[Date],
     lastModified: Timestamp,
     id: UUID
 ) extends UniqueDbEntry
@@ -20,16 +19,22 @@ case class ExaminationRegulationDbEntry(
 class ExaminationRegulationTable(tag: Tag)
     extends Table[ExaminationRegulationDbEntry](tag, "examination_regulation")
     with UniqueEntityColumn
-    with SQLDateConverter
-    with LabelColumn
-    with AbbreviationColumn
     with StudyProgramColumn
-    with StartEndColumn {
+    with NumberColumn {
+
+  def start = column[Date]("start")
+
+  def end = column[Option[Date]]("end")
+
+  def onStart(date: Date): Rep[Boolean] =
+    start === date
+
+  def onEnd(date: Date): Rep[Boolean] =
+    (end === date) getOrElse false
 
   def * = (
     studyProgram,
-    label,
-    abbreviation,
+    number,
     start,
     end,
     lastModified,
@@ -37,12 +42,11 @@ class ExaminationRegulationTable(tag: Tag)
   ) <> (mapRow, unmapRow)
 
   def mapRow: (
-      (UUID, String, String, Date, Date, Timestamp, UUID)
+      (UUID, Int, Date, Option[Date], Timestamp, UUID)
   ) => ExaminationRegulationDbEntry = {
     case (
           studyProgram,
-          label,
-          abbreviation,
+          number,
           start,
           end,
           lastModified,
@@ -50,8 +54,7 @@ class ExaminationRegulationTable(tag: Tag)
         ) =>
       ExaminationRegulationDbEntry(
         studyProgram,
-        label,
-        abbreviation,
+        number,
         start,
         end,
         lastModified,
@@ -60,13 +63,12 @@ class ExaminationRegulationTable(tag: Tag)
   }
 
   def unmapRow: ExaminationRegulationDbEntry => Option[
-    (UUID, String, String, Date, Date, Timestamp, UUID)
+    (UUID, Int, Date, Option[Date], Timestamp, UUID)
   ] = s =>
     Option(
       (
         s.studyProgram,
-        s.label,
-        s.abbreviation,
+        s.number,
         s.start,
         s.end,
         s.lastModified,
