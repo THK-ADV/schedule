@@ -22,11 +22,11 @@ class SubModuleRepository @Inject() (
   protected val tableQuery = TableQuery[SubModuleTable]
 
   override protected def makeFilter = {
-    case ("label", vs)        => t => t.hasLabel(vs.head)
-    case ("abbreviation", vs) => t => t.hasAbbreviation(vs.head)
-    case ("credits", vs)      => t => t.hasCredits(vs.head.toDouble)
-    case ("language", vs)     => t => parseTry(Language(vs.head), t.hasLanguage)
-    case ("season", vs)       => t => parseTry(Season(vs.head), t.hasSeason)
+    case ("label", vs)        => _.hasLabel(vs.head)
+    case ("abbreviation", vs) => _.hasAbbreviation(vs.head)
+    case ("credits", vs)      => _.hasCredits(vs.head.toDouble)
+    case ("language", vs)     => _.hasLanguage(Language(vs.head))
+    case ("season", vs)       => _.hasSeason(Season(vs.head))
   }
 
   override protected def retrieveAtom(

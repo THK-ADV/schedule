@@ -8,10 +8,9 @@ import java.util.UUID
 
 case class ExaminationRegulationJson(
     studyProgram: UUID,
-    label: String,
-    abbreviation: String,
+    number: Int,
     start: LocalDate,
-    end: LocalDate
+    end: Option[LocalDate]
 )
 
 object ExaminationRegulationJson extends LocalDateFormat {

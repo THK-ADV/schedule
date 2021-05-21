@@ -5,8 +5,8 @@ import database.tables.{
   ExaminationRegulationDbEntry,
   ExaminationRegulationTable
 }
+import models.ExaminationRegulation
 import models.ExaminationRegulation.ExaminationRegulationAtom
-import models.{ExaminationRegulation, StudyProgram}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -29,10 +29,7 @@ class ExaminationRegulationRepository @Inject() (
 
   protected val tableQuery = TableQuery[ExaminationRegulationTable]
 
-  override protected def makeFilter = {
-    case ("label", vs)        => t => t.hasLabel(vs.head)
-    case ("abbreviation", vs) => t => t.hasAbbreviation(vs.head)
-  }
+  override protected def makeFilter = PartialFunction.empty
 
   override protected def retrieveAtom(
       query: Query[
@@ -44,17 +41,12 @@ class ExaminationRegulationRepository @Inject() (
     val result = for {
       q <- query
       s <- q.studyProgramFk
-    } yield (q, s)
+      tu <- s.teachingUnitFk
+      g <- s.graduationFk
+    } yield (q, s, tu, g)
 
-    val action = result.result.map(_.map { case (e, s) =>
-      ExaminationRegulationAtom(
-        StudyProgram(s),
-        e.label,
-        e.abbreviation,
-        e.start,
-        e.end,
-        e.id
-      )
+    val action = result.result.map(_.map { case (e, s, tu, g) =>
+      ExaminationRegulationAtom(e, s, tu, g)
     })
 
     db.run(action)

@@ -33,19 +33,17 @@ class ModuleRepository @Inject() (
   ) = {
     val result = for {
       q <- query
-      e <- q.examinationRegulationFk
       u <- q.userFk
-    } yield (q, e, u)
+    } yield (q, u)
 
-    val action = result.result.map(_.map { case (m, e, u) =>
+    val action = result.result.map(_.map { case (q, u) =>
       ModuleAtom(
-        ExaminationRegulation(e),
         User(u),
-        m.label,
-        m.abbreviation,
-        m.credits,
-        m.descriptionUrl,
-        m.id
+        q.label,
+        q.abbreviation,
+        q.credits,
+        q.descriptionUrl,
+        q.id
       )
     })
 

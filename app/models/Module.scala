@@ -6,8 +6,6 @@ import play.api.libs.json.{Json, Writes}
 import java.util.UUID
 
 sealed trait Module extends UniqueEntity {
-  def examinationRegulationId: UUID
-
   def courseManagerId: UUID
 
   def label: String
@@ -30,7 +28,6 @@ object Module {
   implicit val writesAtom: Writes[ModuleAtom] = Json.writes[ModuleAtom]
 
   case class ModuleDefault(
-      examinationRegulation: UUID,
       courseManager: UUID,
       label: String,
       abbreviation: String,
@@ -38,13 +35,10 @@ object Module {
       descriptionUrl: String,
       id: UUID
   ) extends Module {
-    override def examinationRegulationId = examinationRegulation
-
     override def courseManagerId = courseManager
   }
 
   case class ModuleAtom(
-      examinationRegulation: ExaminationRegulation,
       courseManager: User,
       label: String,
       abbreviation: String,
@@ -52,14 +46,11 @@ object Module {
       descriptionUrl: String,
       id: UUID
   ) extends Module {
-    override def examinationRegulationId = examinationRegulation.id
-
     override def courseManagerId = courseManager.id
   }
 
   def apply(db: ModuleDbEntry): ModuleDefault =
     ModuleDefault(
-      db.examinationRegulation,
       db.courseManager,
       db.label,
       db.abbreviation,

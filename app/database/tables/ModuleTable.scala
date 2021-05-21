@@ -8,7 +8,6 @@ import java.sql.Timestamp
 import java.util.UUID
 
 case class ModuleDbEntry(
-    examinationRegulation: UUID,
     courseManager: UUID,
     label: String,
     abbreviation: String,
@@ -25,13 +24,11 @@ class ModuleTable(tag: Tag)
     with LabelColumn
     with CreditsColumn
     with DescriptionUrlColumn
-    with ExaminationRegulationColumn
     with UserColumn {
 
   override protected def userColumnName = "course_manager"
 
   def * = (
-    examinationRegulation,
     user,
     label,
     abbreviation,
@@ -42,10 +39,9 @@ class ModuleTable(tag: Tag)
   ) <> (mapRow, unmapRow)
 
   def mapRow: (
-      (UUID, UUID, String, String, Double, String, Timestamp, UUID)
+      (UUID, String, String, Double, String, Timestamp, UUID)
   ) => ModuleDbEntry = {
     case (
-          examinationRegulation,
           courseManager,
           label,
           abbreviation,
@@ -55,7 +51,6 @@ class ModuleTable(tag: Tag)
           id
         ) =>
       ModuleDbEntry(
-        examinationRegulation,
         courseManager,
         label,
         abbreviation,
@@ -67,12 +62,11 @@ class ModuleTable(tag: Tag)
   }
 
   def unmapRow: ModuleDbEntry => Option[
-    (UUID, UUID, String, String, Double, String, Timestamp, UUID)
+    (UUID, String, String, Double, String, Timestamp, UUID)
   ] =
     a =>
       Option(
         (
-          a.examinationRegulation,
           a.courseManager,
           a.label,
           a.abbreviation,

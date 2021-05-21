@@ -14,7 +14,6 @@ class ModuleService @Inject() (val repo: ModuleRepository)
 
   override protected def toUniqueDbEntry(json: ModuleJson, id: Option[UUID]) =
     ModuleDbEntry(
-      json.examinationRegulation,
       json.courseManager,
       json.label,
       json.abbreviation,
@@ -28,13 +27,10 @@ class ModuleService @Inject() (val repo: ModuleRepository)
       json: ModuleJson,
       existing: ModuleDbEntry
   ): Boolean =
-    json.label == existing.label && json.examinationRegulation == existing.examinationRegulation
+    json.label == existing.label
 
   override protected def uniqueCols(json: ModuleJson) =
-    List(
-      _.hasLabel(json.label),
-      _.hasExaminationRegulation(json.examinationRegulation)
-    )
+    List(_.hasLabel(json.label))
 
   override protected def validate(json: ModuleJson) = None
 }

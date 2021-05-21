@@ -22,6 +22,8 @@ class UserRepository @Inject() (
   override protected def makeFilter = {
     case ("firstname", vs) =>
       t => t.firstname.toLowerCase === vs.head.toLowerCase()
+    case ("username", vs) =>
+      t => t.username.toLowerCase === vs.head.toLowerCase()
     case ("lastname", vs) =>
       t => t.lastname.toLowerCase === vs.head.toLowerCase()
     case ("status", vs) => t => t.status.toLowerCase === vs.head.toLowerCase()
