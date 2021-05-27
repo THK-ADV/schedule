@@ -12,9 +12,9 @@ sealed trait Course extends UniqueEntity {
 
   def subModuleId: UUID
 
-  def interval: String
+  def interval: CourseInterval
 
-  def courseType: String
+  def courseType: CourseType
 }
 
 object Course {
@@ -31,8 +31,8 @@ object Course {
       lecturer: UUID,
       semester: UUID,
       subModule: UUID,
-      interval: String,
-      courseType: String,
+      interval: CourseInterval,
+      courseType: CourseType,
       id: UUID
   ) extends Course {
     override def lecturerId = lecturer
@@ -46,8 +46,8 @@ object Course {
       lecturer: User,
       semester: Semester,
       subModule: SubModule,
-      interval: String,
-      courseType: String,
+      interval: CourseInterval,
+      courseType: CourseType,
       id: UUID
   ) extends Course {
     override def lecturerId = lecturer.id
