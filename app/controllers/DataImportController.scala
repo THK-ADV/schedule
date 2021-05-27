@@ -38,7 +38,8 @@ class DataImportController @Inject() (
     val campusService: CampusService,
     val moduleRepository: ModuleRepository,
     val moduleExaminationRegulationRepository: ModuleExaminationRegulationRepository,
-    val subModuleService: SubModuleService
+    val subModuleService: SubModuleService,
+    val courseService: CourseService
 ) extends AbstractController(cc)
     with LocalDateFormat {
 
@@ -360,6 +361,27 @@ class DataImportController @Inject() (
         subModuleJson.map(subModuleService.create)
       )
     } yield Ok(Json.toJson(subModules))
+  }
+
+  def courses() = textParsingAction.async { r =>
+    for {
+      lecturer <- userService.allLecturer()
+      semesters <- semesterService.all(false)
+      subModules <- subModuleService.all(false)
+      res <- createMany(
+        parseCSV(r.body, CourseJson.format) {
+          case ("lecturer", value) =>
+            toJsonID(lecturer.find(_.username == value))
+          case ("semester", value) =>
+            toJsonID(semesters.find(_.abbreviation == value))
+          case ("subModule", value) =>
+            toJsonID(subModules.find(_.abbreviation == value))
+          case ("interval", value)   => JsString(value)
+          case ("courseType", value) => JsString(value)
+        },
+        courseService.create
+      )
+    } yield res
   }
 
   private def parseCredits(value: String): JsValue = {
