@@ -8,8 +8,8 @@ case class CourseJson(
     lecturer: UUID,
     semester: UUID,
     subModule: UUID,
-    interval: String,
-    courseType: String
+    interval: CourseInterval,
+    courseType: CourseType
 )
 
 object CourseJson {

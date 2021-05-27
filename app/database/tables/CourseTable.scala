@@ -7,6 +7,7 @@ import database.cols.{
   UniqueEntityColumn,
   UserColumn
 }
+import models.{CourseInterval, CourseType}
 import slick.jdbc.PostgresProfile.api._
 
 import java.sql.Timestamp
@@ -16,8 +17,8 @@ case class CourseDbEntry(
     lecturer: UUID,
     semester: UUID,
     subModule: UUID,
-    interval: String,
-    courseType: String,
+    interval: CourseInterval,
+    courseType: CourseType,
     lastModified: Timestamp,
     id: UUID
 ) extends UniqueDbEntry
@@ -61,8 +62,8 @@ class CourseTable(tag: Tag)
         lecturer,
         semester,
         subModule,
-        interval,
-        courseType,
+        CourseInterval(interval),
+        CourseType(courseType),
         lastModified,
         id
       )
@@ -77,8 +78,8 @@ class CourseTable(tag: Tag)
           a.lecturer,
           a.semester,
           a.subModule,
-          a.interval,
-          a.courseType,
+          a.interval.toString,
+          a.courseType.toString,
           a.lastModified,
           a.id
         )
