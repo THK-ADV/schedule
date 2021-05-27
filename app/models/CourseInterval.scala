@@ -13,7 +13,7 @@ object CourseInterval {
   implicit val reads: Reads[CourseInterval] =
     Reads(_.validate[String].map(apply))
 
-  def apply(string: String): CourseInterval = string match {
+  def apply(string: String): CourseInterval = string.toLowerCase match {
     case "regularly"   => Regularly
     case "irregularly" => Irregularly
     case "block"       => Block

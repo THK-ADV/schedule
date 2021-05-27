@@ -22,10 +22,10 @@ object Season {
   implicit val reads: Reads[Season] =
     Reads(_.validate[String].map(apply))
 
-  def apply(string: String): Season = string match {
-    case "SoSe"                    => SoSe
-    case "WiSe"                    => WiSe
-    case "SoSe_WiSe" | "WiSe_SoSe" => SoSe_WiSe
+  def apply(string: String): Season = string.toLowerCase match {
+    case "sose"                    => SoSe
+    case "wise"                    => WiSe
+    case "sose_wise" | "wise_sose" => SoSe_WiSe
     case _                         => Unknown
   }
 

@@ -13,7 +13,7 @@ object Language {
   implicit val reads: Reads[Language] =
     Reads(_.validate[String].map(apply))
 
-  def apply(string: String): Language = string match {
+  def apply(string: String): Language = string.toLowerCase match {
     case "en"              => EN
     case "de"              => DE
     case "de_en" | "en_de" => DE_EN
