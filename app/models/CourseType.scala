@@ -13,7 +13,7 @@ object CourseType {
   implicit val reads: Reads[CourseType] =
     Reads(_.validate[String].map(apply))
 
-  def apply(string: String): CourseType = string match {
+  def apply(string: String): CourseType = string.toLowerCase match {
     case "lecture"   => Lecture
     case "practical" => Practical
     case "exercise"  => Exercise
