@@ -5,15 +5,18 @@ import database.tables.{
   ModuleExaminationRegulationDbEntry,
   ModuleExaminationRegulationTable
 }
+import models.ModuleExaminationRegulation.ModuleExaminationRegulationAtom
 import models.{ModuleExaminationRegulation, ModuleExaminationRegulationJson}
 import service.abstracts.Service
 
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class ModuleExaminationRegulationService @Inject() (
-    val repo: ModuleExaminationRegulationRepository
+    val repo: ModuleExaminationRegulationRepository,
+    implicit val ctx: ExecutionContext
 ) extends Service[
       ModuleExaminationRegulationJson,
       ModuleExaminationRegulation,
@@ -46,4 +49,9 @@ class ModuleExaminationRegulationService @Inject() (
     )
 
   override protected def validate(json: ModuleExaminationRegulationJson) = None
+
+  def allAtoms(filter: Map[String, Seq[String]]) =
+    all(filter, atomic = true).map(
+      _.map(_.asInstanceOf[ModuleExaminationRegulationAtom])
+    )
 }

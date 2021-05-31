@@ -18,7 +18,7 @@ class ScheduleService @Inject() (val repo: ScheduleRepository)
     ScheduleDbEntry(
       json.course,
       json.room,
-      json.moduleExaminationRegulationId,
+      json.moduleExaminationRegulation,
       json.date,
       json.start,
       json.end,
@@ -29,21 +29,10 @@ class ScheduleService @Inject() (val repo: ScheduleRepository)
   override protected def canUpdate(
       json: ScheduleJson,
       existing: ScheduleDbEntry
-  ): Boolean =
-    existing.course == json.course &&
-      existing.room == json.room &&
-      toLocalDate(existing.date) == json.date &&
-      toLocalTime(existing.start) == json.start &&
-      toLocalTime(existing.end) == json.end
+  ): Boolean = true
 
   override protected def uniqueCols(json: ScheduleJson) =
-    List(
-      _.course(json.course),
-      _.room(json.room),
-      _.onDate(json.date),
-      _.onStart(json.start),
-      _.onEnd(json.end)
-    )
+    Nil
 
   override protected def validate(json: ScheduleJson) =
     Option.unless(json.start.isBefore(json.end))(
