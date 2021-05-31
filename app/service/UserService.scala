@@ -14,6 +14,7 @@ class UserService @Inject() (val repo: UserRepository)
 
   override protected def toUniqueDbEntry(json: UserJson, id: Option[UUID]) =
     UserDbEntry(
+      json.username,
       json.firstname,
       json.lastname,
       json.status,

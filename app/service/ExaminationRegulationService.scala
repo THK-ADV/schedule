@@ -6,15 +6,18 @@ import database.tables.{
   ExaminationRegulationDbEntry,
   ExaminationRegulationTable
 }
+import models.ExaminationRegulation.ExaminationRegulationAtom
 import models.{ExaminationRegulation, ExaminationRegulationJson}
 import service.abstracts.Service
 
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class ExaminationRegulationService @Inject() (
-    val repo: ExaminationRegulationRepository
+    val repo: ExaminationRegulationRepository,
+    implicit val ctx: ExecutionContext
 ) extends SQLDateConverter
     with Service[
       ExaminationRegulationJson,
@@ -29,10 +32,9 @@ class ExaminationRegulationService @Inject() (
   ) =
     ExaminationRegulationDbEntry(
       json.studyProgram,
-      json.label,
-      json.abbreviation,
+      json.number,
       json.start,
-      json.end,
+      json.end.map(toSQLDate),
       now(),
       id getOrElse UUID.randomUUID
     )
@@ -42,17 +44,25 @@ class ExaminationRegulationService @Inject() (
       existing: ExaminationRegulationDbEntry
   ): Boolean =
     json.studyProgram == existing.studyProgram &&
-      json.abbreviation == existing.abbreviation
+      json.number == existing.number
 
   override protected def uniqueCols(
       json: ExaminationRegulationJson
   ) = List(
     _.hasStudyProgram(json.studyProgram),
-    _.hasAbbreviation(json.abbreviation)
+    _.hasNumber(json.number)
   )
 
   override protected def validate(json: ExaminationRegulationJson) =
-    Option.unless(json.start.isBefore(json.end))(
-      new Throwable(s"invalid date boundaries")
+    for {
+      end <- json.end
+      res <- Option.unless(json.start.isBefore(end))(
+        new Throwable(s"invalid date boundaries")
+      )
+    } yield res
+
+  def allAtoms(filter: Map[String, Seq[String]]) =
+    all(filter, atomic = true).map(
+      _.map(_.asInstanceOf[ExaminationRegulationAtom])
     )
 }

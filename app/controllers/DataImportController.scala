@@ -2,15 +2,15 @@ package controllers
 
 import database.repos._
 import database.tables._
-import date.LocalDateFormat
+import date.{LocalDateFormat, LocalTimeFormat}
 import models._
-import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
+import org.joda.time.{LocalDate, LocalTime}
 import play.api.libs.json.{JsResult, _}
 import play.api.mvc.{AbstractController, ControllerComponents, Result}
 import service._
 
-import java.sql.{Date, Timestamp}
+import java.sql.Timestamp
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -33,14 +33,32 @@ class DataImportController @Inject() (
     val studyProgramService: StudyProgramService,
     val examinationRegulationRepository: ExaminationRegulationRepository,
     val moduleService: ModuleService,
-    val facultyRepository: FacultyRepository
+    val facultyRepository: FacultyRepository,
+    val campusRepository: CampusRepository,
+    val campusService: CampusService,
+    val moduleRepository: ModuleRepository,
+    val moduleExaminationRegulationRepository: ModuleExaminationRegulationRepository,
+    val subModuleService: SubModuleService,
+    val courseService: CourseService,
+    val scheduleService: ScheduleService
 ) extends AbstractController(cc)
-    with LocalDateFormat {
+    with LocalDateFormat
+    with LocalTimeFormat {
 
-  val dayPattern = DateTimeFormat.forPattern("dd.MM.yy")
+  case class TmpUser(
+      username: String,
+      firstname: String,
+      lastname: String,
+      email: String
+  )
+
+  val datePattern = DateTimeFormat.forPattern("yy-MM-dd")
+
+  val timePattern = DateTimeFormat.forPattern("HH:mm")
 
   def primitives() = Action.async { r =>
     val user = UserDbEntry(
+      "???",
       "???",
       "???",
       "lecturer",
@@ -56,44 +74,44 @@ class DataImportController @Inject() (
       GraduationDbEntry("Master", "MA", now, UUID.randomUUID())
     )
 
-    val fac = FacultyDbEntry("???", "???", -1, now, UUID.randomUUID())
-    val tu =
-      TeachingUnitDbEntry(fac.id, "???", "???", -1, now, UUID.randomUUID())
-    val sp = StudyProgramDBEntry(
-      tu.id,
-      graduations.head.id,
-      "???",
-      "???",
-      now,
-      UUID.randomUUID()
-    )
-    val er = ExaminationRegulationDbEntry(
-      sp.id,
-      "???",
-      "???",
-      Date.valueOf("2021-01-01"),
-      Date.valueOf("2021-12-31"),
-      now,
-      UUID.randomUUID()
-    )
+    val gm = CampusDbEntry("Gummersbach", "GM", now, UUID.randomUUID())
 
     for {
       gs <- Future.sequence(graduations.map(a => graduationRepo.create(a, Nil)))
       u <- userRepo.create(user, Nil)
-      fac <- facultyRepository.create(fac, Nil)
-      tu <- teachingUnitRepository.create(tu, Nil)
-      sp <- studyProgramRepository.create(sp, Nil)
-      er <- examinationRegulationRepository.create(er, Nil)
+      c <- campusRepository.create(gm, Nil)
     } yield Ok(
       Json.obj(
         "user" -> u,
         "graduations" -> gs,
-        "faculty" -> fac,
-        "teachingUnit" -> tu,
-        "studyProgram" -> sp,
-        "examinationRegulation" -> er
+        "camus" -> c
       )
     )
+  }
+
+  def lecturer() = Action(parse.json).async { r =>
+    implicit val reads: Reads[TmpUser] = Json.reads[TmpUser]
+
+    val lecs = r.body
+      .validate[List[TmpUser]]
+      .get
+      .map(l =>
+        UserDbEntry(
+          l.username,
+          l.firstname,
+          l.lastname,
+          User.LecturerStatus,
+          l.email,
+          Some("???"),
+          Some("?.?"),
+          now,
+          UUID.randomUUID()
+        )
+      )
+
+    Future
+      .sequence(lecs.map(l => userRepo.create(l, Nil)))
+      .map(xs => Ok(Json.toJson(xs)))
   }
 
   def faculties() = textParsingAction.async { r =>
@@ -108,14 +126,22 @@ class DataImportController @Inject() (
   }
 
   def teachingUnits() = textParsingAction.async { r =>
-    createMany(
-      parseCSV(r.body, TeachingUnitJson.format) {
-        case ("number", value)       => JsNumber(value.toInt)
-        case ("label", value)        => JsString(value)
-        case ("abbreviation", value) => JsString(value)
-      },
-      teachingUnitService.create
-    )
+    for {
+      facs <- facultyService.all(false)
+      res <- createMany(
+        parseCSV(r.body, TeachingUnitJson.format) {
+          case ("number", value) =>
+            JsNumber(value.toInt)
+          case ("label", value) =>
+            JsString(value)
+          case ("abbreviation", value) =>
+            JsString(value)
+          case ("faculty", value) =>
+            toJsonID(facs.find(_.number == value.toInt))
+        },
+        teachingUnitService.create
+      )
+    } yield res
   }
 
   def semesters() = textParsingAction.async { r =>
@@ -123,24 +149,32 @@ class DataImportController @Inject() (
       parseCSV(r.body, SemesterJson.format) {
         case ("label", value)        => JsString(value)
         case ("abbreviation", value) => JsString(value)
-        case (_, value) => // camel case rename
-          localDateFormat.writes(LocalDate.parse(value, dayPattern))
+        case (_, value)              => parseDate(value)
       },
       semesterService.create
     )
   }
 
   def rooms() = textParsingAction.async { r =>
-    createMany(
-      parseCSV(
-        r.body,
-        RoomJson.format
-      ) {
-        case ("label", value)        => JsString(value)
-        case ("abbreviation", value) => JsString(value)
-      },
-      roomService.create
-    )
+    for {
+      campus <- campusService.all(false)
+      res <- createMany(
+        parseCSV(
+          r.body,
+          RoomJson.format
+        ) {
+          case ("label", value) =>
+            JsString(value)
+          case ("abbreviation", value) =>
+            JsString(value)
+          case ("campus", value) =>
+            toJsonID(
+              campus.find(_.abbreviation.toLowerCase == value.toLowerCase)
+            )
+        },
+        roomService.create
+      )
+    } yield res
   }
 
   def studyPrograms() = textParsingAction.async { r =>
@@ -148,51 +182,251 @@ class DataImportController @Inject() (
       graduations <- graduationService.all(false)
       tus <- teachingUnitService.all(false)
       res <- createMany(
-        parseCSVWithCustomKeys(r.body, StudyProgramJson.format) {
-          case ("label", value)        => "label" -> JsString(value)
-          case ("abbreviation", value) => "abbreviation" -> JsString(value)
+        parseCSV(r.body, StudyProgramJson.format) {
+          case ("label", value) =>
+            JsString(value)
+          case ("abbreviation", value) =>
+            JsString(value)
           case ("graduation", value) =>
-            "graduation" -> toJsonID(graduations.find(_.label == value))
-          case ("teaching_unit_FK", value) =>
-            "teachingUnit" -> toJsonID(
-              tus.find(_.abbreviation == value)
-            ) // rename ING_FK to ING
+            toJsonID(graduations.find(_.label == value))
+          case ("teachingUnit", value) =>
+            toJsonID(tus.find(_.abbreviation == value))
         },
         studyProgramService.create
       )
     } yield res
   }
 
-  def modules() = textParsingAction.async { r =>
+  def examinationRegulations() = textParsingAction.async { r =>
     for {
-      examRegulations <- examinationRegulationService.all(false)
-      users <- userService.allLecturer()
-    } yield {
-      toResult(parseCSVWithCustomKeys(r.body, ModuleJson.format) {
-        case ("label", value)        => "label" -> JsString(value)
-        case ("abbreviation", value) => "abbreviation" -> JsString(value)
-        case ("examination_regulation", _) => // camel case
-          "examinationRegulation" -> toJsonID(
-            examRegulations.find(_.label == "???")
-          )
-        case ("course_manager", _) => // camel case
-          "courseManager" -> toJsonID(
-            users.find(_.firstname == "???")
-          )
-        case ("description_file_url", _) =>
-          "descriptionUrl" -> JsString("???") // rename
-        case ("ects", value) =>
-          val ects = value match { // apply changes to origin file
-            case "Unknown" => -1
-            case comma if comma.contains(",") =>
-              value.replace(",", ".").toDouble
-            case cp if cp.contains("CP") => cp.replace("CP", "").toDouble
-            case number                  => number.toDouble
-          }
-          "credits" -> JsNumber(ects) // rename
-      })
-    }
+      studyPrograms <- studyProgramService.all(false)
+      graduations <- graduationService.all(false)
+      res <- createMany(
+        parseCSVWithCustomKeys(r.body, ExaminationRegulationJson.format) {
+          case ("number", value) =>
+            "number" -> JsNumber(value.toInt)
+          case ("activation_date", value) =>
+            "start" -> parseDate(value)
+          case ("expiring_date", value) =>
+            "end" -> (if (value == "null") JsNull else parseDate(value))
+          case ("studyProgram", value) =>
+            val Array(sp, g, _) = value.split("_")
+            val grad = graduations.find(_.abbreviation.take(1) == g).get.id
+            "studyProgram" -> toJsonID(
+              studyPrograms.find(s =>
+                s.abbreviation == sp && s.graduationId == grad
+              )
+            )
+        },
+        examinationRegulationService.create
+      )
+    } yield res
   }
+
+  def modules = textParsingAction.async { r =>
+    def toModuleDb(json: ModuleJson) = ModuleDbEntry(
+      json.courseManager,
+      json.label,
+      json.abbreviation,
+      json.credits,
+      json.descriptionUrl,
+      now,
+      UUID.randomUUID
+    )
+
+    def toAssocDb(json: ModuleExaminationRegulationJson) =
+      ModuleExaminationRegulationDbEntry(
+        json.module,
+        json.examinationRegulation,
+        json.mandatory,
+        now,
+        UUID.randomUUID
+      )
+
+    val all = r.body.linesIterator.toVector
+    val header = all.head.split(";")
+    val rows = all.drop(1)
+
+    for {
+      users <- userService.allLecturer()
+      exams <- examinationRegulationService.allAtoms(Map.empty)
+      unknown = users.find(_.username == "???").get
+      dbEntries = rows
+        .map { row =>
+          val cols = row.split(";")
+          header.zip(cols).foldLeft((Json.obj(), List.empty[JsObject])) {
+            case (json, ("id", _)) =>
+              json
+            case (json, ("po", "Unknown")) =>
+              json
+            case ((module, assocs), (key, value)) =>
+              key match {
+                case "label" =>
+                  (module + (key -> JsString(value)), assocs)
+                case "abbreviation" =>
+                  (module + (key -> JsString(value)), assocs)
+                case "courseManager" =>
+                  val user =
+                    if (value == "UnknownFk") unknown
+                    else
+                      users.find(
+                        _.username.toLowerCase == value.toLowerCase
+                      ) getOrElse unknown
+                  (module + (key -> toJsonID(Some(user))), assocs)
+                case "descriptionUrl" =>
+                  (module + (key -> JsString("???")), assocs)
+                case "credits" =>
+                  (module + (key -> parseCredits(value)), assocs)
+                case "po" =>
+                  val xs = value
+                    .split(",")
+                    .map { po =>
+                      val Array(sp, g, pon) = po.split("_")
+                      val exam = exams
+                        .find(e =>
+                          e.studyProgram.abbreviation == sp &&
+                            e.studyProgram.graduation.abbreviation.head == g.head &&
+                            e.number == pon.toInt
+                        )
+                        .get
+                      Json.obj(
+                        "module" -> "???",
+                        "examinationRegulation" -> exam.id,
+                        "mandatory" -> false
+                      )
+                    }
+                    .toList
+                  (module, assocs ::: xs)
+              }
+          }
+        }
+        .filter(_._2.nonEmpty)
+        .map { case (moduleJson, assocs) =>
+          val module = moduleJson.validate[ModuleJson].map(toModuleDb).get
+          (
+            module,
+            assocs
+              .map(a =>
+                a.copy(a.value.map { case (k, v) =>
+                  val newValue =
+                    if (k == "module") JsString(module.id.toString) else v
+                  k -> newValue
+                })
+              )
+              .map(
+                _.validate[ModuleExaminationRegulationJson]
+                  .map(toAssocDb)
+                  .get
+              )
+          )
+        }
+      modules <- Future.sequence(
+        dbEntries.map(e => moduleRepository.create(e._1, Nil))
+      )
+      assocs <- Future.sequence(
+        dbEntries
+          .flatMap(_._2)
+          .map(moduleExaminationRegulationRepository.create(_, Nil))
+      )
+    } yield Ok(
+      Json.obj(
+        "modules" -> modules,
+        "assocs" -> assocs
+      )
+    )
+  }
+
+  def subModules() = textParsingAction.async { r =>
+    for {
+      modules <- moduleService.all(false)
+      magicID = UUID.randomUUID()
+      subModuleJson = parseCSV2(r.body, SubModuleJson.format) {
+        case ("label", value)               => List(JsString(value))
+        case ("abbreviation", value)        => List(JsString(value))
+        case ("recommendedSemester", value) => List(JsNumber(value.toInt))
+        case ("credits", value)             => List(parseCredits(value))
+        case ("descriptionUrl", _)          => List(JsString("???"))
+        case ("language", value)            => List(JsString(Language(value).toString))
+        case ("season", value)              => List(JsString(Season(value).toString))
+        case ("module", value) =>
+          List(
+            JsString(
+              modules
+                .find(_.abbreviation == value)
+                .map(_.id)
+                .getOrElse(magicID)
+                .toString
+            )
+          )
+        case _ => Nil
+      }.get._2
+        .filterNot(_.module == magicID)
+      subModules <- Future.sequence(
+        subModuleJson.map(subModuleService.create)
+      )
+    } yield Ok(Json.toJson(subModules))
+  }
+
+  def courses() = textParsingAction.async { r =>
+    for {
+      lecturer <- userService.allLecturer()
+      semesters <- semesterService.all(false)
+      subModules <- subModuleService.all(false)
+      res <- createMany(
+        parseCSV(r.body, CourseJson.format) {
+          case ("lecturer", value) =>
+            toJsonID(lecturer.find(_.username == value))
+          case ("semester", value) =>
+            toJsonID(semesters.find(_.abbreviation == value))
+          case ("subModule", value) =>
+            toJsonID(subModules.find(_.abbreviation == value))
+          case ("interval", value)   => JsString(value)
+          case ("courseType", value) => JsString(value)
+        },
+        courseService.create
+      )
+    } yield res
+  }
+
+  def schedules() = textParsingAction.async { r =>
+    for {
+      rooms <- roomService.all(false)
+      res <- createMany(
+        parseCSV(r.body, ScheduleJson.format) {
+          case ("course", value) =>
+            JsString(value)
+          case ("moduleExaminationRegulation", value) =>
+            JsString(value)
+          case ("room", value) =>
+            toJsonID(rooms.find(_.abbreviation == value))
+          case ("date", value) =>
+            parseDate(value)
+          case ("start", value) =>
+            parseTime(value)
+          case ("end", value) =>
+            parseTime(value)
+        },
+        scheduleService.create
+      )
+    } yield res
+  }
+
+  private def parseCredits(value: String): JsValue = {
+    val ects = value match { // apply changes to origin file
+      case "Unknown" => -1
+      case comma if comma.contains(",") =>
+        value.replace(",", ".").toDouble
+      case cp if cp.contains("CP") => cp.replace("CP", "").toDouble
+      case number                  => number.toDouble
+    }
+    JsNumber(ects)
+  }
+
+  private def parseDate(str: String): JsValue =
+    localDateFormat.writes(LocalDate.parse(str, datePattern))
+
+  private def parseTime(str: String): JsValue =
+    localTimeFormat.writes(LocalTime.parse(str, timePattern))
 
   private def textParsingAction = Action(
     parse.byteString.map(
@@ -235,10 +469,20 @@ class DataImportController @Inject() (
   private def parseCSV[A](body: String, reads: Reads[A])(
       f: (String, String) => JsValue
   ): JsResult[(JsArray, Seq[A])] =
-    parseCSVWithCustomKeys(body, reads)((k, v) => k -> f(k, v))
+    parseCSV2(body, reads)((k, v) => List(f(k, v)))
+
+  private def parseCSV2[A](body: String, reads: Reads[A])(
+      f: (String, String) => List[JsValue]
+  ): JsResult[(JsArray, Seq[A])] =
+    parseCSVWithCustomKeys2(body, reads)((k, v) => f(k, v).map(k -> _))
 
   private def parseCSVWithCustomKeys[A](body: String, reads: Reads[A])(
       f: (String, String) => (String, JsValue)
+  ): JsResult[(JsArray, Seq[A])] =
+    parseCSVWithCustomKeys2(body, reads)((k, v) => List(f(k, v)))
+
+  private def parseCSVWithCustomKeys2[A](body: String, reads: Reads[A])(
+      f: (String, String) => List[(String, JsValue)]
   ): JsResult[(JsArray, Seq[A])] = {
     val all = body.linesIterator.toVector
     val header = all.head.split(";")
@@ -250,7 +494,9 @@ class DataImportController @Inject() (
         case (json, (key, _)) if key == "id" =>
           json
         case (json, (key, value)) =>
-          json.+(f(key, value))
+          f(key, value).foldLeft(json) { case (acc, j) =>
+            acc + j
+          }
       }
     }
 

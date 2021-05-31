@@ -5,7 +5,6 @@ import play.api.libs.json.{Json, OFormat}
 import java.util.UUID
 
 case class ModuleJson(
-    examinationRegulation: UUID,
     courseManager: UUID,
     label: String,
     abbreviation: String,

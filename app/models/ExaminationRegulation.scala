@@ -1,8 +1,14 @@
 package models
 
 import database.SQLDateConverter
-import database.tables.ExaminationRegulationDbEntry
+import database.tables.{
+  ExaminationRegulationDbEntry,
+  GraduationDbEntry,
+  StudyProgramDBEntry,
+  TeachingUnitDbEntry
+}
 import date.LocalDateFormat
+import models.StudyProgram.StudyProgramAtom
 import org.joda.time.LocalDate
 import play.api.libs.json.{Json, Writes}
 
@@ -11,13 +17,11 @@ import java.util.UUID
 sealed trait ExaminationRegulation extends UniqueEntity {
   def studyProgramId: UUID
 
-  def label: String
-
-  def abbreviation: String
+  def number: Int
 
   def start: LocalDate
 
-  def end: LocalDate
+  def end: Option[LocalDate]
 }
 
 object ExaminationRegulation extends LocalDateFormat with SQLDateConverter {
@@ -35,33 +39,51 @@ object ExaminationRegulation extends LocalDateFormat with SQLDateConverter {
   def apply(db: ExaminationRegulationDbEntry): ExaminationRegulationDefault =
     ExaminationRegulationDefault(
       db.studyProgram,
-      db.label,
-      db.abbreviation,
+      db.number,
       db.start,
-      db.end,
+      db.end.map(toLocalDate),
       db.id
     )
 
   case class ExaminationRegulationDefault(
       studyProgram: UUID,
-      label: String,
-      abbreviation: String,
+      number: Int,
       start: LocalDate,
-      end: LocalDate,
+      end: Option[LocalDate],
       id: UUID
   ) extends ExaminationRegulation {
     override def studyProgramId = studyProgram
   }
 
   case class ExaminationRegulationAtom(
-      studyProgram: StudyProgram,
-      label: String,
-      abbreviation: String,
+      studyProgram: StudyProgramAtom,
+      number: Int,
       start: LocalDate,
-      end: LocalDate,
+      end: Option[LocalDate],
       id: UUID
   ) extends ExaminationRegulation {
     override def studyProgramId = studyProgram.id
+  }
+
+  object ExaminationRegulationAtom {
+    def apply(
+        e: ExaminationRegulationDbEntry,
+        sp: StudyProgramDBEntry,
+        tu: TeachingUnitDbEntry,
+        g: GraduationDbEntry
+    ): ExaminationRegulationAtom = ExaminationRegulationAtom(
+      StudyProgramAtom(
+        TeachingUnit(tu),
+        Graduation(g),
+        sp.label,
+        sp.abbreviation,
+        sp.id
+      ),
+      e.number,
+      e.start,
+      e.end.map(toLocalDate),
+      e.id
+    )
   }
 
 }

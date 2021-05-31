@@ -1,6 +1,7 @@
 package models
 
 import database.tables.ModuleExaminationRegulationDbEntry
+import models.ExaminationRegulation.ExaminationRegulationAtom
 import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
@@ -39,7 +40,7 @@ object ModuleExaminationRegulation {
 
   case class ModuleExaminationRegulationAtom(
       module: Module,
-      examinationRegulation: ExaminationRegulation,
+      examinationRegulation: ExaminationRegulationAtom,
       mandatory: Boolean,
       id: UUID
   ) extends ModuleExaminationRegulation {

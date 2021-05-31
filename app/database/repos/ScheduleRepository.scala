@@ -4,7 +4,7 @@ import database.SQLDateConverter
 import database.repos.filter.{DateStartEndFilter, RoomFilter}
 import database.tables.{ScheduleDbEntry, ScheduleTable}
 import models.Schedule.ScheduleAtom
-import models.{Course, Room, Schedule}
+import models.{Course, ModuleExaminationRegulation, Room, Schedule}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -38,10 +38,19 @@ class ScheduleRepository @Inject() (
       q <- query
       c <- q.courseFk
       r <- q.roomFk
-    } yield (q, c, r)
+      mer <- q.moduleExaminationRegulationFk
+    } yield (q, c, r, mer)
 
-    val action = result.result.map(_.map { case (s, c, r) =>
-      ScheduleAtom(Course(c), Room(r), s.date, s.start, s.end, s.id)
+    val action = result.result.map(_.map { case (s, c, r, mer) =>
+      ScheduleAtom(
+        Course(c),
+        Room(r),
+        ModuleExaminationRegulation(mer),
+        s.date,
+        s.start,
+        s.end,
+        s.id
+      )
     })
 
     db.run(action)

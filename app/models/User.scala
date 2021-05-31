@@ -6,6 +6,7 @@ import play.api.libs.json.{JsError, Json, OFormat}
 import java.util.UUID
 
 sealed trait User extends UniqueEntity {
+  val username: String
   val firstname: String
   val lastname: String
   val status: String
@@ -15,6 +16,7 @@ sealed trait User extends UniqueEntity {
 
 object User {
   def apply(
+      username: String,
       firstname: String,
       lastname: String,
       status: String,
@@ -24,12 +26,21 @@ object User {
       id: UUID
   ): User = status match {
     case StudentStatus =>
-      Student(firstname, lastname, email, id)
+      Student(username, firstname, lastname, email, id)
     case LecturerStatus =>
-      Lecturer(firstname, lastname, email, title.get, initials.get, id)
+      Lecturer(
+        username,
+        firstname,
+        lastname,
+        email,
+        title.get,
+        initials.get,
+        id
+      )
   }
 
   def apply(db: UserDbEntry): User = apply(
+    db.username,
     db.firstname,
     db.lastname,
     db.status,
@@ -65,6 +76,7 @@ object User {
   implicit val formatStudent: OFormat[Student] = Json.format[Student]
 
   case class Lecturer(
+      username: String,
       firstname: String,
       lastname: String,
       email: String,
@@ -76,6 +88,7 @@ object User {
   }
 
   case class Student(
+      username: String,
       firstname: String,
       lastname: String,
       email: String,

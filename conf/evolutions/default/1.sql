@@ -45,10 +45,9 @@ create table examination_regulation
     "id"            uuid PRIMARY KEY,
     "last_modified" timestamp not null,
     "study_program" uuid      not null,
-    "label"         text      not null,
-    "abbreviation"  text      not null,
+    "number"        integer   not null,
     "start"         date      not null,
-    "end"           date      not null,
+    "end"           date null,
     FOREIGN KEY (study_program) REFERENCES study_program (id)
 );
 
@@ -56,6 +55,7 @@ create table people
 (
     "id"            uuid PRIMARY KEY,
     "last_modified" timestamp not null,
+    "username"      text      not null,
     "firstname"     text      not null,
     "lastname"      text      not null,
     "status"        text      not null,
@@ -66,15 +66,13 @@ create table people
 
 create table module
 (
-    "id"                     uuid PRIMARY KEY,
-    "last_modified"          timestamp not null,
-    "examination_regulation" uuid      not null,
-    "course_manager"         uuid      not null,
-    "label"                  text      not null,
-    "abbreviation"           text      not null,
-    "ects"                   decimal   not null,
-    "description_file_url"   text      not null,
-    FOREIGN KEY (examination_regulation) REFERENCES examination_regulation (id),
+    "id"                   uuid PRIMARY KEY,
+    "last_modified"        timestamp not null,
+    "course_manager"       uuid      not null,
+    "label"                text      not null,
+    "abbreviation"         text      not null,
+    "ects"                 decimal   not null,
+    "description_file_url" text      not null,
     FOREIGN KEY (course_manager) REFERENCES people (id)
 );
 
@@ -99,8 +97,8 @@ create table submodule
     "recommended_semester" integer   not null,
     "description_file_url" text      not null,
     "ects"                 decimal   not null,
-    "language"             integer   not null,
-    "season"               integer   not null,
+    "language"             text      not null,
+    "season"               text      not null,
     FOREIGN KEY (module) REFERENCES module (id)
 );
 
@@ -150,15 +148,17 @@ create table room
 
 create table schedule
 (
-    "id"            uuid PRIMARY KEY,
-    "last_modified" timestamp not null,
-    "course"        uuid      not null,
-    "room"          uuid      not null,
-    "date"          date      not null,
-    "start"         time without time zone not null,
-    "end"           time without time zone not null,
+    "id"                            uuid PRIMARY KEY,
+    "last_modified"                 timestamp not null,
+    "course"                        uuid      not null,
+    "room"                          uuid      not null,
+    "module_examination_regulation" uuid      not null,
+    "date"                          date      not null,
+    "start"                         time without time zone not null,
+    "end"                           time without time zone not null,
     FOREIGN KEY (course) REFERENCES course (id),
-    FOREIGN KEY (room) REFERENCES room (id)
+    FOREIGN KEY (room) REFERENCES room (id),
+    FOREIGN KEY (module_examination_regulation) REFERENCES module_examination_regulation (id)
 );
 
 create table student_schedule

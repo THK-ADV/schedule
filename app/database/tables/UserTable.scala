@@ -8,6 +8,7 @@ import java.sql.Timestamp
 import java.util.UUID
 
 case class UserDbEntry(
+    username: String,
     firstname: String,
     lastname: String,
     status: String,
@@ -22,6 +23,8 @@ class UserTable(tag: Tag)
     extends Table[UserDbEntry](tag, "people")
     with UniqueEntityColumn {
 
+  def username = column[String]("username")
+
   def firstname = column[String]("firstname")
 
   def lastname = column[String]("lastname")
@@ -35,6 +38,7 @@ class UserTable(tag: Tag)
   def initials = column[Option[String]]("initials")
 
   def * = (
+    username,
     firstname,
     lastname,
     status,
@@ -51,6 +55,7 @@ class UserTable(tag: Tag)
           String,
           String,
           String,
+          String,
           Option[String],
           Option[String],
           Timestamp,
@@ -58,6 +63,7 @@ class UserTable(tag: Tag)
       )
   ) => UserDbEntry = {
     case (
+          username,
           firstname,
           lastname,
           status,
@@ -68,6 +74,7 @@ class UserTable(tag: Tag)
           id
         ) =>
       UserDbEntry(
+        username,
         firstname,
         lastname,
         status,
@@ -85,6 +92,7 @@ class UserTable(tag: Tag)
         String,
         String,
         String,
+        String,
         Option[String],
         Option[String],
         Timestamp,
@@ -94,6 +102,7 @@ class UserTable(tag: Tag)
     a =>
       Option(
         (
+          a.username,
           a.firstname,
           a.lastname,
           a.status,

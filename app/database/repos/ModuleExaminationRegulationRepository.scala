@@ -1,11 +1,20 @@
 package database.repos
 
+import database.SQLDateConverter
 import database.tables.{
   ModuleExaminationRegulationDbEntry,
   ModuleExaminationRegulationTable
 }
+import models.ExaminationRegulation.ExaminationRegulationAtom
 import models.ModuleExaminationRegulation.ModuleExaminationRegulationAtom
-import models.{ExaminationRegulation, Module, ModuleExaminationRegulation}
+import models.StudyProgram.StudyProgramAtom
+import models.{
+  ExaminationRegulation,
+  Graduation,
+  Module,
+  ModuleExaminationRegulation,
+  TeachingUnit
+}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -22,7 +31,8 @@ class ModuleExaminationRegulationRepository @Inject() (
       ModuleExaminationRegulationDbEntry,
       ModuleExaminationRegulationTable
     ]
-    with FilterValueParser {
+    with FilterValueParser
+    with SQLDateConverter {
 
   import profile.api._
 
@@ -47,12 +57,15 @@ class ModuleExaminationRegulationRepository @Inject() (
       q <- query
       m <- q.moduleFk
       e <- q.examinationRegulationFk
-    } yield (q, m, e)
+      sp <- e.studyProgramFk
+      g <- sp.graduationFk
+      tu <- sp.teachingUnitFk
+    } yield (q, m, e, sp, g, tu)
 
-    val action = result.result.map(_.map { case (q, m, e) =>
+    val action = result.result.map(_.map { case (q, m, e, sp, g, tu) =>
       ModuleExaminationRegulationAtom(
         Module(m),
-        ExaminationRegulation(e),
+        ExaminationRegulationAtom(e, sp, tu, g),
         q.mandatory,
         q.id
       )

@@ -18,6 +18,7 @@ class ScheduleService @Inject() (val repo: ScheduleRepository)
     ScheduleDbEntry(
       json.course,
       json.room,
+      json.moduleExaminationRegulationId,
       json.date,
       json.start,
       json.end,

@@ -37,14 +37,6 @@ deployDockerImages() {
     docker-compose up -d
 }
 
-uploadToServer() {
-  echo uploading to server...
-
-  scp ${packed_img_name} $1 &&
-    rm ${packed_img_name} &&
-    echo image uploaded
-}
-
 case "$1" in
 "local")
   clearDockerImages &&
@@ -56,8 +48,7 @@ case "$1" in
   clearDockerImages &&
     buildApp &&
     buildDockerImage &&
-    packBackend &&
-    uploadToServer $2
+    packBackend
   ;;
 *)
   echo expected stage or local, but was $1

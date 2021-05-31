@@ -1,7 +1,7 @@
 package database.cols
 
 import database.tables.CourseTable
-import models.{Language, Season}
+import models.{CourseInterval, CourseType, Language, Season}
 import slick.jdbc.PostgresProfile.api._
 
 import java.util.UUID
@@ -12,10 +12,10 @@ trait CourseColumn {
 
   def course(id: UUID): Rep[Boolean] = course === id
 
-  def courseType(ct: String) =
+  def courseType(ct: CourseType) =
     courseFk.filter(_.hasCourseType(ct)).exists
 
-  def interval(i: String) =
+  def interval(i: CourseInterval) =
     courseFk.filter(_.hasInterval(i)).exists
 
   def subModule(id: UUID) =
