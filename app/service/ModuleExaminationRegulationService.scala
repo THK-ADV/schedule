@@ -40,8 +40,8 @@ class ModuleExaminationRegulationService @Inject() (
 
   override protected def uniqueCols(json: ModuleExaminationRegulationJson) =
     List(
-      _.hasModule(json.module),
-      _.hasExaminationRegulation(json.examinationRegulation),
+      _.isModule(json.module),
+      _.examinationRegulation(json.examinationRegulation),
       _.isMandatory(json.mandatory)
     )
 

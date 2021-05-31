@@ -16,5 +16,5 @@ trait SemesterColumn {
       onDelete = ForeignKeyAction.Restrict
     )
 
-  def hasSemester(id: UUID) = semester === id
+  def semester(id: UUID): Rep[Boolean] = semester === id
 }

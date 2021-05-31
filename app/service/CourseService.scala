@@ -35,9 +35,9 @@ class CourseService @Inject() (val repo: CourseRepository)
   override protected def validate(json: CourseJson) = None
 
   override protected def uniqueCols(json: CourseJson) = List(
-    _.hasSemester(json.semester),
-    _.hasUser(json.lecturer),
-    _.hasSubModule(json.subModule),
+    _.semester(json.semester),
+    _.user(json.lecturer),
+    _.subModule(json.subModule),
     _.hasCourseType(json.courseType)
   )
 }

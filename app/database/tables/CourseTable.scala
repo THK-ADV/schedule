@@ -36,7 +36,11 @@ class CourseTable(tag: Tag)
 
   def courseType = column[String]("course_type")
 
-  def hasCourseType(t: CourseType) = courseType === t.toString
+  def hasCourseType(t: CourseType) =
+    courseType === t.toString
+
+  def hasInterval(i: CourseInterval) =
+    interval === i.toString
 
   def * = (
     user,

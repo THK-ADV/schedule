@@ -1,20 +1,14 @@
 package database.repos
 
 import database.SQLDateConverter
+import database.repos.filter.{BooleanParser, UUIDParser}
 import database.tables.{
   ModuleExaminationRegulationDbEntry,
   ModuleExaminationRegulationTable
 }
 import models.ExaminationRegulation.ExaminationRegulationAtom
 import models.ModuleExaminationRegulation.ModuleExaminationRegulationAtom
-import models.StudyProgram.StudyProgramAtom
-import models.{
-  ExaminationRegulation,
-  Graduation,
-  Module,
-  ModuleExaminationRegulation,
-  TeachingUnit
-}
+import models.{Module, ModuleExaminationRegulation}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -31,17 +25,18 @@ class ModuleExaminationRegulationRepository @Inject() (
       ModuleExaminationRegulationDbEntry,
       ModuleExaminationRegulationTable
     ]
-    with FilterValueParser
-    with SQLDateConverter {
+    with UUIDParser
+    with SQLDateConverter
+    with BooleanParser {
 
   import profile.api._
 
   protected val tableQuery = TableQuery[ModuleExaminationRegulationTable]
 
   override protected def makeFilter = {
-    case ("module", vs) => t => parseUUID(vs, t.hasModule)
+    case ("module", vs) => t => parseUUID(vs, t.isModule)
     case ("examinationRegulation", vs) =>
-      t => parseUUID(vs, t.hasExaminationRegulation)
+      t => parseUUID(vs, t.examinationRegulation)
     case ("mandatory", vs) =>
       t => parseBoolean(vs, t.isMandatory)
   }

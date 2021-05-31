@@ -1,5 +1,6 @@
 package database.repos
 
+import database.repos.filter.UUIDParser
 import database.tables.{StudentScheduleDbEntry, StudentScheduleTable}
 import models.StudentSchedule.StudentScheduleAtom
 import models.{Schedule, StudentSchedule, User}
@@ -19,14 +20,14 @@ class StudentScheduleRepository @Inject() (
       StudentScheduleDbEntry,
       StudentScheduleTable
     ]
-    with FilterValueParser {
+    with UUIDParser {
 
   import profile.api._
 
   protected val tableQuery = TableQuery[StudentScheduleTable]
 
   override protected def makeFilter = {
-    case ("student", vs)  => t => parseUUID(vs, t.hasUser)
+    case ("student", vs)  => t => parseUUID(vs, t.user)
     case ("schedule", vs) => t => parseUUID(vs, t.hasSchedule)
   }
 

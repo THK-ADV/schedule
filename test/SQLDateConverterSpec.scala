@@ -2,6 +2,7 @@ import database.SQLDateConverter
 import org.joda.time.{LocalDate, LocalTime}
 
 import java.sql.{Date, Time}
+import scala.util.Success
 
 class SQLDateConverterSpec extends UnitSpec with SQLDateConverter {
 
@@ -22,6 +23,16 @@ class SQLDateConverterSpec extends UnitSpec with SQLDateConverter {
 
       toLocalTime(sqlTime) shouldBe localTime
       toSQLTime(localTime) shouldBe sqlTime
+    }
+
+    "convert String to SQLDate" in {
+      val dateStr = "2021-01-01"
+      toSQLDate(dateStr) shouldBe Success(Date.valueOf(dateStr))
+    }
+
+    "convert String to SQLTime" in {
+      val timeStr = "13:37:00"
+      toSQLTime(timeStr) shouldBe Success(Time.valueOf(timeStr))
     }
   }
 }

@@ -9,7 +9,7 @@ trait ModuleColumn {
   self: Table[_] =>
   def module = column[UUID]("module")
 
-  def hasModule(id: UUID) = module === id
+  def isModule(id: UUID) = module === id
 
   def moduleFk =
     foreignKey("module", module, TableQuery[ModuleTable])(

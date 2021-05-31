@@ -1,5 +1,6 @@
 package database.repos
 
+import database.repos.filter.UUIDParser
 import database.tables.{StudyProgramDBEntry, StudyProgramTable}
 import models.StudyProgram.StudyProgramAtom
 import models.{Graduation, StudyProgram, TeachingUnit}
@@ -15,7 +16,7 @@ class StudyProgramRepository @Inject() (
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
     with Repository[StudyProgram, StudyProgramDBEntry, StudyProgramTable]
-    with FilterValueParser {
+    with UUIDParser {
 
   import profile.api._
 

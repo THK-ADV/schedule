@@ -1,5 +1,6 @@
 package database.repos
 
+import database.repos.filter.{AbbreviationFilter, CampusFilter, LabelFilter}
 import database.tables.{RoomDbEntry, RoomTable}
 import models.Room.RoomAtom
 import models.{Campus, Room}
@@ -15,17 +16,16 @@ class RoomRepository @Inject() (
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
     with Repository[Room, RoomDbEntry, RoomTable]
-    with FilterValueParser {
+    with AbbreviationFilter[RoomTable]
+    with LabelFilter[RoomTable]
+    with CampusFilter[RoomTable] {
 
   import profile.api._
 
   protected val tableQuery = TableQuery[RoomTable]
 
-  override protected def makeFilter = {
-    case ("label", vs)        => t => t.hasLabel(vs.head)
-    case ("abbreviation", vs) => t => t.hasAbbreviation(vs.head)
-    case ("campus", vs)       => t => parseUUID(vs, t.hasCampus)
-  }
+  override protected def makeFilter =
+    PartialFunction.fromFunction(abbrev orElse label orElse campus)
 
   override protected def retrieveAtom(
       query: Query[RoomTable, RoomDbEntry, Seq]

@@ -1,5 +1,6 @@
 package database.repos
 
+import database.repos.filter.UUIDParser
 import database.tables.{TeachingUnitDbEntry, TeachingUnitTable}
 import models.TeachingUnit
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
@@ -14,7 +15,7 @@ class TeachingUnitRepository @Inject() (
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
     with Repository[TeachingUnit, TeachingUnitDbEntry, TeachingUnitTable]
-    with FilterValueParser {
+    with UUIDParser {
 
   import profile.api._
 

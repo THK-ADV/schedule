@@ -3,8 +3,11 @@ package database
 import org.joda.time.{LocalDate, LocalTime}
 
 import java.sql.{Date, Time}
+import scala.language.implicitConversions
+import scala.util.Try
 
 trait SQLDateConverter {
+
   import date.DateFormatPattern.{dateFormatter, timeFormatter}
 
   implicit def toLocalDate(date: Date): LocalDate = new LocalDate(date.getTime)
@@ -16,4 +19,12 @@ trait SQLDateConverter {
 
   implicit def toSQLTime(time: LocalTime): Time =
     Time.valueOf(time.toString(timeFormatter))
+
+  implicit def toSQLTime(str: String): Try[Time] =
+    Try(timeFormatter.parseMillis(str))
+      .map(millis => new Time(millis))
+
+  implicit def toSQLDate(str: String): Try[Date] =
+    Try(dateFormatter.parseMillis(str))
+      .map(millis => new Date(millis))
 }

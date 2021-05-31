@@ -43,7 +43,7 @@ class SubModuleService @Inject() (val repo: SubModuleRepository)
   override protected def uniqueCols(json: SubModuleJson) =
     List(
       _.hasLabel(json.label),
-      _.hasModule(json.module)
+      _.isModule(json.module)
     )
 
   override protected def validate(json: SubModuleJson) = None

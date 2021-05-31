@@ -49,7 +49,7 @@ class ExaminationRegulationService @Inject() (
   override protected def uniqueCols(
       json: ExaminationRegulationJson
   ) = List(
-    _.hasStudyProgram(json.studyProgram),
+    _.studyProgram(json.studyProgram),
     _.hasNumber(json.number)
   )
 

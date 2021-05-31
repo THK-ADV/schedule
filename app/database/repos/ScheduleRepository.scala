@@ -1,6 +1,12 @@
 package database.repos
 
 import database.SQLDateConverter
+import database.repos.filter.{
+  CourseFilter,
+  DateStartEndFilter,
+  ModuleExaminationRegulationFilter,
+  RoomFilter
+}
 import database.tables.{ScheduleDbEntry, ScheduleTable}
 import models.Schedule.ScheduleAtom
 import models.{Course, ModuleExaminationRegulation, Room, Schedule}
@@ -17,16 +23,20 @@ class ScheduleRepository @Inject() (
 ) extends HasDatabaseConfigProvider[JdbcProfile]
     with Repository[Schedule, ScheduleDbEntry, ScheduleTable]
     with SQLDateConverter
-    with FilterValueParser {
+    with RoomFilter[ScheduleTable]
+    with DateStartEndFilter[ScheduleTable]
+    with CourseFilter[ScheduleTable]
+    with ModuleExaminationRegulationFilter[ScheduleTable] {
 
   import profile.api._
 
   protected val tableQuery = TableQuery[ScheduleTable]
 
-  override protected def makeFilter = {
-    case ("course", vs) => t => parseUUID(vs, t.hasCourse)
-    case ("room", vs)   => t => parseUUID(vs, t.hasRoom)
-  }
+  val filter =
+    List(allModuleExaminationRegulations, allCourse, dateStartEnd, allRooms)
+
+  override protected val makeFilter =
+    if (filter.isEmpty) PartialFunction.empty else filter.reduce(_ orElse _)
 
   override protected def retrieveAtom(
       query: Query[ScheduleTable, ScheduleDbEntry, Seq]

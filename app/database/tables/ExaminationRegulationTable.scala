@@ -29,6 +29,12 @@ class ExaminationRegulationTable(tag: Tag)
   def onStart(date: Date): Rep[Boolean] =
     start === date
 
+  def sinceStart(date: Date): Rep[Boolean] =
+    start >= date
+
+  def untilEnd(date: Date): Rep[Boolean] =
+    (end <= date) getOrElse false
+
   def onEnd(date: Date): Rep[Boolean] =
     (end === date) getOrElse false
 

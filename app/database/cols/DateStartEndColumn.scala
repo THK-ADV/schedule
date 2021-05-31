@@ -1,12 +1,10 @@
 package database.cols
 
-import database.SQLDateConverter
-import org.joda.time.{LocalDate, LocalTime}
 import slick.jdbc.PostgresProfile.api._
 
 import java.sql.{Date, Time}
 
-trait DateStartEndColumn extends SQLDateConverter {
+trait DateStartEndColumn {
   self: Table[_] =>
 
   def date = column[Date]("date")
@@ -15,12 +13,24 @@ trait DateStartEndColumn extends SQLDateConverter {
 
   def end = column[Time]("end")
 
-  def onStart(localTime: LocalTime): Rep[Boolean] =
-    start === toSQLTime(localTime)
+  def onStart(time: Time): Rep[Boolean] =
+    this.start === time
 
-  def onEnd(localTime: LocalTime): Rep[Boolean] =
-    end === toSQLTime(localTime)
+  def onEnd(time: Time): Rep[Boolean] =
+    this.end === time
 
-  def onDate(localDate: LocalDate): Rep[Boolean] =
-    date === toSQLDate(localDate)
+  def onDate(date: Date): Rep[Boolean] =
+    this.date === date
+
+  def sinceStart(start: Time): Rep[Boolean] =
+    this.start >= start
+
+  def untilEnd(end: Time): Rep[Boolean] =
+    this.end <= end
+
+  def sinceDate(date: Date): Rep[Boolean] =
+    this.date >= date
+
+  def untilDate(date: Date): Rep[Boolean] =
+    this.date <= date
 }
