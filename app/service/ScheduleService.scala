@@ -37,7 +37,7 @@ class ScheduleService @Inject() (val repo: ScheduleRepository)
 
   override protected def uniqueCols(json: ScheduleJson) =
     List(
-      _.hasCourse(json.course),
+      _.course(json.course),
       _.room(json.room),
       _.onDate(json.date),
       _.onStart(json.start),

@@ -20,4 +20,10 @@ trait UserColumn {
 
   def hasUser(id: UUID): Rep[Boolean] =
     user === id
+
+  def hasFirstname(name: String) =
+    userFk.filter(_.firstname === name).exists
+
+  def hasLastname(name: String) =
+    userFk.filter(_.lastname === name).exists
 }
