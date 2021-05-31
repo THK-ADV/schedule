@@ -148,15 +148,17 @@ create table room
 
 create table schedule
 (
-    "id"            uuid PRIMARY KEY,
-    "last_modified" timestamp not null,
-    "course"        uuid      not null,
-    "room"          uuid      not null,
-    "date"          date      not null,
-    "start"         time without time zone not null,
-    "end"           time without time zone not null,
+    "id"                            uuid PRIMARY KEY,
+    "last_modified"                 timestamp not null,
+    "course"                        uuid      not null,
+    "room"                          uuid      not null,
+    "module_examination_regulation" uuid      not null,
+    "date"                          date      not null,
+    "start"                         time without time zone not null,
+    "end"                           time without time zone not null,
     FOREIGN KEY (course) REFERENCES course (id),
-    FOREIGN KEY (room) REFERENCES room (id)
+    FOREIGN KEY (room) REFERENCES room (id),
+    FOREIGN KEY (module_examination_regulation) REFERENCES module_examination_regulation (id)
 );
 
 create table student_schedule
