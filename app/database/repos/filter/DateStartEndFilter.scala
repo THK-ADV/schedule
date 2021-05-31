@@ -4,18 +4,10 @@ import database.cols.DateStartEndColumn
 import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
-import java.sql.{Date, Time}
-import scala.util.Try
-
-trait DateStartEndFilter[T <: DateStartEndColumn] {
+trait DateStartEndFilter[T <: DateStartEndColumn] extends DateTimeParser {
   self: HasDatabaseConfigProvider[JdbcProfile] =>
+
   import profile.api._
-
-  def parseDate(str: Seq[String], f: Date => Rep[Boolean]): Rep[Boolean] =
-    Try(Date.valueOf(str.head)).map(f).getOrElse(false)
-
-  def parseTime(str: Seq[String], f: Time => Rep[Boolean]): Rep[Boolean] =
-    Try(Time.valueOf(str.head)).map(f).getOrElse(false)
 
   def dateStartEnd
       : PartialFunction[(String, Seq[String]), T => Rep[Boolean]] = {

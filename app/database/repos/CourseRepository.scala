@@ -1,5 +1,6 @@
 package database.repos
 
+import database.repos.filter.UUIDParser
 import database.tables.{CourseDbEntry, CourseTable}
 import models.Course.CourseAtom
 import models.{Course, Semester, SubModule, User}
@@ -15,16 +16,16 @@ class CourseRepository @Inject() (
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
     with Repository[Course, CourseDbEntry, CourseTable]
-    with FilterValueParser {
+    with UUIDParser {
 
   import profile.api._
 
   protected val tableQuery = TableQuery[CourseTable]
 
   override protected def makeFilter = {
-    case ("lecturer", vs)  => t => parseUUID(vs, t.hasUser)
-    case ("semester", vs)  => t => parseUUID(vs, t.hasSemester)
-    case ("subModule", vs) => t => parseUUID(vs, t.hasSubModule)
+    case ("lecturer", vs)  => t => parseUUID(vs, t.user)
+    case ("semester", vs)  => t => parseUUID(vs, t.semester)
+    case ("subModule", vs) => t => parseUUID(vs, t.subModule)
   }
 
   override protected def retrieveAtom(

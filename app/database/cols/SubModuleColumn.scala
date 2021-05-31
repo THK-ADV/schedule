@@ -17,7 +17,7 @@ trait SubModuleColumn {
       onDelete = ForeignKeyAction.Restrict
     )
 
-  def hasSubModule(id: UUID) = subModule === id
+  def subModule(id: UUID): Rep[Boolean] = subModule === id
 
   def subModuleLabel(label: String) =
     subModuleFk.filter(_.hasLabel(label)).exists
@@ -35,5 +35,5 @@ trait SubModuleColumn {
     subModuleFk.filter(_.hasCredits(credits)).exists
 
   def subModuleModule(id: UUID) =
-    subModuleFk.filter(_.hasModule(id)).exists
+    subModuleFk.filter(_.isModule(id)).exists
 }

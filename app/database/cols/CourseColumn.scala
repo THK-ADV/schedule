@@ -15,11 +15,11 @@ trait CourseColumn {
   def courseType(ct: CourseType) =
     courseFk.filter(_.hasCourseType(ct)).exists
 
-  def interval(i: CourseInterval) =
+  def courseInterval(i: CourseInterval) =
     courseFk.filter(_.hasInterval(i)).exists
 
   def subModule(id: UUID) =
-    courseFk.filter(_.hasSubModule(id)).exists
+    courseFk.filter(_.subModule(id)).exists
 
   def subModuleLabel(label: String) =
     courseFk.filter(_.subModuleLabel(label)).exists
@@ -40,7 +40,13 @@ trait CourseColumn {
     courseFk.filter(_.subModuleModule(id)).exists
 
   def lecturer(id: UUID) =
-    courseFk.filter(_.hasUser(id)).exists
+    courseFk.filter(_.user(id)).exists
+
+  def lecturerUsername(name: String) =
+    courseFk.filter(_.hasUsername(name)).exists
+
+  def lecturerStatus(status: String) =
+    courseFk.filter(_.hasStatus(status)).exists
 
   def lecturerFirstname(name: String) =
     courseFk.filter(_.hasFirstname(name)).exists
@@ -49,7 +55,7 @@ trait CourseColumn {
     courseFk.filter(_.hasLastname(name)).exists
 
   def semester(id: UUID) =
-    courseFk.filter(_.hasSemester(id)).exists
+    courseFk.filter(_.semester(id)).exists
 
   def courseFk =
     foreignKey("course", course, TableQuery[CourseTable])(

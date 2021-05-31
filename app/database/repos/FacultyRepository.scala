@@ -1,5 +1,6 @@
 package database.repos
 
+import database.repos.filter.IntParser
 import database.tables.{FacultyDbEntry, FacultyTable}
 import models.Faculty
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
@@ -14,7 +15,7 @@ class FacultyRepository @Inject() (
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
     with Repository[Faculty, FacultyDbEntry, FacultyTable]
-    with FilterValueParser {
+    with IntParser {
 
   import profile.api._
 

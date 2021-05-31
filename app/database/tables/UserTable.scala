@@ -37,6 +37,18 @@ class UserTable(tag: Tag)
 
   def initials = column[Option[String]]("initials")
 
+  def hasUsername(name: String) =
+    username.toLowerCase === name.toLowerCase
+
+  def hasFirstname(name: String) =
+    firstname.toLowerCase === name.toLowerCase
+
+  def hasLastname(name: String) =
+    lastname.toLowerCase === name.toLowerCase
+
+  def hasStatus(status: String) =
+    this.status.toLowerCase === status.toLowerCase
+
   def * = (
     username,
     firstname,

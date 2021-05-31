@@ -18,12 +18,18 @@ trait UserColumn {
       onDelete = ForeignKeyAction.Restrict
     )
 
-  def hasUser(id: UUID): Rep[Boolean] =
+  def user(id: UUID): Rep[Boolean] =
     user === id
 
+  def hasUsername(name: String) =
+    userFk.filter(_.hasUsername(name)).exists
+
   def hasFirstname(name: String) =
-    userFk.filter(_.firstname === name).exists
+    userFk.filter(_.hasFirstname(name)).exists
 
   def hasLastname(name: String) =
-    userFk.filter(_.lastname === name).exists
+    userFk.filter(_.hasLastname(name)).exists
+
+  def hasStatus(status: String) =
+    userFk.filter(_.hasStatus(status)).exists
 }

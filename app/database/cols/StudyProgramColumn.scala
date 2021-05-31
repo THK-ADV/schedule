@@ -16,6 +16,18 @@ trait StudyProgramColumn {
       onDelete = ForeignKeyAction.Restrict
     )
 
-  def hasStudyProgram(id: UUID): Rep[Boolean] =
+  def studyProgram(id: UUID): Rep[Boolean] =
     studyProgram === id
+
+  def studyProgramLabel(label: String) =
+    studyProgramFk.filter(_.hasLabel(label)).exists
+
+  def studyProgramAbbreviation(abbrev: String) =
+    studyProgramFk.filter(_.hasAbbreviation(abbrev)).exists
+
+  def studyProgramGraduation(id: UUID) =
+    studyProgramFk.filter(_.hasGraduation(id)).exists
+
+  def studyProgramTeachingUnit(id: UUID) =
+    studyProgramFk.filter(_.hasTeachingUnit(id)).exists
 }

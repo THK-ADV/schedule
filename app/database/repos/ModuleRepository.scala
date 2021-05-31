@@ -1,8 +1,9 @@
 package database.repos
 
+import database.repos.filter.UUIDParser
 import database.tables.{ModuleDbEntry, ModuleTable}
 import models.Module.ModuleAtom
-import models.{ExaminationRegulation, Module, User}
+import models.{Module, User}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -15,7 +16,7 @@ class ModuleRepository @Inject() (
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
     with Repository[Module, ModuleDbEntry, ModuleTable]
-    with FilterValueParser {
+    with UUIDParser {
 
   import profile.api._
 
@@ -25,7 +26,7 @@ class ModuleRepository @Inject() (
     case ("label", vs)         => t => t.hasLabel(vs.head)
     case ("abbreviation", vs)  => t => t.hasAbbreviation(vs.head)
     case ("credits", vs)       => t => t.hasCredits(vs.head.toDouble)
-    case ("courseManager", vs) => t => parseUUID(vs, t.hasUser)
+    case ("courseManager", vs) => t => parseUUID(vs, t.user)
   }
 
   override protected def retrieveAtom(

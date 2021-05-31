@@ -16,7 +16,6 @@ class RoomRepository @Inject() (
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
     with Repository[Room, RoomDbEntry, RoomTable]
-    with FilterValueParser
     with AbbreviationFilter[RoomTable]
     with LabelFilter[RoomTable]
     with CampusFilter[RoomTable] {
