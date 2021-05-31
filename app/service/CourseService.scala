@@ -2,15 +2,19 @@ package service
 
 import database.repos.CourseRepository
 import database.tables.{CourseDbEntry, CourseTable}
+import models.Course.CourseAtom
 import models.{Course, CourseJson}
 import service.abstracts.Service
 
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext
 
 @Singleton
-class CourseService @Inject() (val repo: CourseRepository)
-    extends Service[CourseJson, Course, CourseDbEntry, CourseTable] {
+class CourseService @Inject() (
+    val repo: CourseRepository,
+    implicit val ctx: ExecutionContext
+) extends Service[CourseJson, Course, CourseDbEntry, CourseTable] {
 
   override protected def toUniqueDbEntry(json: CourseJson, id: Option[UUID]) =
     CourseDbEntry(
@@ -40,4 +44,9 @@ class CourseService @Inject() (val repo: CourseRepository)
     _.subModule(json.subModule),
     _.hasCourseType(json.courseType)
   )
+
+  def allAtoms(filter: Map[String, Seq[String]]) =
+    all(filter, atomic = true).map(
+      _.map(_.asInstanceOf[CourseAtom])
+    )
 }

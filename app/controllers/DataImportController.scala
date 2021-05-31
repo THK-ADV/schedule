@@ -40,7 +40,8 @@ class DataImportController @Inject() (
     val moduleExaminationRegulationRepository: ModuleExaminationRegulationRepository,
     val subModuleService: SubModuleService,
     val courseService: CourseService,
-    val scheduleService: ScheduleService
+    val scheduleService: ScheduleService,
+    val moduleExaminationRegulationService: ModuleExaminationRegulationService
 ) extends AbstractController(cc)
     with LocalDateFormat
     with LocalTimeFormat {
@@ -391,12 +392,29 @@ class DataImportController @Inject() (
   def schedules() = textParsingAction.async { r =>
     for {
       rooms <- roomService.all(false)
+      courses <- courseService.allAtoms(Map.empty)
+      exams <- moduleExaminationRegulationService.allAtoms(Map.empty)
       res <- createMany(
         parseCSV(r.body, ScheduleJson.format) {
           case ("course", value) =>
-            JsString(value)
+            val Array(abbrev, courseType) = value.split("_")
+            toJsonID(
+              courses.find(c =>
+                c.subModule.abbreviation == abbrev && c.courseType.toString
+                  .take(1) == courseType.toLowerCase
+              )
+            )
           case ("moduleExaminationRegulation", value) =>
-            JsString(value)
+            val Array(abbrev, sp, grad, po) = value.split("_")
+            toJsonID(
+              exams.find(e =>
+                e.module.abbreviation == abbrev &&
+                  e.examinationRegulation.studyProgram.abbreviation == sp &&
+                  e.examinationRegulation.studyProgram.graduation.abbreviation
+                    .take(1) == grad &&
+                  e.examinationRegulation.number == po.toInt
+              )
+            )
           case ("room", value) =>
             toJsonID(rooms.find(_.abbreviation == value))
           case ("date", value) =>

@@ -9,7 +9,7 @@ import java.util.UUID
 case class ScheduleJson(
     course: UUID,
     room: UUID,
-    moduleExaminationRegulationId: UUID,
+    moduleExaminationRegulation: UUID,
     date: LocalDate,
     start: LocalTime,
     end: LocalTime
