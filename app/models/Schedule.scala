@@ -13,6 +13,8 @@ sealed trait Schedule extends UniqueEntity {
 
   def roomId: UUID
 
+  def moduleExaminationRegulationId: UUID
+
   def date: LocalDate
 
   def start: LocalTime
@@ -37,6 +39,7 @@ object Schedule
   case class ScheduleDefault(
       course: UUID,
       room: UUID,
+      moduleExaminationRegulation: UUID,
       date: LocalDate,
       start: LocalTime,
       end: LocalTime,
@@ -45,11 +48,14 @@ object Schedule
     override def courseId = course
 
     override def roomId = room
+
+    override def moduleExaminationRegulationId = moduleExaminationRegulation
   }
 
   case class ScheduleAtom(
       course: Course,
       room: Room,
+      moduleExaminationRegulation: ModuleExaminationRegulation,
       date: LocalDate,
       start: LocalTime,
       end: LocalTime,
@@ -58,8 +64,18 @@ object Schedule
     override def courseId = course.id
 
     override def roomId = room.id
+
+    override def moduleExaminationRegulationId = moduleExaminationRegulation.id
   }
 
   def apply(db: ScheduleDbEntry): ScheduleDefault =
-    ScheduleDefault(db.course, db.room, db.date, db.start, db.end, db.id)
+    ScheduleDefault(
+      db.course,
+      db.room,
+      db.moduleExaminationRegulation,
+      db.date,
+      db.start,
+      db.end,
+      db.id
+    )
 }
