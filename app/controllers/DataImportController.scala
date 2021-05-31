@@ -2,10 +2,10 @@ package controllers
 
 import database.repos._
 import database.tables._
-import date.LocalDateFormat
+import date.{LocalDateFormat, LocalTimeFormat}
 import models._
-import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
+import org.joda.time.{LocalDate, LocalTime}
 import play.api.libs.json.{JsResult, _}
 import play.api.mvc.{AbstractController, ControllerComponents, Result}
 import service._
@@ -39,9 +39,11 @@ class DataImportController @Inject() (
     val moduleRepository: ModuleRepository,
     val moduleExaminationRegulationRepository: ModuleExaminationRegulationRepository,
     val subModuleService: SubModuleService,
-    val courseService: CourseService
+    val courseService: CourseService,
+    val scheduleService: ScheduleService
 ) extends AbstractController(cc)
-    with LocalDateFormat {
+    with LocalDateFormat
+    with LocalTimeFormat {
 
   case class TmpUser(
       username: String,
@@ -51,6 +53,8 @@ class DataImportController @Inject() (
   )
 
   val datePattern = DateTimeFormat.forPattern("yy-MM-dd")
+
+  val timePattern = DateTimeFormat.forPattern("HH:mm")
 
   def primitives() = Action.async { r =>
     val user = UserDbEntry(
@@ -384,6 +388,29 @@ class DataImportController @Inject() (
     } yield res
   }
 
+  def schedules() = textParsingAction.async { r =>
+    for {
+      rooms <- roomService.all(false)
+      res <- createMany(
+        parseCSV(r.body, ScheduleJson.format) {
+          case ("course", value) =>
+            JsString(value)
+          case ("moduleExaminationRegulation", value) =>
+            JsString(value)
+          case ("room", value) =>
+            toJsonID(rooms.find(_.abbreviation == value))
+          case ("date", value) =>
+            parseDate(value)
+          case ("start", value) =>
+            parseTime(value)
+          case ("end", value) =>
+            parseTime(value)
+        },
+        scheduleService.create
+      )
+    } yield res
+  }
+
   private def parseCredits(value: String): JsValue = {
     val ects = value match { // apply changes to origin file
       case "Unknown" => -1
@@ -397,6 +424,9 @@ class DataImportController @Inject() (
 
   private def parseDate(str: String): JsValue =
     localDateFormat.writes(LocalDate.parse(str, datePattern))
+
+  private def parseTime(str: String): JsValue =
+    localTimeFormat.writes(LocalTime.parse(str, timePattern))
 
   private def textParsingAction = Action(
     parse.byteString.map(
