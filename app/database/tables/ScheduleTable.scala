@@ -1,12 +1,7 @@
 package database.tables
 
 import database.UniqueDbEntry
-import database.cols.{
-  CourseColumn,
-  DateStartEndColumn,
-  RoomColumn,
-  UniqueEntityColumn
-}
+import database.cols._
 import slick.jdbc.PostgresProfile.api._
 
 import java.sql.{Date, Time, Timestamp}
@@ -15,6 +10,7 @@ import java.util.UUID
 case class ScheduleDbEntry(
     course: UUID,
     room: UUID,
+    moduleExaminationRegulation: UUID,
     date: Date,
     start: Time,
     end: Time,
@@ -27,11 +23,13 @@ class ScheduleTable(tag: Tag)
     with UniqueEntityColumn
     with CourseColumn
     with RoomColumn
-    with DateStartEndColumn {
+    with DateStartEndColumn
+    with ModuleExaminationRegulationColumn {
 
   def * = (
     course,
     room,
+    moduleExaminationRegulation,
     date,
     start,
     end,
@@ -39,15 +37,45 @@ class ScheduleTable(tag: Tag)
     id
   ) <> (mapRow, unmapRow)
 
-  def mapRow
-      : ((UUID, UUID, Date, Time, Time, Timestamp, UUID)) => ScheduleDbEntry = {
-    case (course, room, date, start, end, lastModified, id) =>
-      ScheduleDbEntry(course, room, date, start, end, lastModified, id)
+  def mapRow: (
+      (UUID, UUID, UUID, Date, Time, Time, Timestamp, UUID)
+  ) => ScheduleDbEntry = {
+    case (
+          course,
+          room,
+          moduleExaminationRegulation,
+          date,
+          start,
+          end,
+          lastModified,
+          id
+        ) =>
+      ScheduleDbEntry(
+        course,
+        room,
+        moduleExaminationRegulation,
+        date,
+        start,
+        end,
+        lastModified,
+        id
+      )
   }
 
   def unmapRow: ScheduleDbEntry => Option[
-    (UUID, UUID, Date, Time, Time, Timestamp, UUID)
+    (UUID, UUID, UUID, Date, Time, Time, Timestamp, UUID)
   ] = { a =>
-    Option((a.course, a.room, a.date, a.start, a.end, a.lastModified, a.id))
+    Option(
+      (
+        a.course,
+        a.room,
+        a.moduleExaminationRegulation,
+        a.date,
+        a.start,
+        a.end,
+        a.lastModified,
+        a.id
+      )
+    )
   }
 }
