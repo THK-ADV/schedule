@@ -1,6 +1,6 @@
 package models
 
-import database.tables.ModuleExaminationRegulationDbEntry
+import database.tables._
 import models.ExaminationRegulation.ExaminationRegulationAtom
 import play.api.libs.json.{Json, Writes}
 
@@ -55,6 +55,21 @@ object ModuleExaminationRegulation {
     ModuleExaminationRegulationDefault(
       db.module,
       db.examinationRegulation,
+      db.mandatory,
+      db.id
+    )
+
+  def apply(
+      db: ModuleExaminationRegulationDbEntry,
+      moduleDb: ModuleDbEntry,
+      examRegDb: ExaminationRegulationDbEntry,
+      spDb: StudyProgramDBEntry,
+      tuDb: TeachingUnitDbEntry,
+      gDb: GraduationDbEntry
+  ): ModuleExaminationRegulationAtom =
+    ModuleExaminationRegulationAtom(
+      Module(moduleDb),
+      ExaminationRegulationAtom(examRegDb, spDb, tuDb, gDb),
       db.mandatory,
       db.id
     )

@@ -44,20 +44,29 @@ class ScheduleRepository @Inject() (
     val result = for {
       q <- query
       c <- q.courseFk
+      cu <- c.userFk
+      cse <- c.semesterFk
+      csm <- c.subModuleFk
       r <- q.roomFk
       mer <- q.moduleExaminationRegulationFk
-    } yield (q, c, r, mer)
+      merm <- mer.moduleFk
+      merex <- mer.examinationRegulationFk
+      mersp <- merex.studyProgramFk
+      mertu <- mersp.teachingUnitFk
+      merg <- mersp.graduationFk
+    } yield (q, (c, cu, cse, csm), r, (mer, merm, merex, mersp, mertu, merg))
 
-    val action = result.result.map(_.map { case (s, c, r, mer) =>
-      ScheduleAtom(
-        Course(c),
-        Room(r),
-        ModuleExaminationRegulation(mer),
-        s.date,
-        s.start,
-        s.end,
-        s.id
-      )
+    val action = result.result.map(_.map {
+      case (s, (c, cu, cse, csm), r, (mer, merm, merex, mersp, mertu, merg)) =>
+        ScheduleAtom( // TODO adjust atomicness to actual needs
+          Course(c, cu, cse, csm),
+          Room(r),
+          ModuleExaminationRegulation(mer, merm, merex, mersp, mertu, merg),
+          s.date,
+          s.start,
+          s.end,
+          s.id
+        )
     })
 
     db.run(action)

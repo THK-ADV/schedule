@@ -1,6 +1,11 @@
 package models
 
-import database.tables.CourseDbEntry
+import database.tables.{
+  CourseDbEntry,
+  SemesterDbEntry,
+  SubModuleDbEntry,
+  UserDbEntry
+}
 import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
@@ -61,6 +66,20 @@ object Course {
     db.lecturer,
     db.semester,
     db.subModule,
+    db.interval,
+    db.courseType,
+    db.id
+  )
+
+  def apply(
+      db: CourseDbEntry,
+      userDb: UserDbEntry,
+      semesterDb: SemesterDbEntry,
+      subModuleDb: SubModuleDbEntry
+  ): CourseAtom = CourseAtom(
+    User(userDb),
+    Semester(semesterDb),
+    SubModule(subModuleDb),
     db.interval,
     db.courseType,
     db.id

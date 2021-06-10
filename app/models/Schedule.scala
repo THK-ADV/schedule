@@ -3,6 +3,8 @@ package models
 import database.SQLDateConverter
 import database.tables.ScheduleDbEntry
 import date.{LocalDateFormat, LocalTimeFormat}
+import models.Course.CourseAtom
+import models.ModuleExaminationRegulation.ModuleExaminationRegulationAtom
 import org.joda.time.{LocalDate, LocalTime}
 import play.api.libs.json.{Json, Writes}
 
@@ -53,9 +55,9 @@ object Schedule
   }
 
   case class ScheduleAtom(
-      course: Course,
+      course: CourseAtom,
       room: Room,
-      moduleExaminationRegulation: ModuleExaminationRegulation,
+      moduleExaminationRegulation: ModuleExaminationRegulationAtom,
       date: LocalDate,
       start: LocalTime,
       end: LocalTime,
