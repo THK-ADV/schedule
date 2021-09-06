@@ -20,4 +20,7 @@ trait Get[Json, Model <: UniqueEntity, DbEntry <: UniqueDbEntry] {
 
   def get(id: UUID, atomic: Boolean): Future[Option[Model]] =
     repo.get(id, atomic)
+
+  def count(filter: Map[String, Seq[String]]) =
+    repo.count(filter)
 }

@@ -1,11 +1,7 @@
 package database.repos
 
 import database.cols.UniqueEntityColumn
-import database.{
-  InvalidUpdateException,
-  ModelAlreadyExistsException,
-  UniqueDbEntry
-}
+import database.{InvalidUpdateException, ModelAlreadyExistsException, UniqueDbEntry}
 import models.UniqueEntity
 import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
@@ -38,20 +34,27 @@ trait Repository[M <: UniqueEntity, E <: UniqueDbEntry, T <: Table[
 
   protected def toUniqueEntity(e: E): M
 
-  final def list(filter: Filter, atomic: Boolean): Future[Seq[M]] = {
-    def performFilter(list: List[T => Rep[Boolean]]) = list match {
-      case x :: xs =>
-        xs.foldLeft(tableQuery.filter(x)) { (acc, next) =>
-          acc.filter(next)
-        }
-      case Nil =>
-        tableQuery
+  private def performFilter(list: List[T => Rep[Boolean]]) = list match {
+    case x :: xs =>
+      xs.foldLeft(tableQuery.filter(x)) { (acc, next) =>
+        acc.filter(next)
+      }
+    case Nil =>
+      tableQuery
+  }
+
+  final def count(filter: Filter) =
+    parseFilter(filter) match {
+      case Some(f) =>
+        db.run(performFilter(f).size.result)
+      case None =>
+        db.run(tableQuery.size.result)
     }
 
+  final def list(filter: Filter, atomic: Boolean): Future[Seq[M]] =
     parseFilter(filter)
       .map(performFilter _ andThen retrieve(atomic))
       .getOrElse(Future.successful(Nil))
-  }
 
   final def get(id: UUID, atomic: Boolean): Future[Option[M]] =
     retrieve(atomic)(tableQuery.filter(_.hasID(id)).take(1))
@@ -122,6 +125,9 @@ trait Repository[M <: UniqueEntity, E <: UniqueDbEntry, T <: Table[
     val action = if (uniqueCols.isEmpty) create0 else createIfUnique
     db.run(action.map(toUniqueEntity))
   }
+
+  final def forceInsert(es: Seq[E]) =
+    db.run(tableQuery ++= es).map(_.getOrElse(0))
 
   private def parseFilter(
       filter: Filter

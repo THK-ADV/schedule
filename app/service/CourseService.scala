@@ -3,12 +3,13 @@ package service
 import database.repos.CourseRepository
 import database.tables.{CourseDbEntry, CourseTable}
 import models.Course.CourseAtom
-import models.{Course, CourseJson}
+import models.{Course, CourseJson, CourseType}
 import service.abstracts.Service
+import slick.lifted.Rep
 
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CourseService @Inject() (
@@ -38,11 +39,24 @@ class CourseService @Inject() (
 
   override protected def validate(json: CourseJson) = None
 
-  override protected def uniqueCols(json: CourseJson) = List(
-    _.semester(json.semester),
-    _.user(json.lecturer),
-    _.subModule(json.subModule),
-    _.hasCourseType(json.courseType)
+  override protected def uniqueCols(json: CourseJson) =
+    checkUniqueCols(
+      json.semester,
+      json.lecturer,
+      json.subModule,
+      json.courseType
+    )
+
+  def checkUniqueCols(
+      semester: UUID,
+      user: UUID,
+      subModule: UUID,
+      courseType: CourseType
+  ): List[CourseTable => Rep[Boolean]] = List(
+    _.semester(semester),
+    _.user(user),
+    _.subModule(subModule),
+    _.hasCourseType(courseType)
   )
 
   def allAtoms(filter: Map[String, Seq[String]]) =

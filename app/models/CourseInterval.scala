@@ -27,11 +27,11 @@ object CourseInterval {
     case Unknown     => "unknown"
   }
 
-  case object Regularly extends CourseInterval
+  case object Regularly extends CourseInterval // Unit
 
-  case object Irregularly extends CourseInterval
+  case object Irregularly extends CourseInterval // List[Date]
 
-  case object Block extends CourseInterval
+  case object Block extends CourseInterval // List[Range[Date]]
 
   case object Unknown extends CourseInterval
 }
