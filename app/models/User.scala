@@ -1,7 +1,7 @@
 package models
 
 import database.tables.UserDbEntry
-import play.api.libs.json.{JsError, Json, OFormat}
+import play.api.libs.json.{JsError, JsString, Json, OFormat}
 
 import java.util.UUID
 
@@ -66,8 +66,10 @@ object User {
       },
     (user: User) =>
       user match {
-        case l: Lecturer => formatLecturer.writes(l)
-        case s: Student  => formatStudent.writes(s)
+        case l: Lecturer =>
+          formatLecturer.writes(l) + ("status" -> JsString(LecturerStatus))
+        case s: Student =>
+          formatStudent.writes(s) + ("status" -> JsString(StudentStatus))
       }
   )
 
