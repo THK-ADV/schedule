@@ -30,7 +30,7 @@ class ModuleService @Inject() (val repo: ModuleRepository)
     json.label == existing.label
 
   override protected def uniqueCols(json: ModuleJson) =
-    List(_.hasLabel(json.label))
+    List(_.hasLabel(json.label), _.hasAbbreviation(json.abbreviation))
 
   override protected def validate(json: ModuleJson) = None
 }

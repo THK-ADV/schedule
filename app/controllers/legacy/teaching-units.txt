@@ -1,0 +1,2 @@
+Ingenieurwissenschaften;ING;19
+Informatik;INF;20

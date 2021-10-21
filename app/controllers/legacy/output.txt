@@ -1,0 +1,2361 @@
+Study Programs & Exams (21)
+Elektronik (EIW_B)
+exams:
+	number: 1
+
+Medieninformatik (MI_B)
+exams:
+	number: 1
+
+Maschinenbau Schwerpunkt Konstruktion (AMA_B)
+exams:
+	number: 1
+
+Master: Medieninformatik-Master (MI_M)
+exams:
+	number: 1
+
+Master: Automation and IT Master (AIT_M)
+exams:
+	number: 1
+
+Master: Wirtschaftsingenieurwesen (WIN_M)
+exams:
+	number: 1
+
+Technische Informatik (TI_B)
+exams:
+	number: 1
+
+Automatisierungstechnik (EIW_B)
+exams:
+	number: 1
+
+Master: Informatik/Computer Science (I_M)
+exams:
+	number: 1
+
+Informatik (AI_B)
+exams:
+	number: 1
+
+Master: Produktdesign und Prozessentwicklung (PRODES) (BDE_M)
+exams:
+	number: 1
+
+Maschinenbau Schwerpunkt Fertigung (AMA_B)
+exams:
+	number: 1
+
+Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B)
+exams:
+	number: 1
+
+Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement (WIN_M)
+exams:
+	number: 1
+
+IT-Management (ITM_B)
+exams:
+	number: 1
+
+Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement (WIN_M)
+exams:
+	number: 1
+
+Wirtschaftsingenieurwesen (WIN_B)
+exams:
+	number: 1
+
+Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B)
+exams:
+	number: 1
+
+Wirtschaftsinformatik (WI_B)
+exams:
+	number: 1
+
+Maschinenbau Schwerpunkt Informatik (AMA_B)
+exams:
+	number: 1
+
+Maschinenbau (AMA_B)
+exams:
+	number: 1
+====
+
+Modules, SubModules, POs, Courses (167)
+Informatik und Gesellschaft (IUG ) bei Birgit Bertelsmeier
+subModule & courses:
+	Informatik und Gesellschaft (IUG ) 5/WiSe/de lecture
+module in PO:
+	Wirtschaftsinformatik (WI_B) 1
+	IT-Management (ITM_B) 1
+	Medieninformatik (MI_B) 1
+	Informatik (AI_B) 1
+
+Großes Projekt (PT) bei Wolfgang Laubersheimer
+subModule & courses:
+	Großes Projekt (PT) 1/WiSe/de lecture
+module in PO:
+	Master: Produktdesign und Prozessentwicklung (PRODES) (BDE_M) 1
+
+Geschäftsprozessmanagement (DE) (GPM) bei Matthias Zapp
+subModule & courses:
+	Geschäftsprozessmanagement (DE) (GPM) 1/WiSe/de lecture
+module in PO:
+	Master: Wirtschaftsingenieurwesen (WIN_M) 1
+	Master: Produktdesign und Prozessentwicklung (PRODES) (BDE_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement (WIN_M) 1
+
+Technische Mechanik 1 (TM1) bei Denis Anders
+subModule & courses:
+	Technische Mechanik 1 (TM1) 3/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+IT-Sicherheit (DE) (ITS) bei Stefan Karsch
+subModule & courses:
+	IT-Sicherheit (DE) (ITS) 1/WiSe/de lecture
+module in PO:
+	Master: Informatik/Computer Science (I_M) 1
+
+Konstruktionslehre (KL M) bei Marcel Walkowiak
+subModule & courses:
+	Konstruktionslehre (KL M) 3/WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+
+Controlling (CON M) bei Arno Bitzer
+subModule & courses:
+	Controlling (CON M) 5/WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+
+Fertigungstechnik 1 (Metall) (FT1) bei Florian Zwanzig
+subModule & courses:
+	Fertigungstechnik 1 (Metall) (FT1) 4/SoSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+
+Sicherheit, Privatsphäre und Vertrauen im Netz (SPV) bei Stefan Karsch
+subModule & courses:
+	Sicherheit, Privatsphäre und Vertrauen im Netz (SPV) 1/WiSe/de lecture
+module in PO:
+	Master: Medieninformatik-Master (MI_M) 1
+
+Wirtschaftsenglisch Seminar Gruppe 2 (ENW) bei Ricarda Spence
+subModule & courses:
+	Wirtschaftsenglisch Seminar Gruppe 2 (ENW) 5/WiSe/de seminar
+module in PO:
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+
+Finanzierung und Investition (FUI) bei Christina Werner
+subModule & courses:
+	Finanzierung und Investition (FUI) 5/WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsinformatik (WI_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+
+Konzeption und Entwicklung sozio-informatischer Systeme (WPF KESS) bei Mario Winter
+subModule & courses:
+	Konzeption und Entwicklung sozio-informatischer Systeme (WPF KESS) 5/WiSe/de seminar
+module in PO:
+	Medieninformatik (MI_B) 1
+	Informatik (AI_B) 1
+
+Ingenieurethik Doz: BO&SF (ING) bei Michael Bongards
+subModule & courses:
+	Ingenieurethik Doz: BO&SF (ING) 6/SoSe/de lecture
+module in PO:
+	Elektronik (EIW_B) 1
+	Automatisierungstechnik (EIW_B) 1
+
+Produktentwicklung SPF B&V (PRE) bei Nicolas Pyschny
+subModule & courses:
+	Produktentwicklung SPF B&V (PRE) 5/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+
+Strömungslehre (STL) bei Denis Anders
+subModule & courses:
+	Strömungslehre (STL) 4/SoSe/de lecture
+module in PO:
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+
+Tutorium Konstruktion /  Maschinenelemente für Maschinenbauer 1 (TUTKM1) bei Nicolas Pyschny
+subModule & courses:
+	Tutorium Konstruktion /  Maschinenelemente für Maschinenbauer 1 (TUTKM1) 4/SoSe_WiSe/de exercise
+module in PO:
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+
+Business Intelligence (EN) (BI) bei Hartmut Westenberger
+subModule & courses:
+	Business Intelligence (EN) (BI) 1/WiSe/de lecture
+module in PO:
+	Master: Informatik/Computer Science (I_M) 1
+
+Business Excellence (BEX) bei Heinz-Reiner Wollersheim
+subModule & courses:
+	Business Excellence (BEX) 1/WiSe/de lecture
+module in PO:
+	Master: Produktdesign und Prozessentwicklung (PRODES) (BDE_M) 1
+
+Physik 2 (PH2) bei Sebastian Kraft
+subModule & courses:
+	Physik 2 (PH2) 1/SoSe_WiSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Maschinenbau (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Elektronik (EIW_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Optimierung dynamischer Systeme ET (OTS) bei Christian Wolf
+subModule & courses:
+	Optimierung dynamischer Systeme ET (OTS) 4/SoSe_WiSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Elektronik (EIW_B) 1
+
+Storytelling und narrative Strukturen (SNS) bei Hans Kornacher
+subModule & courses:
+	Storytelling und narrative Strukturen (SNS) 1/WiSe/de lecture
+module in PO:
+	Master: Medieninformatik-Master (MI_M) 1
+
+Modellierung von Anwendungssystemen 2 (MAS2) bei Mario Winter
+subModule & courses:
+	Modellierung von Anwendungssystemen 2 (MAS2) 2/SoSe_WiSe/de lecture
+module in PO:
+	Wirtschaftsinformatik (WI_B) 1
+
+Fabrikplanung  (FP) bei Thomas Münster
+subModule & courses:
+	Fabrikplanung  (FP) 5/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+
+Grundlagen der Technischen Thermodynamik (TD) bei Igor Shevchuk
+subModule & courses:
+	Grundlagen der Technischen Thermodynamik (TD) 5/SoSe_WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+
+Produktion und Logistik/Unternehmenslogistik (BWL4) (PuL) bei Roman Bartnik
+subModule & courses:
+	Produktion und Logistik/Unternehmenslogistik (BWL4) (PuL) 3/WiSe/de lecture
+module in PO:
+	Wirtschaftsinformatik (WI_B) 1
+
+Werkstoffauswahl (WSTA) bei Danka Katrakova-Krüger
+subModule & courses:
+	Werkstoffauswahl (WSTA) 1/SoSe_WiSe/de lecture
+module in PO:
+	Master: Produktdesign und Prozessentwicklung (PRODES) (BDE_M) 1
+
+Mathematik 1 (ING) (MA1B) bei Elmar Lau
+subModule & courses:
+	Mathematik 1 (ING) (MA1B) 1/SoSe_WiSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Maschinenbau (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Elektronik (EIW_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Theoretische Informatik 1 (TI1) bei Irma Lindt
+subModule & courses:
+	Theoretische Informatik 1 (TI1) 1/WiSe/de lecture
+module in PO:
+	Informatik (AI_B) 1
+	Medieninformatik (MI_B) 1
+
+Management und Unternehmenssteuerung (DE) (MUU IM) bei Torsten Klein
+subModule & courses:
+	Management und Unternehmenssteuerung (DE) (MUU IM) 1/WiSe/de lecture
+module in PO:
+	Master: Informatik/Computer Science (I_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen (WIN_M) 1
+
+Messsysteme (MES) bei Hartmut Baerwolff
+subModule & courses:
+	Messsysteme (MES) 5/SoSe_WiSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Elektronik (EIW_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+
+Projektarbeit Kunststoffverarbeitung (FT3) bei Florian Zwanzig
+subModule & courses:
+	Projektarbeit Kunststoffverarbeitung (FT3) 5/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+
+Marketing 1 (WPF M1) bei Monika Engelen
+subModule & courses:
+	Marketing 1 (WPF M1) 5/WiSe/de lecture
+module in PO:
+	Medieninformatik (MI_B) 1
+
+Diskrete Mathematik (DM) bei Fotios Giannakopoulos
+subModule & courses:
+	Diskrete Mathematik (DM) 3/WiSe/de lecture
+module in PO:
+	Informatik (AI_B) 1
+
+Wirtschaftsrecht (WRE) bei Anne Breidenbach
+subModule & courses:
+	Wirtschaftsrecht (WRE) 3/WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+
+Fertigungstechnik 2 (Metall) (FT2) bei Simone Lake
+subModule & courses:
+	Fertigungstechnik 2 (Metall) (FT2) 4/SoSe/de lecture
+module in PO:
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+
+Numerical methods (NM) bei Rainer Scheuring
+subModule & courses:
+	Numerical methods (NM) 1/SoSe_WiSe/de lecture
+module in PO:
+	Master: Automation and IT Master (AIT_M) 1
+
+Automatisierungssysteme (AUS) bei Felix Hackelöer
+subModule & courses:
+	Automatisierungssysteme (AUS) 4/SoSe/de lecture
+module in PO:
+	Elektronik (EIW_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Automatisierungstechnik (EIW_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+
+Produktion und Logistik (PL) bei Eike Permin
+subModule & courses:
+	Produktion und Logistik (PL) 1/SoSe_WiSe/de lecture
+module in PO:
+	Master: Wirtschaftsingenieurwesen (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement (WIN_M) 1
+
+Elektronik (EL ) bei Andreas Kampmann
+subModule & courses:
+	Elektronik (EL ) 3/WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Elektronik (EIW_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Automatisierungstechnik (EIW_B) 1
+
+Bildbasierte Computergrafik (BCG) bei Andreas Karge
+subModule & courses:
+	Bildbasierte Computergrafik (BCG) 1/WiSe/de lecture
+module in PO:
+	Master: Medieninformatik-Master (MI_M) 1
+
+Spezielle Gebiete der Mathematik (MAS) bei Wolfgang Konen
+subModule & courses:
+	Spezielle Gebiete der Mathematik (MAS) 1/WiSe/de lecture
+module in PO:
+	Master: Medieninformatik-Master (MI_M) 1
+	Master: Informatik/Computer Science (I_M) 1
+
+Algorithmen und Programmierung 1 (AP1) bei Frank Victor
+subModule & courses:
+	Algorithmen und Programmierung 1 (AP1) 1/WiSe/de lecture
+module in PO:
+	IT-Management (ITM_B) 1
+	Informatik (AI_B) 1
+	Wirtschaftsinformatik (WI_B) 1
+	Medieninformatik (MI_B) 1
+
+Technische Mechanik 2 (TM2) bei Marcel Walkowiak
+subModule & courses:
+	Technische Mechanik 2 (TM2) 3/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Industrielle Kommunikationssysteme (KAT) bei Frithjof Klasen
+subModule & courses:
+	Industrielle Kommunikationssysteme (KAT) 4/SoSe_WiSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Elektronik (EIW_B) 1
+
+Marketing 1 (MG1 M) bei Arno Bitzer
+subModule & courses:
+	Marketing 1 (MG1 M) 3/WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+
+Tutorium Konstruktion /  Maschinenelemente für Maschinenbauer 2 (TUTKM2) bei Nicolas Pyschny
+subModule & courses:
+	Tutorium Konstruktion /  Maschinenelemente für Maschinenbauer 2 (TUTKM2) 4/SoSe_WiSe/de exercise
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Technisches Zeichnen für Wirtschaftsing und Allg. Maschinenbau (TZ ) bei Marcel Walkowiak
+subModule & courses:
+	Technisches Zeichnen für Wirtschaftsing und Allg. Maschinenbau (TZ ) 3/WiSe/de lecture
+module in PO:
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+
+IT-Compliance & Risk Management (EN) (ITCRM) bei Stefan Karsch
+subModule & courses:
+	IT-Compliance & Risk Management (EN) (ITCRM) 1/WiSe/de lecture
+module in PO:
+	Master: Informatik/Computer Science (I_M) 1
+
+Anwendungsfelder der Business Analytics (WPF ABA) bei Markus Linden
+subModule & courses:
+	Anwendungsfelder der Business Analytics (WPF ABA) 5/WiSe/de lecture
+module in PO:
+	Wirtschaftsinformatik (WI_B) 1
+
+Algorithmik (ALG) bei Heiner Klocke
+subModule & courses:
+	Algorithmik (ALG) 3/WiSe/de lecture
+module in PO:
+	Informatik (AI_B) 1
+
+Einführung in Betriebssysteme und Rechnerarchitektur (EBR) bei Stefan Karsch
+subModule & courses:
+	Einführung in Betriebssysteme und Rechnerarchitektur (EBR) 1/WiSe/de lecture
+module in PO:
+	Informatik (AI_B) 1
+	Medieninformatik (MI_B) 1
+	IT-Management (ITM_B) 1
+	Wirtschaftsinformatik (WI_B) 1
+
+Einführung in die Elektrotechnik 1 (EE1) bei Michael Freiburg
+subModule & courses:
+	Einführung in die Elektrotechnik 1 (EE1) 1/SoSe_WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Automatisierungstechnik (EIW_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+	Elektronik (EIW_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+
+Sketching and Designing for User Experience (WPF SD4UX) bei Gerhard Hartmann
+subModule & courses:
+	Sketching and Designing for User Experience (WPF SD4UX) 1/WiSe/de lecture
+module in PO:
+	Master: Medieninformatik-Master (MI_M) 1
+
+Einführung in das IT-Management (EITM) bei Matthias Böhmer
+subModule & courses:
+	Einführung in das IT-Management (EITM) 1/WiSe/de lecture
+module in PO:
+	IT-Management (ITM_B) 1
+
+Leistungselektronik  (LEL) bei Christoph Klein
+subModule & courses:
+	Leistungselektronik  (LEL) 5/WiSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Elektronik (EIW_B) 1
+
+Betriebswirtschaftslehre 1 (Inf) (BWL1) bei Torsten Klein
+subModule & courses:
+	Betriebswirtschaftslehre 1 (Inf) (BWL1) 1/WiSe/de lecture
+module in PO:
+	IT-Management (ITM_B) 1
+	Wirtschaftsinformatik (WI_B) 1
+
+Technisches Englisch Seminar Gruppe 1 (ENT) bei Tuula Bockemühl-Simon
+subModule & courses:
+	Technisches Englisch Seminar Gruppe 1 (ENT) 5/WiSe/de seminar
+module in PO:
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+
+Einführung in die Medieninformatik (EMI) bei Hans Kornacher
+subModule & courses:
+	Einführung in die Medieninformatik (EMI) 1/WiSe/de lecture
+module in PO:
+	Medieninformatik (MI_B) 1
+
+Projektmanagement (ING) (PMA) bei Stefanie Gruttauer
+subModule & courses:
+	Projektmanagement (ING) (PMA) 4/SoSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Elektronik (EIW_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Automatisierungstechnik (EIW_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+
+Umwelt- und Prozessanalytik im Stoffstrom- und Ressourcenmanagement (UPA) bei Miriam Sartor
+subModule & courses:
+	Umwelt- und Prozessanalytik im Stoffstrom- und Ressourcenmanagement (UPA) 1/SoSe_WiSe/de lecture
+module in PO:
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen (WIN_M) 1
+
+Datenbanken 1 (DB1) bei Heide Faeskorn-Woyke
+subModule & courses:
+	Datenbanken 1 (DB1) 5/WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+
+Praxisprojektseminar (PPS) bei Christian Noss
+subModule & courses:
+	Praxisprojektseminar (PPS) 6/SoSe/de lecture
+module in PO:
+	Medieninformatik (MI_B) 1
+
+Unternehmensplanspiel (UPS) bei Christina Werner
+subModule & courses:
+	Unternehmensplanspiel (UPS) 5/WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+
+Einführungsprojekt in die Informatik (EPI) bei Heiner Klocke
+subModule & courses:
+	Einführungsprojekt in die Informatik (EPI) 1/WiSe/de lecture
+module in PO:
+	Informatik (AI_B) 1
+
+Screendesign (SD) bei Christian Noss
+subModule & courses:
+	Screendesign (SD) 3/WiSe/de lecture
+module in PO:
+	Medieninformatik (MI_B) 1
+
+Mobile Computing (MOCO) bei Matthias Böhmer
+subModule & courses:
+	Mobile Computing (MOCO) 5/WiSe/de lecture
+module in PO:
+	IT-Management (ITM_B) 1
+
+Prozess- und Produktionsleitsysteme (PRZ) bei Rainer Scheuring
+subModule & courses:
+	Prozess- und Produktionsleitsysteme (PRZ) 4/SoSe_WiSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Elektronik (EIW_B) 1
+
+Grundlagen der Umweltchemie (WPF GUC) bei Miriam Sartor
+subModule & courses:
+	Grundlagen der Umweltchemie (WPF GUC) 5/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Maschinenbau (AMA_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+
+Umweltgerechtes Ressourcenmanagement (URM) bei Christian Malek
+subModule & courses:
+	Umweltgerechtes Ressourcenmanagement (URM) 1/SoSe_WiSe/de lecture
+module in PO:
+	Master: Wirtschaftsingenieurwesen (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement (WIN_M) 1
+
+Programmieren (PRO) bei Rainer Scheuring
+subModule & courses:
+	Programmieren (PRO) 5/SoSe_WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+
+Einführung in die Wirtschaftsinformatik (EWI) bei Holger Günther
+subModule & courses:
+	Einführung in die Wirtschaftsinformatik (EWI) 1/WiSe/de lecture
+module in PO:
+	Wirtschaftsinformatik (WI_B) 1
+
+Mathematik 1 (MA1) bei Dietlind Zühlke
+subModule & courses:
+	Mathematik 1 (MA1) 1/WiSe/de lecture
+module in PO:
+	Wirtschaftsinformatik (WI_B) 1
+
+Design Methodologies (DEM) bei Christian Kohls
+subModule & courses:
+	Design Methodologies (DEM) 1/WiSe/de lecture
+module in PO:
+	Master: Medieninformatik-Master (MI_M) 1
+
+Einführung in die Mechanik 1 (EM1) bei Patrick Tichelmann
+subModule & courses:
+	Einführung in die Mechanik 1 (EM1) 1/SoSe_WiSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Elektronik (EIW_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+
+Fachspezifischer Architekturentwurf (DE) (WPF A in MMI) (FAE) bei Stefan Bente
+subModule & courses:
+	Fachspezifischer Architekturentwurf (DE) (WPF A in MMI) (FAE) 1/WiSe/de seminar
+module in PO:
+	Master: Informatik/Computer Science (I_M) 1
+
+Digitale Signalverarbeitung (DSV) bei Andreas Kampmann
+subModule & courses:
+	Digitale Signalverarbeitung (DSV) 5/SoSe_WiSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Elektronik (EIW_B) 1
+
+CAD mit CATIA V5 (WPF CAD) bei Marcel Walkowiak
+subModule & courses:
+	CAD mit CATIA V5 (WPF CAD) 5/SoSe_WiSe/de seminar
+module in PO:
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+
+Höhere Festigkeitslehre / Finite Elemente (FEM) bei Patrick Tichelmann
+subModule & courses:
+	Höhere Festigkeitslehre / Finite Elemente (FEM) 5/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Betriebliches Rechnungswesen  (Ing) (BRW) bei Stefan Eckstein
+subModule & courses:
+	Betriebliches Rechnungswesen  (Ing) (BRW) 3/WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+
+Organisation und Management (AOR) bei Amina Hadzeric
+subModule & courses:
+	Organisation und Management (AOR) 5/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+
+Project Management (EN) (PM EN) bei Holger Günther
+subModule & courses:
+	Project Management (EN) (PM EN) 1/WiSe/de lecture
+module in PO:
+	Master: Informatik/Computer Science (I_M) 1
+
+Projekt I: Vision und Konzept (P1) bei Gerhard Hartmann
+subModule & courses:
+	Projekt I: Vision und Konzept (P1) 1/SoSe_WiSe/de lecture
+module in PO:
+	Master: Medieninformatik-Master (MI_M) 1
+
+Allgemeine Maschinendynamik (AM) bei Patrick Tichelmann
+subModule & courses:
+	Allgemeine Maschinendynamik (AM) 5/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Steuer- und Regelungstechnik (Automatisierungssysteme)  (SR1) bei Florian Zwanzig
+subModule & courses:
+	Steuer- und Regelungstechnik (Automatisierungssysteme)  (SR1) 3/WiSe/de lecture
+module in PO:
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+
+Angewandte Konstruktion (KOA) bei Axel Wellendorf
+subModule & courses:
+	Angewandte Konstruktion (KOA) 5/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+
+Optimierung und Stabilisierung dezentraler Energieerzeugungsprozesse (Netze und Speicher) (OSDEP) bei Christian Wolf
+subModule & courses:
+	Optimierung und Stabilisierung dezentraler Energieerzeugungsprozesse (Netze und Speicher) (OSDEP) 1/SoSe_WiSe/de lecture
+module in PO:
+	Master: Wirtschaftsingenieurwesen (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement (WIN_M) 1
+
+Technisches Englisch Seminar Gruppe 2 (ENT) bei Tuula Bockemühl-Simon
+subModule & courses:
+	Technisches Englisch Seminar Gruppe 2 (ENT) 3/WiSe/de seminar
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Elektronik (EIW_B) 1
+
+Fertigungstechnik 1 (Kunststoff) (FT1) bei Florian Zwanzig
+subModule & courses:
+	Fertigungstechnik 1 (Kunststoff) (FT1) 3/WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+
+Infrastructure as a Service (WPF IaaS) bei Roman Majewski
+subModule & courses:
+	Infrastructure as a Service (WPF IaaS) 5/WiSe/de lecture
+module in PO:
+	Wirtschaftsinformatik (WI_B) 1
+	Medieninformatik (MI_B) 1
+	Informatik (AI_B) 1
+
+Entwicklungsprojekt (EP) bei Christian Noss
+subModule & courses:
+	Entwicklungsprojekt (EP) 5/WiSe/de seminar
+module in PO:
+	Medieninformatik (MI_B) 1
+
+Ubiquitous Computing (UBIC DSM MMI) bei Matthias Böhmer
+subModule & courses:
+	Ubiquitous Computing (UBIC DSM MMI) 1/WiSe/de lecture
+module in PO:
+	Master: Medieninformatik-Master (MI_M) 1
+
+Betriebliche Anwendungssysteme 2 (BA2 ) bei Frank Victor
+subModule & courses:
+	Betriebliche Anwendungssysteme 2 (BA2 ) 5/WiSe/de lecture
+module in PO:
+	Wirtschaftsinformatik (WI_B) 1
+
+Werkstoffkunde II (WK2) bei Danka Katrakova-Krüger
+subModule & courses:
+	Werkstoffkunde II (WK2) 4/SoSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+
+Instandhaltungsmanagement (IHM) bei Christoph Haag
+subModule & courses:
+	Instandhaltungsmanagement (IHM) 1/SoSe_WiSe/de lecture
+module in PO:
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen (WIN_M) 1
+
+Wärmeübertragung (WÜ) bei Igor Shevchuk
+subModule & courses:
+	Wärmeübertragung (WÜ) 1/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Audiovisuelles Medienprojekt (AVM MI) bei Hans Kornacher
+subModule & courses:
+	Audiovisuelles Medienprojekt (AVM MI) 3/WiSe/de lecture
+module in PO:
+	Medieninformatik (MI_B) 1
+
+Kommunikation und Führung (KUF) bei Carolin Palmer
+subModule & courses:
+	Kommunikation und Führung (KUF) 5/WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Automatisierungstechnik (EIW_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Elektronik (EIW_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+
+Spezielle Gebiete der Mathematik (DE) (SGM) bei Wolfgang Konen
+subModule & courses:
+	Spezielle Gebiete der Mathematik (DE) (SGM) 1/WiSe/de lecture
+module in PO:
+	Master: Informatik/Computer Science (I_M) 1
+	Master: Medieninformatik-Master (MI_M) 1
+
+Interaction Design (DE) (ID IMSE MMI) bei Gerhard Hartmann
+subModule & courses:
+	Interaction Design (DE) (ID IMSE MMI) 1/WiSe/de seminar
+module in PO:
+	Master: Medieninformatik-Master (MI_M) 1
+	Master: Informatik/Computer Science (I_M) 1
+
+Wiss. Arbeiten und Grundl. der Projektarbeit   (WAGP) bei Carolin Palmer
+subModule & courses:
+	Wiss. Arbeiten und Grundl. der Projektarbeit   (WAGP) 1/WiSe/de lecture
+module in PO:
+	Elektronik (EIW_B) 1
+	Automatisierungstechnik (EIW_B) 1
+	Maschinenbau (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+
+IT fokussiertes Controlling (ITFC) bei Markus Linden
+subModule & courses:
+	IT fokussiertes Controlling (ITFC) 5/WiSe/de lecture
+module in PO:
+	IT-Management (ITM_B) 1
+
+Bussysteme und Interfaces (BSI) bei Christoph Klein
+subModule & courses:
+	Bussysteme und Interfaces (BSI) 5/SoSe_WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+
+Projektmanagement (INF) (PM) bei Holger Günther
+subModule & courses:
+	Projektmanagement (INF) (PM) 3/WiSe/de lecture
+module in PO:
+	Wirtschaftsinformatik (WI_B) 1
+
+Grundlagen der Betriebswirtschaftslehre (BW1 B) bei Torsten Klein
+subModule & courses:
+	Grundlagen der Betriebswirtschaftslehre (BW1 B) 2/SoSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Automatisierungstechnik (EIW_B) 1
+	Elektronik (EIW_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+
+Software-Qualitaetssicherung (WPF SQS) bei Mario Winter
+subModule & courses:
+	Software-Qualitaetssicherung (WPF SQS) 5/WiSe/de seminar
+module in PO:
+	Wirtschaftsinformatik (WI_B) 1
+	Medieninformatik (MI_B) 1
+	Informatik (AI_B) 1
+	Technische Informatik (TI_B) 1
+
+Produktionsmanagement (PROM) bei Eike Permin
+subModule & courses:
+	Produktionsmanagement (PROM) 5/WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Operations Research (EN) (OR) bei Boris Naujoks
+subModule & courses:
+	Operations Research (EN) (OR) 1/WiSe/de lecture
+module in PO:
+	Master: Informatik/Computer Science (I_M) 1
+
+Mathematik 2 Gr. B (ING) (MA2B) bei Boris Naujoks
+subModule & courses:
+	Mathematik 2 Gr. B (ING) (MA2B) 1/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Elektronik (EIW_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Automatisierungstechnik (EIW_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Technologie- und Innovationsmanagement - 1 (TIM1) bei Christoph Haag
+subModule & courses:
+	Technologie- und Innovationsmanagement - 1 (TIM1) 1/SoSe_WiSe/de lecture
+module in PO:
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen (WIN_M) 1
+
+Werkzeuge in der Kunststoffverarbeitung (WKV) bei Simone Lake
+subModule & courses:
+	Werkzeuge in der Kunststoffverarbeitung (WKV) 1/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Softwaretechnik 1 (ST1) bei Stefan Bente
+subModule & courses:
+	Softwaretechnik 1 (ST1) 3/SoSe_WiSe/de lecture
+module in PO:
+	Informatik (AI_B) 1
+
+Steuern und Regeln in der Umwelttechnik (WPF BO 1) bei Christian Wolf
+subModule & courses:
+	Steuern und Regeln in der Umwelttechnik (WPF BO 1) 5/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Statistik (MAW) bei Olaf Mersmann
+subModule & courses:
+	Statistik (MAW) 3/WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+
+Arbeits- und Vertragsrecht (AUV) bei Monika Engelen
+subModule & courses:
+	Arbeits- und Vertragsrecht (AUV) 5/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+
+Research Seminar on Behavioral Economics and Nudging (SGWW) bei Christina Werner
+subModule & courses:
+	Research Seminar on Behavioral Economics and Nudging (SGWW) 1/SoSe_WiSe/de lecture
+module in PO:
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement (WIN_M) 1
+
+Spezielle Gebiete der Werkstoffkunde Metalle (SWKM) bei Danka Katrakova-Krüger
+subModule & courses:
+	Spezielle Gebiete der Werkstoffkunde Metalle (SWKM) 5/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+
+Business Administration (EN) (BA IM) bei Christina Werner
+subModule & courses:
+	Business Administration (EN) (BA IM) 2/SoSe/de lecture
+module in PO:
+	Master: Informatik/Computer Science (I_M) 1
+
+Soziotechnische Entwurfsmuster (SE MMI) bei Christian Kohls
+subModule & courses:
+	Soziotechnische Entwurfsmuster (SE MMI) 1/WiSe/de lecture
+module in PO:
+	Master: Medieninformatik-Master (MI_M) 1
+
+Linear, nonlinear and model predictive control (PTC) bei Michael Bongards
+subModule & courses:
+	Linear, nonlinear and model predictive control (PTC) 1/SoSe_WiSe/de lecture
+module in PO:
+	Master: Automation and IT Master (AIT_M) 1
+
+Praxisprojekt zu Unternehmens-Mitarbeiterführung (WPF UMF) bei Torsten Klein
+subModule & courses:
+	Praxisprojekt zu Unternehmens-Mitarbeiterführung (WPF UMF) 5/SoSe_WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+
+Simulationstechnik (WPF SC ST) bei Michael Bongards
+subModule & courses:
+	Simulationstechnik (WPF SC ST) 6/SoSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Elektronik (EIW_B) 1
+
+Konstruktion /  Maschinenelemente  für Maschinenbauer 1 (KM1) bei Nicolas Pyschny
+subModule & courses:
+	Konstruktion /  Maschinenelemente  für Maschinenbauer 1 (KM1) 4/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Management und Unternehmenssteuerung (MUSW) bei Torsten Klein
+subModule & courses:
+	Management und Unternehmenssteuerung (MUSW) 2/SoSe/de seminar
+module in PO:
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen (WIN_M) 1
+
+Integration of Technical and Commercial Systems (ERP) bei Hartmut Westenberger
+subModule & courses:
+	Integration of Technical and Commercial Systems (ERP) 1/SoSe_WiSe/de lecture
+module in PO:
+	Master: Automation and IT Master (AIT_M) 1
+
+Informatik 1  (IN1) bei Elena Algorri
+subModule & courses:
+	Informatik 1  (IN1) 1/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Elektronik (EIW_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Automatisierungstechnik (EIW_B) 1
+
+Fertigungstechnik 2 (Kunststoff) (FT2) bei Florian Zwanzig
+subModule & courses:
+	Fertigungstechnik 2 (Kunststoff) (FT2) 5/SoSe_WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+
+Künstliche Intelligenz 1 (KI1) bei Dietlind Zühlke
+subModule & courses:
+	Künstliche Intelligenz 1 (KI1) 5/WiSe/de lecture
+module in PO:
+	Informatik (AI_B) 1
+
+Physik - Aller Anfang ist schwer (PH ) bei Juri Zakrevski
+subModule & courses:
+	Physik - Aller Anfang ist schwer (PH ) 6/SoSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Elektronik (EIW_B) 1
+
+Physik 1 (PH1B) bei Juri Zakrevski
+subModule & courses:
+	Physik 1 (PH1B) 1/SoSe_WiSe/de lecture
+module in PO:
+	Elektronik (EIW_B) 1
+	Automatisierungstechnik (EIW_B) 1
+	Maschinenbau (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Informatik 2 (IN2) bei Christian Wolf
+subModule & courses:
+	Informatik 2 (IN2) 1/SoSe_WiSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Maschinenbau (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Elektronik (EIW_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+
+Paradigmen der Programmierung (PP) bei Christian Kohls
+subModule & courses:
+	Paradigmen der Programmierung (PP) 3/WiSe/de lecture
+module in PO:
+	Informatik (AI_B) 1
+
+Grundlagen des Web (Web Architekturen) (GDW) bei Jan Kus
+subModule & courses:
+	Grundlagen des Web (Web Architekturen) (GDW) 3/WiSe/de lecture
+module in PO:
+	Medieninformatik (MI_B) 1
+	IT-Management (ITM_B) 1
+
+Marketing 2 (MG2 M) bei Monika Engelen
+subModule & courses:
+	Marketing 2 (MG2 M) 5/SoSe_WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+
+Angewandte Mathematik (MAA) bei Olaf Mersmann
+subModule & courses:
+	Angewandte Mathematik (MAA) 3/WiSe/de lecture
+module in PO:
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+
+Digitale Systeme (DIS) bei Ludger Buchmann
+subModule & courses:
+	Digitale Systeme (DIS) 4/SoSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Elektronik (EIW_B) 1
+
+Naturwissenschaftliche Grundlagen digitaler Medien 1 (NGD) bei Gerhard Hartmann
+subModule & courses:
+	Naturwissenschaftliche Grundlagen digitaler Medien 1 (NGD) 1/SoSe_WiSe/de seminar
+module in PO:
+	Master: Medieninformatik-Master (MI_M) 1
+
+Betriebliche Anwendungssysteme 1 (BA1 ) bei Hartmut Westenberger
+subModule & courses:
+	Betriebliche Anwendungssysteme 1 (BA1 ) 4/SoSe/de lecture
+module in PO:
+	Wirtschaftsinformatik (WI_B) 1
+
+Technisches Zeichnen - CAD s. Staffelplan (KOR) bei Regine Pelger-Arz
+subModule & courses:
+	Technisches Zeichnen - CAD s. Staffelplan (KOR) 3/WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Einführung in Docker (WPF DCKR) bei Roman Majewski
+subModule & courses:
+	Einführung in Docker (WPF DCKR) 4/SoSe_WiSe/de seminar
+module in PO:
+	Informatik (AI_B) 1
+	Wirtschaftsinformatik (WI_B) 1
+	Technische Informatik (TI_B) 1
+	Medieninformatik (MI_B) 1
+
+Data Mining (EN) (DM IM) bei Dietlind Zühlke
+subModule & courses:
+	Data Mining (EN) (DM IM) 1/WiSe/de lecture
+module in PO:
+	Master: Informatik/Computer Science (I_M) 1
+
+Fertigungstechnik 3 - Metalle / Automatisierte Fertigung (FT3M) bei Rolf-Hubert Bruns
+subModule & courses:
+	Fertigungstechnik 3 - Metalle / Automatisierte Fertigung (FT3M) 5/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Qualitätsmanagement (QM ) bei Thomas Münster
+subModule & courses:
+	Qualitätsmanagement (QM ) 4/SoSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+
+Unternehmenslogistik (BIL) bei Amina Hadzeric
+subModule & courses:
+	Unternehmenslogistik (BIL) 4/SoSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+
+Automatisierte Fertigung 1 (ATF) bei Rolf-Hubert Bruns
+subModule & courses:
+	Automatisierte Fertigung 1 (ATF) 5/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+
+Embedded Systems (EMS) bei Christoph Klein
+subModule & courses:
+	Embedded Systems (EMS) 4/SoSe_WiSe/de lecture
+module in PO:
+	Elektronik (EIW_B) 1
+	Automatisierungstechnik (EIW_B) 1
+
+Verteilte Systeme (WPF VS) bei Lutz Köhler
+subModule & courses:
+	Verteilte Systeme (WPF VS) 4/SoSe_WiSe/de seminar
+module in PO:
+	IT-Management (ITM_B) 1
+	Informatik (AI_B) 1
+	Wirtschaftsinformatik (WI_B) 1
+	Medieninformatik (MI_B) 1
+
+Arbeitswissenschaft / Ergonomie (AWE) bei Christian Averkamp
+subModule & courses:
+	Arbeitswissenschaft / Ergonomie (AWE) 5/SoSe_WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+
+Technologie- und Innovationsmanagement Übung (TIMUE) bei Christian Malek
+subModule & courses:
+	Technologie- und Innovationsmanagement Übung (TIMUE) 1/SoSe_WiSe/de exercise
+module in PO:
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen (WIN_M) 1
+
+Studioproduktion - Livesendung (WPF SPL) bei Ernestine Wassermann
+subModule & courses:
+	Studioproduktion - Livesendung (WPF SPL) 5/WiSe/de lecture
+module in PO:
+	Medieninformatik (MI_B) 1
+
+Einführung in die Elektrotechnik 2 (EE2) bei Michael Pongs
+subModule & courses:
+	Einführung in die Elektrotechnik 2 (EE2) 1/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Automatisierungstechnik (EIW_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Elektronik (EIW_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+
+Spezielle Gebiete der Werkstoffkunde Polymere (SWKP) bei Konstantina Harraß
+subModule & courses:
+	Spezielle Gebiete der Werkstoffkunde Polymere (SWKP) 5/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+
+IT-Security-Management and Technologies (ITSMAT) bei Frithjof Klasen
+subModule & courses:
+	IT-Security-Management and Technologies (ITSMAT) 1/SoSe_WiSe/de lecture
+module in PO:
+	Master: Automation and IT Master (AIT_M) 1
+
+Web Architekturen (WA) bei Patrick Erasmus
+subModule & courses:
+	Web Architekturen (WA) 1/WiSe/de lecture
+module in PO:
+	Master: Medieninformatik-Master (MI_M) 1
+
+Technisches Englisch Seminar Gruppe 3 (ENT) bei Pauline Stenschke
+subModule & courses:
+	Technisches Englisch Seminar Gruppe 3 (ENT) 5/WiSe/de seminar
+module in PO:
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau (AMA_B) 1
+
+Achtsamkeit und wertorientierte Entwicklung (QQ AWE) bei Petra Riemer
+subModule & courses:
+	Achtsamkeit und wertorientierte Entwicklung (QQ AWE) 3/WiSe/de seminar
+module in PO:
+	Wirtschaftsinformatik (WI_B) 1
+	IT-Management (ITM_B) 1
+	Informatik (AI_B) 1
+	Medieninformatik (MI_B) 1
+
+Systemtheorie (STH) bei Andreas Kampmann
+subModule & courses:
+	Systemtheorie (STH) 3/WiSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Elektronik (EIW_B) 1
+
+Analoge Systeme (ANS) bei Andreas Kampmann
+subModule & courses:
+	Analoge Systeme (ANS) 4/SoSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Elektronik (EIW_B) 1
+
+Herausforderungen der Unternehmensführung (WPF HUF) bei Torsten Klein
+subModule & courses:
+	Herausforderungen der Unternehmensführung (WPF HUF) 5/SoSe_WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+
+Kommunikationstechnik und Netze (KTN) bei Hans L. Stahl
+subModule & courses:
+	Kommunikationstechnik und Netze (KTN) 3/WiSe/de lecture
+module in PO:
+	Informatik (AI_B) 1
+	Wirtschaftsinformatik (WI_B) 1
+	Technische Informatik (TI_B) 1
+	Medieninformatik (MI_B) 1
+
+Einführung in die Mechanik 2  (EM2) bei Axel Wellendorf
+subModule & courses:
+	Einführung in die Mechanik 2  (EM2) 1/SoSe_WiSe/de lecture
+module in PO:
+	Wirtschaftsingenieurwesen (WIN_B) 1
+	Wirtschaftsingenieurwesen / Elektrotechnik (WIN_B) 1
+	Automatisierungstechnik (EIW_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Wirtschaftsingenieurwesen  / Maschinenbau (WIN_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+	Elektronik (EIW_B) 1
+	Maschinenbau (AMA_B) 1
+
+Wirtschaftsenglisch Seminar Gruppe 1 (ENW) bei Tuula Bockemühl-Simon
+subModule & courses:
+	Wirtschaftsenglisch Seminar Gruppe 1 (ENW) 6/SoSe/de seminar
+module in PO:
+	Elektronik (EIW_B) 1
+	Automatisierungstechnik (EIW_B) 1
+
+Konstruktion /  Maschinenelemente für Maschinenbauer 2 (KM2) bei Nicolas Pyschny
+subModule & courses:
+	Konstruktion /  Maschinenelemente für Maschinenbauer 2 (KM2) 4/SoSe_WiSe/de lecture
+module in PO:
+	Maschinenbau (AMA_B) 1
+	Maschinenbau Schwerpunkt Informatik (AMA_B) 1
+	Maschinenbau Schwerpunkt Konstruktion (AMA_B) 1
+	Maschinenbau Schwerpunkt Fertigung (AMA_B) 1
+
+Statistische Versuchsplanung (SVP) bei Thomas Bartz-Beielstein
+subModule & courses:
+	Statistische Versuchsplanung (SVP) 1/SoSe_WiSe/de seminar
+module in PO:
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement (WIN_M) 1
+
+Governance, Risk und Compliance (GRC) bei Roman Bartnik
+subModule & courses:
+	Governance, Risk und Compliance (GRC) 1/SoSe_WiSe/de lecture
+module in PO:
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement (WIN_M) 1
+
+Softwaretechnik  ET-AT (SWT) bei Elena Algorri
+subModule & courses:
+	Softwaretechnik  ET-AT (SWT) 4/SoSe_WiSe/de lecture
+module in PO:
+	Automatisierungstechnik (EIW_B) 1
+	Elektronik (EIW_B) 1
+
+Projekt III: Forschung, Evaluation/Assessment, Verwertung (P3) bei Mario Winter
+subModule & courses:
+	Projekt III: Forschung, Evaluation/Assessment, Verwertung (P3) 1/WiSe/de lecture
+module in PO:
+	Master: Medieninformatik-Master (MI_M) 1
+
+Technologie- und Innovationsmanagement - 2 (TIM2) bei Christoph Haag
+subModule & courses:
+	Technologie- und Innovationsmanagement - 2 (TIM2) 1/SoSe_WiSe/de lecture
+module in PO:
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen (WIN_M) 1
+	Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement (WIN_M) 1
+====
+
+Schedules (5)
+Mon., 30.08.2021
+Geschäftsprozessmanagement (DE) (GPM)
+	13:00-17:00 Master: Wirtschaftsingenieurwesen lecture
+	13:00-17:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement lecture
+	13:00-17:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement lecture
+	13:00-17:00 Master: Produktdesign und Prozessentwicklung (PRODES) lecture
+Ingenieurethik Doz: BO&SF (ING)
+	09:00-13:00 Elektronik lecture
+	09:00-13:00 Automatisierungstechnik lecture
+Technisches Zeichnen für Wirtschaftsing und Allg. Maschinenbau (TZ )
+	09:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-13:00 Maschinenbau lecture
+CAD mit CATIA V5 (WPF CAD)
+	13:00-17:00 Wirtschaftsingenieurwesen / Elektrotechnik seminar
+	13:00-17:00 Wirtschaftsingenieurwesen seminar
+	13:00-17:00 Wirtschaftsingenieurwesen  / Maschinenbau seminar
+Entwicklungsprojekt (EP)
+	13:00-16:00 Medieninformatik seminar
+Bussysteme und Interfaces (BSI)
+	09:00-13:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-13:00 Wirtschaftsingenieurwesen lecture
+	09:00-13:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Linear, nonlinear and model predictive control (PTC)
+	09:00-13:00 Master: Automation and IT Master lecture
+	15:00-17:00 Master: Automation and IT Master lecture
+Physik - Aller Anfang ist schwer (PH )
+	11:00-15:00 Elektronik lecture
+	11:00-15:00 Automatisierungstechnik lecture
+Automatisierte Fertigung 1 (ATF)
+	13:00-17:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	13:00-17:00 Maschinenbau Schwerpunkt Fertigung lecture
+	13:00-17:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	13:00-17:00 Wirtschaftsingenieurwesen lecture
+	13:00-17:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	13:00-17:00 Maschinenbau Schwerpunkt Informatik lecture
+	13:00-17:00 Maschinenbau lecture
+Arbeitswissenschaft / Ergonomie (AWE)
+	15:00-19:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	15:00-19:00 Maschinenbau Schwerpunkt Fertigung lecture
+	15:00-19:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	15:00-19:00 Wirtschaftsingenieurwesen lecture
+	15:00-19:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	15:00-19:00 Maschinenbau Schwerpunkt Informatik lecture
+	15:00-19:00 Maschinenbau lecture
+Statistische Versuchsplanung (SVP)
+	09:00-12:00 Master: Wirtschaftsingenieurwesen seminar
+	09:00-12:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement seminar
+	09:00-12:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement seminar
+Physik 2 (PH2)
+	13:00-15:00 Elektronik lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	13:00-15:00 Automatisierungstechnik lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Fertigung lecture
+	13:00-15:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	13:00-15:00 Wirtschaftsingenieurwesen lecture
+	13:00-15:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Informatik lecture
+	13:00-15:00 Maschinenbau lecture
+Optimierung dynamischer Systeme ET (OTS)
+	15:00-19:00 Elektronik lecture
+	15:00-19:00 Automatisierungstechnik lecture
+Mathematik 1 (ING) (MA1B)
+	09:00-11:00 Elektronik lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-11:00 Automatisierungstechnik lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-11:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-11:00 Wirtschaftsingenieurwesen lecture
+	09:00-11:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-11:00 Maschinenbau lecture
+Projektarbeit Kunststoffverarbeitung (FT3)
+	13:00-17:00 Maschinenbau Schwerpunkt Fertigung lecture
+	13:00-17:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	13:00-17:00 Maschinenbau Schwerpunkt Informatik lecture
+	13:00-17:00 Maschinenbau lecture
+Fertigungstechnik 2 (Metall) (FT2)
+	09:00-11:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-11:00 Maschinenbau lecture
+Marketing 1 (WPF M1)
+	13:00-17:00 Medieninformatik lecture
+Algorithmen und Programmierung 1 (AP1)
+	11:00-14:00 Medieninformatik lecture
+	11:00-14:00 IT-Management lecture
+	11:00-14:00 Informatik lecture
+	11:00-14:00 Wirtschaftsinformatik lecture
+Marketing 1 (MG1 M)
+	13:00-17:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	13:00-17:00 Wirtschaftsingenieurwesen lecture
+	13:00-17:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+IT-Compliance & Risk Management (EN) (ITCRM)
+	10:00-12:00 Master: Informatik/Computer Science lecture
+Einführung in Betriebssysteme und Rechnerarchitektur (EBR)
+	14:00-16:00 Medieninformatik lecture
+	14:00-16:00 IT-Management lecture
+	14:00-16:00 Informatik lecture
+	14:00-16:00 Wirtschaftsinformatik lecture
+Unternehmensplanspiel (UPS)
+	11:00-14:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	11:00-14:00 Wirtschaftsingenieurwesen lecture
+	11:00-14:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Mobile Computing (MOCO)
+	09:00-13:00 IT-Management lecture
+	16:00-17:00 IT-Management lecture
+Programmieren (PRO)
+	09:00-13:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-13:00 Wirtschaftsingenieurwesen lecture
+	09:00-13:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Steuer- und Regelungstechnik (Automatisierungssysteme)  (SR1)
+	15:00-19:00 Maschinenbau Schwerpunkt Fertigung lecture
+	15:00-19:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	15:00-19:00 Maschinenbau Schwerpunkt Informatik lecture
+	15:00-19:00 Maschinenbau lecture
+Optimierung und Stabilisierung dezentraler Energieerzeugungsprozesse (Netze und Speicher) (OSDEP)
+	09:00-13:00 Master: Wirtschaftsingenieurwesen lecture
+	09:00-13:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement lecture
+	09:00-13:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement lecture
+Mathematik 2 Gr. B (ING) (MA2B)
+	15:00-17:00 Elektronik lecture
+	15:00-17:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	15:00-17:00 Automatisierungstechnik lecture
+	15:00-17:00 Maschinenbau Schwerpunkt Fertigung lecture
+	15:00-17:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	15:00-17:00 Wirtschaftsingenieurwesen lecture
+	15:00-17:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	15:00-17:00 Maschinenbau Schwerpunkt Informatik lecture
+	15:00-17:00 Maschinenbau lecture
+Werkzeuge in der Kunststoffverarbeitung (WKV)
+	09:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-13:00 Maschinenbau lecture
+Softwaretechnik 1 (ST1)
+	09:00-11:00 Informatik lecture
+Grundlagen des Web (Web Architekturen) (GDW)
+	09:00-11:00 Medieninformatik lecture
+	09:00-11:00 IT-Management lecture
+Angewandte Mathematik (MAA)
+	13:00-15:00 Maschinenbau Schwerpunkt Fertigung lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Informatik lecture
+	13:00-15:00 Maschinenbau lecture
+Analoge Systeme (ANS)
+	13:00-17:00 Elektronik lecture
+	13:00-17:00 Automatisierungstechnik lecture
+Herausforderungen der Unternehmensführung (WPF HUF)
+	14:00-18:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	14:00-18:00 Wirtschaftsingenieurwesen lecture
+	14:00-18:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Wirtschaftsenglisch Seminar Gruppe 1 (ENW)
+	09:00-11:00 Elektronik seminar
+	09:00-11:00 Automatisierungstechnik seminar
+Konstruktion /  Maschinenelemente für Maschinenbauer 2 (KM2)
+	11:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	11:00-13:00 Maschinenbau lecture
+
+Wed., 01.09.2021
+Informatik und Gesellschaft (IUG )
+	14:00-16:00 Medieninformatik lecture
+	14:00-16:00 IT-Management lecture
+	14:00-16:00 Informatik lecture
+	14:00-16:00 Wirtschaftsinformatik lecture
+Grundlagen der Technischen Thermodynamik (TD)
+	09:00-13:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-13:00 Wirtschaftsingenieurwesen lecture
+	09:00-13:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Spezielle Gebiete der Mathematik (MAS)
+	09:00-11:00 Master: Medieninformatik-Master lecture
+	09:00-11:00 Master: Informatik/Computer Science lecture
+Tutorium Konstruktion /  Maschinenelemente für Maschinenbauer 2 (TUTKM2)
+	13:00-15:00 Maschinenbau Schwerpunkt Fertigung exercise
+	13:00-15:00 Maschinenbau Schwerpunkt Konstruktion exercise
+	13:00-15:00 Maschinenbau Schwerpunkt Informatik exercise
+	13:00-15:00 Maschinenbau exercise
+Mathematik 1 (MA1)
+	09:00-12:00 Wirtschaftsinformatik lecture
+Betriebliche Anwendungssysteme 2 (BA2 )
+	11:00-13:00 Wirtschaftsinformatik lecture
+Linear, nonlinear and model predictive control (PTC)
+	09:00-13:00 Master: Automation and IT Master lecture
+Physik 1 (PH1B)
+	11:00-13:00 Elektronik lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	11:00-13:00 Automatisierungstechnik lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	11:00-13:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	11:00-13:00 Wirtschaftsingenieurwesen lecture
+	11:00-13:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	11:00-13:00 Maschinenbau lecture
+Technisches Zeichnen - CAD s. Staffelplan (KOR)
+	09:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-13:00 Maschinenbau lecture
+Qualitätsmanagement (QM )
+	09:00-13:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-13:00 Wirtschaftsingenieurwesen lecture
+	09:00-13:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Achtsamkeit und wertorientierte Entwicklung (QQ AWE)
+	10:00-14:00 Medieninformatik seminar
+	10:00-14:00 IT-Management seminar
+	10:00-14:00 Informatik seminar
+	10:00-14:00 Wirtschaftsinformatik seminar
+Einführung in die Mechanik 2  (EM2)
+	13:00-14:00 Elektronik lecture
+	13:00-14:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	13:00-14:00 Automatisierungstechnik lecture
+	13:00-14:00 Maschinenbau Schwerpunkt Fertigung lecture
+	13:00-14:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	13:00-14:00 Wirtschaftsingenieurwesen lecture
+	13:00-14:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	13:00-14:00 Maschinenbau Schwerpunkt Informatik lecture
+	13:00-14:00 Maschinenbau lecture
+Konstruktionslehre (KL M)
+	09:00-13:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-13:00 Wirtschaftsingenieurwesen lecture
+	09:00-13:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Controlling (CON M)
+	16:00-18:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	16:00-18:00 Wirtschaftsingenieurwesen lecture
+	16:00-18:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Wirtschaftsenglisch Seminar Gruppe 2 (ENW)
+	13:00-15:00 Wirtschaftsingenieurwesen / Elektrotechnik seminar
+	13:00-15:00 Wirtschaftsingenieurwesen seminar
+	13:00-15:00 Wirtschaftsingenieurwesen  / Maschinenbau seminar
+Diskrete Mathematik (DM)
+	16:00-18:00 Informatik lecture
+Wirtschaftsrecht (WRE)
+	15:00-19:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	15:00-19:00 Wirtschaftsingenieurwesen lecture
+	15:00-19:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Algorithmik (ALG)
+	11:00-13:00 Informatik lecture
+Einführung in die Elektrotechnik 1 (EE1)
+	09:00-11:00 Elektronik lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-11:00 Automatisierungstechnik lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-11:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-11:00 Wirtschaftsingenieurwesen lecture
+	09:00-11:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-11:00 Maschinenbau lecture
+Technisches Englisch Seminar Gruppe 1 (ENT)
+	11:00-13:00 Maschinenbau Schwerpunkt Fertigung seminar
+	11:00-13:00 Maschinenbau Schwerpunkt Konstruktion seminar
+	11:00-13:00 Maschinenbau Schwerpunkt Informatik seminar
+	11:00-13:00 Maschinenbau seminar
+Projektmanagement (ING) (PMA)
+	13:00-15:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	13:00-15:00 Elektronik lecture
+	13:00-15:00 Automatisierungstechnik lecture
+	13:00-15:00 Wirtschaftsingenieurwesen lecture
+	13:00-15:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Projekt I: Vision und Konzept (P1)
+	11:00-17:00 Master: Medieninformatik-Master lecture
+Angewandte Konstruktion (KOA)
+	09:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-13:00 Maschinenbau lecture
+Technisches Englisch Seminar Gruppe 2 (ENT)
+	11:00-13:00 Elektronik seminar
+	11:00-13:00 Automatisierungstechnik seminar
+Spezielle Gebiete der Mathematik (DE) (SGM)
+	09:00-11:00 Master: Medieninformatik-Master lecture
+	09:00-11:00 Master: Informatik/Computer Science lecture
+Projektmanagement (INF) (PM)
+	09:00-12:00 Wirtschaftsinformatik lecture
+Operations Research (EN) (OR)
+	11:00-13:00 Master: Informatik/Computer Science lecture
+Technologie- und Innovationsmanagement - 1 (TIM1)
+	08:00-13:00 Master: Wirtschaftsingenieurwesen lecture
+	08:00-13:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement lecture
+	08:00-13:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement lecture
+Statistik (MAW)
+	13:00-15:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	13:00-15:00 Wirtschaftsingenieurwesen lecture
+	13:00-15:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Arbeits- und Vertragsrecht (AUV)
+	15:00-19:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	15:00-19:00 Maschinenbau Schwerpunkt Fertigung lecture
+	15:00-19:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	15:00-19:00 Wirtschaftsingenieurwesen lecture
+	15:00-19:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	15:00-19:00 Maschinenbau Schwerpunkt Informatik lecture
+	15:00-19:00 Maschinenbau lecture
+Research Seminar on Behavioral Economics and Nudging (SGWW)
+	13:00-17:00 Master: Wirtschaftsingenieurwesen lecture
+	13:00-17:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement lecture
+	13:00-17:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement lecture
+Spezielle Gebiete der Werkstoffkunde Metalle (SWKM)
+	09:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-13:00 Maschinenbau lecture
+Technologie- und Innovationsmanagement Übung (TIMUE)
+	17:00-19:00 Master: Wirtschaftsingenieurwesen exercise
+	17:00-19:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement exercise
+	17:00-19:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement exercise
+Einführung in die Elektrotechnik 2 (EE2)
+	09:00-11:00 Elektronik lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-11:00 Automatisierungstechnik lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-11:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-11:00 Wirtschaftsingenieurwesen lecture
+	09:00-11:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-11:00 Maschinenbau lecture
+Spezielle Gebiete der Werkstoffkunde Polymere (SWKP)
+	09:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-13:00 Maschinenbau lecture
+Softwaretechnik  ET-AT (SWT)
+	09:00-13:00 Elektronik lecture
+	09:00-13:00 Automatisierungstechnik lecture
+Projekt III: Forschung, Evaluation/Assessment, Verwertung (P3)
+	11:00-17:00 Master: Medieninformatik-Master lecture
+Technologie- und Innovationsmanagement - 2 (TIM2)
+	08:00-13:00 Master: Wirtschaftsingenieurwesen lecture
+	08:00-13:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement lecture
+	08:00-13:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement lecture
+
+Tue., 31.08.2021
+Numerical methods (NM)
+	13:00-18:00 Master: Automation and IT Master lecture
+Anwendungsfelder der Business Analytics (WPF ABA)
+	09:00-13:00 Wirtschaftsinformatik lecture
+Umweltgerechtes Ressourcenmanagement (URM)
+	11:00-14:00 Master: Wirtschaftsingenieurwesen lecture
+	11:00-14:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement lecture
+	11:00-14:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement lecture
+Wärmeübertragung (WÜ)
+	14:00-18:00 Maschinenbau Schwerpunkt Fertigung lecture
+	14:00-18:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	14:00-18:00 Maschinenbau Schwerpunkt Informatik lecture
+	14:00-18:00 Maschinenbau lecture
+Spezielle Gebiete der Mathematik (DE) (SGM)
+	09:00-11:00 Master: Medieninformatik-Master lecture
+	09:00-11:00 Master: Informatik/Computer Science lecture
+Physik 1 (PH1B)
+	11:00-13:00 Elektronik lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	11:00-13:00 Automatisierungstechnik lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	11:00-13:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	11:00-13:00 Wirtschaftsingenieurwesen lecture
+	11:00-13:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	11:00-13:00 Maschinenbau lecture
+Fertigungstechnik 3 - Metalle / Automatisierte Fertigung (FT3M)
+	17:00-21:00 Maschinenbau Schwerpunkt Fertigung lecture
+	17:00-21:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	17:00-21:00 Maschinenbau Schwerpunkt Informatik lecture
+	17:00-21:00 Maschinenbau lecture
+Verteilte Systeme (WPF VS)
+	16:00-20:00 Medieninformatik seminar
+	16:00-20:00 IT-Management seminar
+	16:00-20:00 Informatik seminar
+	16:00-20:00 Wirtschaftsinformatik seminar
+Technologie- und Innovationsmanagement Übung (TIMUE)
+	09:00-11:00 Master: Wirtschaftsingenieurwesen exercise
+	09:00-11:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement exercise
+	09:00-11:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement exercise
+Technisches Englisch Seminar Gruppe 3 (ENT)
+	13:00-15:00 Maschinenbau Schwerpunkt Fertigung seminar
+	13:00-15:00 Maschinenbau Schwerpunkt Konstruktion seminar
+	13:00-15:00 Maschinenbau Schwerpunkt Informatik seminar
+	13:00-15:00 Maschinenbau seminar
+Governance, Risk und Compliance (GRC)
+	14:00-18:00 Master: Wirtschaftsingenieurwesen lecture
+	14:00-18:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement lecture
+	14:00-18:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement lecture
+IT-Sicherheit (DE) (ITS)
+	11:00-14:00 Master: Informatik/Computer Science lecture
+Fertigungstechnik 1 (Metall) (FT1)
+	11:00-13:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	11:00-13:00 Wirtschaftsingenieurwesen lecture
+	11:00-13:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Sicherheit, Privatsphäre und Vertrauen im Netz (SPV)
+	11:00-14:00 Master: Medieninformatik-Master lecture
+Konzeption und Entwicklung sozio-informatischer Systeme (WPF KESS)
+	13:00-15:00 Medieninformatik seminar
+	13:00-15:00 Informatik seminar
+Tutorium Konstruktion /  Maschinenelemente für Maschinenbauer 1 (TUTKM1)
+	13:00-15:00 Maschinenbau Schwerpunkt Fertigung exercise
+	13:00-15:00 Maschinenbau Schwerpunkt Konstruktion exercise
+	13:00-15:00 Maschinenbau Schwerpunkt Informatik exercise
+	13:00-15:00 Maschinenbau exercise
+Fabrikplanung  (FP)
+	13:00-17:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	13:00-17:00 Maschinenbau Schwerpunkt Fertigung lecture
+	13:00-17:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	13:00-17:00 Wirtschaftsingenieurwesen lecture
+	13:00-17:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	13:00-17:00 Maschinenbau Schwerpunkt Informatik lecture
+	13:00-17:00 Maschinenbau lecture
+Business Excellence (BEX)
+	09:00-13:00 Master: Produktdesign und Prozessentwicklung (PRODES) lecture
+Physik 2 (PH2)
+	13:00-15:00 Elektronik lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	13:00-15:00 Automatisierungstechnik lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Fertigung lecture
+	13:00-15:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	13:00-15:00 Wirtschaftsingenieurwesen lecture
+	13:00-15:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Informatik lecture
+	13:00-15:00 Maschinenbau lecture
+Modellierung von Anwendungssystemen 2 (MAS2)
+	15:00-17:00 Wirtschaftsinformatik lecture
+Mathematik 1 (ING) (MA1B)
+	09:00-11:00 Elektronik lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-11:00 Automatisierungstechnik lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-11:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-11:00 Wirtschaftsingenieurwesen lecture
+	09:00-11:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-11:00 Maschinenbau lecture
+Theoretische Informatik 1 (TI1)
+	17:00-19:00 Medieninformatik lecture
+	17:00-19:00 Informatik lecture
+Spezielle Gebiete der Mathematik (MAS)
+	09:00-11:00 Master: Medieninformatik-Master lecture
+	09:00-11:00 Master: Informatik/Computer Science lecture
+Automatisierungssysteme (AUS)
+	13:00-17:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	13:00-17:00 Elektronik lecture
+	13:00-17:00 Automatisierungstechnik lecture
+	13:00-17:00 Wirtschaftsingenieurwesen lecture
+	13:00-17:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Elektronik (EL )
+	09:00-13:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-13:00 Elektronik lecture
+	09:00-13:00 Automatisierungstechnik lecture
+	09:00-13:00 Wirtschaftsingenieurwesen lecture
+	09:00-13:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Technisches Englisch Seminar Gruppe 1 (ENT)
+	11:00-13:00 Maschinenbau Schwerpunkt Fertigung seminar
+	11:00-13:00 Maschinenbau Schwerpunkt Konstruktion seminar
+	11:00-13:00 Maschinenbau Schwerpunkt Informatik seminar
+	11:00-13:00 Maschinenbau seminar
+Einführung in die Medieninformatik (EMI)
+	13:00-17:00 Medieninformatik lecture
+Datenbanken 1 (DB1)
+	09:00-11:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-11:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-11:00 Wirtschaftsingenieurwesen lecture
+	09:00-11:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-11:00 Maschinenbau lecture
+Praxisprojektseminar (PPS)
+	10:00-13:00 Medieninformatik lecture
+Einführung in die Mechanik 1 (EM1)
+	13:00-15:00 Elektronik lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	13:00-15:00 Automatisierungstechnik lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Fertigung lecture
+	13:00-15:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	13:00-15:00 Wirtschaftsingenieurwesen lecture
+	13:00-15:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Informatik lecture
+	13:00-15:00 Maschinenbau lecture
+Einführung in die Wirtschaftsinformatik (EWI)
+	13:00-15:00 Wirtschaftsinformatik lecture
+Mathematik 1 (MA1)
+	09:00-11:00 Wirtschaftsinformatik lecture
+Digitale Signalverarbeitung (DSV)
+	13:00-17:00 Elektronik lecture
+	13:00-17:00 Automatisierungstechnik lecture
+Höhere Festigkeitslehre / Finite Elemente (FEM)
+	08:00-11:00 Maschinenbau Schwerpunkt Fertigung lecture
+	08:00-11:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	08:00-11:00 Maschinenbau Schwerpunkt Informatik lecture
+	08:00-11:00 Maschinenbau lecture
+Project Management (EN) (PM EN)
+	16:00-20:00 Master: Informatik/Computer Science lecture
+Allgemeine Maschinendynamik (AM)
+	11:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	11:00-13:00 Maschinenbau lecture
+Technisches Englisch Seminar Gruppe 2 (ENT)
+	11:00-13:00 Elektronik seminar
+	11:00-13:00 Automatisierungstechnik seminar
+Ubiquitous Computing (UBIC DSM MMI)
+	14:00-17:00 Master: Medieninformatik-Master lecture
+Fertigungstechnik 1 (Kunststoff) (FT1)
+	13:00-15:00 Maschinenbau Schwerpunkt Fertigung lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Informatik lecture
+	13:00-15:00 Maschinenbau lecture
+Infrastructure as a Service (WPF IaaS)
+	15:00-19:00 Medieninformatik lecture
+	15:00-19:00 Informatik lecture
+	15:00-19:00 Wirtschaftsinformatik lecture
+Software-Qualitaetssicherung (WPF SQS)
+	11:00-15:00 Medieninformatik seminar
+	11:00-15:00 Technische Informatik seminar
+	11:00-15:00 Informatik seminar
+	11:00-15:00 Wirtschaftsinformatik seminar
+Operations Research (EN) (OR)
+	14:00-16:00 Master: Informatik/Computer Science lecture
+Mathematik 2 Gr. B (ING) (MA2B)
+	11:00-13:00 Elektronik lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	11:00-13:00 Automatisierungstechnik lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	11:00-13:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	11:00-13:00 Wirtschaftsingenieurwesen lecture
+	11:00-13:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	11:00-13:00 Maschinenbau lecture
+Steuern und Regeln in der Umwelttechnik (WPF BO 1)
+	17:00-19:00 Maschinenbau Schwerpunkt Fertigung lecture
+	17:00-19:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	17:00-19:00 Maschinenbau Schwerpunkt Informatik lecture
+	17:00-19:00 Maschinenbau lecture
+Statistik (MAW)
+	13:00-15:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	13:00-15:00 Wirtschaftsingenieurwesen lecture
+	13:00-15:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Linear, nonlinear and model predictive control (PTC)
+	09:00-11:00 Master: Automation and IT Master lecture
+Praxisprojekt zu Unternehmens-Mitarbeiterführung (WPF UMF)
+	17:00-21:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	17:00-21:00 Wirtschaftsingenieurwesen lecture
+	17:00-21:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Konstruktion /  Maschinenelemente  für Maschinenbauer 1 (KM1)
+	11:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	11:00-13:00 Maschinenbau lecture
+Integration of Technical and Commercial Systems (ERP)
+	09:00-16:00 Master: Automation and IT Master lecture
+Fertigungstechnik 2 (Kunststoff) (FT2)
+	09:00-11:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-11:00 Wirtschaftsingenieurwesen lecture
+	09:00-11:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Marketing 2 (MG2 M)
+	13:00-17:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	13:00-17:00 Wirtschaftsingenieurwesen lecture
+	13:00-17:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Angewandte Mathematik (MAA)
+	15:00-19:00 Maschinenbau Schwerpunkt Fertigung lecture
+	15:00-19:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	15:00-19:00 Maschinenbau Schwerpunkt Informatik lecture
+	15:00-19:00 Maschinenbau lecture
+Kommunikationstechnik und Netze (KTN)
+	12:00-15:00 Medieninformatik lecture
+	17:00-20:00 Medieninformatik lecture
+	12:00-15:00 Technische Informatik lecture
+	17:00-20:00 Technische Informatik lecture
+	12:00-15:00 Informatik lecture
+	17:00-20:00 Informatik lecture
+	12:00-15:00 Wirtschaftsinformatik lecture
+	17:00-20:00 Wirtschaftsinformatik lecture
+Wirtschaftsenglisch Seminar Gruppe 1 (ENW)
+	09:00-11:00 Elektronik seminar
+	09:00-11:00 Automatisierungstechnik seminar
+Einführung in die Mechanik 2  (EM2)
+	15:00-17:00 Elektronik lecture
+	15:00-17:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	15:00-17:00 Automatisierungstechnik lecture
+	15:00-17:00 Maschinenbau Schwerpunkt Fertigung lecture
+	15:00-17:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	15:00-17:00 Wirtschaftsingenieurwesen lecture
+	15:00-17:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	15:00-17:00 Maschinenbau Schwerpunkt Informatik lecture
+	15:00-17:00 Maschinenbau lecture
+
+Thu., 02.09.2021
+Großes Projekt (PT)
+	09:00-13:00 Master: Produktdesign und Prozessentwicklung (PRODES) lecture
+Technische Mechanik 1 (TM1)
+	11:00-15:00 Maschinenbau Schwerpunkt Fertigung lecture
+	11:00-15:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	11:00-15:00 Maschinenbau Schwerpunkt Informatik lecture
+	11:00-15:00 Maschinenbau lecture
+Messsysteme (MES)
+	09:00-13:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-13:00 Elektronik lecture
+	09:00-13:00 Automatisierungstechnik lecture
+	09:00-13:00 Wirtschaftsingenieurwesen lecture
+	09:00-13:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Produktion und Logistik (PL)
+	09:00-13:00 Master: Wirtschaftsingenieurwesen lecture
+	09:00-13:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement lecture
+	09:00-13:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement lecture
+Technische Mechanik 2 (TM2)
+	11:00-15:00 Maschinenbau Schwerpunkt Fertigung lecture
+	11:00-15:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	11:00-15:00 Maschinenbau Schwerpunkt Informatik lecture
+	11:00-15:00 Maschinenbau lecture
+Einführung in die Elektrotechnik 1 (EE1)
+	09:00-11:00 Elektronik lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-11:00 Automatisierungstechnik lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-11:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-11:00 Wirtschaftsingenieurwesen lecture
+	09:00-11:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-11:00 Maschinenbau lecture
+Einführung in das IT-Management (EITM)
+	10:00-12:00 IT-Management lecture
+	14:00-16:00 IT-Management lecture
+Umwelt- und Prozessanalytik im Stoffstrom- und Ressourcenmanagement (UPA)
+	13:00-17:00 Master: Wirtschaftsingenieurwesen lecture
+	13:00-17:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement lecture
+	13:00-17:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement lecture
+Screendesign (SD)
+	09:00-11:00 Medieninformatik lecture
+Einführung in die Mechanik 1 (EM1)
+	11:00-13:00 Elektronik lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	11:00-13:00 Automatisierungstechnik lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	11:00-13:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	11:00-13:00 Wirtschaftsingenieurwesen lecture
+	11:00-13:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	11:00-13:00 Maschinenbau lecture
+Allgemeine Maschinendynamik (AM)
+	15:00-17:00 Maschinenbau Schwerpunkt Fertigung lecture
+	15:00-17:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	15:00-17:00 Maschinenbau Schwerpunkt Informatik lecture
+	15:00-17:00 Maschinenbau lecture
+Informatik 2 (IN2)
+	13:00-17:00 Elektronik lecture
+	13:00-17:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	13:00-17:00 Automatisierungstechnik lecture
+	13:00-17:00 Maschinenbau Schwerpunkt Fertigung lecture
+	13:00-17:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	13:00-17:00 Wirtschaftsingenieurwesen lecture
+	13:00-17:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	13:00-17:00 Maschinenbau Schwerpunkt Informatik lecture
+	13:00-17:00 Maschinenbau lecture
+Digitale Systeme (DIS)
+	13:00-17:00 Elektronik lecture
+	13:00-17:00 Automatisierungstechnik lecture
+Einführung in Docker (WPF DCKR)
+	14:00-18:00 Medieninformatik seminar
+	14:00-18:00 Technische Informatik seminar
+	14:00-18:00 Informatik seminar
+	14:00-18:00 Wirtschaftsinformatik seminar
+Data Mining (EN) (DM IM)
+	14:00-18:00 Master: Informatik/Computer Science lecture
+Web Architekturen (WA)
+	09:00-13:00 Master: Medieninformatik-Master lecture
+Einführung in die Mechanik 2  (EM2)
+	09:00-11:00 Elektronik lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-11:00 Automatisierungstechnik lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-11:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-11:00 Wirtschaftsingenieurwesen lecture
+	09:00-11:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-11:00 Maschinenbau lecture
+Finanzierung und Investition (FUI)
+	13:00-17:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	13:00-17:00 Wirtschaftsinformatik lecture
+	13:00-17:00 Wirtschaftsingenieurwesen lecture
+	13:00-17:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Produktentwicklung SPF B&V (PRE)
+	14:00-18:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	14:00-18:00 Maschinenbau Schwerpunkt Fertigung lecture
+	14:00-18:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	14:00-18:00 Wirtschaftsingenieurwesen lecture
+	14:00-18:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	14:00-18:00 Maschinenbau Schwerpunkt Informatik lecture
+	14:00-18:00 Maschinenbau lecture
+Business Intelligence (EN) (BI)
+	09:00-13:00 Master: Informatik/Computer Science lecture
+Produktion und Logistik/Unternehmenslogistik (BWL4) (PuL)
+	16:00-18:00 Wirtschaftsinformatik lecture
+Werkstoffauswahl (WSTA)
+	13:00-17:00 Master: Produktdesign und Prozessentwicklung (PRODES) lecture
+Höhere Festigkeitslehre / Finite Elemente (FEM)
+	13:00-15:00 Maschinenbau Schwerpunkt Fertigung lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Informatik lecture
+	13:00-15:00 Maschinenbau lecture
+Organisation und Management (AOR)
+	13:00-17:00 Maschinenbau Schwerpunkt Fertigung lecture
+	13:00-17:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	13:00-17:00 Maschinenbau Schwerpunkt Informatik lecture
+	13:00-17:00 Maschinenbau lecture
+Werkstoffkunde II (WK2)
+	08:00-11:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	08:00-11:00 Maschinenbau Schwerpunkt Fertigung lecture
+	08:00-11:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	08:00-11:00 Wirtschaftsingenieurwesen lecture
+	08:00-11:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	08:00-11:00 Maschinenbau Schwerpunkt Informatik lecture
+	08:00-11:00 Maschinenbau lecture
+Audiovisuelles Medienprojekt (AVM MI)
+	13:00-19:00 Medieninformatik lecture
+Kommunikation und Führung (KUF)
+	09:00-13:00 Elektronik lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-13:00 Automatisierungstechnik lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-13:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-13:00 Wirtschaftsingenieurwesen lecture
+	09:00-13:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-13:00 Maschinenbau lecture
+Wiss. Arbeiten und Grundl. der Projektarbeit   (WAGP)
+	14:00-17:00 Elektronik lecture
+	14:00-17:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	14:00-17:00 Automatisierungstechnik lecture
+	14:00-17:00 Maschinenbau Schwerpunkt Fertigung lecture
+	14:00-17:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	14:00-17:00 Wirtschaftsingenieurwesen lecture
+	14:00-17:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	14:00-17:00 Maschinenbau Schwerpunkt Informatik lecture
+	14:00-17:00 Maschinenbau lecture
+IT fokussiertes Controlling (ITFC)
+	09:00-13:00 IT-Management lecture
+Soziotechnische Entwurfsmuster (SE MMI)
+	13:00-15:00 Master: Medieninformatik-Master lecture
+Linear, nonlinear and model predictive control (PTC)
+	10:00-16:00 Master: Automation and IT Master lecture
+Simulationstechnik (WPF SC ST)
+	13:00-16:00 Elektronik lecture
+	13:00-16:00 Automatisierungstechnik lecture
+Studioproduktion - Livesendung (WPF SPL)
+	09:00-13:00 Medieninformatik lecture
+Einführung in die Elektrotechnik 2 (EE2)
+	11:00-13:00 Elektronik lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	11:00-13:00 Automatisierungstechnik lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	11:00-13:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	11:00-13:00 Wirtschaftsingenieurwesen lecture
+	11:00-13:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	11:00-13:00 Maschinenbau lecture
+
+Fri., 03.09.2021
+Wirtschaftsenglisch Seminar Gruppe 2 (ENW)
+	09:00-11:00 Wirtschaftsingenieurwesen / Elektrotechnik seminar
+	09:00-11:00 Wirtschaftsingenieurwesen seminar
+	09:00-11:00 Wirtschaftsingenieurwesen  / Maschinenbau seminar
+Strömungslehre (STL)
+	09:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-13:00 Maschinenbau lecture
+Storytelling und narrative Strukturen (SNS)
+	10:00-12:00 Master: Medieninformatik-Master lecture
+Management und Unternehmenssteuerung (DE) (MUU IM)
+	16:00-20:00 Master: Wirtschaftsingenieurwesen lecture
+	16:00-20:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement lecture
+	16:00-20:00 Master: Informatik/Computer Science lecture
+	16:00-20:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement lecture
+Bildbasierte Computergrafik (BCG)
+	13:00-15:00 Master: Medieninformatik-Master lecture
+Industrielle Kommunikationssysteme (KAT)
+	13:00-17:00 Elektronik lecture
+	13:00-17:00 Automatisierungstechnik lecture
+Einführung in die Elektrotechnik 1 (EE1)
+	09:00-11:00 Elektronik lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	09:00-11:00 Automatisierungstechnik lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Fertigung lecture
+	09:00-11:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-11:00 Wirtschaftsingenieurwesen lecture
+	09:00-11:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	09:00-11:00 Maschinenbau Schwerpunkt Informatik lecture
+	09:00-11:00 Maschinenbau lecture
+Betriebliches Rechnungswesen  (Ing) (BRW)
+	09:00-11:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-11:00 Wirtschaftsingenieurwesen lecture
+	09:00-11:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+Produktionsmanagement (PROM)
+	14:00-18:00 Maschinenbau Schwerpunkt Fertigung lecture
+	14:00-18:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	14:00-18:00 Maschinenbau Schwerpunkt Informatik lecture
+	14:00-18:00 Maschinenbau lecture
+Naturwissenschaftliche Grundlagen digitaler Medien 1 (NGD)
+	16:00-18:00 Master: Medieninformatik-Master seminar
+Betriebliche Anwendungssysteme 1 (BA1 )
+	10:00-12:00 Wirtschaftsinformatik lecture
+Einführung in die Elektrotechnik 2 (EE2)
+	14:00-16:00 Elektronik lecture
+	14:00-16:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	14:00-16:00 Automatisierungstechnik lecture
+	14:00-16:00 Maschinenbau Schwerpunkt Fertigung lecture
+	14:00-16:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	14:00-16:00 Wirtschaftsingenieurwesen lecture
+	14:00-16:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	14:00-16:00 Maschinenbau Schwerpunkt Informatik lecture
+	14:00-16:00 Maschinenbau lecture
+Konstruktion /  Maschinenelemente für Maschinenbauer 2 (KM2)
+	11:00-13:00 Maschinenbau Schwerpunkt Fertigung lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	11:00-13:00 Maschinenbau Schwerpunkt Informatik lecture
+	11:00-13:00 Maschinenbau lecture
+Sketching and Designing for User Experience (WPF SD4UX)
+	15:00-17:00 Master: Medieninformatik-Master lecture
+Leistungselektronik  (LEL)
+	09:00-13:00 Elektronik lecture
+	09:00-13:00 Automatisierungstechnik lecture
+Betriebswirtschaftslehre 1 (Inf) (BWL1)
+	11:00-14:00 IT-Management lecture
+	11:00-14:00 Wirtschaftsinformatik lecture
+Einführungsprojekt in die Informatik (EPI)
+	11:00-16:00 Informatik lecture
+Prozess- und Produktionsleitsysteme (PRZ)
+	09:00-13:00 Elektronik lecture
+	09:00-13:00 Automatisierungstechnik lecture
+Grundlagen der Umweltchemie (WPF GUC)
+	08:00-12:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	08:00-12:00 Maschinenbau Schwerpunkt Fertigung lecture
+	08:00-12:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	08:00-12:00 Wirtschaftsingenieurwesen lecture
+	08:00-12:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	08:00-12:00 Maschinenbau Schwerpunkt Informatik lecture
+	08:00-12:00 Maschinenbau lecture
+Fachspezifischer Architekturentwurf (DE) (WPF A in MMI) (FAE)
+	10:00-15:00 Master: Informatik/Computer Science seminar
+Mathematik 1 (MA1)
+	09:00-11:00 Wirtschaftsinformatik lecture
+Design Methodologies (DEM)
+	15:00-17:00 Master: Medieninformatik-Master lecture
+Instandhaltungsmanagement (IHM)
+	09:00-13:00 Master: Wirtschaftsingenieurwesen lecture
+	09:00-13:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement lecture
+	09:00-13:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement lecture
+Audiovisuelles Medienprojekt (AVM MI)
+	12:00-14:00 Medieninformatik lecture
+Interaction Design (DE) (ID IMSE MMI)
+	10:00-15:00 Master: Medieninformatik-Master seminar
+	10:00-15:00 Master: Informatik/Computer Science seminar
+Grundlagen der Betriebswirtschaftslehre (BW1 B)
+	11:00-14:00 Elektronik lecture
+	11:00-14:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	11:00-14:00 Automatisierungstechnik lecture
+	11:00-14:00 Maschinenbau Schwerpunkt Fertigung lecture
+	11:00-14:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	11:00-14:00 Wirtschaftsingenieurwesen lecture
+	11:00-14:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	11:00-14:00 Maschinenbau Schwerpunkt Informatik lecture
+	11:00-14:00 Maschinenbau lecture
+Business Administration (EN) (BA IM)
+	13:00-17:00 Master: Informatik/Computer Science lecture
+Konstruktion /  Maschinenelemente  für Maschinenbauer 1 (KM1)
+	13:00-15:00 Maschinenbau Schwerpunkt Fertigung lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	13:00-15:00 Maschinenbau Schwerpunkt Informatik lecture
+	13:00-15:00 Maschinenbau lecture
+Management und Unternehmenssteuerung (MUSW)
+	16:00-20:00 Master: Wirtschaftsingenieurwesen seminar
+	16:00-20:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Energie- und Ressourcenmanagement seminar
+	16:00-20:00 Master: Wirtschaftsingenieurwesen Schwerpunkt Technologiemanagement seminar
+Informatik 1  (IN1)
+	11:00-15:00 Elektronik lecture
+	11:00-15:00 Maschinenbau Schwerpunkt Konstruktion lecture
+	11:00-15:00 Automatisierungstechnik lecture
+	11:00-15:00 Maschinenbau Schwerpunkt Fertigung lecture
+	11:00-15:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	11:00-15:00 Wirtschaftsingenieurwesen lecture
+	11:00-15:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+	11:00-15:00 Maschinenbau Schwerpunkt Informatik lecture
+	11:00-15:00 Maschinenbau lecture
+Künstliche Intelligenz 1 (KI1)
+	09:00-11:00 Informatik lecture
+Paradigmen der Programmierung (PP)
+	10:00-12:00 Informatik lecture
+Embedded Systems (EMS)
+	13:00-17:00 Elektronik lecture
+	13:00-17:00 Automatisierungstechnik lecture
+Unternehmenslogistik (BIL)
+	09:00-13:00 Wirtschaftsingenieurwesen / Elektrotechnik lecture
+	09:00-13:00 Wirtschaftsingenieurwesen lecture
+	09:00-13:00 Wirtschaftsingenieurwesen  / Maschinenbau lecture
+IT-Security-Management and Technologies (ITSMAT)
+	10:00-16:00 Master: Automation and IT Master lecture
+Technisches Englisch Seminar Gruppe 3 (ENT)
+	09:00-11:00 Maschinenbau Schwerpunkt Fertigung seminar
+	09:00-11:00 Maschinenbau Schwerpunkt Konstruktion seminar
+	09:00-11:00 Maschinenbau Schwerpunkt Informatik seminar
+	09:00-11:00 Maschinenbau seminar
+Systemtheorie (STH)
+	11:00-16:00 Elektronik lecture
+	11:00-16:00 Automatisierungstechnik lecture
+====
