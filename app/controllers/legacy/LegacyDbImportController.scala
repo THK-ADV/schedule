@@ -345,7 +345,8 @@ class LegacyDbImportController @Inject() (
       semester: String,
       bezeichnung1: String,
       wochentag: String,
-      time: String
+      time: String,
+      raum_kz: String
   )
 
   def tap[A](a: A): A = {
@@ -355,7 +356,7 @@ class LegacyDbImportController @Inject() (
 
   def parseLine(line: String): Option[CSVData] = {
     val data = line.split(";").map(_.replace("\"", ""))
-    if (data.length != 14) {
+    if (data.length != 15) {
       println(s"line does not have all fields set: $line")
       return None
     }
@@ -374,7 +375,8 @@ class LegacyDbImportController @Inject() (
         data(10),
         data(11),
         data(12),
-        data(13)
+        data(13),
+        data(14)
       )
     )
   }
@@ -397,7 +399,8 @@ class LegacyDbImportController @Inject() (
     val studyPrograms = ListBuffer[(String, String)]()
     val modules = ListBuffer[ModuleType]()
     val courses = ListBuffer[(String, String, String)]()
-    val schedule = ListBuffer[(String, String, String, String, String)]()
+    val schedule =
+      ListBuffer[(String, String, String, String, String, String)]()
 
     list
       .foreach { d =>
@@ -426,15 +429,17 @@ class LegacyDbImportController @Inject() (
           !isEmpty(d.kurzbez) &&
           !isEmpty(d.fachtyp) &&
           !isEmpty(d.wochentag) &&
-          !isEmpty(d.time)
+          !isEmpty(d.time) &&
+          !isEmpty(d.raum_kz)
         ) {
           courses += Tuple3(d.bezeichnung, d.kurzbez, d.fachtyp)
-          schedule += Tuple5(
+          schedule += Tuple6(
             d.bezeichnung,
             d.kurzbez,
             d.fachtyp,
             d.wochentag,
-            d.time
+            d.time,
+            d.raum_kz
           )
         }
       }
@@ -627,7 +632,7 @@ class LegacyDbImportController @Inject() (
       subModules: Seq[SubModule],
       modules: Seq[Module],
       semester: Semester,
-      mappings: Set[(String, String, String, String, String)]
+      mappings: Set[(String, String, String, String, String, String)]
   ) = {
     def date(weekDayIndex: Int): LocalDate =
       semester.lectureStart.withDayOfWeek(weekDayIndex)
@@ -638,21 +643,22 @@ class LegacyDbImportController @Inject() (
     def end(start: LocalTime): LocalTime =
       start.plusHours(1)
 
-    val defaultRoom = rooms.head
+    val defaultRoom = rooms.find(_.abbreviation == "???").get
     courses.flatMap { c =>
       val sms = subModules.filter(_.id == c.subModuleId)
       val ms = modules.filter(a => sms.exists(_.moduleId == a.id))
       val mpos = modulesInPO.filter(a => sms.exists(_.moduleId == a.moduleId))
 
-      val timeInfo = mappings
+      val appInfo = mappings
         .filter(a => ms.exists(m => m.label == a._1 && m.abbreviation == a._2))
-        .map(a => a._4 -> a._5)
+        .map(a => Tuple3(a._4, a._5, a._6))
 
       mpos.flatMap { mpo =>
-        timeInfo.map { case (index, time) =>
+        appInfo.map { case (index, time, room) =>
+          val r = rooms.find(_.abbreviation == room) getOrElse defaultRoom
           val s = start(time)
           val e = end(s)
-          ScheduleJson(c.id, defaultRoom.id, mpo.id, date(index.toInt), s, e)
+          ScheduleJson(c.id, r.id, mpo.id, date(index.toInt), s, e)
         }
       }
     }
@@ -817,9 +823,25 @@ class LegacyDbImportController @Inject() (
 
   private def showDate(d: LocalDate) = d.toString("E., dd.MM.yyyy")
 
+  private def showCourseType(c: CourseType) = c match {
+    case CourseType.Lecture   => "V"
+    case CourseType.Practical => "P"
+    case CourseType.Exercise  => "Ü"
+    case CourseType.Tutorial  => "T"
+    case CourseType.Seminar   => "S"
+    case CourseType.Unknown   => "???"
+  }
+
   private def logSchedules(schedules: Seq[Schedule]) = {
-    def go(s: ScheduleAtom): String =
-      s"\t${showTime(s.start)}-${showTime(s.end)} ${s.moduleExaminationRegulation.examinationRegulation.studyProgram.label} ${s.course.courseType}"
+
+    def go(s: ScheduleAtom): String = {
+      val room = s"(${s.room.abbreviation})"
+      val courseType = showCourseType(s.course.courseType)
+      val time = s"${showTime(s.start)}-${showTime(s.end)}"
+      val sp =
+        s.moduleExaminationRegulation.examinationRegulation.studyProgram.label
+      s"\t$time $sp $courseType $room"
+    }
 
     schedules
       .sortBy(_.date)
