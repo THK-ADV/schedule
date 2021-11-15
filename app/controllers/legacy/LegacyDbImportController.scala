@@ -346,7 +346,8 @@ class LegacyDbImportController @Inject() (
       bezeichnung1: String,
       wochentag: String,
       time: String,
-      raum_kz: String
+      raum_kz: String,
+      tu: String
   )
 
   def tap[A](a: A): A = {
@@ -356,7 +357,7 @@ class LegacyDbImportController @Inject() (
 
   def parseLine(line: String): Option[CSVData] = {
     val data = line.split(";").map(_.replace("\"", ""))
-    if (data.length != 15) {
+    if (data.length != 16) {
       println(s"line does not have all fields set: $line")
       return None
     }
@@ -376,7 +377,8 @@ class LegacyDbImportController @Inject() (
         data(11),
         data(12),
         data(13),
-        data(14)
+        data(14),
+        data(15)
       )
     )
   }
@@ -396,7 +398,7 @@ class LegacyDbImportController @Inject() (
   private def isEmpty(s: String) = s == "\"\"" || s.isEmpty
 
   def go(list: List[CSVData]) = {
-    val studyPrograms = ListBuffer[(String, String)]()
+    val studyPrograms = ListBuffer[(String, String, String)]()
     val modules = ListBuffer[ModuleType]()
     val courses = ListBuffer[(String, String, String)]()
     val schedule =
@@ -413,7 +415,7 @@ class LegacyDbImportController @Inject() (
           !isEmpty(d.bezeichnung1) &&
           !isEmpty(d.sg_kz)
         ) {
-          studyPrograms += (d.bezeichnung1 -> d.sg_kz)
+          studyPrograms += Tuple3(d.bezeichnung1, d.sg_kz, d.tu)
           modules += Tuple7(
             d.bezeichnung,
             d.kurzbez,
@@ -465,13 +467,14 @@ class LegacyDbImportController @Inject() (
   }
 
   def makeStudyPrograms(
-      tu: TeachingUnit,
+      tus: Seq[TeachingUnit],
       grads: Seq[Graduation],
-      studyPrograms: Set[(String, String)]
+      studyPrograms: Set[(String, String, String)]
   ) =
-    studyPrograms.map { case (label, abbrev) =>
-      val g = grads.find(_.abbreviation.head == abbrev.last).get
-      StudyProgramJson(tu.id, g.id, abbrev, label)
+    studyPrograms.map { case (label, abbrev, tu) =>
+      val gID = grads.find(_.abbreviation.head == abbrev.last).get.id
+      val tuID = tus.find(_.abbreviation.equalsIgnoreCase(tu)).get.id
+      StudyProgramJson(tuID, gID, abbrev, label)
     }.toSeq
 
   def makeExams(sps: Seq[StudyProgram]) = {
@@ -675,22 +678,16 @@ class LegacyDbImportController @Inject() (
       users <- creation.createUsers(prims._4)
       semester <- creation.createSemester(prims._5)
       rms <- creation.createRooms(prims._7)
-      inf = tus.find(_.abbreviation == "INF").get
       csvData = toList(
         Files
           .lines(r.body.path)
           .skip(1)
           .map(parseLine)
           .filter(_.isDefined)
-        /*.filter(a =>
-            a.isDefined && !engineerStudyPrograms.exists(
-              a.get.bezeichnung1.startsWith
-            )
-          )*/
       )
       (studyPrograms, modules, courses, schedule) = go(csvData)
       sps <- creation.createStudyPrograms(
-        makeStudyPrograms(inf, grads, studyPrograms)
+        makeStudyPrograms(tus, grads, studyPrograms)
       )
       exams <- creation.createExams(makeExams(sps))
       ms <- creation.createModules(makeModules(users, modules.map(_._1)))
