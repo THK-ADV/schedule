@@ -30,9 +30,10 @@ class UserService @Inject() (val repo: UserRepository)
       existing: UserDbEntry
   ): Boolean = false
 
-  override protected def validate(json: UserJson) = Some(
+  override protected def validate(json: UserJson) = None
+  /*Some( TODO
     new Throwable("user creation is not allowed")
-  )
+  )*/
 
   override protected def uniqueCols(json: UserJson) = Nil
 
