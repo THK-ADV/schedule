@@ -17,4 +17,9 @@ trait StartEndColumn extends SQLDateConverter {
 
   def onEnd(localDate: LocalDate): Rep[Boolean] =
     end === toSQLDate(localDate)
+
+  def currentFilter(now: LocalDate = LocalDate.now): Rep[Boolean] = {
+    val sqlNow = toSQLDate(now)
+    start <= sqlNow && end >= sqlNow
+  }
 }
