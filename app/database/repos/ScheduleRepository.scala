@@ -13,6 +13,7 @@ import models.{Course, ModuleExaminationRegulation, Room, Schedule}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
+import java.util.UUID
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
@@ -32,8 +33,21 @@ class ScheduleRepository @Inject() (
 
   protected val tableQuery = TableQuery[ScheduleTable]
 
+  val coursesFilter: PartialFunction[
+    (String, Seq[String]),
+    ScheduleTable => Rep[Boolean]
+  ] = { case ("courses", vs) =>
+    t => t.courseFk.filter(_.id.inSet(vs.map(UUID.fromString))).exists
+  }
+
   val filter =
-    List(allModuleExaminationRegulations, allCourse, dateStartEnd, allRooms)
+    List(
+      allModuleExaminationRegulations,
+      allCourse,
+      dateStartEnd,
+      allRooms,
+      coursesFilter
+    )
 
   override protected val makeFilter =
     if (filter.isEmpty) PartialFunction.empty else filter.reduce(_ orElse _)

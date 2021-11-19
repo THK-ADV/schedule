@@ -80,6 +80,8 @@ POST          /schedules                               controllers.ScheduleContr
 PUT           /schedules/:id                           controllers.ScheduleController.update(id: java.util.UUID)
 DELETE        /schedules/:id                           controllers.ScheduleController.delete(id: java.util.UUID)
 
+POST          /schedules/search                        controllers.ScheduleController.search()
+
 GET           /studentSchedules                        controllers.StudentScheduleController.all()
 GET           /studentSchedules/:id                    controllers.StudentScheduleController.get(id: java.util.UUID)
 POST          /studentSchedules                        controllers.StudentScheduleController.create()

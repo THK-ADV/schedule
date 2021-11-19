@@ -34,7 +34,7 @@ trait Controller[Json, Model <: UniqueEntity] extends JsonHttpResponse[Model] {
     ok(service.update(r.body, id))
   }
 
-  private def parseAtomic(f: Map[String, Seq[String]]): Boolean =
+  def parseAtomic(f: Map[String, Seq[String]]): Boolean =
     f.get("atomic")
       .flatMap(_.headOption)
       .flatMap(_.toBooleanOption)
