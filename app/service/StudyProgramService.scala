@@ -33,17 +33,9 @@ class StudyProgramService @Inject() (val repo: StudyProgramRepository)
   override protected def canUpdate(
       json: StudyProgramJson,
       existing: StudyProgramDBEntry
-  ): Boolean = {
-    json.teachingUnit == existing.teachingUnit &&
-    json.label == existing.label &&
-    json.graduation == existing.graduation
-  }
+  ): Boolean = true
 
-  override protected def uniqueCols(json: StudyProgramJson) = List(
-    _.hasTeachingUnit(json.teachingUnit),
-    _.hasLabel(json.label),
-    _.hasGraduation(json.graduation)
-  )
+  override protected def uniqueCols(json: StudyProgramJson) = List.empty
 
   override protected def validate(json: StudyProgramJson) = None
 }

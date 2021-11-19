@@ -42,13 +42,15 @@ case "$1" in
   clearDockerImages &&
     buildApp &&
     buildDockerImage &&
-    docker-compose up -d
+    docker-compose up -d &&
+     exit 0
   ;;
 "stage")
   clearDockerImages &&
     buildApp &&
     buildDockerImage &&
-    packBackend
+    packBackend &&
+     exit 0
   ;;
 *)
   echo expected stage or local, but was $1
