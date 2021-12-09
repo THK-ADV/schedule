@@ -29,12 +29,10 @@ class SemesterService @Inject() (val repo: SemesterRepository)
   override protected def canUpdate(
       json: SemesterJson,
       existing: SemesterDbEntry
-  ): Boolean =
-    toLocalDate(existing.start) == json.start &&
-      toLocalDate(existing.end) == json.end
+  ): Boolean = true
 
   override protected def uniqueCols(json: SemesterJson) =
-    List(_.onStart(json.start), _.onEnd(json.end))
+    List.empty
 
   override protected def validate(json: SemesterJson) = Option.when(
     json.end.isBefore(json.start) && json.lectureEnd.isBefore(json.lectureStart)
