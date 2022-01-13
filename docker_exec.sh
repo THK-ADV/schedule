@@ -1,19 +1,9 @@
 #!/bin/sh
 
-buildFolder=target/universal
-name=schedule-1.0
 img_name=schedule-backend
 packed_img_name=${img_name}.tar
 
-buildApp() {
-  rm -rf ${buildFolder}
-  sbt dist
-}
-
 buildDockerImage() {
-  cd ${buildFolder}
-  unzip ${name}.zip
-  cd ../..
   docker image rm ${img_name}
   docker build -t ${img_name} .
 }
@@ -28,7 +18,6 @@ clearDockerImages() {
   docker-compose stop &&
     docker-compose down &&
     docker image rm ${img_name}
-
   docker image prune -f
 }
 
@@ -40,7 +29,6 @@ deployDockerImages() {
 case "$1" in
 "local")
   clearDockerImages &&
-    buildApp &&
     buildDockerImage &&
     docker-compose up -d &&
      exit 0
