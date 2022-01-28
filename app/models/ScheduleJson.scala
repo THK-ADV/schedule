@@ -12,7 +12,8 @@ case class ScheduleJson(
     moduleExaminationRegulation: UUID,
     date: LocalDate,
     start: LocalTime,
-    end: LocalTime
+    end: LocalTime,
+    status: ScheduleEntryStatus
 )
 
 object ScheduleJson extends LocalDateFormat with LocalTimeFormat {

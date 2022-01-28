@@ -1,6 +1,3 @@
-resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
-resolvers += "Akka Snapshot Repository" at "https://repo.akka.io/snapshots/"
-
 val playSlickVersion = "5.0.0"
 val scalaTestVersion = "3.2.7"
 
@@ -16,7 +13,18 @@ lazy val `schedule` = (project in file("."))
     libraryDependencies ++= date,
     libraryDependencies ++= test,
     libraryDependencies ++= keycloak,
-    libraryDependencies += filenameMacro
+    libraryDependencies += filenameMacro,
+    resolvers += "Akka Snapshot Repository" at "https://repo.akka.io/snapshots/",
+    externalResolvers ++= Seq(
+      "GitHub <THK-ADV> filename" at "https://maven.pkg.github.com/THK-ADV/filename",
+      "GitHub <THK-ADV> keycloak-validation" at "https://maven.pkg.github.com/THK-ADV/keycloak-validation"
+    ),
+    credentials += Credentials(
+      "GitHub Package Registry",
+      "maven.pkg.github.com",
+      "THK-ADV",
+      System.getenv("GITHUB_TOKEN")
+    )
   )
 
 lazy val play = Seq(

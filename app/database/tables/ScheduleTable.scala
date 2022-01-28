@@ -2,6 +2,7 @@ package database.tables
 
 import database.UniqueDbEntry
 import database.cols._
+import models.ScheduleEntryStatus
 import slick.jdbc.PostgresProfile.api._
 
 import java.sql.{Date, Time, Timestamp}
@@ -14,6 +15,7 @@ case class ScheduleDbEntry(
     date: Date,
     start: Time,
     end: Time,
+    status: ScheduleEntryStatus,
     lastModified: Timestamp,
     id: UUID
 ) extends UniqueDbEntry
@@ -26,6 +28,14 @@ class ScheduleTable(tag: Tag)
     with DateStartEndColumn
     with ModuleExaminationRegulationColumn {
 
+  def status = column[String]("status")
+
+  def hasStatus(s: ScheduleEntryStatus): Rep[Boolean] =
+    this.status === s.toString
+
+  def isDraft: Rep[Boolean] =
+    this.hasStatus(ScheduleEntryStatus.Draft)
+
   def * = (
     course,
     room,
@@ -33,12 +43,13 @@ class ScheduleTable(tag: Tag)
     date,
     start,
     end,
+    status,
     lastModified,
     id
   ) <> (mapRow, unmapRow)
 
   def mapRow: (
-      (UUID, UUID, UUID, Date, Time, Time, Timestamp, UUID)
+      (UUID, UUID, UUID, Date, Time, Time, String, Timestamp, UUID)
   ) => ScheduleDbEntry = {
     case (
           course,
@@ -47,6 +58,7 @@ class ScheduleTable(tag: Tag)
           date,
           start,
           end,
+          status,
           lastModified,
           id
         ) =>
@@ -57,13 +69,14 @@ class ScheduleTable(tag: Tag)
         date,
         start,
         end,
+        ScheduleEntryStatus(status),
         lastModified,
         id
       )
   }
 
   def unmapRow: ScheduleDbEntry => Option[
-    (UUID, UUID, UUID, Date, Time, Time, Timestamp, UUID)
+    (UUID, UUID, UUID, Date, Time, Time, String, Timestamp, UUID)
   ] = { a =>
     Option(
       (
@@ -73,6 +86,7 @@ class ScheduleTable(tag: Tag)
         a.date,
         a.start,
         a.end,
+        a.status.toString,
         a.lastModified,
         a.id
       )

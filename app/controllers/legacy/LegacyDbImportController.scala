@@ -216,6 +216,7 @@ final class MockCreation extends Creation {
           s.date,
           s.start,
           s.end,
+          ScheduleEntryStatus.Draft,
           uuid
         )
       )
@@ -661,7 +662,15 @@ class LegacyDbImportController @Inject() (
           val r = rooms.find(_.abbreviation == room) getOrElse defaultRoom
           val s = start(time)
           val e = end(s)
-          ScheduleJson(c.id, r.id, mpo.id, date(index.toInt), s, e)
+          ScheduleJson(
+            c.id,
+            r.id,
+            mpo.id,
+            date(index.toInt),
+            s,
+            e,
+            ScheduleEntryStatus.Draft
+          )
         }
       }
     }
