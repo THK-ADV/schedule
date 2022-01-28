@@ -31,13 +31,12 @@ private class HttpClientImpl(
 }
 
 private class KeycloakTokenExtractor extends AttributesExtractor[UserToken] {
-  override def extract(attributes: Map[String, AnyRef]) =
+  override def extract(attributes: Map[String, AnyRef], mail: String) =
     for {
       firstname <- attributes.get("firstname").map(_.toString)
       lastname <- attributes.get("lastname").map(_.toString)
       username <- attributes.get("username").map(_.toString)
-      email <- attributes.get("email").map(_.toString)
-    } yield UserToken(firstname, lastname, username, email)
+    } yield UserToken(firstname, lastname, username, mail)
 }
 
 @Singleton

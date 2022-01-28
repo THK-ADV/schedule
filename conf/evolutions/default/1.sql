@@ -154,6 +154,7 @@ create table schedule
     "room"                          uuid      not null,
     "module_examination_regulation" uuid      not null,
     "date"                          date      not null,
+    "status"                        text      not null,
     "start"                         time without time zone not null,
     "end"                           time without time zone not null,
     FOREIGN KEY (course) REFERENCES course (id),

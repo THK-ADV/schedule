@@ -22,6 +22,8 @@ sealed trait Schedule extends UniqueEntity {
   def start: LocalTime
 
   def end: LocalTime
+
+  def status: ScheduleEntryStatus
 }
 
 object Schedule
@@ -45,6 +47,7 @@ object Schedule
       date: LocalDate,
       start: LocalTime,
       end: LocalTime,
+      status: ScheduleEntryStatus,
       id: UUID
   ) extends Schedule {
     override def courseId = course
@@ -61,6 +64,7 @@ object Schedule
       date: LocalDate,
       start: LocalTime,
       end: LocalTime,
+      status: ScheduleEntryStatus,
       id: UUID
   ) extends Schedule {
     override def courseId = course.id
@@ -78,6 +82,7 @@ object Schedule
       db.date,
       db.start,
       db.end,
+      db.status,
       db.id
     )
 }

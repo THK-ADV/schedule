@@ -23,6 +23,7 @@ class ScheduleService @Inject() (val repo: ScheduleRepository)
       json.date,
       json.start,
       json.end,
+      json.status,
       now(),
       id getOrElse UUID.randomUUID
     )
