@@ -8,7 +8,6 @@ import service.abstracts.Service
 
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
 
 @Singleton
 class ScheduleService @Inject() (val repo: ScheduleRepository)
@@ -23,6 +22,7 @@ class ScheduleService @Inject() (val repo: ScheduleRepository)
       json.date,
       json.start,
       json.end,
+      json.status,
       now(),
       id getOrElse UUID.randomUUID
     )
@@ -41,8 +41,4 @@ class ScheduleService @Inject() (val repo: ScheduleRepository)
         s"start should be before end, but was ${json.start} - ${json.end}"
       )
     )
-
-  def allByCourses(courses: List[UUID], atomic: Boolean) =
-    if (courses.isEmpty) Future.successful(Nil)
-    else repo.list(Map("courses" -> courses.map(_.toString)), atomic)
 }

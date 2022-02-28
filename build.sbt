@@ -1,7 +1,3 @@
-resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
-
-resolvers += "Akka Snapshot Repository" at "https://repo.akka.io/snapshots/"
-
 val playSlickVersion = "5.0.0"
 val scalaTestVersion = "3.2.7"
 
@@ -15,12 +11,26 @@ lazy val `schedule` = (project in file("."))
     libraryDependencies ++= play,
     libraryDependencies ++= database,
     libraryDependencies ++= date,
-    libraryDependencies ++= test
+    libraryDependencies ++= test,
+    libraryDependencies ++= keycloak,
+    libraryDependencies += filenameMacro,
+    resolvers += "Akka Snapshot Repository" at "https://repo.akka.io/snapshots/",
+    externalResolvers ++= Seq(
+      "GitHub <THK-ADV> filename" at "https://maven.pkg.github.com/THK-ADV/filename",
+      "GitHub <THK-ADV> keycloak-validation" at "https://maven.pkg.github.com/THK-ADV/keycloak-validation"
+    ),
+    credentials += Credentials(
+      "GitHub Package Registry",
+      "maven.pkg.github.com",
+      "THK-ADV",
+      System.getenv("GITHUB_TOKEN")
+    )
   )
 
 lazy val play = Seq(
   specs2 % Test,
   guice,
+  ws,
   "com.typesafe.play" %% "play-json" % "2.9.2"
 )
 
@@ -39,3 +49,11 @@ lazy val test = Seq(
   "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
   "org.scalatest" %% "scalatest-wordspec" % scalaTestVersion % "test"
 )
+
+lazy val keycloak = Seq(
+  "de.th-koeln.inf.adv" %% "keycloak-validation" % "0.1",
+  "org.jboss.logging" % "jboss-logging" % "3.3.0.Final",
+  "org.apache.httpcomponents" % "httpclient" % "4.5.1"
+)
+
+lazy val filenameMacro = "de.th-koeln.inf.adv" %% "filename" % "0.1"

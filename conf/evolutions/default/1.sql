@@ -1,4 +1,4 @@
-# --- !Ups
+-- !Ups
 
 create table faculty
 (
@@ -171,7 +171,7 @@ create table student_schedule
     FOREIGN KEY (schedule) REFERENCES schedule (id)
 );
 
-# --- !Downs
+-- !Downs
 drop table student_schedule if exists;
 drop table schedule if exists;
 drop table room if exists;

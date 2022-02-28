@@ -9,7 +9,7 @@ import database.repos.filter.{
 }
 import database.tables.{ScheduleDbEntry, ScheduleTable}
 import models.Schedule.ScheduleAtom
-import models.{Course, ModuleExaminationRegulation, Room, Schedule}
+import models._
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -33,11 +33,14 @@ class ScheduleRepository @Inject() (
 
   protected val tableQuery = TableQuery[ScheduleTable]
 
-  val coursesFilter: PartialFunction[
+  val scheduleFilter: PartialFunction[
     (String, Seq[String]),
     ScheduleTable => Rep[Boolean]
-  ] = { case ("courses", vs) =>
-    t => t.courseFk.filter(_.id.inSet(vs.map(UUID.fromString))).exists
+  ] = {
+    case ("courses", vs) =>
+      _.courseFk.filter(_.id.inSet(vs.map(UUID.fromString))).exists
+    case ("status", vs) =>
+      _.hasStatus(ScheduleEntryStatus(vs.head))
   }
 
   val filter =
@@ -46,7 +49,7 @@ class ScheduleRepository @Inject() (
       allCourse,
       dateStartEnd,
       allRooms,
-      coursesFilter
+      scheduleFilter
     )
 
   override protected val makeFilter =
@@ -79,6 +82,7 @@ class ScheduleRepository @Inject() (
           s.date,
           s.start,
           s.end,
+          s.status,
           s.id
         )
     })

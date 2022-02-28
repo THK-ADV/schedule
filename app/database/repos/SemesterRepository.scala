@@ -1,7 +1,7 @@
 package database.repos
 
 import database.repos.filter.BooleanParser
-import database.tables.{SemesterDbEntry, SemesterTable}
+import database.tables.{ScheduleTable, SemesterDbEntry, SemesterTable}
 import models.Semester
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
@@ -22,9 +22,25 @@ class SemesterRepository @Inject() (
   protected val tableQuery = TableQuery[SemesterTable]
 
   override protected def makeFilter = {
-    case ("label", vs) => t => t.hasLabel(vs.head)
-    case ("current", vs) =>
-      t => parseBoolean(vs, b => if (b) t.currentFilter() else false)
+    case ("label", vs) =>
+      _.hasLabel(vs.head)
+    case ("select", vs) =>
+      vs.head match {
+        case "current" =>
+          _.currentFilter()
+        case "draft" =>
+          semester =>
+            TableQuery[ScheduleTable]
+              .filter(schedule =>
+                schedule.isDraft &&
+                  schedule.courseFk
+                    .filter(_.semester === semester.id)
+                    .exists
+              )
+              .exists
+        case _ =>
+          _ => false
+      }
   }
 
   override protected def retrieveAtom(

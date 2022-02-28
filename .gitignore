@@ -41,7 +41,10 @@ build
 .cache
 .cache-main
 
-#general
+# general
 *.class
 
 .env
+
+# custom
+conf/keycloak.json
