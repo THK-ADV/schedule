@@ -1,4 +1,4 @@
-# --- !Ups
+-- !Ups
 
 create table faculty
 (
@@ -154,7 +154,6 @@ create table schedule
     "room"                          uuid      not null,
     "module_examination_regulation" uuid      not null,
     "date"                          date      not null,
-    "status"                        text      not null,
     "start"                         time without time zone not null,
     "end"                           time without time zone not null,
     FOREIGN KEY (course) REFERENCES course (id),
@@ -172,7 +171,9 @@ create table student_schedule
     FOREIGN KEY (schedule) REFERENCES schedule (id)
 );
 
-# --- !Downs
+#
+--- broken ordering & out of memory error code 137
+-- !Downs
 drop table student_schedule if exists;
 drop table schedule if exists;
 drop table room if exists;

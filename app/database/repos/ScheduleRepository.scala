@@ -38,8 +38,9 @@ class ScheduleRepository @Inject() (
     ScheduleTable => Rep[Boolean]
   ] = {
     case ("courses", vs) =>
-      t => t.courseFk.filter(_.id.inSet(vs.map(UUID.fromString))).exists
-    case ("status", vs) => _.hasStatus(ScheduleEntryStatus(vs.head))
+      _.courseFk.filter(_.id.inSet(vs.map(UUID.fromString))).exists
+    case ("status", vs) =>
+      _.hasStatus(ScheduleEntryStatus(vs.head))
   }
 
   val filter =

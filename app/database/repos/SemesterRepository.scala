@@ -22,12 +22,12 @@ class SemesterRepository @Inject() (
   protected val tableQuery = TableQuery[SemesterTable]
 
   override protected def makeFilter = {
-    case ("label", vs) => t => t.hasLabel(vs.head)
+    case ("label", vs) =>
+      _.hasLabel(vs.head)
     case ("select", vs) =>
       vs.head match {
         case "current" =>
-          semester =>
-            parseBoolean(vs, b => if (b) semester.currentFilter() else false)
+          _.currentFilter()
         case "draft" =>
           semester =>
             TableQuery[ScheduleTable]
