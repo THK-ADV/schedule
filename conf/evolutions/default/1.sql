@@ -171,8 +171,6 @@ create table student_schedule
     FOREIGN KEY (schedule) REFERENCES schedule (id)
 );
 
-#
---- broken ordering & out of memory error code 137
 -- !Downs
 drop table student_schedule if exists;
 drop table schedule if exists;
