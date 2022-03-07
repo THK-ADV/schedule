@@ -1,6 +1,6 @@
 package date
 
-import org.joda.time.format.{DateTimeFormat, DateTimeFormatter}
+import org.joda.time.format.DateTimeFormat
 
 object DateFormatPattern {
   val dateTimePattern = "yyyy-MM-dd'T'HH:mm"
