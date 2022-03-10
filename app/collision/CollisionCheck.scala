@@ -3,6 +3,8 @@ package collision
 import models.Schedule
 import org.joda.time.{Interval, LocalDate}
 
+import java.util.UUID
+
 object CollisionCheck {
   type BinarySchedulePredicate = (Schedule, Schedule) => Boolean
   type UnarySchedulePredicate = Schedule => Boolean
@@ -26,7 +28,10 @@ object CollisionCheck {
     lhs.moduleExaminationRegulationId == rhs.moduleExaminationRegulationId
 
   def coursePred: BinarySchedulePredicate = (lhs, rhs) =>
-    lhs.courseId != rhs.courseId
+    lhs.courseId == rhs.courseId
+
+  def lecturerPred(f: Schedule => UUID): BinarySchedulePredicate = (lhs, rhs) =>
+    f(lhs) == f(rhs)
 
   // unary schedule predicates
 
@@ -37,6 +42,11 @@ object CollisionCheck {
 
   def combinePredicates(xs: BinarySchedulePredicate*): BinarySchedulePredicate =
     (lhs, rhs) => xs.forall(_.apply(lhs, rhs))
+
+  // decoration
+
+  def not(pred: BinarySchedulePredicate): BinarySchedulePredicate =
+    (lhs, rhs) => !pred(lhs, rhs)
 
   // collision check builder
 
@@ -53,15 +63,32 @@ object CollisionCheck {
 
   // schedule collision checks
 
-  def roomCollision: BinaryCollisionCheck = binaryCollisionCheck(
-    combinePredicates(datePred, roomPred, coursePred),
-    (a, b) => Collision(CollisionType.Room, a, b)
+  def courseRoomCollision: BinaryCollisionCheck = binaryCollisionCheck(
+    combinePredicates(datePred, roomPred, not(coursePred)),
+    (a, b) => Collision(CollisionType.CourseRoom, a, b)
   )
 
-  def studyPathCollision: BinaryCollisionCheck = binaryCollisionCheck(
-    combinePredicates(datePred, studyPathPred, coursePred),
-    (a, b) => Collision(CollisionType.StudyPathTime, a, b)
+  def studyPathCourseCollision: BinaryCollisionCheck = binaryCollisionCheck(
+    combinePredicates(datePred, studyPathPred, not(coursePred)),
+    (a, b) => Collision(CollisionType.StudyPathCourse, a, b)
   )
+
+  def courseMultipleRoomCollision: BinaryCollisionCheck = binaryCollisionCheck(
+    combinePredicates(datePred, coursePred, not(roomPred)),
+    (a, b) => Collision(CollisionType.CourseMultipleRoom, a, b)
+  )
+
+  def lecturerCourseCollision(f: Schedule => UUID): BinaryCollisionCheck =
+    binaryCollisionCheck(
+      combinePredicates(datePred, lecturerPred(f), not(coursePred)),
+      (a, b) => Collision(CollisionType.LecturerCourse, a, b)
+    )
+
+  def lecturerRoomCollision(f: Schedule => UUID): BinaryCollisionCheck =
+    binaryCollisionCheck(
+      combinePredicates(datePred, lecturerPred(f), not(roomPred)),
+      (a, b) => Collision(CollisionType.LecturerRoom, a, b)
+    )
 
   def blockedCollision(blocked: Set[LocalDate]): UnaryCollisionCheck =
     unaryCollisionCheck(

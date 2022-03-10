@@ -13,7 +13,7 @@ final class CollisionCheckService @Inject() () {
       schedules: Vector[Schedule],
       blockedDays: Set[Blocked]
   ): Vector[Collision] = {
-    val binaryCollisions = List(roomCollision, studyPathCollision)
+    val binaryCollisions = List(courseRoomCollision, studyPathCourseCollision)
     val unaryCollisions = List(blockedCollision(blockedDays))
     eval(schedules, binaryCollisions, unaryCollisions)
   }

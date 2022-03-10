@@ -6,11 +6,11 @@ import org.joda.time.format.DateTimeFormat
 import org.joda.time.{LocalDate, LocalTime}
 
 import java.util.UUID
-import scala.language.{implicitConversions, reflectiveCalls}
+import scala.language.implicitConversions
 
 class CollisionCheckSpec extends UnitSpec {
 
-  import collision.CollisionCheck._
+  import collision.CollisionCheck.{not => negate, _}
 
   implicit def dateFromString(string: String): LocalDate =
     LocalDate.parse(string, DateTimeFormat.forPattern("dd.MM.yyyy"))
@@ -126,13 +126,13 @@ class CollisionCheckSpec extends UnitSpec {
           UUID.randomUUID
         )
 
-      coursePred.apply(
+      negate(coursePred).apply(
         schedule(UUID.randomUUID),
         schedule(UUID.randomUUID)
       ) shouldBe true
 
       val course1 = UUID.randomUUID
-      coursePred.apply(
+      negate(coursePred).apply(
         schedule(course1),
         schedule(course1)
       ) shouldBe false
@@ -223,73 +223,73 @@ class CollisionCheckSpec extends UnitSpec {
     val r11 = UUID.randomUUID
 
     "detect room collisions" in {
-      roomCollision.apply(
+      courseRoomCollision.apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ap1V, r1, mi, "28.02.2022", "13:00", "13:00")
       ) shouldBe None
 
-      roomCollision.apply(
+      courseRoomCollision.apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ap1V, r1, ai, "28.02.2022", "13:00", "15:00")
       ) shouldBe None
 
-      roomCollision.apply(
+      courseRoomCollision.apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
-        single(ap1V, r1, ai, "28.02.2022", "12:00", "13:00")
+        single(ap1V, r1, mi, "28.02.2022", "12:00", "13:00")
       ) shouldBe None
 
       val s1 = single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00")
       val s2 = single(ma1V, r1, ai, "28.02.2022", "12:00", "13:00")
-      roomCollision.apply(s1, s2) shouldBe Some(
-        Collision(CollisionType.Room, s1, s2)
+      courseRoomCollision.apply(s1, s2) shouldBe Some(
+        Collision(CollisionType.CourseRoom, s1, s2)
       )
 
-      roomCollision.apply(
+      courseRoomCollision.apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ma1V, r1, ai, "28.02.2022", "13:00", "15:00")
       ) shouldBe None
 
-      roomCollision.apply(
+      courseRoomCollision.apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ap1V, r2, ai, "28.02.2022", "13:00", "15:00")
       ) shouldBe None
 
-      roomCollision.apply(
+      courseRoomCollision.apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
-        single(ap1V, r2, ai, "28.02.2022", "12:00", "15:00")
-      ) shouldBe None // TODO Ap1 zeitglich in 2 räumen?
+        single(ap1V, r2, ai, "28.02.2022", "11:00", "13:00")
+      ) shouldBe None
     }
 
     "detect study path collisions" in {
-      studyPathCollision.apply(
+      studyPathCourseCollision.apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ap1V, r1, ai, "28.02.2022", "13:00", "15:00")
       ) shouldBe None
 
-      studyPathCollision.apply(
+      studyPathCourseCollision.apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ap1V, r1, mi, "28.02.2022", "11:00", "13:00")
       ) shouldBe None
 
-      studyPathCollision.apply(
+      studyPathCourseCollision.apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ap1V, r2, mi, "28.02.2022", "11:00", "13:00")
-      ) shouldBe None // TODO ???
+      ) shouldBe None
 
-      studyPathCollision.apply(
+      studyPathCourseCollision.apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ap1V, r2, ai, "28.02.2022", "12:00", "15:00")
-      ) shouldBe None // TODO ???
+      ) shouldBe None
 
-      studyPathCollision.apply(
+      studyPathCourseCollision.apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ma1V, r1, mi, "28.02.2022", "11:00", "13:00")
       ) shouldBe None
 
       val s1 = single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00")
       val s2 = single(ma1V, r2, ai, "28.02.2022", "11:00", "13:00")
-      studyPathCollision.apply(s1, s2) shouldBe Some(
-        Collision(CollisionType.StudyPathTime, s1, s2)
+      studyPathCourseCollision.apply(s1, s2) shouldBe Some(
+        Collision(CollisionType.StudyPathCourse, s1, s2)
       )
     }
 
@@ -299,16 +299,25 @@ class CollisionCheckSpec extends UnitSpec {
           single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
           single(ap1V, r2, mi, "28.02.2022", "11:00", "13:00")
         ),
-        List(roomCollision, studyPathCollision)
-      ) shouldBe Nil // TODO ???
+        List(courseRoomCollision, studyPathCourseCollision)
+      ) shouldBe Nil
 
+      val victor = UUID.randomUUID
+      val s1 = single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00")
+      val s2 = single(ma1V, r2, mi, "28.02.2022", "11:00", "13:00")
       binaryEval(
         Vector(
-          single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
-          single(ap1V, r2, ai, "28.02.2022", "12:00", "15:00")
+          s1,
+          s2
         ),
-        List(roomCollision, studyPathCollision)
-      ) shouldBe Nil // TODO ???
+        List(
+          courseRoomCollision,
+          studyPathCourseCollision,
+          lecturerCourseCollision(_ => victor)
+        )
+      ) shouldBe Vector(
+        Collision(CollisionType.LecturerCourse, s1, s2)
+      )
 
       val blockedSchedule = single(ap1V, r1, ai, "03.01.2022", "12:00", "15:00")
       unaryEval(
@@ -386,7 +395,10 @@ class CollisionCheckSpec extends UnitSpec {
       ).flatten
 
       val binaryRes =
-        binaryEval(schedules, List(roomCollision, studyPathCollision))
+        binaryEval(
+          schedules,
+          List(courseRoomCollision, studyPathCourseCollision)
+        )
       binaryRes shouldBe Nil
 
       val unaryRes = unaryEval(
@@ -465,7 +477,10 @@ class CollisionCheckSpec extends UnitSpec {
       ).flatten
 
       val binaryRes =
-        binaryEval(schedules, List(roomCollision, studyPathCollision))
+        binaryEval(
+          schedules,
+          List(courseRoomCollision, studyPathCourseCollision)
+        )
       binaryRes shouldBe Nil
 
       val unaryRes = unaryEval(
@@ -567,12 +582,15 @@ class CollisionCheckSpec extends UnitSpec {
       ).flatten
 
       val binaryRes =
-        binaryEval(schedules, List(roomCollision, studyPathCollision))
+        binaryEval(
+          schedules,
+          List(courseRoomCollision, studyPathCourseCollision)
+        )
           .groupBy(_.kind)
       binaryRes.size shouldBe 2
-      val spColl = binaryRes.find(_._1 == CollisionType.StudyPathTime).get
+      val spColl = binaryRes.find(_._1 == CollisionType.StudyPathCourse).get
       spColl._2.size shouldBe 4
-      val rColl = binaryRes.find(_._1 == CollisionType.Room).get
+      val rColl = binaryRes.find(_._1 == CollisionType.CourseRoom).get
       rColl._2.size shouldBe 16
 
       val unaryRes = unaryEval(

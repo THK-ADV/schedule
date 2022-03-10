@@ -81,6 +81,9 @@ PUT           /schedules/:id                           controllers.ScheduleContr
 DELETE        /schedules/:id                           controllers.ScheduleController.delete(id: java.util.UUID)
 
 POST          /schedules/search                        controllers.ScheduleController.search()
+POST          /schedules/collisions                    controllers.CollisionController.checkForCollisions()
+
+GET           /collisionTypes                          controllers.CollisionController.collisionTypes()
 
 GET           /studentSchedules                        controllers.StudentScheduleController.all()
 GET           /studentSchedules/:id                    controllers.StudentScheduleController.get(id: java.util.UUID)
