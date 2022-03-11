@@ -17,6 +17,8 @@ class CollisionController @Inject() (
 ) extends AbstractController(cc)
     with JsonHttpResponse[Collision] {
 
+  import JsonOps.FormatOps
+
   case class CollisionChecker(
       scheduleIds: List[UUID],
       collisionTypes: Set[CollisionType]
@@ -37,14 +39,7 @@ class CollisionController @Inject() (
   }
 
   implicit val collisionTypeFmt: Format[CollisionType] =
-    new Format[CollisionType] {
-      override def reads(json: JsValue): JsResult[CollisionType] =
-        json
-          .validate[String]
-          .flatMap(s => JsResult.fromTry(CollisionType(s)))
-      override def writes(o: CollisionType): JsValue =
-        JsString(o.label)
-    }
+    Format.of[String].bimapTry(CollisionType.apply, _.label)
 
   implicit val collisionCheckerReads: Reads[CollisionChecker] =
     Json.reads[CollisionChecker]

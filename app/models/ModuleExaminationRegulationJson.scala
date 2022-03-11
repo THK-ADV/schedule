@@ -13,5 +13,4 @@ case class ModuleExaminationRegulationJson(
 object ModuleExaminationRegulationJson {
   implicit val format: OFormat[ModuleExaminationRegulationJson] =
     Json.format[ModuleExaminationRegulationJson]
-
 }

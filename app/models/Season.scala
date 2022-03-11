@@ -1,6 +1,6 @@
 package models
 
-import play.api.libs.json.{JsString, Reads, Writes}
+import play.api.libs.json.Format
 
 sealed trait Season {
   override def toString = Season.unapply(this)
@@ -16,11 +16,8 @@ object Season {
 
   case object Unknown extends Season
 
-  implicit val writes: Writes[Season] =
-    Writes[Season](unapply _ andThen JsString)
-
-  implicit val reads: Reads[Season] =
-    Reads(_.validate[String].map(apply))
+  implicit val format: Format[Season] =
+    Format.of[String].bimap(Season.apply, Season.unapply)
 
   def apply(string: String): Season = string.toLowerCase match {
     case "sose"                    => SoSe

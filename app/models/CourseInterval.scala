@@ -7,11 +7,8 @@ sealed trait CourseInterval {
 }
 
 object CourseInterval {
-  implicit val writes: Writes[CourseInterval] =
-    Writes[CourseInterval](unapply _ andThen JsString)
-
-  implicit val reads: Reads[CourseInterval] =
-    Reads(_.validate[String].map(apply))
+  implicit val format: Format[CourseInterval] =
+    Format.of[String].bimap(CourseInterval.apply, CourseInterval.unapply)
 
   def apply(string: String): CourseInterval = string.toLowerCase match {
     case "regularly"   => Regularly

@@ -7,11 +7,10 @@ sealed trait ScheduleEntryStatus {
 }
 
 object ScheduleEntryStatus {
-  implicit val writes: Writes[ScheduleEntryStatus] =
-    Writes[ScheduleEntryStatus](unapply _ andThen JsString)
-
-  implicit val reads: Reads[ScheduleEntryStatus] =
-    Reads(_.validate[String].map(apply))
+  implicit val format: Format[ScheduleEntryStatus] =
+    Format
+      .of[String]
+      .bimap(ScheduleEntryStatus.apply, ScheduleEntryStatus.unapply)
 
   def apply(string: String): ScheduleEntryStatus = string.toLowerCase match {
     case "active"           => Active

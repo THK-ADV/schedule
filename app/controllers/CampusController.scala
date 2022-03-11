@@ -17,6 +17,6 @@ class CampusController @Inject() (
     with Controller[CampusJson, Campus] {
   override protected implicit def writes: Writes[Campus] = Campus.format
 
-  override protected implicit def reads: Reads[models.CampusJson] =
+  override protected implicit def reads: Reads[CampusJson] =
     CampusJson.format
 }

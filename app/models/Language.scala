@@ -7,11 +7,8 @@ sealed trait Language {
 }
 
 object Language {
-  implicit val writes: Writes[Language] =
-    Writes[Language](unapply _ andThen JsString)
-
-  implicit val reads: Reads[Language] =
-    Reads(_.validate[String].map(apply))
+  implicit val format: Format[Language] =
+    Format.of[String].bimap(Language.apply, Language.unapply)
 
   def apply(string: String): Language = string.toLowerCase match {
     case "en"              => EN
