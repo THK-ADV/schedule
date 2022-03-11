@@ -20,6 +20,7 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class ScheduleRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
+    val spRepo: StudyProgramRepository,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
     with Repository[Schedule, ScheduleDbEntry, ScheduleTable]
@@ -70,17 +71,19 @@ class ScheduleRepository @Inject() (
       mer <- q.moduleExaminationRegulationFk
       merm <- mer.moduleFk
       merex <- mer.examinationRegulationFk
-      mersp <- merex.studyProgramFk
-      mertu <- mersp.teachingUnitFk
-      merg <- mersp.graduationFk
-    } yield (q, (c, cu, cse, csm), r, (mer, merm, merex, mersp, mertu, merg))
+      mersp <- merex.studyProgramFk.flatMap(spRepo.collect)
+    } yield (q, (c, cu, cse, csm), r, (mer, merm, merex, mersp))
 
     val action = result.result.map(_.map {
-      case (s, (c, cu, cse, csm), r, (mer, merm, merex, mersp, mertu, merg)) =>
+      case (s, (c, cu, cse, csm), r, (mer, merm, merex, mersp)) =>
         ScheduleAtom( // TODO adjust atomicness to actual needs
           Course(c, cu, cse, csm),
           Room(r),
-          ModuleExaminationRegulation(mer, merm, merex, mersp, mertu, merg),
+          ModuleExaminationRegulation(
+            mer,
+            Module(merm),
+            ExaminationRegulation(merex, StudyProgram(mersp))
+          ),
           s.date,
           s.start,
           s.end,

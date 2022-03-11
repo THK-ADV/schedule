@@ -1,13 +1,13 @@
-package date
+package controllers.json
 
-import date.DateFormatPattern.timeFormatter
+import DateFormatPattern.timeFormatter
 import org.joda.time.LocalTime
 import play.api.libs.json.Format
 
 import scala.util.Try
 
 trait LocalTimeFormat {
-  import controllers.JsonOps.FormatOps
+  import controllers.json.JsonOps.FormatOps
 
   implicit val localTimeFormat: Format[LocalTime] =
     Format

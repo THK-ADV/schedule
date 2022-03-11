@@ -26,6 +26,7 @@ class StudyProgramService @Inject() (val repo: StudyProgramRepository)
       json.graduation,
       json.label,
       json.abbreviation,
+      json.parent,
       now(),
       id = id getOrElse UUID.randomUUID
     )

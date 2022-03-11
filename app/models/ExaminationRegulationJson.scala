@@ -1,6 +1,6 @@
 package models
 
-import date.LocalDateFormat
+import controllers.json.{JsonNullWritable, LocalDateFormat}
 import org.joda.time.LocalDate
 import play.api.libs.json.{Json, OFormat}
 
@@ -13,7 +13,7 @@ case class ExaminationRegulationJson(
     end: Option[LocalDate]
 )
 
-object ExaminationRegulationJson extends LocalDateFormat {
+object ExaminationRegulationJson extends LocalDateFormat with JsonNullWritable {
   implicit val format: OFormat[ExaminationRegulationJson] =
     Json.format[ExaminationRegulationJson]
 }

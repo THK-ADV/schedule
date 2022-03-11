@@ -1,6 +1,6 @@
 package models
 
-import date.{LocalDateFormat, LocalTimeFormat}
+import controllers.json.{LocalDateFormat, LocalTimeFormat}
 import org.joda.time.{LocalDate, LocalTime}
 import play.api.libs.json.{Json, OFormat}
 

@@ -66,6 +66,7 @@ final class MockCreation extends Creation {
             s.graduation,
             s.label,
             s.abbreviation,
+            None,
             uuid
           )
         )
@@ -475,7 +476,7 @@ class LegacyDbImportController @Inject() (
     studyPrograms.map { case (label, abbrev, tu) =>
       val gID = grads.find(_.abbreviation.head == abbrev.last).get.id
       val tuID = tus.find(_.abbreviation.equalsIgnoreCase(tu)).get.id
-      StudyProgramJson(tuID, gID, abbrev, label)
+      StudyProgramJson(tuID, gID, abbrev, label, None)
     }.toSeq
 
   def makeExams(sps: Seq[StudyProgram]) = {

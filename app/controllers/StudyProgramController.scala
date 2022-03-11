@@ -1,7 +1,7 @@
 package controllers
 
 import models.{StudyProgram, StudyProgramJson}
-import play.api.libs.json.{Reads, Writes}
+import play.api.libs.json._
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.StudyProgramService
 

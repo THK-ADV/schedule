@@ -20,37 +20,44 @@ class StudyProgramRepository @Inject() (
 
   import profile.api._
 
-  protected val tableQuery = TableQuery[StudyProgramTable]
+  val tableQuery = TableQuery[StudyProgramTable]
 
   override protected def makeFilter = {
-    case ("label", vs)        => t => t.hasLabel(vs.head)
-    case ("abbreviation", vs) => t => t.hasAbbreviation(vs.head)
+    case ("label", vs)        => _.hasLabel(vs.head)
+    case ("abbreviation", vs) => _.hasAbbreviation(vs.head)
     case ("graduation", vs)   => t => parseUUID(vs, t.hasGraduation)
     case ("teachingUnit", vs) => t => parseUUID(vs, t.hasTeachingUnit)
+    case ("parent", vs)       => t => parseUUID(vs, t.hasParent)
   }
 
   override protected def toUniqueEntity(e: StudyProgramDBEntry) =
     StudyProgram(e)
 
-  override protected def retrieveAtom(
-      query: Query[StudyProgramTable, StudyProgramDBEntry, Seq]
-  ) = {
-    val result = for {
-      q <- query
+  // TODO this seems to be a good way to collect dependencies of database entries
+  def collect(t: StudyProgramTable) =
+    for {
+      (q, p) <- tableQuery joinLeft tableQuery on (_.parent === _.id)
+      if q.id === t.id
       tu <- q.teachingUnitFk
       g <- q.graduationFk
-    } yield (q, tu, g)
+    } yield (q, tu, g, p)
 
-    val action = result.result.map(_.map { case (sp, tu, g) =>
-      StudyProgramAtom(
-        TeachingUnit(tu),
-        Graduation(g),
-        sp.label,
-        sp.abbreviation,
-        sp.id
-      )
-    })
-
-    db.run(action)
-  }
+  override protected def retrieveAtom(
+      query: Query[StudyProgramTable, StudyProgramDBEntry, Seq]
+  ) =
+    db.run {
+      query
+        .flatMap(collect)
+        .result
+        .map(_.map { case (sp, tu, g, parent) =>
+          StudyProgramAtom(
+            TeachingUnit(tu),
+            Graduation(g),
+            sp.label,
+            sp.abbreviation,
+            parent.map(StudyProgram.apply),
+            sp.id
+          )
+        })
+    }
 }

@@ -1,8 +1,8 @@
 package models
 
+import controllers.json.{LocalDateFormat, LocalTimeFormat}
 import database.SQLDateConverter
 import database.tables.ScheduleDbEntry
-import date.{LocalDateFormat, LocalTimeFormat}
 import models.Course.CourseAtom
 import models.ModuleExaminationRegulation.ModuleExaminationRegulationAtom
 import org.joda.time.{LocalDate, LocalTime}

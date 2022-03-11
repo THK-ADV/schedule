@@ -2,6 +2,7 @@ package models
 
 import database.tables._
 import models.ExaminationRegulation.ExaminationRegulationAtom
+import models.Module.ModuleDefault
 import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
@@ -61,16 +62,8 @@ object ModuleExaminationRegulation {
 
   def apply(
       db: ModuleExaminationRegulationDbEntry,
-      moduleDb: ModuleDbEntry,
-      examRegDb: ExaminationRegulationDbEntry,
-      spDb: StudyProgramDBEntry,
-      tuDb: TeachingUnitDbEntry,
-      gDb: GraduationDbEntry
+      m: ModuleDefault,
+      e: ExaminationRegulationAtom
   ): ModuleExaminationRegulationAtom =
-    ModuleExaminationRegulationAtom(
-      Module(moduleDb),
-      ExaminationRegulationAtom(examRegDb, spDb, tuDb, gDb),
-      db.mandatory,
-      db.id
-    )
+    ModuleExaminationRegulationAtom(m, e, db.mandatory, db.id)
 }

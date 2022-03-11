@@ -8,7 +8,8 @@ case class StudyProgramJson(
     teachingUnit: UUID,
     graduation: UUID,
     abbreviation: String,
-    label: String
+    label: String,
+    parent: Option[UUID]
 )
 
 object StudyProgramJson {

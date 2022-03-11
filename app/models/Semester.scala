@@ -1,8 +1,8 @@
 package models
 
+import controllers.json.LocalDateFormat
 import database.SQLDateConverter
 import database.tables.SemesterDbEntry
-import date.LocalDateFormat
 import org.joda.time.LocalDate
 import play.api.libs.json._
 

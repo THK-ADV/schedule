@@ -5,8 +5,7 @@ import database.tables.{
   ExaminationRegulationDbEntry,
   ExaminationRegulationTable
 }
-import models.ExaminationRegulation
-import models.ExaminationRegulation.ExaminationRegulationAtom
+import models.{ExaminationRegulation, StudyProgram}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -16,6 +15,7 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class ExaminationRegulationRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
+    val spRepo: StudyProgramRepository,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
     with Repository[
@@ -40,13 +40,11 @@ class ExaminationRegulationRepository @Inject() (
   ) = {
     val result = for {
       q <- query
-      s <- q.studyProgramFk
-      tu <- s.teachingUnitFk
-      g <- s.graduationFk
-    } yield (q, s, tu, g)
+      sp <- q.studyProgramFk.flatMap(spRepo.collect)
+    } yield (q, sp)
 
-    val action = result.result.map(_.map { case (e, s, tu, g) =>
-      ExaminationRegulationAtom(e, s, tu, g)
+    val action = result.result.map(_.map { case (e, sp) =>
+      ExaminationRegulation(e, StudyProgram(sp))
     })
 
     db.run(action)

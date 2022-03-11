@@ -17,7 +17,7 @@ class CollisionController @Inject() (
 ) extends AbstractController(cc)
     with JsonHttpResponse[Collision] {
 
-  import JsonOps.FormatOps
+  import controllers.json.JsonOps.FormatOps
 
   case class CollisionChecker(
       scheduleIds: List[UUID],
