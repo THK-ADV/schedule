@@ -37,6 +37,8 @@ class ScheduleRepository @Inject() (
     (String, Seq[String]),
     ScheduleTable => Rep[Boolean]
   ] = {
+    case ("id", vs) =>
+      _.id.inSet(vs.map(UUID.fromString))
     case ("courses", vs) =>
       _.courseFk.filter(_.id.inSet(vs.map(UUID.fromString))).exists
     case ("status", vs) =>
