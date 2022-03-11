@@ -1,7 +1,7 @@
 package controllers
 
 import collision.{Collision, CollisionType}
-import play.api.libs.json.{Format, Json, Reads, Writes}
+import play.api.libs.json._
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.CollisionService
 
@@ -36,7 +36,15 @@ class CollisionController @Inject() (
     Ok(Json.toJson(CollisionType.all()))
   }
 
-  implicit val collisionTypeFmt: Format[CollisionType] = ???
+  implicit val collisionTypeFmt: Format[CollisionType] =
+    new Format[CollisionType] {
+      override def reads(json: JsValue): JsResult[CollisionType] =
+        json
+          .validate[String]
+          .flatMap(s => JsResult.fromTry(CollisionType(s)))
+      override def writes(o: CollisionType): JsValue =
+        JsString(o.label)
+    }
 
   implicit val collisionCheckerReads: Reads[CollisionChecker] =
     Json.reads[CollisionChecker]
