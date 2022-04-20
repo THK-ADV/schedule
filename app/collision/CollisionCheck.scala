@@ -1,6 +1,6 @@
 package collision
 
-import models.Schedule
+import models.{Schedule, StudyProgram}
 import org.joda.time.{Interval, LocalDate}
 
 import java.util.UUID
@@ -24,8 +24,14 @@ object CollisionCheck {
 
   def roomPred: BinarySchedulePredicate = (lhs, rhs) => lhs.roomId == rhs.roomId
 
-  def studyPathPred: BinarySchedulePredicate = (lhs, rhs) =>
-    lhs.moduleExaminationRegulationId == rhs.moduleExaminationRegulationId
+  def studyPathPred(
+      lower: Schedule => StudyProgram,
+      studyProgram: UUID => StudyProgram
+  ): BinarySchedulePredicate = (lhs, rhs) => {
+    def go(lhs: StudyProgram, rhs: StudyProgram): Boolean =
+      lhs.id == rhs.id || lhs.parentId.exists(p => go(studyProgram(p), rhs))
+    go(lower(lhs), lower(rhs)) || go(lower(rhs), lower(lhs))
+  }
 
   def coursePred: BinarySchedulePredicate = (lhs, rhs) =>
     lhs.courseId == rhs.courseId
@@ -68,8 +74,15 @@ object CollisionCheck {
     (a, b) => Collision(CollisionType.CourseRoom, a, b)
   )
 
-  def studyPathCourseCollision: BinaryCollisionCheck = binaryCollisionCheck(
-    combinePredicates(datePred, studyPathPred, not(coursePred)),
+  def studyPathCourseCollision(
+      lower: Schedule => StudyProgram,
+      studyProgram: UUID => StudyProgram
+  ): BinaryCollisionCheck = binaryCollisionCheck(
+    combinePredicates(
+      datePred,
+      studyPathPred(lower, studyProgram),
+      not(coursePred)
+    ),
     (a, b) => Collision(CollisionType.StudyPathCourse, a, b)
   )
 

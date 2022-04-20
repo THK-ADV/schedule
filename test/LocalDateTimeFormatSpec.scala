@@ -1,5 +1,4 @@
 import controllers.json.{LocalDateFormat, LocalTimeFormat}
-import date.LocalTimeFormat
 import org.joda.time.{LocalDate, LocalTime}
 import play.api.libs.json.{JsString, JsSuccess}
 
