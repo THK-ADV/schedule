@@ -3,17 +3,16 @@ package service
 import collision.CollisionCheck._
 import collision.{Collision, CollisionType}
 import models.Schedule.ScheduleAtom
+import models.StudyProgram.StudyProgramAtom
 import models.{Schedule, StudyProgram}
 
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CollisionService @Inject() (
     scheduleService: ScheduleService,
-    studyProgramService: StudyProgramService,
     implicit val ctx: ExecutionContext
 ) {
 
@@ -21,8 +20,8 @@ class CollisionService @Inject() (
       collisionTypes: Set[CollisionType],
       blocked: Set[Blocked],
       lecturer: Schedule => UUID,
-      lower: Schedule => StudyProgram,
-      studyProgram: UUID => StudyProgram
+      studyProgram: Schedule => StudyProgram,
+      parent: StudyProgram => Option[StudyProgram]
   ): (List[BinaryCollisionCheck], List[UnaryCollisionCheck]) =
     collisionTypes.foldLeft(
       (List.empty[BinaryCollisionCheck], List.empty[UnaryCollisionCheck])
@@ -31,7 +30,7 @@ class CollisionService @Inject() (
         case CollisionType.CourseRoom =>
           (courseRoomCollision :: bxs, uxs)
         case CollisionType.StudyPathCourse =>
-          (studyPathCourseCollision(lower, studyProgram) :: bxs, uxs)
+          (studyPathCourseCollision(studyProgram, parent) :: bxs, uxs)
         case CollisionType.CourseMultipleRoom =>
           (courseMultipleRoomCollision :: bxs, uxs)
         case CollisionType.LecturerCourse =>
@@ -42,9 +41,6 @@ class CollisionService @Inject() (
           (bxs, blockedCollision(blocked) :: uxs)
       }
     }
-
-  private def studyProgramById(sp: UUID): Future[StudyProgram] =
-    studyProgramService.get(sp, atomic = false).map(_.get)
 
   def checkForCollisions(
       scheduleIds: List[UUID],
@@ -58,7 +54,9 @@ class CollisionService @Inject() (
       _.asInstanceOf[
         ScheduleAtom
       ].moduleExaminationRegulation.examinationRegulation.studyProgram,
-      s => Await.result(studyProgramById(s), Duration.Inf)
+      _.asInstanceOf[
+        StudyProgramAtom
+      ].parent
     )
     scheduleService
       .fromIds(scheduleIds, atomic = true)

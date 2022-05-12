@@ -9,6 +9,8 @@ import org.joda.time.{LocalDate, LocalTime}
 import java.util.UUID
 import scala.language.implicitConversions
 
+// TODO add tests for parent
+
 class CollisionCheckSpec extends UnitSpec {
 
   import collision.CollisionCheck.{not => negate, _}
@@ -119,25 +121,26 @@ class CollisionCheckSpec extends UnitSpec {
           UUID.randomUUID
         )
 
-      studyPathPred(_ => fakeSpWithoutParent, _ => fakeSpWithoutParent).apply(
-        schedule(UUID.randomUUID),
-        schedule(UUID.randomUUID)
-      ) shouldBe false
+      studyPathPred(_ => fakeSpWithoutParent, _ => None)
+        .apply(
+          schedule(UUID.randomUUID),
+          schedule(UUID.randomUUID)
+        ) shouldBe false
 
       val exam1 = UUID.randomUUID
       val sp = fakeSpWithoutParent
-      studyPathPred(_ => sp, _ => sp).apply(
+      studyPathPred(_ => sp, s => s.parentId.map(_ => sp)).apply(
         schedule(exam1),
         schedule(exam1)
       ) shouldBe true
 
-      val s1 = schedule(UUID.randomUUID)
+      val s1 = schedule(UUID.randomUUID) // s1 => sp1 => None
       val sp1 = fakeSpWithoutParent
-      val s2 = schedule(UUID.randomUUID)
+      val s2 = schedule(UUID.randomUUID) // s2 => sp2 => sp1 => None
       val sp2 = fakeSpWithParent(sp1)
       val pred = studyPathPred(
-        s => if (s.id == s1.id) sp1 else sp2,
-        s => if (s == sp1.id) sp1 else sp2
+        sched => if (sched.id == s1.id) sp1 else sp2,
+        sp => if (sp.id == sp1.id) None else Some(sp1)
       )
 
       pred.apply(s1, s2) shouldBe true
@@ -297,7 +300,7 @@ class CollisionCheckSpec extends UnitSpec {
       val same = fakeSpWithoutParent
       studyPathCourseCollision(
         _ => same,
-        _ => same
+        _ => None
       ).apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ap1V, r1, ai, "28.02.2022", "13:00", "15:00")
@@ -305,7 +308,7 @@ class CollisionCheckSpec extends UnitSpec {
 
       studyPathCourseCollision(
         _ => fakeSpWithoutParent,
-        _ => fakeSpWithoutParent
+        _ => None
       ).apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ap1V, r1, mi, "28.02.2022", "11:00", "13:00")
@@ -313,7 +316,7 @@ class CollisionCheckSpec extends UnitSpec {
 
       studyPathCourseCollision(
         _ => fakeSpWithoutParent,
-        _ => fakeSpWithoutParent
+        _ => None
       ).apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ap1V, r2, mi, "28.02.2022", "11:00", "13:00")
@@ -321,7 +324,7 @@ class CollisionCheckSpec extends UnitSpec {
 
       studyPathCourseCollision(
         _ => same,
-        _ => same
+        _ => None
       ).apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ap1V, r2, ai, "28.02.2022", "12:00", "15:00")
@@ -329,7 +332,7 @@ class CollisionCheckSpec extends UnitSpec {
 
       studyPathCourseCollision(
         _ => fakeSpWithoutParent,
-        _ => fakeSpWithoutParent
+        _ => None
       ).apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ma1V, r1, mi, "28.02.2022", "11:00", "13:00")
@@ -339,7 +342,7 @@ class CollisionCheckSpec extends UnitSpec {
       val s2 = single(ma1V, r2, ai, "28.02.2022", "11:00", "13:00")
       studyPathCourseCollision(
         _ => same,
-        _ => same
+        _ => None
       ).apply(s1, s2) shouldBe Some(
         Collision(CollisionType.StudyPathCourse, s1, s2)
       )
@@ -355,7 +358,7 @@ class CollisionCheckSpec extends UnitSpec {
           courseRoomCollision,
           studyPathCourseCollision(
             _ => fakeSpWithoutParent,
-            _ => fakeSpWithoutParent
+            _ => None
           )
         )
       ) shouldBe Nil
@@ -372,7 +375,7 @@ class CollisionCheckSpec extends UnitSpec {
           courseRoomCollision,
           studyPathCourseCollision(
             _ => fakeSpWithoutParent,
-            _ => fakeSpWithoutParent
+            _ => None
           ),
           lecturerCourseCollision(_ => victor)
         )
@@ -462,7 +465,7 @@ class CollisionCheckSpec extends UnitSpec {
             courseRoomCollision,
             studyPathCourseCollision(
               _ => fakeSpWithoutParent,
-              _ => fakeSpWithoutParent
+              _ => None
             )
           )
         )
@@ -550,7 +553,7 @@ class CollisionCheckSpec extends UnitSpec {
             courseRoomCollision,
             studyPathCourseCollision(
               _ => fakeSpWithoutParent,
-              _ => fakeSpWithoutParent
+              _ => None
             )
           )
         )
@@ -667,7 +670,7 @@ class CollisionCheckSpec extends UnitSpec {
             courseRoomCollision,
             studyPathCourseCollision(
               s => mapping(s.moduleExaminationRegulationId),
-              s => mapping(s)
+              _ => None
             )
           )
         )
