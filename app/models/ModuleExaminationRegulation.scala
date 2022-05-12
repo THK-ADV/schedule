@@ -59,11 +59,4 @@ object ModuleExaminationRegulation {
       db.mandatory,
       db.id
     )
-
-  def apply(
-      db: ModuleExaminationRegulationDbEntry,
-      m: ModuleDefault,
-      e: ExaminationRegulationAtom
-  ): ModuleExaminationRegulationAtom =
-    ModuleExaminationRegulationAtom(m, e, db.mandatory, db.id)
 }

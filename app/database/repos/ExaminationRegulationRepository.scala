@@ -5,6 +5,7 @@ import database.tables.{
   ExaminationRegulationDbEntry,
   ExaminationRegulationTable
 }
+import models.ExaminationRegulation.{ExaminationRegulationAtom, toLocalDate}
 import models.{ExaminationRegulation, StudyProgram}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
@@ -29,7 +30,27 @@ class ExaminationRegulationRepository @Inject() (
 
   protected val tableQuery = TableQuery[ExaminationRegulationTable]
 
-  override protected def makeFilter = PartialFunction.empty
+  override protected val makeFilter = { case ("studyProgram_label", vs) =>
+    _.studyProgramLabel(vs.head)
+  }
+
+  def collectDependencies(t: ExaminationRegulationTable) =
+    for {
+      q <- tableQuery.filter(_.id === t.id)
+      sp <- q.studyProgramFk.flatMap(spRepo.collectDependencies)
+    } yield (q, sp)
+
+  def makeAtom(
+      e: ExaminationRegulationDbEntry,
+      sp: StudyProgram.StudyProgramAtom
+  ) =
+    ExaminationRegulationAtom(
+      sp,
+      e.number,
+      e.start,
+      e.end.map(toLocalDate),
+      e.id
+    )
 
   override protected def retrieveAtom(
       query: Query[
@@ -37,18 +58,21 @@ class ExaminationRegulationRepository @Inject() (
         ExaminationRegulationDbEntry,
         Seq
       ]
-  ) = {
-    val result = for {
-      q <- query
-      sp <- q.studyProgramFk.flatMap(spRepo.collect)
-    } yield (q, sp)
-
-    val action = result.result.map(_.map { case (e, sp) =>
-      ExaminationRegulation(e, StudyProgram(sp))
-    })
-
-    db.run(action)
-  }
+  ) =
+    db.run {
+      query
+        .flatMap(collectDependencies)
+        .result
+        .flatMap { elems =>
+          DBIO.sequence(
+            elems.map { e =>
+              spRepo
+                .getRecursive(Seq(e._2))
+                .map(sp => makeAtom(e._1, sp.head))
+            }
+          )
+        }
+    }
 
   override protected def toUniqueEntity(e: ExaminationRegulationDbEntry) =
     ExaminationRegulation(e)

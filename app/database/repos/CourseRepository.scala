@@ -1,9 +1,8 @@
 package database.repos
 
 import database.repos.filter.UUIDParser
-import database.tables.{CourseDbEntry, CourseTable}
-import models.Course.CourseAtom
-import models.{Course, Semester, SubModule, User}
+import database.tables._
+import models.Course
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -28,29 +27,28 @@ class CourseRepository @Inject() (
     case ("subModule", vs) => t => parseUUID(vs, t.subModule)
   }
 
-  override protected def retrieveAtom(
-      query: Query[CourseTable, CourseDbEntry, Seq]
-  ) = {
-    val result = for {
-      q <- query
+  def collectDependencies(t: CourseTable) =
+    for {
+      q <- tableQuery.filter(_.id === t.id)
       u <- q.userFk
       s <- q.semesterFk
       sm <- q.subModuleFk
     } yield (q, u, s, sm)
 
-    val action = result.result.map(_.map { case (c, u, s, sm) =>
-      CourseAtom(
-        User(u),
-        Semester(s),
-        SubModule(sm),
-        c.interval,
-        c.courseType,
-        c.id
-      )
-    })
+  def makeAtom(
+      c: (CourseDbEntry, UserDbEntry, SemesterDbEntry, SubModuleDbEntry)
+  ) =
+    Course.atom(c._1, c._2, c._3, c._4)
 
-    db.run(action)
-  }
+  override protected def retrieveAtom(
+      query: Query[CourseTable, CourseDbEntry, Seq]
+  ) =
+    db.run {
+      query
+        .flatMap(collectDependencies)
+        .result
+        .map(_.map(makeAtom))
+    }
 
   override protected def toUniqueEntity(e: CourseDbEntry) = Course(e)
 }

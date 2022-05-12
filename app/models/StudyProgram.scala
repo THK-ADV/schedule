@@ -1,11 +1,7 @@
 package models
 
 import controllers.json.JsonNullWritable
-import database.tables.{
-  GraduationDbEntry,
-  StudyProgramDBEntry,
-  TeachingUnitDbEntry
-}
+import database.tables.StudyProgramDBEntry
 import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
@@ -54,7 +50,7 @@ object StudyProgram extends JsonNullWritable {
       graduation: Graduation,
       label: String,
       abbreviation: String,
-      parent: Option[StudyProgramDefault],
+      parent: Option[StudyProgramAtom],
       id: UUID
   ) extends StudyProgram {
     override def teachingUnitId = teachingUnit.id
@@ -74,7 +70,7 @@ object StudyProgram extends JsonNullWritable {
       db.id
     )
 
-  def apply(
+  /*  def apply(
       sp: (
           StudyProgramDBEntry,
           TeachingUnitDbEntry,
@@ -88,5 +84,5 @@ object StudyProgram extends JsonNullWritable {
     sp._1.abbreviation,
     sp._4.map(apply),
     sp._1.id
-  )
+  )*/
 }

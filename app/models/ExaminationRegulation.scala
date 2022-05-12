@@ -62,14 +62,4 @@ object ExaminationRegulation
       db.end.map(toLocalDate),
       db.id
     )
-
-  def apply(e: ExaminationRegulationDbEntry, sp: StudyProgramAtom) =
-    ExaminationRegulationAtom(
-      sp,
-      e.number,
-      e.start,
-      e.end.map(toLocalDate),
-      e.id
-    )
-
 }

@@ -58,5 +58,4 @@ object Module {
       db.descriptionUrl,
       db.id
     )
-
 }

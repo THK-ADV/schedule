@@ -71,7 +71,7 @@ object Course {
     db.id
   )
 
-  def apply(
+  def atom(
       db: CourseDbEntry,
       userDb: UserDbEntry,
       semesterDb: SemesterDbEntry,
