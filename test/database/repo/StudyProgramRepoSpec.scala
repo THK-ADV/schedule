@@ -1,7 +1,10 @@
+package database.repo
+
 import database.repos.StudyProgramRepository
 import database.tables._
 import models.StudyProgram.StudyProgramAtom
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import suite.{AsyncSpec, DatabaseSuite, FakeApplication}
 
 class StudyProgramRepoSpec
     extends AsyncSpec

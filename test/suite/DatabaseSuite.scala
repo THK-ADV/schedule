@@ -1,3 +1,5 @@
+package suite
+
 import database.tables.{
   FacultyTable,
   GraduationTable,

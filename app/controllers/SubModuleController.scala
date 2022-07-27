@@ -1,5 +1,6 @@
 package controllers
 
+import json.SubmoduleFormat
 import models.{SubModule, SubModuleJson}
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -14,9 +15,11 @@ class SubModuleController @Inject() (
     val service: SubModuleService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Controller[SubModuleJson, SubModule] {
-  override protected implicit def writes: Writes[SubModule] = SubModule.writes
+    with Controller[SubModuleJson, SubModule]
+    with SubmoduleFormat.All {
+  override protected implicit val writes: Writes[SubModule] =
+    submoduleWrites
 
-  override protected implicit def reads: Reads[SubModuleJson] =
-    SubModuleJson.format
+  override protected implicit val reads: Reads[SubModuleJson] =
+    submoduleJsonFmt
 }

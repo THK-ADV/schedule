@@ -1,5 +1,6 @@
 package controllers
 
+import json.GraduationFormat
 import models.{Graduation, GraduationJson}
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -14,9 +15,11 @@ class GraduationController @Inject() (
     val service: GraduationService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Controller[GraduationJson, Graduation] {
-  override protected implicit def writes: Writes[Graduation] = Graduation.format
+    with Controller[GraduationJson, Graduation]
+    with GraduationFormat {
+  override protected implicit def writes: Writes[Graduation] =
+    graduationFmt
 
   override protected implicit def reads: Reads[GraduationJson] =
-    GraduationJson.format
+    graduationJsonFmt
 }

@@ -8,7 +8,7 @@ import scala.util.Try
 
 trait SQLDateConverter {
 
-  import controllers.json.DateFormatPattern.{dateFormatter, timeFormatter}
+  import date.DateFormatPattern.{dateFormatter, timeFormatter}
 
   implicit def toLocalDate(date: Date): LocalDate = new LocalDate(date.getTime)
 

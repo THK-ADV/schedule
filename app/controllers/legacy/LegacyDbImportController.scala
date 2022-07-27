@@ -1,5 +1,6 @@
 package controllers.legacy
 
+import json.{FacultyFormat, ScheduleFormat}
 import models.Course.{CourseAtom, CourseDefault}
 import models.ExaminationRegulation.{
   ExaminationRegulationAtom,
@@ -331,7 +332,9 @@ class LegacyDbImportController @Inject() (
     cc: ControllerComponents,
     creation: LiveCreation,
     implicit val ctx: ExecutionContext
-) extends AbstractController(cc) {
+) extends AbstractController(cc)
+    with ScheduleFormat.All
+    with FacultyFormat {
 
   case class CSVData(
       fachkuerzel: String,

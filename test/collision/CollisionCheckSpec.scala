@@ -1,10 +1,12 @@
-import collision.{Collision, CollisionType}
+package collision
+
 import models.Schedule.ScheduleDefault
 import models.ScheduleEntryStatus.Draft
 import models.StudyProgram.StudyProgramDefault
 import models.{Schedule, ScheduleEntryStatus, StudyProgram}
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.{LocalDate, LocalTime}
+import suite.UnitSpec
 
 import java.util.UUID
 import scala.language.implicitConversions

@@ -37,7 +37,7 @@ class ScheduleRepository @Inject() (
 
   protected val tableQuery = TableQuery[ScheduleTable]
 
-  val scheduleFilter: PartialFunction[
+  private val scheduleFilter: PartialFunction[
     (String, Seq[String]),
     ScheduleTable => Rep[Boolean]
   ] = {
@@ -49,7 +49,7 @@ class ScheduleRepository @Inject() (
       _.hasStatus(ScheduleEntryStatus(vs.head))
   }
 
-  val filter =
+  private val filter =
     List(
       allModuleExaminationRegulations,
       allCourse,

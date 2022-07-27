@@ -1,4 +1,4 @@
-package controllers.json
+package date
 
 import org.joda.time.format.DateTimeFormat
 

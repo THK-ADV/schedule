@@ -1,7 +1,6 @@
 package models
 
 import database.tables.UserDbEntry
-import play.api.libs.json.{JsError, JsString, Json, OFormat}
 
 import java.util.UUID
 
@@ -50,32 +49,9 @@ object User {
     db.id
   )
 
-  val StudentStatus = "student"
+  val StudentStatus = "student" // TODO make a type
 
   val LecturerStatus = "lecturer"
-
-  implicit val formatUser: OFormat[User] = OFormat.apply(
-    js =>
-      js.\("status").validate[String].flatMap {
-        case StudentStatus  => formatStudent.reads(js)
-        case LecturerStatus => formatLecturer.reads(js)
-        case other =>
-          JsError(
-            s"expected status to be either student or lecturer, but was $other"
-          )
-      },
-    (user: User) =>
-      user match {
-        case l: Lecturer =>
-          formatLecturer.writes(l) + ("status" -> JsString(LecturerStatus))
-        case s: Student =>
-          formatStudent.writes(s) + ("status" -> JsString(StudentStatus))
-      }
-  )
-
-  implicit val formatLecturer: OFormat[Lecturer] = Json.format[Lecturer]
-
-  implicit val formatStudent: OFormat[Student] = Json.format[Student]
 
   case class Lecturer(
       username: String,

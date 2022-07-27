@@ -1,14 +1,10 @@
 package models
 
-import play.api.libs.json._
-
 sealed trait CourseInterval {
   override def toString = CourseInterval.unapply(this)
 }
 
 object CourseInterval {
-  implicit val format: Format[CourseInterval] =
-    Format.of[String].bimap(CourseInterval.apply, CourseInterval.unapply)
 
   def apply(string: String): CourseInterval = string.toLowerCase match {
     case "regularly"   => Regularly

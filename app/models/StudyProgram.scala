@@ -1,7 +1,7 @@
 package models
 
-import controllers.json.JsonNullWritable
 import database.tables.StudyProgramDBEntry
+import json.JsonNullWritable
 import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
@@ -18,18 +18,7 @@ sealed trait StudyProgram extends UniqueEntity {
   def parentId: Option[UUID]
 }
 
-object StudyProgram extends JsonNullWritable {
-  implicit val writes: Writes[StudyProgram] = Writes.apply {
-    case default: StudyProgramDefault => writesDefault.writes(default)
-    case atom: StudyProgramAtom       => writesAtom.writes(atom)
-  }
-
-  implicit val writesDefault: Writes[StudyProgramDefault] =
-    Json.writes[StudyProgramDefault]
-
-  implicit val writesAtom: Writes[StudyProgramAtom] =
-    Json.writes[StudyProgramAtom]
-
+object StudyProgram {
   case class StudyProgramDefault(
       teachingUnit: UUID,
       graduation: UUID,

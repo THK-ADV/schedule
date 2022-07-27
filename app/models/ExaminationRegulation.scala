@@ -1,11 +1,9 @@
 package models
 
-import controllers.json.{JsonNullWritable, LocalDateFormat}
 import database.SQLDateConverter
 import database.tables.ExaminationRegulationDbEntry
 import models.StudyProgram.StudyProgramAtom
 import org.joda.time.LocalDate
-import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
 
@@ -19,20 +17,7 @@ sealed trait ExaminationRegulation extends UniqueEntity {
   def end: Option[LocalDate]
 }
 
-object ExaminationRegulation
-    extends LocalDateFormat
-    with SQLDateConverter
-    with JsonNullWritable {
-  implicit val writes: Writes[ExaminationRegulation] = Writes.apply {
-    case default: ExaminationRegulationDefault => writesDefault.writes(default)
-    case atom: ExaminationRegulationAtom       => writesAtom.writes(atom)
-  }
-
-  implicit val writesDefault: Writes[ExaminationRegulationDefault] =
-    Json.writes[ExaminationRegulationDefault]
-
-  implicit val writesAtom: Writes[ExaminationRegulationAtom] =
-    Json.writes[ExaminationRegulationAtom]
+object ExaminationRegulation extends SQLDateConverter {
 
   case class ExaminationRegulationDefault(
       studyProgram: UUID,

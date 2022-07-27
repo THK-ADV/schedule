@@ -1,5 +1,6 @@
 package controllers
 
+import json.UserFormat
 import models.{User, UserJson}
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -14,10 +15,11 @@ class UserController @Inject() (
     val service: UserService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Controller[UserJson, User] {
+    with Controller[UserJson, User]
+    with UserFormat {
   override protected implicit def writes: Writes[User] =
-    User.formatUser
+    userFmt
 
   override protected implicit def reads: Reads[UserJson] =
-    UserJson.format
+    userJsonFmt
 }

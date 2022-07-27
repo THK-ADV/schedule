@@ -1,6 +1,7 @@
 package controllers
 
 import collision.{Collision, CollisionType}
+import json._
 import play.api.libs.json._
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.CollisionService
@@ -15,10 +16,8 @@ class CollisionController @Inject() (
     private val service: CollisionService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with JsonHttpResponse[Collision] {
-
-  import controllers.json.JsonOps.FormatOps
-
+    with JsonHttpResponse[Collision]
+    with CollisionFormat.All {
   case class CollisionChecker(
       scheduleIds: List[UUID],
       collisionTypes: Set[CollisionType]
@@ -38,12 +37,8 @@ class CollisionController @Inject() (
   def collisionTypes() =
     Action(_ => Ok(Json.toJson(CollisionType.all())))
 
-  implicit val collisionTypeFmt: Format[CollisionType] =
-    Format.of[String].bimapTry(CollisionType.apply, _.label)
-
   implicit val collisionCheckerReads: Reads[CollisionChecker] =
     Json.reads[CollisionChecker]
 
-  override protected implicit val writes: Writes[Collision] =
-    Json.writes[Collision]
+  override protected implicit val writes: Writes[Collision] = collisionWrites
 }

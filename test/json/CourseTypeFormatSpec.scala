@@ -1,7 +1,10 @@
+package json
+
 import models.CourseType
 import play.api.libs.json.{JsString, JsSuccess, Json}
+import suite.UnitSpec
 
-class CourseTypeFormatSpec extends UnitSpec {
+class CourseTypeFormatSpec extends UnitSpec with CourseTypeFormat {
 
   "A Course Type Formatter" should {
     "convert from Course Type to JSON" in {

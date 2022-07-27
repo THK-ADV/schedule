@@ -1,15 +1,14 @@
-package controllers.json
+package json
 
-import DateFormatPattern.timeFormatter
+import date.DateFormatPattern.timeFormatter
+import json.JsonOps.FormatOps
 import org.joda.time.LocalTime
 import play.api.libs.json.Format
 
 import scala.util.Try
 
 trait LocalTimeFormat {
-  import controllers.json.JsonOps.FormatOps
-
-  implicit val localTimeFormat: Format[LocalTime] =
+  implicit val localTimeFmt: Format[LocalTime] =
     Format
       .of[String]
       .bimapTry(

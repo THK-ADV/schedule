@@ -1,7 +1,10 @@
+package json
+
 import models.Language
 import play.api.libs.json.{JsString, JsSuccess, Json}
+import suite.UnitSpec
 
-class LanguageFormatSpec extends UnitSpec {
+class LanguageFormatSpec extends UnitSpec with LanguageFormat {
 
   "A Language Formatter" should {
     "convert from Language to JSON" in {

@@ -1,7 +1,5 @@
 package models
 
-import play.api.libs.json.{Json, OFormat}
-
 import java.util.UUID
 
 case class StudyProgramJson(
@@ -11,7 +9,3 @@ case class StudyProgramJson(
     label: String,
     parent: Option[UUID]
 )
-
-object StudyProgramJson {
-  implicit val format: OFormat[StudyProgramJson] = Json.format[StudyProgramJson]
-}

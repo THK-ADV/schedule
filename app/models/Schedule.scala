@@ -1,12 +1,10 @@
 package models
 
-import controllers.json.{LocalDateFormat, LocalTimeFormat}
 import database.SQLDateConverter
 import database.tables.ScheduleDbEntry
 import models.Course.CourseAtom
 import models.ModuleExaminationRegulation.ModuleExaminationRegulationAtom
 import org.joda.time.{LocalDate, LocalTime}
-import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
 
@@ -26,19 +24,7 @@ sealed trait Schedule extends UniqueEntity {
   def status: ScheduleEntryStatus
 }
 
-object Schedule
-    extends LocalDateFormat
-    with LocalTimeFormat
-    with SQLDateConverter {
-  implicit val writes: Writes[Schedule] = Writes.apply {
-    case default: ScheduleDefault => writesDefault.writes(default)
-    case atom: ScheduleAtom       => writesAtom.writes(atom)
-  }
-
-  implicit val writesDefault: Writes[ScheduleDefault] =
-    Json.writes[ScheduleDefault]
-
-  implicit val writesAtom: Writes[ScheduleAtom] = Json.writes[ScheduleAtom]
+object Schedule extends SQLDateConverter {
 
   case class ScheduleDefault(
       course: UUID,

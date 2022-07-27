@@ -1,17 +1,10 @@
 package models
 
-import play.api.libs.json._
-
 sealed trait CourseType {
   override def toString = CourseType.unapply(this)
 }
 
 object CourseType {
-  implicit val writes: Writes[CourseType] =
-    Writes[CourseType](unapply _ andThen JsString)
-
-  implicit val reads: Reads[CourseType] =
-    Reads(_.validate[String].map(apply))
 
   def apply(string: String): CourseType = string.toLowerCase match {
     case "lecture"   => Lecture

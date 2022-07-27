@@ -1,4 +1,4 @@
-package controllers.json
+package json
 
 import play.api.libs.json.{Format, JsResult, JsValue}
 

@@ -1,5 +1,6 @@
 package controllers
 
+import json.FacultyFormat
 import models.{Faculty, FacultyJson}
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -14,9 +15,11 @@ class FacultyController @Inject() (
     val service: FacultyService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Controller[FacultyJson, Faculty] {
-  override protected implicit def writes: Writes[Faculty] = Faculty.format
+    with Controller[FacultyJson, Faculty]
+    with FacultyFormat {
+  override protected implicit def writes: Writes[Faculty] =
+    facultyFmt
 
   override protected implicit def reads: Reads[FacultyJson] =
-    FacultyJson.format
+    facultyJsonFmt
 }

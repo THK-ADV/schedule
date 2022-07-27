@@ -1,3 +1,5 @@
+package suite
+
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
