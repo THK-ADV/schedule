@@ -12,11 +12,11 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CollisionService @Inject() (
-    scheduleService: ScheduleService,
+    private val scheduleService: ScheduleService,
     implicit val ctx: ExecutionContext
 ) {
 
-  def makeCollisionChecker(
+  private def makeCollisionChecker(
       collisionTypes: Set[CollisionType],
       blocked: Set[Blocked],
       lecturer: Schedule => UUID,

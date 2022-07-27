@@ -25,12 +25,15 @@ object CollisionCheck {
   def roomPred: BinarySchedulePredicate = (lhs, rhs) => lhs.roomId == rhs.roomId
 
   def studyPathPred(
-      sp: Schedule => StudyProgram,
+      studyProgram: Schedule => StudyProgram,
       parent: StudyProgram => Option[StudyProgram]
   ): BinarySchedulePredicate = (lhs, rhs) => {
     def go(lhs: StudyProgram, rhs: StudyProgram): Boolean =
       lhs.id == rhs.id || parent(lhs).exists(p => go(p, rhs))
-    go(sp(lhs), sp(rhs)) || go(sp(rhs), sp(lhs))
+    go(studyProgram(lhs), studyProgram(rhs)) || go(
+      studyProgram(rhs),
+      studyProgram(lhs)
+    )
   }
 
   def coursePred: BinarySchedulePredicate = (lhs, rhs) =>
@@ -75,12 +78,12 @@ object CollisionCheck {
   )
 
   def studyPathCourseCollision(
-      sp: Schedule => StudyProgram,
+      studyProgram: Schedule => StudyProgram,
       parent: StudyProgram => Option[StudyProgram]
   ): BinaryCollisionCheck = binaryCollisionCheck(
     combinePredicates(
       datePred,
-      studyPathPred(sp, parent),
+      studyPathPred(studyProgram, parent),
       not(coursePred)
     ),
     (a, b) => Collision(CollisionType.StudyPathCourse, a, b)

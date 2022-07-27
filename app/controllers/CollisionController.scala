@@ -12,7 +12,7 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class CollisionController @Inject() (
     cc: ControllerComponents,
-    service: CollisionService,
+    private val service: CollisionService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with JsonHttpResponse[Collision] {
@@ -24,19 +24,19 @@ class CollisionController @Inject() (
       collisionTypes: Set[CollisionType]
   )
 
-  def checkForCollisions() = Action(parse.json[CollisionChecker]).async { r =>
-    okSeq(
-      service.checkForCollisions(
-        r.body.scheduleIds,
-        r.body.collisionTypes,
-        Set.empty
+  def checkForCollisions() =
+    Action(parse.json[CollisionChecker]).async { r =>
+      okSeq(
+        service.checkForCollisions(
+          r.body.scheduleIds,
+          r.body.collisionTypes,
+          Set.empty
+        )
       )
-    )
-  }
+    }
 
-  def collisionTypes() = Action { _ =>
-    Ok(Json.toJson(CollisionType.all()))
-  }
+  def collisionTypes() =
+    Action(_ => Ok(Json.toJson(CollisionType.all())))
 
   implicit val collisionTypeFmt: Format[CollisionType] =
     Format.of[String].bimapTry(CollisionType.apply, _.label)
