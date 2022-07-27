@@ -48,8 +48,6 @@ class ModuleExaminationRegulationService @Inject() (
       _.isMandatory(json.mandatory)
     )
 
-  override protected def validate(json: ModuleExaminationRegulationJson) = None
-
   def allAtoms(filter: Map[String, Seq[String]]) =
     all(filter, atomic = true).map(
       _.map(_.asInstanceOf[ModuleExaminationRegulationAtom])

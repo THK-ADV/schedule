@@ -46,5 +46,4 @@ class SubModuleService @Inject() (val repo: SubModuleRepository)
       _.isModule(json.module)
     )
 
-  override protected def validate(json: SubModuleJson) = None
 }

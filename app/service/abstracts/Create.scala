@@ -12,9 +12,9 @@ trait Create[Json, Model <: UniqueEntity, DbEntry <: UniqueDbEntry, T <: Table[
 ] with UniqueEntityColumn] {
   self: JsonConverter[Json, DbEntry] with Core[Model, DbEntry, T] =>
 
-  protected def validate(json: Json): Option[Throwable]
+  protected def validate(json: Json): Option[Throwable] = None
 
-  protected def uniqueCols(json: Json): List[T => Rep[Boolean]]
+  protected def uniqueCols(json: Json): List[T => Rep[Boolean]] = Nil
 
   def create(json: Json): Future[Model] =
     validate(json) match {

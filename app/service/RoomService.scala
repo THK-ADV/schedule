@@ -33,6 +33,4 @@ class RoomService @Inject() (val repo: RoomRepository)
       _.hasAbbreviation(json.abbreviation),
       _.campus(json.campus)
     )
-
-  override protected def validate(json: RoomJson) = None
 }

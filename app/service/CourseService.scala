@@ -36,8 +36,6 @@ class CourseService @Inject() (
       json.subModule == existing.subModule &&
       json.courseType == existing.courseType
 
-  override protected def validate(json: CourseJson) = None
-
   override protected def uniqueCols(json: CourseJson) = List(
     _.semester(json.semester),
     _.user(json.lecturer),

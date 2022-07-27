@@ -24,10 +24,11 @@ class ScheduleController @Inject() (
 
   type CourseIds = List[UUID]
 
-  def search() = Action(parse.json[CourseIds]) async { r =>
-    val newRequest = r
-      .appending("courses" -> r.body.map(_.toString))
-      .eraseToAnyContent()
-    all()(newRequest)
-  }
+  def search() =
+    Action(parse.json[CourseIds]) async { request =>
+      val newRequest = request
+        .appending("courses" -> request.body.map(_.toString))
+        .eraseToAnyContent()
+      all()(newRequest)
+    }
 }

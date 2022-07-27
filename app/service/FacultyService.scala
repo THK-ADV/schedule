@@ -29,6 +29,4 @@ class FacultyService @Inject() (val repo: FacultyRepository)
 
   override protected def uniqueCols(json: FacultyJson) =
     List(_.hasLabel(json.label), _.hasNumber(json.number))
-
-  override protected def validate(json: FacultyJson) = None
 }

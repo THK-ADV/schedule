@@ -9,7 +9,7 @@ import scala.concurrent.Future
 trait Update[Json, Model <: UniqueEntity, DbEntry <: UniqueDbEntry] {
   self: JsonConverter[Json, DbEntry] with Core[Model, DbEntry, _] =>
 
-  protected def canUpdate(json: Json, existing: DbEntry): Boolean
+  protected def canUpdate(json: Json, existing: DbEntry): Boolean = true
 
   def update(json: Json, id: UUID): Future[Model] =
     repo.update(

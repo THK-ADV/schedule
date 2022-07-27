@@ -39,24 +39,6 @@ class ExaminationRegulationService @Inject() (
       id getOrElse UUID.randomUUID
     )
 
-  override protected def canUpdate(
-      json: ExaminationRegulationJson,
-      existing: ExaminationRegulationDbEntry
-  ): Boolean = true
-
-  override protected def uniqueCols(
-      json: ExaminationRegulationJson
-  ) = List.empty
-
-  override protected def validate(json: ExaminationRegulationJson) =
-    None
-  /*for {
-      end <- json.end
-      res <- Option.unless(json.start.isBefore(end))(
-        new Throwable(s"invalid date boundaries")
-      )
-    } yield res*/
-
   def allAtoms(filter: Map[String, Seq[String]]) =
     all(filter, atomic = true).map(
       _.map(_.asInstanceOf[ExaminationRegulationAtom])

@@ -26,14 +26,6 @@ class SemesterService @Inject() (val repo: SemesterRepository)
       id getOrElse UUID.randomUUID
     )
 
-  override protected def canUpdate(
-      json: SemesterJson,
-      existing: SemesterDbEntry
-  ): Boolean = true
-
-  override protected def uniqueCols(json: SemesterJson) =
-    List.empty
-
   override protected def validate(json: SemesterJson) = Option.when(
     json.end.isBefore(json.start) && json.lectureEnd.isBefore(json.lectureStart)
   )(
