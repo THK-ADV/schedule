@@ -1,12 +1,9 @@
 package json
 
 import models.CourseType
-import play.api.libs.json.{JsString, Reads, Writes}
+import play.api.libs.json.Format
 
-trait CourseTypeFormat { // TODO format
-  implicit val courseTypeWrites: Writes[CourseType] =
-    Writes[CourseType](CourseType.unapply _ andThen JsString)
-
-  implicit val courseTypeReads: Reads[CourseType] =
-    Reads(_.validate[String].map(CourseType.apply))
+trait CourseTypeFormat {
+  implicit val courseTypeFmt: Format[CourseType] =
+    Format.of[String].bimap(CourseType.apply, _.toString)
 }
