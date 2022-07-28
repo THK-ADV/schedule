@@ -2,6 +2,7 @@ package database.tables
 
 import database.UniqueDbEntry
 import database.cols.UniqueEntityColumn
+import models.UserStatus
 import slick.jdbc.PostgresProfile.api._
 
 import java.sql.Timestamp
@@ -11,7 +12,7 @@ case class UserDbEntry(
     username: String,
     firstname: String,
     lastname: String,
-    status: String,
+    status: UserStatus,
     email: String,
     title: Option[String],
     initials: Option[String],
@@ -89,7 +90,7 @@ class UserTable(tag: Tag)
         username,
         firstname,
         lastname,
-        status,
+        UserStatus(status).get,
         email,
         title,
         initials,
@@ -117,7 +118,7 @@ class UserTable(tag: Tag)
           a.username,
           a.firstname,
           a.lastname,
-          a.status,
+          a.status.toString,
           a.email,
           a.title,
           a.initials,

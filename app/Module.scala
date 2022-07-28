@@ -1,6 +1,6 @@
 import auth.OAuthAuthorization
 import com.google.inject.{AbstractModule, TypeLiteral}
-import di.{OAuthAuthorizationProvider, UserToken}
+import provider.{OAuthAuthorizationProvider, UserToken}
 
 class Module extends AbstractModule {
 

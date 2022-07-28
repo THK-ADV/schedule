@@ -2,7 +2,7 @@ package service
 
 import database.repos.UserRepository
 import database.tables.{UserDbEntry, UserTable}
-import models.{User, UserJson}
+import models.{User, UserJson, UserStatus}
 import service.abstracts.Service
 
 import java.util.UUID
@@ -32,7 +32,7 @@ class UserService @Inject() (val repo: UserRepository)
 
   def allLecturer() =
     all(
-      Map("status" -> Seq("lecturer")),
+      Map("status" -> Seq(UserStatus.Lecturer.toString)),
       atomic = false
     )
 }

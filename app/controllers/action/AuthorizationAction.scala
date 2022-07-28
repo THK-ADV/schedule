@@ -1,7 +1,7 @@
 package controllers.action
 
 import auth.OAuthAuthorization
-import di.UserToken
+import provider.UserToken
 import filename.FilenameOps
 import play.api.libs.json.Json
 import play.api.mvc.Results.Unauthorized

@@ -8,7 +8,7 @@ sealed trait User extends UniqueEntity {
   val username: String
   val firstname: String
   val lastname: String
-  val status: String
+  val status: UserStatus
   val email: String
   val id: UUID
 }
@@ -18,15 +18,15 @@ object User {
       username: String,
       firstname: String,
       lastname: String,
-      status: String,
+      status: UserStatus,
       email: String,
       title: Option[String],
       initials: Option[String],
       id: UUID
   ): User = status match {
-    case StudentStatus =>
+    case UserStatus.Student =>
       Student(username, firstname, lastname, email, id)
-    case LecturerStatus =>
+    case UserStatus.Lecturer =>
       Lecturer(
         username,
         firstname,
@@ -38,20 +38,17 @@ object User {
       )
   }
 
-  def apply(db: UserDbEntry): User = apply(
-    db.username,
-    db.firstname,
-    db.lastname,
-    db.status,
-    db.email,
-    db.title,
-    db.initials,
-    db.id
-  )
-
-  val StudentStatus = "student" // TODO make a type
-
-  val LecturerStatus = "lecturer"
+  def apply(db: UserDbEntry): User =
+    apply(
+      db.username,
+      db.firstname,
+      db.lastname,
+      db.status,
+      db.email,
+      db.title,
+      db.initials,
+      db.id
+    )
 
   case class Lecturer(
       username: String,
@@ -62,7 +59,7 @@ object User {
       initials: String,
       id: UUID
   ) extends User {
-    override val status = LecturerStatus
+    override val status = UserStatus.Lecturer
   }
 
   case class Student(
@@ -72,7 +69,7 @@ object User {
       email: String,
       id: UUID
   ) extends User {
-    override val status = StudentStatus
+    override val status = UserStatus.Student
   }
 
 }
