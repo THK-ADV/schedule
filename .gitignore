@@ -48,3 +48,4 @@ build
 
 # custom
 conf/keycloak.json
+conf/application-prod.conf
