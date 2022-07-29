@@ -1,11 +1,6 @@
 package suite
 
-import database.tables.{
-  FacultyTable,
-  GraduationTable,
-  StudyProgramTable,
-  TeachingUnitTable
-}
+import database.tables._
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.db.slick.DatabaseConfigProvider
 
@@ -33,7 +28,28 @@ trait DatabaseSuite { self: GuiceOneAppPerSuite =>
 
   val studyPrograms = TableQuery[StudyProgramTable]
 
-  def withSetup(
+  val examinationRegulations = TableQuery[ExaminationRegulationTable]
+
+  val users = TableQuery[UserTable]
+
+  val modules = TableQuery[ModuleTable]
+
+  val submodules = TableQuery[SubModuleTable]
+
+  val moduleExaminationRegulations =
+    TableQuery[ModuleExaminationRegulationTable]
+
+  val semesters = TableQuery[SemesterTable]
+
+  val courses = TableQuery[CourseTable]
+
+  val schedules = TableQuery[ScheduleTable]
+
+  val rooms = TableQuery[RoomTable]
+
+  val campus = TableQuery[CampusTable]
+
+  def withFreshDb(
       f: DBIOAction[_, NoStream, Effect.All]*
   ) =
     db.run(
@@ -44,6 +60,16 @@ trait DatabaseSuite { self: GuiceOneAppPerSuite =>
         teachingUnits.schema.create,
         graduations.schema.create,
         studyPrograms.schema.create,
+        examinationRegulations.schema.create,
+        users.schema.create,
+        modules.schema.create,
+        moduleExaminationRegulations.schema.create,
+        submodules.schema.create,
+        semesters.schema.create,
+        courses.schema.create,
+        campus.schema.create,
+        rooms.schema.create,
+        schedules.schema.create,
         DBIO.seq(f: _*)
       )
     )

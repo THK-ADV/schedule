@@ -27,7 +27,7 @@ class StudyProgramRepoSpec
       )
 
       val res = for {
-        _ <- withSetup(
+        _ <- withFreshDb(
           faculties += fac,
           teachingUnits += tu,
           graduations += g,
@@ -72,7 +72,7 @@ class StudyProgramRepoSpec
       val sps = List(sp1, sp2, sp3, sp4)
 
       val res = for {
-        _ <- withSetup(
+        _ <- withFreshDb(
           faculties ++= List(fac1, fac2),
           teachingUnits ++= List(tu1, tu2),
           graduations += g,
