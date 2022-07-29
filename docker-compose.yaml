@@ -19,13 +19,7 @@ services:
     image: schedule-backend
     restart: always
     ports:
-      - 9000:9000
-    environment:
-      SCHEDULE_SECRET_KEY: ${SECRET_KEY}
-      SCHEDULE_DB_URL: jdbc:postgresql://psql:5432/${DB_NAME}
-      SCHEDULE_DB_NAME: ${DB_NAME}
-      SCHEDULE_DB_USER: ${USERNAME}
-      SCHEDULE_DB_PASSWORD: ${PASSWORD}
+      - "9000:9000"
     volumes:
       - backend_logs_vol:/schedule/logs
     depends_on:
@@ -36,8 +30,8 @@ services:
     image: schedule-frontend
     restart: always
     ports:
-      - 8080:80
-      - 4433:443
+      - "8080:80"
+      - "4433:443"
     volumes:
       - nginx_cert_vol:/etc/cert
       - nginx_config_vol:/etc/nginx/conf.d
