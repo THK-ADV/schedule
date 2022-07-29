@@ -1,7 +1,6 @@
 package models
 
 import database.tables.UserDbEntry
-import play.api.libs.json.{JsError, JsString, Json, OFormat}
 
 import java.util.UUID
 
@@ -9,7 +8,7 @@ sealed trait User extends UniqueEntity {
   val username: String
   val firstname: String
   val lastname: String
-  val status: String
+  val status: UserStatus
   val email: String
   val id: UUID
 }
@@ -19,15 +18,15 @@ object User {
       username: String,
       firstname: String,
       lastname: String,
-      status: String,
+      status: UserStatus,
       email: String,
       title: Option[String],
       initials: Option[String],
       id: UUID
   ): User = status match {
-    case StudentStatus =>
+    case UserStatus.Student =>
       Student(username, firstname, lastname, email, id)
-    case LecturerStatus =>
+    case UserStatus.Lecturer =>
       Lecturer(
         username,
         firstname,
@@ -39,43 +38,17 @@ object User {
       )
   }
 
-  def apply(db: UserDbEntry): User = apply(
-    db.username,
-    db.firstname,
-    db.lastname,
-    db.status,
-    db.email,
-    db.title,
-    db.initials,
-    db.id
-  )
-
-  val StudentStatus = "student"
-
-  val LecturerStatus = "lecturer"
-
-  implicit val formatUser: OFormat[User] = OFormat.apply(
-    js =>
-      js.\("status").validate[String].flatMap {
-        case StudentStatus  => formatStudent.reads(js)
-        case LecturerStatus => formatLecturer.reads(js)
-        case other =>
-          JsError(
-            s"expected status to be either student or lecturer, but was $other"
-          )
-      },
-    (user: User) =>
-      user match {
-        case l: Lecturer =>
-          formatLecturer.writes(l) + ("status" -> JsString(LecturerStatus))
-        case s: Student =>
-          formatStudent.writes(s) + ("status" -> JsString(StudentStatus))
-      }
-  )
-
-  implicit val formatLecturer: OFormat[Lecturer] = Json.format[Lecturer]
-
-  implicit val formatStudent: OFormat[Student] = Json.format[Student]
+  def apply(db: UserDbEntry): User =
+    apply(
+      db.username,
+      db.firstname,
+      db.lastname,
+      db.status,
+      db.email,
+      db.title,
+      db.initials,
+      db.id
+    )
 
   case class Lecturer(
       username: String,
@@ -86,7 +59,7 @@ object User {
       initials: String,
       id: UUID
   ) extends User {
-    override val status = LecturerStatus
+    override val status = UserStatus.Lecturer
   }
 
   case class Student(
@@ -96,7 +69,7 @@ object User {
       email: String,
       id: UUID
   ) extends User {
-    override val status = StudentStatus
+    override val status = UserStatus.Student
   }
 
 }

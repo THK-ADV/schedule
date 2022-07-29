@@ -2,7 +2,6 @@ package models
 
 import database.tables._
 import models.ExaminationRegulation.ExaminationRegulationAtom
-import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
 
@@ -15,18 +14,6 @@ sealed trait ModuleExaminationRegulation extends UniqueEntity {
 }
 
 object ModuleExaminationRegulation {
-  implicit val writes: Writes[ModuleExaminationRegulation] = Writes.apply {
-    case default: ModuleExaminationRegulationDefault =>
-      writesDefault.writes(default)
-    case atom: ModuleExaminationRegulationAtom => writesAtom.writes(atom)
-  }
-
-  implicit val writesDefault: Writes[ModuleExaminationRegulationDefault] =
-    Json.writes[ModuleExaminationRegulationDefault]
-
-  implicit val writesAtom: Writes[ModuleExaminationRegulationAtom] =
-    Json.writes[ModuleExaminationRegulationAtom]
-
   case class ModuleExaminationRegulationDefault(
       module: UUID,
       examinationRegulation: UUID,
@@ -55,21 +42,6 @@ object ModuleExaminationRegulation {
     ModuleExaminationRegulationDefault(
       db.module,
       db.examinationRegulation,
-      db.mandatory,
-      db.id
-    )
-
-  def apply(
-      db: ModuleExaminationRegulationDbEntry,
-      moduleDb: ModuleDbEntry,
-      examRegDb: ExaminationRegulationDbEntry,
-      spDb: StudyProgramDBEntry,
-      tuDb: TeachingUnitDbEntry,
-      gDb: GraduationDbEntry
-  ): ModuleExaminationRegulationAtom =
-    ModuleExaminationRegulationAtom(
-      Module(moduleDb),
-      ExaminationRegulationAtom(examRegDb, spDb, tuDb, gDb),
       db.mandatory,
       db.id
     )

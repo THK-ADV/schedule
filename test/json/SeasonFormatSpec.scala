@@ -1,7 +1,10 @@
+package json
+
 import models.Season
 import play.api.libs.json.{JsString, JsSuccess, Json}
+import suite.UnitSpec
 
-class SeasonFormatSpec extends UnitSpec {
+class SeasonFormatSpec extends UnitSpec with SeasonFormat {
 
   "A Season Formatter" should {
     "convert from Season to JSON" in {

@@ -1,17 +1,10 @@
 package models
 
-import play.api.libs.json._
-
 sealed trait ScheduleEntryStatus {
   override def toString = ScheduleEntryStatus.unapply(this)
 }
 
 object ScheduleEntryStatus {
-  implicit val format: Format[ScheduleEntryStatus] =
-    Format
-      .of[String]
-      .bimap(ScheduleEntryStatus.apply, ScheduleEntryStatus.unapply)
-
   def apply(string: String): ScheduleEntryStatus = string.toLowerCase match {
     case "active"           => Active
     case "draft"            => Draft

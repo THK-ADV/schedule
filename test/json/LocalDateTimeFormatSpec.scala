@@ -1,6 +1,8 @@
-import date.{LocalDateFormat, LocalTimeFormat}
+package json
+
 import org.joda.time.{LocalDate, LocalTime}
 import play.api.libs.json.{JsString, JsSuccess}
+import suite.UnitSpec
 
 class LocalDateTimeFormatSpec
     extends UnitSpec
@@ -13,8 +15,8 @@ class LocalDateTimeFormatSpec
       val localTime = LocalTime.parse(timeStr)
       val jsonTime = JsString(timeStr)
 
-      localTimeFormat.writes(localTime) shouldBe jsonTime
-      localTimeFormat.reads(jsonTime) shouldBe JsSuccess(localTime)
+      localTimeFmt.writes(localTime) shouldBe jsonTime
+      localTimeFmt.reads(jsonTime) shouldBe JsSuccess(localTime)
     }
 
     "convert from Json to LocalDate and vice versa" in {
@@ -22,8 +24,8 @@ class LocalDateTimeFormatSpec
       val localDate = LocalDate.parse(dateStr)
       val jsonDate = JsString(dateStr)
 
-      localDateFormat.writes(localDate) shouldBe jsonDate
-      localDateFormat.reads(jsonDate) shouldBe JsSuccess(localDate)
+      localDateFmt.writes(localDate) shouldBe jsonDate
+      localDateFmt.reads(jsonDate) shouldBe JsSuccess(localDate)
     }
   }
 }

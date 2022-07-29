@@ -1,12 +1,17 @@
-import collision.{Collision, CollisionType}
+package collision
+
 import models.Schedule.ScheduleDefault
 import models.ScheduleEntryStatus.Draft
-import models.{Schedule, ScheduleEntryStatus}
+import models.StudyProgram.StudyProgramDefault
+import models.{Schedule, ScheduleEntryStatus, StudyProgram}
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.{LocalDate, LocalTime}
+import suite.UnitSpec
 
 import java.util.UUID
 import scala.language.implicitConversions
+
+// TODO add tests for parent
 
 class CollisionCheckSpec extends UnitSpec {
 
@@ -17,6 +22,25 @@ class CollisionCheckSpec extends UnitSpec {
 
   implicit def timeFromString(string: String): LocalTime =
     LocalTime.parse(string, DateTimeFormat.forPattern("HH:mm"))
+
+  def fakeSpWithoutParent: StudyProgram = StudyProgramDefault(
+    UUID.randomUUID,
+    UUID.randomUUID,
+    "",
+    "",
+    None,
+    UUID.randomUUID
+  )
+
+  def fakeSpWithParent(parent: StudyProgram): StudyProgram =
+    StudyProgramDefault(
+      UUID.randomUUID,
+      UUID.randomUUID,
+      "",
+      "",
+      Some(parent.id),
+      UUID.randomUUID
+    )
 
   "A Collision check" should {
     "detect collisions if two dates overlap" in {
@@ -99,16 +123,30 @@ class CollisionCheckSpec extends UnitSpec {
           UUID.randomUUID
         )
 
-      studyPathPred.apply(
-        schedule(UUID.randomUUID),
-        schedule(UUID.randomUUID)
-      ) shouldBe false
+      studyPathPred(_ => fakeSpWithoutParent, _ => None)
+        .apply(
+          schedule(UUID.randomUUID),
+          schedule(UUID.randomUUID)
+        ) shouldBe false
 
       val exam1 = UUID.randomUUID
-      studyPathPred.apply(
+      val sp = fakeSpWithoutParent
+      studyPathPred(_ => sp, s => s.parentId.map(_ => sp)).apply(
         schedule(exam1),
         schedule(exam1)
       ) shouldBe true
+
+      val s1 = schedule(UUID.randomUUID) // s1 => sp1 => None
+      val sp1 = fakeSpWithoutParent
+      val s2 = schedule(UUID.randomUUID) // s2 => sp2 => sp1 => None
+      val sp2 = fakeSpWithParent(sp1)
+      val pred = studyPathPred(
+        sched => if (sched.id == s1.id) sp1 else sp2,
+        sp => if (sp.id == sp1.id) None else Some(sp1)
+      )
+
+      pred.apply(s1, s2) shouldBe true
+      pred.apply(s2, s1) shouldBe true
     }
 
     "detect collisions if two courses overlap" in {
@@ -261,34 +299,53 @@ class CollisionCheckSpec extends UnitSpec {
     }
 
     "detect study path collisions" in {
-      studyPathCourseCollision.apply(
+      val same = fakeSpWithoutParent
+      studyPathCourseCollision(
+        _ => same,
+        _ => None
+      ).apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ap1V, r1, ai, "28.02.2022", "13:00", "15:00")
       ) shouldBe None
 
-      studyPathCourseCollision.apply(
+      studyPathCourseCollision(
+        _ => fakeSpWithoutParent,
+        _ => None
+      ).apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ap1V, r1, mi, "28.02.2022", "11:00", "13:00")
       ) shouldBe None
 
-      studyPathCourseCollision.apply(
+      studyPathCourseCollision(
+        _ => fakeSpWithoutParent,
+        _ => None
+      ).apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ap1V, r2, mi, "28.02.2022", "11:00", "13:00")
       ) shouldBe None
 
-      studyPathCourseCollision.apply(
+      studyPathCourseCollision(
+        _ => same,
+        _ => None
+      ).apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ap1V, r2, ai, "28.02.2022", "12:00", "15:00")
       ) shouldBe None
 
-      studyPathCourseCollision.apply(
+      studyPathCourseCollision(
+        _ => fakeSpWithoutParent,
+        _ => None
+      ).apply(
         single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
         single(ma1V, r1, mi, "28.02.2022", "11:00", "13:00")
       ) shouldBe None
 
       val s1 = single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00")
       val s2 = single(ma1V, r2, ai, "28.02.2022", "11:00", "13:00")
-      studyPathCourseCollision.apply(s1, s2) shouldBe Some(
+      studyPathCourseCollision(
+        _ => same,
+        _ => None
+      ).apply(s1, s2) shouldBe Some(
         Collision(CollisionType.StudyPathCourse, s1, s2)
       )
     }
@@ -299,7 +356,13 @@ class CollisionCheckSpec extends UnitSpec {
           single(ap1V, r1, ai, "28.02.2022", "11:00", "13:00"),
           single(ap1V, r2, mi, "28.02.2022", "11:00", "13:00")
         ),
-        List(courseRoomCollision, studyPathCourseCollision)
+        List(
+          courseRoomCollision,
+          studyPathCourseCollision(
+            _ => fakeSpWithoutParent,
+            _ => None
+          )
+        )
       ) shouldBe Nil
 
       val victor = UUID.randomUUID
@@ -312,7 +375,10 @@ class CollisionCheckSpec extends UnitSpec {
         ),
         List(
           courseRoomCollision,
-          studyPathCourseCollision,
+          studyPathCourseCollision(
+            _ => fakeSpWithoutParent,
+            _ => None
+          ),
           lecturerCourseCollision(_ => victor)
         )
       ) shouldBe Vector(
@@ -397,7 +463,13 @@ class CollisionCheckSpec extends UnitSpec {
       val binaryRes =
         binaryEval(
           schedules,
-          List(courseRoomCollision, studyPathCourseCollision)
+          List(
+            courseRoomCollision,
+            studyPathCourseCollision(
+              _ => fakeSpWithoutParent,
+              _ => None
+            )
+          )
         )
       binaryRes shouldBe Nil
 
@@ -479,7 +551,13 @@ class CollisionCheckSpec extends UnitSpec {
       val binaryRes =
         binaryEval(
           schedules,
-          List(courseRoomCollision, studyPathCourseCollision)
+          List(
+            courseRoomCollision,
+            studyPathCourseCollision(
+              _ => fakeSpWithoutParent,
+              _ => None
+            )
+          )
         )
       binaryRes shouldBe Nil
 
@@ -521,6 +599,12 @@ class CollisionCheckSpec extends UnitSpec {
     }
 
     "detect collisions in an example schedule" in {
+      val mapping = Map(
+        ai -> fakeSpWithoutParent,
+        wi -> fakeSpWithoutParent,
+        mi -> fakeSpWithoutParent,
+        itm -> fakeSpWithoutParent
+      )
       val schedules = Vector(
         // Monday
         multiple(
@@ -584,7 +668,13 @@ class CollisionCheckSpec extends UnitSpec {
       val binaryRes =
         binaryEval(
           schedules,
-          List(courseRoomCollision, studyPathCourseCollision)
+          List(
+            courseRoomCollision,
+            studyPathCourseCollision(
+              s => mapping(s.moduleExaminationRegulationId),
+              _ => None
+            )
+          )
         )
           .groupBy(_.kind)
       binaryRes.size shouldBe 2

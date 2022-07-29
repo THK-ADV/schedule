@@ -2,9 +2,7 @@ package models
 
 import database.SQLDateConverter
 import database.tables.SemesterDbEntry
-import date.LocalDateFormat
 import org.joda.time.LocalDate
-import play.api.libs.json._
 
 import java.util.UUID
 
@@ -18,9 +16,7 @@ case class Semester(
     id: UUID
 ) extends UniqueEntity
 
-object Semester extends LocalDateFormat with SQLDateConverter {
-  implicit val format: OFormat[Semester] = Json.format[Semester]
-
+object Semester extends SQLDateConverter {
   def apply(db: SemesterDbEntry): Semester =
     Semester(
       db.label,

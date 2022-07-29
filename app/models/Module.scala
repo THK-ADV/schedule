@@ -1,7 +1,6 @@
 package models
 
 import database.tables.ModuleDbEntry
-import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
 
@@ -18,15 +17,6 @@ sealed trait Module extends UniqueEntity {
 }
 
 object Module {
-  implicit val writes: Writes[Module] = Writes.apply {
-    case default: ModuleDefault => writesDefault.writes(default)
-    case atom: ModuleAtom       => writesAtom.writes(atom)
-  }
-
-  implicit val writesDefault: Writes[ModuleDefault] = Json.writes[ModuleDefault]
-
-  implicit val writesAtom: Writes[ModuleAtom] = Json.writes[ModuleAtom]
-
   case class ModuleDefault(
       courseManager: UUID,
       label: String,
@@ -58,5 +48,4 @@ object Module {
       db.descriptionUrl,
       db.id
     )
-
 }

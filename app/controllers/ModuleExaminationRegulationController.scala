@@ -1,5 +1,6 @@
 package controllers
 
+import json.ModuleExaminationRegulationFormat
 import models.{ModuleExaminationRegulation, ModuleExaminationRegulationJson}
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -17,11 +18,12 @@ class ModuleExaminationRegulationController @Inject() (
     with Controller[
       ModuleExaminationRegulationJson,
       ModuleExaminationRegulation
-    ] {
+    ]
+    with ModuleExaminationRegulationFormat.All {
   override protected implicit def writes: Writes[ModuleExaminationRegulation] =
-    ModuleExaminationRegulation.writes
+    moduleExamRegWrites
 
   override protected implicit def reads
       : Reads[ModuleExaminationRegulationJson] =
-    ModuleExaminationRegulationJson.format
+    moduleExamRegJsonFmt
 }

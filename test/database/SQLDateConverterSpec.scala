@@ -1,5 +1,7 @@
-import database.SQLDateConverter
+package database
+
 import org.joda.time.{LocalDate, LocalTime}
+import suite.UnitSpec
 
 import java.sql.{Date, Time}
 import scala.util.Success

@@ -1,7 +1,6 @@
 package models
 
 import database.tables.SubModuleDbEntry
-import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
 
@@ -24,16 +23,6 @@ sealed trait SubModule extends UniqueEntity {
 }
 
 object SubModule {
-  implicit val writes: Writes[SubModule] = Writes.apply {
-    case default: SubModuleDefault => writesDefault.writes(default)
-    case atom: SubModuleAtom       => writesAtom.writes(atom)
-  }
-
-  implicit val writesDefault: Writes[SubModuleDefault] =
-    Json.writes[SubModuleDefault]
-
-  implicit val writesAtom: Writes[SubModuleAtom] = Json.writes[SubModuleAtom]
-
   case class SubModuleDefault(
       module: UUID,
       label: String,

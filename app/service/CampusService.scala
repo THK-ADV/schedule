@@ -21,16 +21,9 @@ class CampusService @Inject() (val repo: CampusRepository)
       id getOrElse UUID.randomUUID
     )
 
-  override protected def canUpdate(
-      json: CampusJson,
-      existing: CampusDbEntry
-  ): Boolean = true
-
   override protected def uniqueCols(json: CampusJson) =
     List(
       _.hasLabel(json.label),
       _.hasAbbreviation(json.abbreviation)
     )
-
-  override protected def validate(json: CampusJson) = None
 }

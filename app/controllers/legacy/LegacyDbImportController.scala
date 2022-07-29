@@ -1,5 +1,6 @@
 package controllers.legacy
 
+import json.{FacultyFormat, ScheduleFormat}
 import models.Course.{CourseAtom, CourseDefault}
 import models.ExaminationRegulation.{
   ExaminationRegulationAtom,
@@ -66,6 +67,7 @@ final class MockCreation extends Creation {
             s.graduation,
             s.label,
             s.abbreviation,
+            None,
             uuid
           )
         )
@@ -330,7 +332,9 @@ class LegacyDbImportController @Inject() (
     cc: ControllerComponents,
     creation: LiveCreation,
     implicit val ctx: ExecutionContext
-) extends AbstractController(cc) {
+) extends AbstractController(cc)
+    with ScheduleFormat.All
+    with FacultyFormat {
 
   case class CSVData(
       fachkuerzel: String,
@@ -475,7 +479,7 @@ class LegacyDbImportController @Inject() (
     studyPrograms.map { case (label, abbrev, tu) =>
       val gID = grads.find(_.abbreviation.head == abbrev.last).get.id
       val tuID = tus.find(_.abbreviation.equalsIgnoreCase(tu)).get.id
-      StudyProgramJson(tuID, gID, abbrev, label)
+      StudyProgramJson(tuID, gID, abbrev, label, None)
     }.toSeq
 
   def makeExams(sps: Seq[StudyProgram]) = {

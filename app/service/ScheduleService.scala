@@ -28,14 +28,6 @@ class ScheduleService @Inject() (val repo: ScheduleRepository)
       id getOrElse UUID.randomUUID
     )
 
-  override protected def canUpdate(
-      json: ScheduleJson,
-      existing: ScheduleDbEntry
-  ): Boolean = true
-
-  override protected def uniqueCols(json: ScheduleJson) =
-    Nil
-
   override protected def validate(json: ScheduleJson) =
     Option.unless(json.start.isBefore(json.end))(
       new Throwable(

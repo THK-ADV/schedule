@@ -7,8 +7,9 @@ import database.repos.filter.{
   ModuleExaminationRegulationFilter,
   RoomFilter
 }
-import database.tables.{ScheduleDbEntry, ScheduleTable}
+import database.tables._
 import models.Schedule.ScheduleAtom
+import models.StudyProgram.StudyProgramAtom
 import models._
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
@@ -20,6 +21,9 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class ScheduleRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
+    val spRepo: StudyProgramRepository,
+    val cRepo: CourseRepository,
+    val merRepo: ModuleExaminationRegulationRepository,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
     with Repository[Schedule, ScheduleDbEntry, ScheduleTable]
@@ -33,7 +37,7 @@ class ScheduleRepository @Inject() (
 
   protected val tableQuery = TableQuery[ScheduleTable]
 
-  val scheduleFilter: PartialFunction[
+  private val scheduleFilter: PartialFunction[
     (String, Seq[String]),
     ScheduleTable => Rep[Boolean]
   ] = {
@@ -45,7 +49,7 @@ class ScheduleRepository @Inject() (
       _.hasStatus(ScheduleEntryStatus(vs.head))
   }
 
-  val filter =
+  private val filter =
     List(
       allModuleExaminationRegulations,
       allCourse,
@@ -57,40 +61,64 @@ class ScheduleRepository @Inject() (
   override protected val makeFilter =
     if (filter.isEmpty) PartialFunction.empty else filter.reduce(_ orElse _)
 
+  def collectDependencies(s: ScheduleTable) =
+    for {
+      q <- tableQuery.filter(_.id === s.id)
+      r <- q.roomFk
+      c <- q.courseFk
+      u <- c.userFk
+      s <- c.semesterFk
+      sm <- c.subModuleFk
+      mer <- q.moduleExaminationRegulationFk.flatMap(
+        merRepo.collectDependencies
+      )
+    } yield (q, (c, u, s, sm), r, mer)
+
   override protected def retrieveAtom(
       query: Query[ScheduleTable, ScheduleDbEntry, Seq]
-  ) = {
-    val result = for {
-      q <- query
-      c <- q.courseFk
-      cu <- c.userFk
-      cse <- c.semesterFk
-      csm <- c.subModuleFk
-      r <- q.roomFk
-      mer <- q.moduleExaminationRegulationFk
-      merm <- mer.moduleFk
-      merex <- mer.examinationRegulationFk
-      mersp <- merex.studyProgramFk
-      mertu <- mersp.teachingUnitFk
-      merg <- mersp.graduationFk
-    } yield (q, (c, cu, cse, csm), r, (mer, merm, merex, mersp, mertu, merg))
+  ) =
+    db.run {
+      query
+        .flatMap(collectDependencies)
+        .result
+        .flatMap { elems =>
+          DBIO.sequence(
+            elems.map { e =>
+              spRepo
+                .getRecursive(Seq(e._4._3._2))
+                .map(sp =>
+                  makeAtom(
+                    e._1,
+                    e._2,
+                    e._3,
+                    (e._4._1, e._4._2, e._4._3._1, sp.head)
+                  )
+                )
+            }
+          )
+        }
+    }
 
-    val action = result.result.map(_.map {
-      case (s, (c, cu, cse, csm), r, (mer, merm, merex, mersp, mertu, merg)) =>
-        ScheduleAtom( // TODO adjust atomicness to actual needs
-          Course(c, cu, cse, csm),
-          Room(r),
-          ModuleExaminationRegulation(mer, merm, merex, mersp, mertu, merg),
-          s.date,
-          s.start,
-          s.end,
-          s.status,
-          s.id
-        )
-    })
-
-    db.run(action)
-  }
+  def makeAtom(
+      s: ScheduleDbEntry,
+      c: (CourseDbEntry, UserDbEntry, SemesterDbEntry, SubModuleDbEntry),
+      r: RoomDbEntry,
+      mer: (
+          ModuleExaminationRegulationDbEntry,
+          ModuleDbEntry,
+          ExaminationRegulationDbEntry,
+          StudyProgramAtom
+      )
+  ) = ScheduleAtom(
+    cRepo.makeAtom(c),
+    Room(r),
+    merRepo.makeAtom(mer._1, mer._2, mer._3, mer._4),
+    s.date,
+    s.start,
+    s.end,
+    s.status,
+    s.id
+  )
 
   override protected def toUniqueEntity(e: ScheduleDbEntry) = Schedule(e)
 }

@@ -1,4 +1,4 @@
-package di
+package provider
 
 import auth._
 import org.keycloak.adapters.KeycloakDeploymentBuilder

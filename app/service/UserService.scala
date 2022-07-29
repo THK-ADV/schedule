@@ -2,7 +2,7 @@ package service
 
 import database.repos.UserRepository
 import database.tables.{UserDbEntry, UserTable}
-import models.{User, UserJson}
+import models.{User, UserJson, UserStatus}
 import service.abstracts.Service
 
 import java.util.UUID
@@ -30,12 +30,9 @@ class UserService @Inject() (val repo: UserRepository)
       existing: UserDbEntry
   ): Boolean = false
 
-  override protected def validate(json: UserJson) = None
-  /*Some( TODO
-    new Throwable("user creation is not allowed")
-  )*/
-
-  override protected def uniqueCols(json: UserJson) = Nil
-
-  def allLecturer() = all(Map("status" -> Seq("lecturer")), atomic = false)
+  def allLecturer() =
+    all(
+      Map("status" -> Seq(UserStatus.Lecturer.toString)),
+      atomic = false
+    )
 }

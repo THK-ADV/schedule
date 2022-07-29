@@ -1,6 +1,7 @@
 package models
 
 import database.tables.StudyProgramDBEntry
+import json.JsonNullWritable
 import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
@@ -13,30 +14,24 @@ sealed trait StudyProgram extends UniqueEntity {
   def label: String
 
   def abbreviation: String
+
+  def parentId: Option[UUID]
 }
 
 object StudyProgram {
-  implicit val writes: Writes[StudyProgram] = Writes.apply {
-    case default: StudyProgramDefault => writesDefault.writes(default)
-    case atom: StudyProgramAtom       => writesAtom.writes(atom)
-  }
-
-  implicit val writesDefault: Writes[StudyProgramDefault] =
-    Json.writes[StudyProgramDefault]
-
-  implicit val writesAtom: Writes[StudyProgramAtom] =
-    Json.writes[StudyProgramAtom]
-
   case class StudyProgramDefault(
       teachingUnit: UUID,
       graduation: UUID,
       label: String,
       abbreviation: String,
+      parent: Option[UUID],
       id: UUID
   ) extends StudyProgram {
     override def teachingUnitId = teachingUnit
 
     override def graduationId = graduation
+
+    override def parentId = parent
   }
 
   case class StudyProgramAtom(
@@ -44,11 +39,14 @@ object StudyProgram {
       graduation: Graduation,
       label: String,
       abbreviation: String,
+      parent: Option[StudyProgramAtom],
       id: UUID
   ) extends StudyProgram {
     override def teachingUnitId = teachingUnit.id
 
     override def graduationId = graduation.id
+
+    override def parentId = parent.map(_.id)
   }
 
   def apply(db: StudyProgramDBEntry): StudyProgramDefault =
@@ -57,7 +55,23 @@ object StudyProgram {
       db.graduation,
       db.label,
       db.abbreviation,
+      db.parent,
       db.id
     )
 
+  /*  def apply(
+      sp: (
+          StudyProgramDBEntry,
+          TeachingUnitDbEntry,
+          GraduationDbEntry,
+          Option[StudyProgramDBEntry]
+      )
+  ): StudyProgramAtom = StudyProgramAtom(
+    TeachingUnit(sp._2),
+    Graduation(sp._3),
+    sp._1.label,
+    sp._1.abbreviation,
+    sp._4.map(apply),
+    sp._1.id
+  )*/
 }

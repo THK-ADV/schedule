@@ -1,5 +1,6 @@
 package controllers
 
+import json.StudentScheduleFormat
 import models.{StudentSchedule, StudentScheduleJson}
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -14,10 +15,11 @@ class StudentScheduleController @Inject() (
     val service: StudentScheduleService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Controller[StudentScheduleJson, StudentSchedule] {
+    with Controller[StudentScheduleJson, StudentSchedule]
+    with StudentScheduleFormat.All {
   override protected implicit def writes: Writes[StudentSchedule] =
-    StudentSchedule.writes
+    studentScheduleWrites
 
   override protected implicit def reads: Reads[models.StudentScheduleJson] =
-    StudentScheduleJson.format
+    studentScheduleJsonFmt
 }

@@ -1,8 +1,6 @@
 package models
 
-import date.LocalDateFormat
 import org.joda.time.LocalDate
-import play.api.libs.json.{Json, OFormat}
 
 case class SemesterJson(
     label: String,
@@ -12,7 +10,3 @@ case class SemesterJson(
     lectureStart: LocalDate,
     lectureEnd: LocalDate
 )
-
-object SemesterJson extends LocalDateFormat {
-  implicit val format: OFormat[SemesterJson] = Json.format[SemesterJson]
-}

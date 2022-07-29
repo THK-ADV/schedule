@@ -2,11 +2,11 @@ package controllers
 
 import database.repos._
 import database.tables._
-import date.{LocalDateFormat, LocalTimeFormat}
+import json._
 import models._
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.{LocalDate, LocalTime}
-import play.api.libs.json.{JsResult, _}
+import play.api.libs.json._
 import play.api.mvc.{AbstractController, ControllerComponents, Result}
 import service._
 
@@ -44,7 +44,10 @@ class DataImportController @Inject() (
     val moduleExaminationRegulationService: ModuleExaminationRegulationService
 ) extends AbstractController(cc)
     with LocalDateFormat
-    with LocalTimeFormat {
+    with LocalTimeFormat
+    with ScheduleFormat.All
+    with ExaminationRegulationFormat.All
+    with FacultyFormat {
 
   case class TmpUser(
       username: String,
@@ -62,7 +65,7 @@ class DataImportController @Inject() (
       "???",
       "???",
       "???",
-      "lecturer",
+      UserStatus.Lecturer,
       "???",
       Some("???"),
       Some("?.?"),
@@ -101,7 +104,7 @@ class DataImportController @Inject() (
           l.username,
           l.firstname,
           l.lastname,
-          User.LecturerStatus,
+          UserStatus.Lecturer,
           l.email,
           Some("???"),
           Some("?.?"),
@@ -117,7 +120,7 @@ class DataImportController @Inject() (
 
   def faculties() = textParsingAction.async { r =>
     createMany(
-      parseCSV(r.body, FacultyJson.format) {
+      parseCSV[FacultyJson](r.body) {
         case ("number", value)       => JsNumber(value.toInt)
         case ("label", value)        => JsString(value)
         case ("abbreviation", value) => JsString(value)
@@ -130,7 +133,7 @@ class DataImportController @Inject() (
     for {
       facs <- facultyService.all(false)
       res <- createMany(
-        parseCSV(r.body, TeachingUnitJson.format) {
+        parseCSV[TeachingUnitJson](r.body) {
           case ("number", value) =>
             JsNumber(value.toInt)
           case ("label", value) =>
@@ -147,7 +150,7 @@ class DataImportController @Inject() (
 
   def semesters() = textParsingAction.async { r =>
     createMany(
-      parseCSV(r.body, SemesterJson.format) {
+      parseCSV[SemesterJson](r.body) {
         case ("label", value)        => JsString(value)
         case ("abbreviation", value) => JsString(value)
         case (_, value)              => parseDate(value)
@@ -160,10 +163,7 @@ class DataImportController @Inject() (
     for {
       campus <- campusService.all(false)
       res <- createMany(
-        parseCSV(
-          r.body,
-          RoomJson.format
-        ) {
+        parseCSV[RoomJson](r.body) {
           case ("label", value) =>
             JsString(value)
           case ("abbreviation", value) =>
@@ -183,7 +183,7 @@ class DataImportController @Inject() (
       graduations <- graduationService.all(false)
       tus <- teachingUnitService.all(false)
       res <- createMany(
-        parseCSV(r.body, StudyProgramJson.format) {
+        parseCSV[StudyProgramJson](r.body) {
           case ("label", value) =>
             JsString(value)
           case ("abbreviation", value) =>
@@ -203,7 +203,7 @@ class DataImportController @Inject() (
       studyPrograms <- studyProgramService.all(false)
       graduations <- graduationService.all(false)
       res <- createMany(
-        parseCSVWithCustomKeys(r.body, ExaminationRegulationJson.format) {
+        parseCSVWithCustomKeys[ExaminationRegulationJson](r.body) {
           case ("number", value) =>
             "number" -> JsNumber(value.toInt)
           case ("activation_date", value) =>
@@ -341,7 +341,7 @@ class DataImportController @Inject() (
     for {
       modules <- moduleService.all(false)
       magicID = UUID.randomUUID()
-      subModuleJson = parseCSV2(r.body, SubModuleJson.format) {
+      subModuleJson = parseCSV2[SubModuleJson](r.body) {
         case ("label", value)               => List(JsString(value))
         case ("abbreviation", value)        => List(JsString(value))
         case ("recommendedSemester", value) => List(JsNumber(value.toInt))
@@ -374,7 +374,7 @@ class DataImportController @Inject() (
       semesters <- semesterService.all(false)
       subModules <- subModuleService.all(false)
       res <- createMany(
-        parseCSV(r.body, CourseJson.format) {
+        parseCSV[CourseJson](r.body) {
           case ("lecturer", value) =>
             toJsonID(lecturer.find(_.username == value))
           case ("semester", value) =>
@@ -395,7 +395,7 @@ class DataImportController @Inject() (
       courses <- courseService.allAtoms(Map.empty)
       exams <- moduleExaminationRegulationService.allAtoms(Map.empty)
       res <- createMany(
-        parseCSV(r.body, ScheduleJson.format) {
+        parseCSV[ScheduleJson](r.body) {
           case ("course", value) =>
             val Array(abbrev, courseType) = value.split("_")
             toJsonID(
@@ -441,10 +441,10 @@ class DataImportController @Inject() (
   }
 
   private def parseDate(str: String): JsValue =
-    localDateFormat.writes(LocalDate.parse(str, datePattern))
+    localDateFmt.writes(LocalDate.parse(str, datePattern))
 
   private def parseTime(str: String): JsValue =
-    localTimeFormat.writes(LocalTime.parse(str, timePattern))
+    localTimeFmt.writes(LocalTime.parse(str, timePattern))
 
   private def textParsingAction = Action(
     parse.byteString.map(
@@ -481,27 +481,29 @@ class DataImportController @Inject() (
 
   private def now = new Timestamp(System.currentTimeMillis())
 
-  private def toProtocol[A](array: JsArray, reads: Reads[A]): JsResult[Seq[A]] =
+  private def toProtocol[A](array: JsArray)(implicit
+      reads: Reads[A]
+  ): JsResult[Seq[A]] =
     Reads.list(reads).reads(array)
 
-  private def parseCSV[A](body: String, reads: Reads[A])(
-      f: (String, String) => JsValue
+  private def parseCSV[A](body: String)(f: (String, String) => JsValue)(implicit
+      reads: Reads[A]
   ): JsResult[(JsArray, Seq[A])] =
-    parseCSV2(body, reads)((k, v) => List(f(k, v)))
+    parseCSV2[A](body)((k, v) => List(f(k, v)))
 
-  private def parseCSV2[A](body: String, reads: Reads[A])(
-      f: (String, String) => List[JsValue]
+  private def parseCSV2[A](body: String)(f: (String, String) => List[JsValue])(
+      implicit reads: Reads[A]
   ): JsResult[(JsArray, Seq[A])] =
-    parseCSVWithCustomKeys2(body, reads)((k, v) => f(k, v).map(k -> _))
+    parseCSVWithCustomKeys2[A](body)((k, v) => f(k, v).map(k -> _))
 
-  private def parseCSVWithCustomKeys[A](body: String, reads: Reads[A])(
+  private def parseCSVWithCustomKeys[A](body: String)(
       f: (String, String) => (String, JsValue)
-  ): JsResult[(JsArray, Seq[A])] =
-    parseCSVWithCustomKeys2(body, reads)((k, v) => List(f(k, v)))
+  )(implicit reads: Reads[A]): JsResult[(JsArray, Seq[A])] =
+    parseCSVWithCustomKeys2[A](body)((k, v) => List(f(k, v)))
 
-  private def parseCSVWithCustomKeys2[A](body: String, reads: Reads[A])(
+  private def parseCSVWithCustomKeys2[A](body: String)(
       f: (String, String) => List[(String, JsValue)]
-  ): JsResult[(JsArray, Seq[A])] = {
+  )(implicit reads: Reads[A]): JsResult[(JsArray, Seq[A])] = {
     val all = body.linesIterator.toVector
     val header = all.head.split(";")
     val rows = all.drop(1)
@@ -519,6 +521,6 @@ class DataImportController @Inject() (
     }
 
     val array = JsArray(res)
-    toProtocol(array, reads).map(seq => (array, seq))
+    toProtocol[A](array).map(seq => (array, seq))
   }
 }

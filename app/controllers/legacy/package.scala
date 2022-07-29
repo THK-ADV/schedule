@@ -37,7 +37,7 @@ package object legacy {
       "???",
       firstname,
       lastname,
-      User.LecturerStatus,
+      UserStatus.Lecturer,
       "???",
       Some("???"),
       Some("???")

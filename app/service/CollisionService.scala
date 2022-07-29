@@ -2,8 +2,9 @@ package service
 
 import collision.CollisionCheck._
 import collision.{Collision, CollisionType}
-import models.Schedule
 import models.Schedule.ScheduleAtom
+import models.StudyProgram.StudyProgramAtom
+import models.{Schedule, StudyProgram}
 
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
@@ -11,14 +12,16 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CollisionService @Inject() (
-    scheduleService: ScheduleService,
+    private val scheduleService: ScheduleService,
     implicit val ctx: ExecutionContext
 ) {
 
-  def makeCollisionChecker(
+  private def makeCollisionChecker(
       collisionTypes: Set[CollisionType],
       blocked: Set[Blocked],
-      f: Schedule => UUID
+      lecturer: Schedule => UUID,
+      studyProgram: Schedule => StudyProgram,
+      parent: StudyProgram => Option[StudyProgram]
   ): (List[BinaryCollisionCheck], List[UnaryCollisionCheck]) =
     collisionTypes.foldLeft(
       (List.empty[BinaryCollisionCheck], List.empty[UnaryCollisionCheck])
@@ -27,13 +30,13 @@ class CollisionService @Inject() (
         case CollisionType.CourseRoom =>
           (courseRoomCollision :: bxs, uxs)
         case CollisionType.StudyPathCourse =>
-          (studyPathCourseCollision :: bxs, uxs)
+          (studyPathCourseCollision(studyProgram, parent) :: bxs, uxs)
         case CollisionType.CourseMultipleRoom =>
           (courseMultipleRoomCollision :: bxs, uxs)
         case CollisionType.LecturerCourse =>
-          (lecturerCourseCollision(f) :: bxs, uxs)
+          (lecturerCourseCollision(lecturer) :: bxs, uxs)
         case CollisionType.LecturerRoom =>
-          (lecturerRoomCollision(f) :: bxs, uxs)
+          (lecturerRoomCollision(lecturer) :: bxs, uxs)
         case CollisionType.BlockedDay =>
           (bxs, blockedCollision(blocked) :: uxs)
       }
@@ -47,7 +50,13 @@ class CollisionService @Inject() (
     val (bcls, ucls) = makeCollisionChecker(
       collisionTypes,
       blocked,
-      _.asInstanceOf[ScheduleAtom].course.lecturerId
+      _.asInstanceOf[ScheduleAtom].course.lecturerId,
+      _.asInstanceOf[
+        ScheduleAtom
+      ].moduleExaminationRegulation.examinationRegulation.studyProgram,
+      _.asInstanceOf[
+        StudyProgramAtom
+      ].parent
     )
     scheduleService
       .fromIds(scheduleIds, atomic = true)

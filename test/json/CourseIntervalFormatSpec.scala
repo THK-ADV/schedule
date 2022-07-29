@@ -1,7 +1,10 @@
+package json
+
 import models.CourseInterval
 import play.api.libs.json.{JsString, JsSuccess, Json}
+import suite.UnitSpec
 
-class CourseIntervalFormatSpec extends UnitSpec {
+class CourseIntervalFormatSpec extends UnitSpec with CourseIntervalFormat {
 
   "A Course Interval Formatter" should {
     "convert from Course Interval to JSON" in {

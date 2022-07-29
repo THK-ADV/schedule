@@ -1,7 +1,5 @@
 package models
 
-import play.api.libs.json.Format
-
 sealed trait Season {
   override def toString = Season.unapply(this)
 }
@@ -15,9 +13,6 @@ object Season {
   case object SoSe_WiSe extends Season
 
   case object Unknown extends Season
-
-  implicit val format: Format[Season] =
-    Format.of[String].bimap(Season.apply, Season.unapply)
 
   def apply(string: String): Season = string.toLowerCase match {
     case "sose"                    => SoSe

@@ -1,7 +1,8 @@
 package controllers
 
+import json.StudyProgramFormat
 import models.{StudyProgram, StudyProgramJson}
-import play.api.libs.json.{Reads, Writes}
+import play.api.libs.json._
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.StudyProgramService
 
@@ -14,10 +15,11 @@ class StudyProgramController @Inject() (
     val service: StudyProgramService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Controller[StudyProgramJson, StudyProgram] {
+    with Controller[StudyProgramJson, StudyProgram]
+    with StudyProgramFormat.All {
   override protected implicit def writes: Writes[StudyProgram] =
-    StudyProgram.writes
+    studyProgramWrites
 
   override protected implicit def reads: Reads[StudyProgramJson] =
-    StudyProgramJson.format
+    studyProgramJsonFmt
 }

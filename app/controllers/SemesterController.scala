@@ -1,5 +1,6 @@
 package controllers
 
+import json.SemesterFormat
 import models.{Semester, SemesterJson}
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -14,9 +15,11 @@ class SemesterController @Inject() (
     val service: SemesterService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Controller[SemesterJson, Semester] {
-  override protected implicit def writes: Writes[Semester] = Semester.format
+    with Controller[SemesterJson, Semester]
+    with SemesterFormat.All {
+  override protected implicit def writes: Writes[Semester] =
+    semesterFmt
 
   override protected implicit def reads: Reads[SemesterJson] =
-    SemesterJson.format
+    semesterJsonFmt
 }

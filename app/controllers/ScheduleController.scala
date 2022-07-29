@@ -1,5 +1,6 @@
 package controllers
 
+import json.ScheduleFormat
 import models.{Schedule, ScheduleJson}
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -16,18 +17,21 @@ class ScheduleController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Controller[ScheduleJson, Schedule]
-    with RequestOps {
-  override protected implicit def writes: Writes[Schedule] = Schedule.writes
+    with RequestOps
+    with ScheduleFormat.All {
+  override protected implicit def writes: Writes[Schedule] =
+    scheduleWrites
 
   override protected implicit def reads: Reads[models.ScheduleJson] =
-    ScheduleJson.format
+    scheduleJsonFmt
 
   type CourseIds = List[UUID]
 
-  def search() = Action(parse.json[CourseIds]) async { r =>
-    val newRequest = r
-      .appending("courses" -> r.body.map(_.toString))
-      .eraseToAnyContent()
-    all()(newRequest)
-  }
+  def search() =
+    Action(parse.json[CourseIds]) async { request =>
+      val newRequest = request
+        .appending("courses" -> request.body.map(_.toString))
+        .eraseToAnyContent()
+      all()(newRequest)
+    }
 }

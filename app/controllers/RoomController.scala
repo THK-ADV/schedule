@@ -1,5 +1,6 @@
 package controllers
 
+import json.RoomFormat
 import models.{Room, RoomJson}
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -15,8 +16,11 @@ class RoomController @Inject() (
     val service: RoomService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Controller[RoomJson, Room] {
-  override protected implicit def writes: Writes[Room] = Room.writes
+    with Controller[RoomJson, Room]
+    with RoomFormat.All {
+  override protected implicit def writes: Writes[Room] =
+    roomWrites
 
-  override protected implicit def reads: Reads[RoomJson] = RoomJson.format
+  override protected implicit def reads: Reads[RoomJson] =
+    roomJsonFmt
 }

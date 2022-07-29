@@ -1,15 +1,10 @@
 package models
 
-import play.api.libs.json._
-
 sealed trait Language {
   override def toString = Language.unapply(this)
 }
 
 object Language {
-  implicit val format: Format[Language] =
-    Format.of[String].bimap(Language.apply, Language.unapply)
-
   def apply(string: String): Language = string.toLowerCase match {
     case "en"              => EN
     case "de"              => DE

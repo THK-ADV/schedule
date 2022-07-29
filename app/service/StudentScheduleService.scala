@@ -36,6 +36,4 @@ class StudentScheduleService @Inject() (val repo: StudentScheduleRepository)
 
   override protected def uniqueCols(json: StudentScheduleJson) =
     List(_.hasSchedule(json.schedule), _.user(json.student))
-
-  override protected def validate(json: StudentScheduleJson) = None
 }

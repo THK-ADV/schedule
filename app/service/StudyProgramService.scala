@@ -26,16 +26,8 @@ class StudyProgramService @Inject() (val repo: StudyProgramRepository)
       json.graduation,
       json.label,
       json.abbreviation,
+      json.parent,
       now(),
       id = id getOrElse UUID.randomUUID
     )
-
-  override protected def canUpdate(
-      json: StudyProgramJson,
-      existing: StudyProgramDBEntry
-  ): Boolean = true
-
-  override protected def uniqueCols(json: StudyProgramJson) = List.empty
-
-  override protected def validate(json: StudyProgramJson) = None
 }

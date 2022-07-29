@@ -1,7 +1,5 @@
 package models
 
-import play.api.libs.json.{Json, OFormat}
-
 import java.util.UUID
 
 case class SubModuleJson(
@@ -14,7 +12,3 @@ case class SubModuleJson(
     language: Language,
     season: Season
 )
-
-object SubModuleJson {
-  implicit val format: OFormat[SubModuleJson] = Json.format[SubModuleJson]
-}

@@ -47,7 +47,8 @@ lazy val date = Seq(
 lazy val test = Seq(
   "org.scalactic" %% "scalactic" % scalaTestVersion,
   "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
-  "org.scalatest" %% "scalatest-wordspec" % scalaTestVersion % "test"
+  "org.scalatest" %% "scalatest-wordspec" % scalaTestVersion % "test",
+  "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % "test"
 )
 
 lazy val keycloak = Seq(

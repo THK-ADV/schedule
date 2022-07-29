@@ -1,7 +1,6 @@
 package models
 
 import database.tables.RoomDbEntry
-import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
 
@@ -14,15 +13,6 @@ sealed trait Room extends UniqueEntity {
 }
 
 object Room {
-  implicit val writes: Writes[Room] = Writes.apply {
-    case default: RoomDefault => writesDefault.writes(default)
-    case atom: RoomAtom       => writesAtom.writes(atom)
-  }
-
-  implicit val writesDefault: Writes[RoomDefault] = Json.writes[RoomDefault]
-
-  implicit val writesAtom: Writes[RoomAtom] = Json.writes[RoomAtom]
-
   case class RoomDefault(
       campus: UUID,
       label: String,
