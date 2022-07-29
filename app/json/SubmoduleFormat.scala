@@ -4,8 +4,10 @@ import models.SubModule.{SubModuleAtom, SubModuleDefault}
 import models.{SubModule, SubModuleJson}
 import play.api.libs.json.{Json, OFormat, Writes}
 
-trait SubmoduleFormat {
-  self: ModuleFormat with LanguageFormat with SeasonFormat =>
+trait SubmoduleFormat
+    extends ModuleFormat
+    with LanguageFormat
+    with SeasonFormat {
   implicit val submoduleJsonFmt: OFormat[SubModuleJson] =
     Json.format[SubModuleJson]
 
@@ -19,12 +21,4 @@ trait SubmoduleFormat {
 
   implicit val submoduleAtomWrites: Writes[SubModuleAtom] =
     Json.writes[SubModuleAtom]
-}
-
-object SubmoduleFormat {
-  trait All
-      extends SubmoduleFormat
-      with ModuleFormat.All
-      with LanguageFormat
-      with SeasonFormat
 }

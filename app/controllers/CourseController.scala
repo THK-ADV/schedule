@@ -16,10 +16,10 @@ class CourseController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Controller[CourseJson, Course]
-    with CourseFormat.All {
-  override protected implicit def writes: Writes[Course] =
+    with CourseFormat {
+  override protected implicit val writes: Writes[Course] =
     courseWrites
 
-  override protected implicit def reads: Reads[CourseJson] =
+  override protected implicit val reads: Reads[CourseJson] =
     courseJsonFmt
 }

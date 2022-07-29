@@ -4,8 +4,10 @@ import models.StudyProgram.{StudyProgramAtom, StudyProgramDefault}
 import models.{StudyProgram, StudyProgramJson}
 import play.api.libs.json.{Json, OFormat, Writes}
 
-trait StudyProgramFormat extends JsonNullWritable {
-  self: TeachingUnitFormat with GraduationFormat =>
+trait StudyProgramFormat
+    extends JsonNullWritable
+    with TeachingUnitFormat
+    with GraduationFormat {
   implicit val studyProgramJsonFmt: OFormat[StudyProgramJson] =
     Json.format[StudyProgramJson]
 
@@ -20,11 +22,4 @@ trait StudyProgramFormat extends JsonNullWritable {
 
   implicit val studyProgramAtomWrites: Writes[StudyProgramAtom] =
     Json.writes[StudyProgramAtom]
-}
-
-object StudyProgramFormat {
-  trait All
-      extends StudyProgramFormat
-      with TeachingUnitFormat
-      with GraduationFormat
 }

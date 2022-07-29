@@ -1,5 +1,5 @@
-val playSlickVersion = "5.0.0"
-val scalaTestVersion = "3.2.7"
+val playSlickVersion = "5.0.2"
+val scalaTestVersion = "3.2.12"
 
 lazy val `schedule` = (project in file("."))
   .enablePlugins(PlayScala)
@@ -7,7 +7,7 @@ lazy val `schedule` = (project in file("."))
     name := "schedule",
     maintainer := "Alexander Dobrynin <alexander.dobrynin@th-koeln.de>",
     version := "1.0",
-    scalaVersion := "2.13.6",
+    scalaVersion := "2.13.8",
     libraryDependencies ++= play,
     libraryDependencies ++= database,
     libraryDependencies ++= date,
@@ -37,11 +37,11 @@ lazy val play = Seq(
 lazy val database = Seq(
   "com.typesafe.play" %% "play-slick" % playSlickVersion,
   "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion,
-  "org.postgresql" % "postgresql" % "42.2.19"
+  "org.postgresql" % "postgresql" % "42.3.6"
 )
 
 lazy val date = Seq(
-  "joda-time" % "joda-time" % "2.10.10"
+  "joda-time" % "joda-time" % "2.10.14"
 )
 
 lazy val test = Seq(
@@ -54,7 +54,7 @@ lazy val test = Seq(
 lazy val keycloak = Seq(
   "de.th-koeln.inf.adv" %% "keycloak-validation" % "0.1",
   "org.jboss.logging" % "jboss-logging" % "3.3.0.Final",
-  "org.apache.httpcomponents" % "httpclient" % "4.5.1"
+  "org.apache.httpcomponents" % "httpclient" % "4.5.13"
 )
 
 lazy val filenameMacro = "de.th-koeln.inf.adv" %% "filename" % "0.1"

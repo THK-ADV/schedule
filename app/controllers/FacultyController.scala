@@ -17,9 +17,9 @@ class FacultyController @Inject() (
 ) extends AbstractController(cc)
     with Controller[FacultyJson, Faculty]
     with FacultyFormat {
-  override protected implicit def writes: Writes[Faculty] =
+  override protected implicit val writes: Writes[Faculty] =
     facultyFmt
 
-  override protected implicit def reads: Reads[FacultyJson] =
+  override protected implicit val reads: Reads[FacultyJson] =
     facultyJsonFmt
 }

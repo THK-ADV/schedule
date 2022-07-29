@@ -17,9 +17,9 @@ class GraduationController @Inject() (
 ) extends AbstractController(cc)
     with Controller[GraduationJson, Graduation]
     with GraduationFormat {
-  override protected implicit def writes: Writes[Graduation] =
+  override protected implicit val writes: Writes[Graduation] =
     graduationFmt
 
-  override protected implicit def reads: Reads[GraduationJson] =
+  override protected implicit val reads: Reads[GraduationJson] =
     graduationJsonFmt
 }

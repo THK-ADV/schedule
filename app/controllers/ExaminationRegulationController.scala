@@ -16,10 +16,10 @@ class ExaminationRegulationController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Controller[ExaminationRegulationJson, ExaminationRegulation]
-    with ExaminationRegulationFormat.All {
-  override protected implicit def writes: Writes[ExaminationRegulation] =
+    with ExaminationRegulationFormat {
+  override protected implicit val writes: Writes[ExaminationRegulation] =
     examRegWrites
 
-  override protected implicit def reads: Reads[ExaminationRegulationJson] =
+  override protected implicit val reads: Reads[ExaminationRegulationJson] =
     examRegJsonFmt
 }

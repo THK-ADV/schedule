@@ -4,12 +4,12 @@ import models.Course.{CourseAtom, CourseDefault}
 import models.{Course, CourseJson}
 import play.api.libs.json.{Json, OFormat, Writes}
 
-trait CourseFormat {
-  self: CourseIntervalFormat
+trait CourseFormat
+    extends CourseIntervalFormat
     with CourseTypeFormat
     with SubmoduleFormat
     with UserFormat
-    with SemesterFormat =>
+    with SemesterFormat {
   implicit val courseJsonFmt: OFormat[CourseJson] = Json.format[CourseJson]
 
   implicit val courseWrites: Writes[Course] = Writes.apply {
@@ -22,15 +22,4 @@ trait CourseFormat {
 
   implicit val courseAtomWrites: Writes[CourseAtom] =
     Json.writes[CourseAtom]
-}
-
-object CourseFormat {
-  trait All
-      extends CourseFormat
-      with CourseIntervalFormat
-      with CourseTypeFormat
-      with SubmoduleFormat.All
-      with LanguageFormat
-      with SeasonFormat
-      with SemesterFormat.All
 }

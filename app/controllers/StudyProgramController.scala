@@ -16,10 +16,10 @@ class StudyProgramController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Controller[StudyProgramJson, StudyProgram]
-    with StudyProgramFormat.All {
-  override protected implicit def writes: Writes[StudyProgram] =
+    with StudyProgramFormat {
+  override protected implicit val writes: Writes[StudyProgram] =
     studyProgramWrites
 
-  override protected implicit def reads: Reads[StudyProgramJson] =
+  override protected implicit val reads: Reads[StudyProgramJson] =
     studyProgramJsonFmt
 }

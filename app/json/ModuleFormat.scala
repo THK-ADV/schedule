@@ -4,7 +4,7 @@ import models.Module.{ModuleAtom, ModuleDefault}
 import models.{Module, ModuleJson}
 import play.api.libs.json.{Json, OFormat, Writes}
 
-trait ModuleFormat { self: UserFormat =>
+trait ModuleFormat extends UserFormat {
   implicit val moduleJsonFmt: OFormat[ModuleJson] = Json.format[ModuleJson]
 
   implicit val moduleWrites: Writes[Module] = Writes.apply {
@@ -17,8 +17,4 @@ trait ModuleFormat { self: UserFormat =>
 
   implicit val moduleAtomWrites: Writes[ModuleAtom] =
     Json.writes[ModuleAtom]
-}
-
-object ModuleFormat {
-  trait All extends ModuleFormat with UserFormat
 }

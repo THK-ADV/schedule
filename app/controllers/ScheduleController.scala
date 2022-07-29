@@ -18,11 +18,11 @@ class ScheduleController @Inject() (
 ) extends AbstractController(cc)
     with Controller[ScheduleJson, Schedule]
     with RequestOps
-    with ScheduleFormat.All {
-  override protected implicit def writes: Writes[Schedule] =
+    with ScheduleFormat {
+  override protected implicit val writes: Writes[Schedule] =
     scheduleWrites
 
-  override protected implicit def reads: Reads[models.ScheduleJson] =
+  override protected implicit val reads: Reads[models.ScheduleJson] =
     scheduleJsonFmt
 
   type CourseIds = List[UUID]
