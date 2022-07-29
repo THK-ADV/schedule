@@ -17,9 +17,9 @@ class UserController @Inject() (
 ) extends AbstractController(cc)
     with Controller[UserJson, User]
     with UserFormat {
-  override protected implicit def writes: Writes[User] =
+  override protected implicit val writes: Writes[User] =
     userFmt
 
-  override protected implicit def reads: Reads[UserJson] =
+  override protected implicit val reads: Reads[UserJson] =
     userJsonFmt
 }

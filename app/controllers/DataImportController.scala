@@ -45,8 +45,7 @@ class DataImportController @Inject() (
 ) extends AbstractController(cc)
     with LocalDateFormat
     with LocalTimeFormat
-    with ScheduleFormat.All
-    with ExaminationRegulationFormat.All
+    with ScheduleFormat
     with FacultyFormat {
 
   case class TmpUser(

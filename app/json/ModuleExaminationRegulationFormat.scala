@@ -7,8 +7,10 @@ import models.ModuleExaminationRegulation.{
 import models.{ModuleExaminationRegulation, ModuleExaminationRegulationJson}
 import play.api.libs.json.{Json, OFormat, Writes}
 
-trait ModuleExaminationRegulationFormat {
-  self: ExaminationRegulationFormat with ModuleFormat =>
+trait ModuleExaminationRegulationFormat
+    extends ExaminationRegulationFormat
+    with ModuleFormat {
+
   implicit val moduleExamRegJsonFmt: OFormat[ModuleExaminationRegulationJson] =
     Json.format[ModuleExaminationRegulationJson]
 
@@ -27,11 +29,4 @@ trait ModuleExaminationRegulationFormat {
   implicit val moduleExamRegAtomWrites
       : Writes[ModuleExaminationRegulationAtom] =
     Json.writes[ModuleExaminationRegulationAtom]
-}
-
-object ModuleExaminationRegulationFormat {
-  trait All
-      extends ModuleExaminationRegulationFormat
-      with ExaminationRegulationFormat.All
-      with ModuleFormat.All
 }

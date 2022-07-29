@@ -17,7 +17,7 @@ class CollisionController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with JsonHttpResponse[Collision]
-    with CollisionFormat.All {
+    with CollisionFormat {
   case class CollisionChecker(
       scheduleIds: List[UUID],
       collisionTypes: Set[CollisionType]
@@ -40,5 +40,6 @@ class CollisionController @Inject() (
   implicit val collisionCheckerReads: Reads[CollisionChecker] =
     Json.reads[CollisionChecker]
 
-  override protected implicit val writes: Writes[Collision] = collisionWrites
+  override protected implicit val writes: Writes[Collision] =
+    collisionWrites
 }

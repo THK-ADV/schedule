@@ -17,10 +17,10 @@ class RoomController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Controller[RoomJson, Room]
-    with RoomFormat.All {
-  override protected implicit def writes: Writes[Room] =
+    with RoomFormat {
+  override protected implicit val writes: Writes[Room] =
     roomWrites
 
-  override protected implicit def reads: Reads[RoomJson] =
+  override protected implicit val reads: Reads[RoomJson] =
     roomJsonFmt
 }

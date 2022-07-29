@@ -16,10 +16,10 @@ class ModuleController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Controller[ModuleJson, Module]
-    with ModuleFormat.All {
-  override protected implicit def writes: Writes[Module] =
+    with ModuleFormat {
+  override protected implicit val writes: Writes[Module] =
     moduleWrites
 
-  override protected implicit def reads: Reads[ModuleJson] =
+  override protected implicit val reads: Reads[ModuleJson] =
     moduleJsonFmt
 }

@@ -4,7 +4,7 @@ import models.StudentSchedule.{StudentScheduleAtom, StudentScheduleDefault}
 import models.{StudentSchedule, StudentScheduleJson}
 import play.api.libs.json.{Json, OFormat, Writes}
 
-trait StudentScheduleFormat { self: ScheduleFormat with UserFormat =>
+trait StudentScheduleFormat extends ScheduleFormat with UserFormat {
   implicit val studentScheduleJsonFmt: OFormat[StudentScheduleJson] =
     Json.format[StudentScheduleJson]
 
@@ -19,11 +19,4 @@ trait StudentScheduleFormat { self: ScheduleFormat with UserFormat =>
 
   implicit val studentScheduleAtomWrites: Writes[StudentScheduleAtom] =
     Json.writes[StudentScheduleAtom]
-}
-
-object StudentScheduleFormat {
-  trait All
-      extends StudentScheduleFormat
-      with ScheduleFormat.All
-      with UserFormat
 }

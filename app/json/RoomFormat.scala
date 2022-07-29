@@ -1,10 +1,10 @@
 package json
 
-import models.{Room, RoomJson}
 import models.Room.{RoomAtom, RoomDefault}
+import models.{Room, RoomJson}
 import play.api.libs.json.{Json, OFormat, Writes}
 
-trait RoomFormat { self: CampusFormat =>
+trait RoomFormat extends CampusFormat {
   implicit val roomJsonFmt: OFormat[RoomJson] = Json.format[RoomJson]
 
   implicit val roomWrites: Writes[Room] = Writes.apply {
@@ -15,8 +15,4 @@ trait RoomFormat { self: CampusFormat =>
   implicit val roomDefaultWrites: Writes[RoomDefault] = Json.writes[RoomDefault]
 
   implicit val roomAtomWrites: Writes[RoomAtom] = Json.writes[RoomAtom]
-}
-
-object RoomFormat {
-  trait All extends RoomFormat with CampusFormat
 }

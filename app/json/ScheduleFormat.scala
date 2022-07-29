@@ -4,13 +4,13 @@ import models.Schedule.{ScheduleAtom, ScheduleDefault}
 import models.{Schedule, ScheduleJson}
 import play.api.libs.json.{Json, OFormat, Writes}
 
-trait ScheduleFormat {
-  self: LocalDateFormat
+trait ScheduleFormat
+    extends LocalDateFormat
     with LocalTimeFormat
     with CourseFormat
     with RoomFormat
     with ModuleExaminationRegulationFormat
-    with ScheduleEntryStatusFormat =>
+    with ScheduleEntryStatusFormat {
 
   implicit val scheduleJsonFmt: OFormat[ScheduleJson] =
     Json.format[ScheduleJson]
@@ -25,15 +25,4 @@ trait ScheduleFormat {
 
   implicit val scheduleAtomWrites: Writes[ScheduleAtom] =
     Json.writes[ScheduleAtom]
-}
-
-object ScheduleFormat {
-  trait All
-      extends ScheduleFormat
-      with LocalDateFormat
-      with LocalTimeFormat
-      with CourseFormat.All
-      with RoomFormat.All
-      with ModuleExaminationRegulationFormat.All
-      with ScheduleEntryStatusFormat
 }

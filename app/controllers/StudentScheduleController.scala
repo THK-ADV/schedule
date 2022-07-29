@@ -16,10 +16,10 @@ class StudentScheduleController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Controller[StudentScheduleJson, StudentSchedule]
-    with StudentScheduleFormat.All {
-  override protected implicit def writes: Writes[StudentSchedule] =
+    with StudentScheduleFormat {
+  override protected implicit val writes: Writes[StudentSchedule] =
     studentScheduleWrites
 
-  override protected implicit def reads: Reads[models.StudentScheduleJson] =
+  override protected implicit val reads: Reads[models.StudentScheduleJson] =
     studentScheduleJsonFmt
 }

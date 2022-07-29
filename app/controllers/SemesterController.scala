@@ -16,10 +16,10 @@ class SemesterController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Controller[SemesterJson, Semester]
-    with SemesterFormat.All {
-  override protected implicit def writes: Writes[Semester] =
+    with SemesterFormat {
+  override protected implicit val writes: Writes[Semester] =
     semesterFmt
 
-  override protected implicit def reads: Reads[SemesterJson] =
+  override protected implicit val reads: Reads[SemesterJson] =
     semesterJsonFmt
 }

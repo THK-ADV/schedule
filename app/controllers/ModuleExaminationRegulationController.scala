@@ -19,11 +19,11 @@ class ModuleExaminationRegulationController @Inject() (
       ModuleExaminationRegulationJson,
       ModuleExaminationRegulation
     ]
-    with ModuleExaminationRegulationFormat.All {
-  override protected implicit def writes: Writes[ModuleExaminationRegulation] =
+    with ModuleExaminationRegulationFormat {
+  override protected implicit val writes: Writes[ModuleExaminationRegulation] =
     moduleExamRegWrites
 
-  override protected implicit def reads
+  override protected implicit val reads
       : Reads[ModuleExaminationRegulationJson] =
     moduleExamRegJsonFmt
 }

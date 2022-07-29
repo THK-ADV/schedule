@@ -333,7 +333,7 @@ class LegacyDbImportController @Inject() (
     creation: LiveCreation,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with ScheduleFormat.All
+    with ScheduleFormat
     with FacultyFormat {
 
   case class CSVData(

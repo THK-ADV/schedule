@@ -16,7 +16,7 @@ class SubModuleController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Controller[SubModuleJson, SubModule]
-    with SubmoduleFormat.All {
+    with SubmoduleFormat {
   override protected implicit val writes: Writes[SubModule] =
     submoduleWrites
 
