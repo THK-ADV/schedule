@@ -38,20 +38,15 @@ trait Repository[M <: UniqueEntity, E <: UniqueDbEntry, T <: Table[
 
   protected def toUniqueEntity(e: E): M
 
-  final def list(filter: Filter, atomic: Boolean): Future[Seq[M]] = {
-    def performFilter(list: List[T => Rep[Boolean]]) = list match {
-      case x :: xs =>
-        xs.foldLeft(tableQuery.filter(x)) { (acc, next) =>
-          acc.filter(next)
-        }
-      case Nil =>
-        tableQuery
-    }
+  final def combineFilter(xs: List[T => Rep[Boolean]]): T => Rep[Boolean] =
+    xs.reduceLeftOption[T => Rep[Boolean]]((lhs, rhs) =>
+      t => lhs.apply(t) && rhs.apply(t)
+    ).getOrElse(_ => true)
 
+  final def list(filter: Filter, atomic: Boolean): Future[Seq[M]] =
     parseFilter(filter)
-      .map(performFilter _ andThen retrieve(atomic))
+      .map(xs => retrieve(atomic)(tableQuery.filter(combineFilter(xs))))
       .getOrElse(Future.successful(Nil))
-  }
 
   final def get(id: UUID, atomic: Boolean): Future[Option[M]] =
     retrieve(atomic)(tableQuery.filter(_.hasID(id)).take(1))
