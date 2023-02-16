@@ -172,18 +172,18 @@ create table student_schedule
 );
 
 -- !Downs
-drop table student_schedule;
-drop table schedule;
-drop table room;
-drop table campus;
-drop table course;
-drop table semester;
-drop table submodule
-drop table module_examination_regulation
-drop table module;
-drop table people;
-drop table examination_regulation;
-drop table study_program;
-drop table graduation;
-drop table teaching_unit;
-drop table faculty;
+drop table student_schedule if exists;
+drop table schedule if exists;
+drop table room if exists;
+drop table campus if exists;
+drop table course if exists;
+drop table semester if exists;
+drop table submodule if existse
+drop table module_examination_regulation if existsn
+drop table module if exists;
+drop table people if exists;
+drop table examination_regulation if exists;
+drop table study_program if exists;
+drop table graduation if exists;
+drop table teaching_unit if exists;
+drop table faculty if exists;

@@ -9,10 +9,11 @@ trait FakeApplication {
   self: GuiceOneAppPerSuite =>
 
   val fakeDbConfig = Configuration(
-    "slick.dbs.default.db.url" -> "jdbc:postgresql://localhost:5432/lwm_test",
+    "slick.dbs.default.db.url" -> "jdbc:postgresql://localhost:5432/postgres",
     "slick.dbs.default.db.user" -> "postgres",
-    "slick.dbs.default.db.databaseName" -> "lwm_test",
+    "slick.dbs.default.db.databaseName" -> "postgres",
     "slick.dbs.default.db.password" -> "",
+    "play.evolutions.db.default.autoApply" -> "false",
     "play.evolutions.db.default.enabled" -> "false"
   )
 
