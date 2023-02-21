@@ -28,29 +28,6 @@ create table graduation
     "abbreviation"  text      not null
 );
 
-create table study_program
-(
-    "id"            uuid PRIMARY KEY,
-    "last_modified" timestamp not null,
-    "teaching_unit" uuid      not null,
-    "label"         text      not null,
-    "abbreviation"  text      not null,
-    "graduation"    uuid      not null,
-    FOREIGN KEY (teaching_unit) REFERENCES teaching_unit (id),
-    FOREIGN KEY (graduation) REFERENCES graduation (id)
-);
-
-create table examination_regulation
-(
-    "id"            uuid PRIMARY KEY,
-    "last_modified" timestamp not null,
-    "study_program" uuid      not null,
-    "number"        integer   not null,
-    "start"         date      not null,
-    "end"           date null,
-    FOREIGN KEY (study_program) REFERENCES study_program (id)
-);
-
 create table people
 (
     "id"            uuid PRIMARY KEY,
@@ -64,44 +41,6 @@ create table people
     "initials"      text null
 );
 
-create table module
-(
-    "id"                   uuid PRIMARY KEY,
-    "last_modified"        timestamp not null,
-    "course_manager"       uuid      not null,
-    "label"                text      not null,
-    "abbreviation"         text      not null,
-    "ects"                 decimal   not null,
-    "description_file_url" text      not null,
-    FOREIGN KEY (course_manager) REFERENCES people (id)
-);
-
-create table module_examination_regulation
-(
-    "id"                     uuid PRIMARY KEY,
-    "last_modified"          timestamp not null,
-    "module"                 uuid      not null,
-    "examination_regulation" uuid      not null,
-    "mandatory"              boolean   not null,
-    FOREIGN KEY (examination_regulation) REFERENCES examination_regulation (id),
-    FOREIGN KEY (module) REFERENCES module (id)
-);
-
-create table submodule
-(
-    "id"                   uuid PRIMARY KEY,
-    "last_modified"        timestamp not null,
-    "module"               uuid      not null,
-    "label"                text      not null,
-    "abbreviation"         text      not null,
-    "recommended_semester" integer   not null,
-    "description_file_url" text      not null,
-    "ects"                 decimal   not null,
-    "language"             text      not null,
-    "season"               text      not null,
-    FOREIGN KEY (module) REFERENCES module (id)
-);
-
 create table semester
 (
     "id"            uuid PRIMARY KEY,
@@ -112,20 +51,6 @@ create table semester
     "end"           date      not null,
     "lecture_start" date      not null,
     "lecture_end"   date      not null
-);
-
-create table course
-(
-    "id"            uuid PRIMARY KEY,
-    "last_modified" timestamp not null,
-    "lecturer"      uuid      not null,
-    "semester"      uuid      not null,
-    "submodule"     uuid      not null,
-    "interval"      text      not null,
-    "course_type"   text      not null,
-    FOREIGN KEY (lecturer) REFERENCES people (id),
-    FOREIGN KEY (semester) REFERENCES semester (id),
-    FOREIGN KEY (submodule) REFERENCES submodule (id)
 );
 
 create table campus
@@ -146,44 +71,168 @@ create table room
     FOREIGN KEY (campus) REFERENCES campus (id)
 );
 
-create table schedule
+create table reservation
 (
-    "id"                            uuid PRIMARY KEY,
-    "last_modified"                 timestamp not null,
-    "course"                        uuid      not null,
-    "room"                          uuid      not null,
-    "module_examination_regulation" uuid      not null,
-    "date"                          date      not null,
-    "start"                         time without time zone not null,
-    "end"                           time without time zone not null,
-    FOREIGN KEY (course) REFERENCES course (id),
-    FOREIGN KEY (room) REFERENCES room (id),
-    FOREIGN KEY (module_examination_regulation) REFERENCES module_examination_regulation (id)
+    "id"    uuid PRIMARY KEY,
+    "room"  uuid not null,
+    "date"  date not null,
+    "start" time without time zone not null,
+    "end"   time without time zone not null,
+    "type"  text not null,
+    "cause" text not null,
+    FOREIGN KEY (room) REFERENCES room (id)
 );
 
-create table student_schedule
+create table study_program
 (
     "id"            uuid PRIMARY KEY,
     "last_modified" timestamp not null,
-    "student"       uuid      not null,
-    "schedule"      uuid      not null,
+    "teaching_unit" uuid      not null,
+    "graduation"    uuid      not null,
+    "label"         text      not null,
+    "abbreviation"  text      not null,
+    "po_number"     integer   not null,
+    "start"         date      not null,
+    "end"           date null,
+    FOREIGN KEY (teaching_unit) REFERENCES teaching_unit (id),
+    FOREIGN KEY (graduation) REFERENCES graduation (id)
+);
+
+create table study_program_relation
+(
+    "parent" uuid not null,
+    "child"  uuid not null,
+    PRIMARY KEY (parent, child),
+    FOREIGN KEY (parent) REFERENCES study_program (id),
+    FOREIGN KEY (child) REFERENCES study_program (id)
+);
+
+create table study_program_supervisor
+(
+    "id"            uuid PRIMARY KEY,
+    "study_program" uuid not null,
+    "supervisor"    uuid not null,
+    "role"          text not null,
+    "start"         date not null,
+    "end"           date null,
+    FOREIGN KEY (study_program) REFERENCES study_program (id),
+    FOREIGN KEY (supervisor) REFERENCES people (id)
+);
+
+create table module
+(
+    "id"                   uuid PRIMARY KEY,
+    "last_modified"        timestamp not null,
+    "label"                text      not null,
+    "abbreviation"         text      not null,
+    "ects"                 decimal   not null,
+    "compendium_url"       text      not null,
+    "recommended_semester" integer   not null,
+    "language"             text      not null,
+    "season"               text      not null,
+    "type"                 text      not null
+);
+
+create table module_relation
+(
+    "parent" uuid not null,
+    "child"  uuid not null,
+    PRIMARY KEY (parent, child),
+    FOREIGN KEY (parent) REFERENCES module (id),
+    FOREIGN KEY (child) REFERENCES module (id)
+);
+
+create table module_in_study_program
+(
+    "id"            uuid PRIMARY KEY,
+    "last_modified" timestamp not null,
+    "module"        uuid      not null,
+    "study_program" uuid      not null,
+    "mandatory"     boolean   not null,
+    FOREIGN KEY (module) REFERENCES module (id),
+    FOREIGN KEY (study_program) REFERENCES study_program (id)
+);
+
+create table module_supervisor
+(
+    "module"     uuid not null,
+    "supervisor" uuid not null,
+    "role"       text not null,
+    PRIMARY KEY (module, supervisor, role),
+    FOREIGN KEY (module) REFERENCES module (id),
+    FOREIGN KEY (supervisor) REFERENCES people (id)
+);
+
+create table course
+(
+    "id"            uuid PRIMARY KEY,
+    "last_modified" timestamp not null,
+    "semester"      uuid      not null,
+    "module"        uuid      not null,
+    "interval"      text      not null,
+    "type"          text      not null,
+    FOREIGN KEY (semester) REFERENCES semester (id),
+    FOREIGN KEY (module) REFERENCES module (id)
+);
+
+create table course_lecturer
+(
+    "lecturer" uuid not null,
+    "course"   uuid not null,
+    PRIMARY KEY (lecturer, course),
+    FOREIGN KEY (lecturer) REFERENCES people (id),
+    FOREIGN KEY (course) REFERENCES course (id)
+);
+
+create table schedule_entry
+(
+    "id"                      uuid PRIMARY KEY,
+    "last_modified"           timestamp not null,
+    "course"                  uuid      not null,
+    "module_in_study_program" uuid      not null,
+    "reservation"             uuid      not null,
+    FOREIGN KEY (course) REFERENCES course (id),
+    FOREIGN KEY (module_in_study_program) REFERENCES module_in_study_program (id),
+    FOREIGN KEY (reservation) REFERENCES reservation (id)
+);
+
+create table schedule_entry_lecturer
+(
+    "lecturer"       uuid not null,
+    "schedule_entry" uuid not null,
+    PRIMARY KEY (lecturer, schedule_entry),
+    FOREIGN KEY (lecturer) REFERENCES people (id),
+    FOREIGN KEY (schedule_entry) REFERENCES schedule_entry (id)
+);
+
+create table student_schedule_entry
+(
+    "id"             uuid PRIMARY KEY,
+    "last_modified"  timestamp not null,
+    "student"        uuid      not null,
+    "schedule_entry" uuid      not null,
     FOREIGN KEY (student) REFERENCES people (id),
-    FOREIGN KEY (schedule) REFERENCES schedule (id)
+    FOREIGN KEY (schedule_entry) REFERENCES schedule_entry (id)
 );
 
 -- !Downs
-drop table student_schedule if exists;
-drop table schedule if exists;
+drop table student_schedule_entry if exists;
+drop table schedule_entry_lecturer if exists;
+drop table schedule_entry if exists;
+drop table course_lecturer if exists;
+drop table course if exists;
+drop table module_supervisor if exists;
+drop table module_in_study_program if exists;
+drop table module_relation if exists;
+drop table module if exists;
+drop table study_program_supervisor if exists;
+drop table study_program_relation if exists;
+drop table study_program if exists;
+drop table reservation if exists;
 drop table room if exists;
 drop table campus if exists;
-drop table course if exists;
 drop table semester if exists;
-drop table submodule if existse
-drop table module_examination_regulation if existsn
-drop table module if exists;
 drop table people if exists;
-drop table examination_regulation if exists;
-drop table study_program if exists;
 drop table graduation if exists;
 drop table teaching_unit if exists;
 drop table faculty if exists;
