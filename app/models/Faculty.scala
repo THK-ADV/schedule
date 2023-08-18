@@ -1,6 +1,7 @@
 package models
 
-import java.util.UUID
+import localization.LocalizedLabel
 
-case class Faculty(label: String, abbreviation: String, number: Int, id: UUID)
-    extends UniqueEntity
+case class Faculty(id: String, deLabel: String, enLabel: String)
+    extends UniqueEntity[String]
+    with LocalizedLabel

@@ -24,7 +24,7 @@ trait DatabaseSuite { self: GuiceOneAppPerSuite =>
 
   val teachingUnits = TableQuery[TeachingUnitTable]
 
-  val graduations = TableQuery[GraduationTable]
+  val graduations = TableQuery[GradeTable]
 
   val studyPrograms = TableQuery[StudyProgramTable]
 
@@ -43,7 +43,7 @@ trait DatabaseSuite { self: GuiceOneAppPerSuite =>
 
   val courses = TableQuery[CourseTable]
 
-  val schedules = TableQuery[ScheduleTable]
+  val schedules = TableQuery[ScheduleEntryTable]
 
   val rooms = TableQuery[RoomTable]
 

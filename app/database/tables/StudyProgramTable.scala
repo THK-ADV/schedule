@@ -1,84 +1,54 @@
 package database.tables
 
-import database.UniqueDbEntry
 import database.cols._
+import models.StudyProgram
+import org.joda.time.LocalDate
 import slick.jdbc.PostgresProfile.api._
 
-import java.sql.Timestamp
 import java.util.UUID
 
-case class StudyProgramDBEntry(
-    teachingUnit: UUID,
-    graduation: UUID,
-    label: String,
-    abbreviation: String,
-    parent: Option[UUID],
-    lastModified: Timestamp,
-    id: UUID
-) extends UniqueDbEntry
+final class StudyProgramTable(tag: Tag)
+    extends Table[StudyProgram](tag, "study_program")
+    with StringUniqueColumn
+    with LocalizedLabelColumn {
 
-class StudyProgramTable(tag: Tag)
-    extends Table[StudyProgramDBEntry](tag, "study_program")
-    with UniqueEntityColumn
-    with AbbreviationColumn
-    with LabelColumn
-    with TeachingUnitColumn
-    with GraduationColumn {
+  import database.tables.localDateColumnType
 
-  def parent = column[Option[UUID]]("parent")
+  def teachingUnit = column[UUID]("teaching_unit")
 
-  def parentFk =
-    foreignKey("studyProgram", parent, TableQuery[StudyProgramTable])(_.id.?)
+  def grade = column[String]("grade")
 
-  def hasParent(id: UUID): Rep[Boolean] =
-    parent.map(_ === id).getOrElse(false)
+  def abbrev = column[String]("abbrev")
+
+  def poNumber = column[Int]("po_number")
+
+  def start = column[LocalDate]("start")
+
+  def end = column[Option[LocalDate]]("end")
+
+  def teachingUnitFk =
+    foreignKey("teachingUnit", teachingUnit, TableQuery[TeachingUnitTable])(
+      _.id,
+      onUpdate = ForeignKeyAction.Restrict,
+      onDelete = ForeignKeyAction.Restrict
+    )
+
+  def gradeFk =
+    foreignKey("grade", grade, TableQuery[GradeTable])(
+      _.id,
+      onUpdate = ForeignKeyAction.Restrict,
+      onDelete = ForeignKeyAction.Restrict
+    )
 
   def * = (
+    id,
     teachingUnit,
-    graduation,
-    label,
-    abbreviation,
-    parent,
-    lastModified,
-    id
-  ) <> (mapRow, unmapRow)
-
-  def mapRow: (
-      (UUID, UUID, String, String, Option[UUID], Timestamp, UUID)
-  ) => StudyProgramDBEntry = {
-    case (
-          teachingUnit,
-          graduation,
-          label,
-          abbreviation,
-          parent,
-          lastModified,
-          id
-        ) =>
-      StudyProgramDBEntry(
-        teachingUnit,
-        graduation,
-        label,
-        abbreviation,
-        parent,
-        lastModified,
-        id
-      )
-  }
-
-  def unmapRow: StudyProgramDBEntry => Option[
-    (UUID, UUID, String, String, Option[UUID], Timestamp, UUID)
-  ] =
-    a =>
-      Option(
-        (
-          a.teachingUnit,
-          a.graduation,
-          a.label,
-          a.abbreviation,
-          a.parent,
-          a.lastModified,
-          a.id
-        )
-      )
+    grade,
+    deLabel,
+    enLabel,
+    abbrev,
+    poNumber,
+    start,
+    end
+  ) <> (StudyProgram.tupled, StudyProgram.unapply)
 }

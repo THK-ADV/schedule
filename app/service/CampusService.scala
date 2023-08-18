@@ -1,29 +1,16 @@
 package service
 
 import database.repos.CampusRepository
-import database.tables
-import database.tables.{CampusDbEntry, CampusTable}
-import models.{Campus, CampusJson}
-import service.abstracts.Service
+import models.Campus
+import service.abstracts.{Create, Get}
 
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext
 
 @Singleton
-class CampusService @Inject() (val repo: CampusRepository)
-    extends Service[CampusJson, Campus, CampusDbEntry, CampusTable] {
-
-  override protected def toUniqueDbEntry(json: CampusJson, id: Option[UUID]) =
-    tables.CampusDbEntry(
-      json.label,
-      json.abbreviation,
-      now(),
-      id getOrElse UUID.randomUUID
-    )
-
-  override protected def uniqueCols(json: CampusJson) =
-    List(
-      _.hasLabel(json.label),
-      _.hasAbbreviation(json.abbreviation)
-    )
-}
+final class CampusService @Inject() (
+    val repo: CampusRepository,
+    implicit val ctx: ExecutionContext
+) extends Get[UUID, Campus]
+    with Create[Campus]

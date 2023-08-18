@@ -1,93 +1,49 @@
 package database.tables
 
-import database.UniqueDbEntry
-import database.cols.{
-  SemesterColumn,
-  SubModuleColumn,
-  UniqueEntityColumn,
-  UserColumn
-}
-import models.{CourseInterval, CourseType}
+import database.cols.UUIDUniqueColumn
+import models.{Course, ModulePart}
 import slick.jdbc.PostgresProfile.api._
 
-import java.sql.Timestamp
 import java.util.UUID
 
-case class CourseDbEntry(
-    lecturer: UUID,
-    semester: UUID,
-    subModule: UUID,
-    interval: CourseInterval,
-    courseType: CourseType,
-    lastModified: Timestamp,
-    id: UUID
-) extends UniqueDbEntry
+final class CourseTable(tag: Tag)
+    extends Table[Course](tag, "course")
+    with UUIDUniqueColumn {
 
-class CourseTable(tag: Tag)
-    extends Table[CourseDbEntry](tag, "course")
-    with UniqueEntityColumn
-    with UserColumn
-    with SemesterColumn
-    with SubModuleColumn {
+  def semester = column[UUID]("semester")
 
-  override protected def userColumnName = "lecturer"
+  def module = column[UUID]("module")
 
-  def interval = column[String]("interval")
+  def studyProgram = column[String]("study_program")
 
-  def courseType = column[String]("course_type")
+  def modulePart = column[ModulePart]("part")
 
-  def hasCourseType(t: CourseType) =
-    courseType === t.toString
+  def semesterFk =
+    foreignKey("semester", semester, TableQuery[SemesterTable])(
+      _.id,
+      onUpdate = ForeignKeyAction.Restrict,
+      onDelete = ForeignKeyAction.Restrict
+    )
 
-  def hasInterval(i: CourseInterval) =
-    interval === i.toString
+  def moduleFk =
+    foreignKey("module", module, TableQuery[ModuleTable])(
+      _.id,
+      onUpdate = ForeignKeyAction.Restrict,
+      onDelete = ForeignKeyAction.Restrict
+    )
+
+  def studyProgramFk =
+    foreignKey("study_program", studyProgram, TableQuery[StudyProgramTable])(
+      _.id,
+      onUpdate = ForeignKeyAction.Restrict,
+      onDelete = ForeignKeyAction.Restrict
+    )
 
   def * = (
-    user,
+    id,
     semester,
-    subModule,
-    interval,
-    courseType,
-    lastModified,
-    id
-  ) <> (mapRow, unmapRow)
-
-  def mapRow: (
-      (UUID, UUID, UUID, String, String, Timestamp, UUID)
-  ) => CourseDbEntry = {
-    case (
-          lecturer,
-          semester,
-          subModule,
-          interval,
-          courseType,
-          lastModified,
-          id
-        ) =>
-      CourseDbEntry(
-        lecturer,
-        semester,
-        subModule,
-        CourseInterval(interval),
-        CourseType(courseType),
-        lastModified,
-        id
-      )
-  }
-
-  def unmapRow: CourseDbEntry => Option[
-    (UUID, UUID, UUID, String, String, Timestamp, UUID)
-  ] =
-    a =>
-      Option(
-        (
-          a.lecturer,
-          a.semester,
-          a.subModule,
-          a.interval.toString,
-          a.courseType.toString,
-          a.lastModified,
-          a.id
-        )
-      )
+    module,
+    studyProgram,
+    modulePart
+  ) <> (Course.tupled, Course.unapply)
 }

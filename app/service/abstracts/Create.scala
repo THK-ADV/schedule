@@ -1,26 +1,26 @@
 package service.abstracts
 
-import database.UniqueDbEntry
-import database.cols.UniqueEntityColumn
+import database.repos
 import models.UniqueEntity
-import slick.jdbc.PostgresProfile.api._
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-trait Create[Json, Model <: UniqueEntity, DbEntry <: UniqueDbEntry, T <: Table[
-  DbEntry
-] with UniqueEntityColumn] {
-  self: JsonConverter[Json, DbEntry] with Core[Model, DbEntry, T] =>
+trait Create[E <: UniqueEntity[_]] {
 
-  protected def validate(json: Json): Option[Throwable] = None
+  def repo: repos.abstracts.Create[_, E, _]
 
-  protected def uniqueCols(json: Json): List[T => Rep[Boolean]] = Nil
+  implicit def ctx: ExecutionContext
 
-  def create(json: Json): Future[Model] =
-    validate(json) match {
+  protected def validate(elem: E): Option[Throwable] = None
+
+  def create(elem: E): Future[E] =
+    validate(elem) match {
       case Some(t) =>
         Future.failed(t)
       case None =>
-        repo.create(toUniqueDbEntry(json, None), uniqueCols(json))
+        repo.create(elem)
     }
+
+  def createMany(elems: Iterable[E]) =
+    Future.sequence(elems.map(create))
 }

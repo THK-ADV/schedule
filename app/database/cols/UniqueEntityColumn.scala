@@ -1,19 +1,22 @@
 package database.cols
 
+import slick.ast.BaseTypedType
 import slick.jdbc.PostgresProfile.api._
 
-import java.sql.Timestamp
 import java.util.UUID
 
-trait UniqueEntityColumn {
+trait UniqueEntityColumn[A] {
   self: Table[_] =>
-  def id = column[UUID]("id", O.PrimaryKey)
+  implicit def tt: BaseTypedType[A]
+  def id = column[A]("id", O.PrimaryKey)
 
-  def lastModified = column[Timestamp]("last_modified")
+  def hasID(id: A) = this.id === id
+}
 
-  def hasID(id: UUID): Rep[Boolean] =
-    this.id === id
+trait StringUniqueColumn extends UniqueEntityColumn[String] { self: Table[_] =>
+  override implicit def tt: BaseTypedType[String] = stringColumnType
+}
 
-  def lastModifiedSince(timestamp: Timestamp): Rep[Boolean] =
-    lastModified >= timestamp
+trait UUIDUniqueColumn extends UniqueEntityColumn[UUID] { self: Table[_] =>
+  override implicit def tt: BaseTypedType[UUID] = uuidColumnType
 }
