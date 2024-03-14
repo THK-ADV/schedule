@@ -1,6 +1,7 @@
 val playSlickVersion = "5.1.0"
 val scalaTestVersion = "3.2.15"
 //val kafkaVersion = "3.4.0"
+val guiceVersion = "5.1.0"
 
 lazy val `schedule` = (project in file("."))
   .enablePlugins(PlayScala)
@@ -10,6 +11,7 @@ lazy val `schedule` = (project in file("."))
     version := "1.0",
     scalaVersion := "2.13.10",
     libraryDependencies ++= play,
+    libraryDependencies ++= guiceDeps,
     libraryDependencies ++= database,
     libraryDependencies ++= date,
     libraryDependencies ++= test,
@@ -33,9 +35,15 @@ lazy val `schedule` = (project in file("."))
 
 lazy val play = Seq(
   specs2 % Test,
-  guice,
+  ehcache,
   ws,
   "com.typesafe.play" %% "play-json" % "2.9.4"
+)
+
+lazy val guiceDeps = Seq(
+  guice,
+  "com.google.inject" % "guice" % guiceVersion,
+  "com.google.inject.extensions" % "guice-assistedinject" % guiceVersion
 )
 
 lazy val database = Seq(
