@@ -1,8 +1,8 @@
 package controllers
 
-import controllers.crud.{JsonHttpResponse, Read}
-import json.RoomWrites
+import controllers.crud.Read
 import models.Room
+import play.api.libs.json.Writes
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.RoomService
 
@@ -16,6 +16,6 @@ final class RoomController @Inject() (
     val service: RoomService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Read[UUID, Room]
-    with RoomWrites
-    with JsonHttpResponse[Room]
+    with Read[UUID, Room] {
+  override implicit def writes: Writes[Room] = Room.writes
+}

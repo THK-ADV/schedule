@@ -1,7 +1,6 @@
 package database.repos.abstracts
 
-import database.ModelAlreadyExistsException
-import database.cols.UniqueEntityColumn
+import database.{ModelAlreadyExistsException, UniqueEntityColumn}
 import models.UniqueEntity
 import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile

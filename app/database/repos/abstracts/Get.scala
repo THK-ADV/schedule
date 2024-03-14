@@ -1,6 +1,6 @@
 package database.repos.abstracts
 
-import database.cols.UniqueEntityColumn
+import database.UniqueEntityColumn
 import models.UniqueEntity
 import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
@@ -10,7 +10,6 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait Get[
     ID,
-    M <: UniqueEntity[ID],
     E <: UniqueEntity[ID],
     T <: Table[E] with UniqueEntityColumn[ID]
 ] { self: HasDatabaseConfigProvider[JdbcProfile] =>
@@ -26,45 +25,37 @@ trait Get[
       : PartialFunction[(String, Seq[String]), T => Rep[Boolean]] =
     PartialFunction.empty
 
-  protected def retrieveDefault(query: Query[T, E, Seq]): Future[Seq[M]] =
-    db.run(query.result.map(_.map(toUniqueEntity)))
+  final def allWithFilter(filter: Filter): Future[Seq[E]] =
+    parseFilter(filter)
+      .map(xs => db.run(tableQuery.filter(combineFilter(xs)).result))
+      .getOrElse(Future.successful(Nil))
 
-  protected def retrieveAtom(query: Query[T, E, Seq]): Future[Seq[M]]
+  final def all(): Future[Seq[E]] =
+    db.run(tableQuery.result)
 
-  protected def toUniqueEntity(e: E): M
+  final def get(id: ID) =
+    db.run(
+      tableQuery.filter(_.hasID(id)).take(1).result.flatMap { xs =>
+        xs.size match {
+          case 1 =>
+            DBIO.successful(xs.head)
+          case 0 =>
+            DBIO.failed(new Throwable(s"expected one element, but found none"))
+          case _ =>
+            DBIO.failed(new Throwable(s"expected one element, but found: $xs"))
+        }
+      }
+    )
 
-  final def combineFilter(xs: List[T => Rep[Boolean]]): T => Rep[Boolean] =
+  final def getOpt(id: ID): Future[Option[E]] =
+    db.run(tableQuery.filter(_.hasID(id)).take(1).result.map(_.headOption))
+
+  private final def combineFilter(
+      xs: List[T => Rep[Boolean]]
+  ): T => Rep[Boolean] =
     xs.reduceLeftOption[T => Rep[Boolean]]((lhs, rhs) =>
       t => lhs.apply(t) && rhs.apply(t)
     ).getOrElse(_ => true)
-
-  final def list(filter: Filter, atomic: Boolean): Future[Seq[M]] =
-    parseFilter(filter)
-      .map(xs => retrieve(atomic)(tableQuery.filter(combineFilter(xs))))
-      .getOrElse(Future.successful(Nil))
-
-  final def get(id: ID, atomic: Boolean): Future[Option[M]] =
-    retrieve(atomic)(tableQuery.filter(_.hasID(id)).take(1))
-      .map(_.headOption)
-
-  final def single[A](existing: ID)(
-      f: (E, Query[T, E, Seq]) => DBIOAction[A, NoStream, Effect.Write]
-  ): Future[A] = {
-    val q = tableQuery.filter(_.hasID(existing))
-
-    db.run {
-      for {
-        xs <- q.result
-        existing <-
-          if (xs.size == 1) DBIO.successful(xs.head)
-          else
-            DBIO.failed(
-              new Throwable(s"None or more than one element found: $xs")
-            )
-        r <- f(existing, q)
-      } yield r
-    }
-  }
 
   private def parseFilter(
       filter: Filter
@@ -79,8 +70,4 @@ trait Get[
         None
     }
   }
-
-  private def retrieve(atomic: Boolean)(q: Query[T, E, Seq]) =
-    if (atomic) retrieveAtom(q)
-    else retrieveDefault(q)
 }

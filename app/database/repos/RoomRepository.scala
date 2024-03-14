@@ -15,20 +15,10 @@ final class RoomRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Get[UUID, Room, Room, RoomTable]
+    with Get[UUID, Room, RoomTable]
     with Create[UUID, Room, RoomTable] {
 
   import profile.api._
 
   protected val tableQuery = TableQuery[RoomTable]
-
-  override protected def retrieveAtom(
-      query: Query[RoomTable, Room, Seq]
-  ) =
-    retrieveDefault(query)
-
-  override protected def toUniqueEntity(e: Room) = e
-
-  override protected def uniqueCols(elem: Room) =
-    List(_.identifier === elem.identifier, _.campus === elem.campus)
 }

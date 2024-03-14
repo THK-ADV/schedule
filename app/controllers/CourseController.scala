@@ -1,10 +1,9 @@
 package controllers
 
 import controllers.CourseController.CourseJson
-import controllers.crud.{Create, JsonHttpResponse, Read}
-import json.CourseWrites
+import controllers.crud.{Create, Read}
 import models.{Course, ModulePart}
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.{Json, Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.CourseService
 
@@ -19,9 +18,7 @@ final class CourseController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Read[UUID, Course]
-    with Create[Course, CourseJson]
-    with CourseWrites
-    with JsonHttpResponse[Course] {
+    with Create[Course, CourseJson] {
 
   implicit val modulePartReads: Reads[ModulePart] =
     Reads.of[String].map(ModulePart.apply)
@@ -33,16 +30,16 @@ final class CourseController @Inject() (
       UUID.randomUUID(),
       json.semester,
       json.module,
-      json.studyProgram,
       json.part
     )
+
+  override implicit def writes: Writes[Course] = Course.writes
 }
 
 object CourseController {
   case class CourseJson(
       semester: UUID,
       module: UUID,
-      studyProgram: String,
       part: ModulePart
   )
 }

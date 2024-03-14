@@ -14,17 +14,10 @@ final class LanguageRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Get[String, Language, Language, LanguageTable]
+    with Get[String, Language, LanguageTable]
     with Create[String, Language, LanguageTable] {
 
   import profile.api._
 
   protected val tableQuery = TableQuery[LanguageTable]
-
-  override protected def retrieveAtom(
-      query: Query[LanguageTable, Language, Seq]
-  ) =
-    retrieveDefault(query)
-
-  override protected def toUniqueEntity(e: Language) = e
 }

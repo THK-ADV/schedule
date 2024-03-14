@@ -1,17 +1,20 @@
 package database.tables
 
-import database.cols.{LocalizedLabelColumn, StringUniqueColumn}
+import database.StringUniqueColumn
 import models.Season
 import slick.jdbc.PostgresProfile.api._
 
 final class SeasonTable(tag: Tag)
     extends Table[Season](tag, "season")
-    with StringUniqueColumn
-    with LocalizedLabelColumn {
+    with StringUniqueColumn {
+
+  def deLabel = column[String]("de_label")
+
+  def enLabel = column[String]("en_label")
 
   def * = (
     id,
     deLabel,
     enLabel
-  ) <> (Season.tupled, Season.unapply)
+  ) <> ((Season.apply _).tupled, Season.unapply)
 }

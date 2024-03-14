@@ -24,7 +24,7 @@ trait DatabaseSuite { self: GuiceOneAppPerSuite =>
 
   val teachingUnits = TableQuery[TeachingUnitTable]
 
-  val graduations = TableQuery[GradeTable]
+  val graduations = TableQuery[DegreeTable]
 
   val studyPrograms = TableQuery[StudyProgramTable]
 

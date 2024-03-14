@@ -1,20 +1,16 @@
 package controllers.bootstrap
 
-import json.{JsonNullWritable, LocalDateFormat}
-import org.joda.time.LocalDate
+import controllers.JsonNullWritable
 import play.api.libs.json.{JsValue, Json, Reads}
 
 import java.util.UUID
 
 case class POMocogi(
-    abbrev: String,
-    version: Int,
-    program: String,
-    date: LocalDate,
-    dateTo: Option[LocalDate]
+    id: String,
+    version: Int
 )
 
-object POMocogi extends JsonNullWritable with LocalDateFormat {
+object POMocogi extends JsonNullWritable {
   implicit def reads: Reads[POMocogi] = Json.reads[POMocogi]
 }
 
@@ -41,6 +37,8 @@ case class POOptional(
     po: String,
     specialization: Option[String],
     recommendedSemester: List[Int]
+    // TODO add when mocogi supports it
+//    isFocus: Boolean
 )
 
 case class PO(mandatory: List[POMandatory], optional: List[POOptional])
@@ -65,37 +63,68 @@ object MocogiModuleRelation {
       } yield res
 }
 
-case class ModuleMocogi(
+case class MocogiModule(
     id: UUID,
+    metadata: MocogiMetadata
+)
+
+object MocogiModule {
+  implicit def reads: Reads[MocogiModule] = Json.reads
+}
+
+case class MocogiMetadata(
     title: String,
     abbrev: String,
     language: String,
     season: String,
-    moduleType: String,
-    status: String,
     workload: Map[String, Int],
     moduleManagement: List[String],
     lecturers: List[String],
     po: PO,
-    moduleRelation: Option[MocogiModuleRelation]
+    moduleRelation: Option[MocogiModuleRelation],
+    status: String,
+    moduleType: String
 )
 
-object ModuleMocogi extends JsonNullWritable {
+object MocogiMetadata extends JsonNullWritable {
   implicit def po: Reads[PO] = Json.reads
 
   implicit def poM: Reads[POMandatory] = Json.reads
 
   implicit def poO: Reads[POOptional] = Json.reads
 
-  implicit def reads: Reads[ModuleMocogi] = Json.reads
+  implicit def reads: Reads[MocogiMetadata] = Json.reads
+}
+
+case class MocogiDegree(
+    id: String,
+    deLabel: String,
+    enLabel: String,
+    deDesc: String,
+    enDesc: String
+)
+
+object MocogiDegree {
+  implicit def reads: Reads[MocogiDegree] = Json.reads
+}
+
+case class MocogiSpecialization(
+    id: String,
+    deLabel: String,
+    enLabel: String
+)
+
+object MocogiSpecialization {
+  implicit def reads: Reads[MocogiSpecialization] = Json.reads
 }
 
 case class StudyProgramMocogi(
-    abbrev: String,
-    grade: String,
+    id: String,
     deLabel: String,
     enLabel: String,
-    externalAbbreviation: String
+    po: POMocogi,
+    degree: MocogiDegree,
+    specialization: Option[MocogiSpecialization]
 )
 
 object StudyProgramMocogi {

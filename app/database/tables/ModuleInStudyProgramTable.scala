@@ -1,6 +1,6 @@
 package database.tables
 
-import database.cols.UUIDUniqueColumn
+import database.UUIDUniqueColumn
 import models.ModuleInStudyProgram
 import slick.jdbc.PostgresProfile.api._
 
@@ -12,31 +12,20 @@ final class ModuleInStudyProgramTable(tag: Tag)
 
   def module = column[UUID]("module")
 
-  def studyProgram = column[String]("study_program")
+  def studyProgram = column[UUID]("study_program")
 
   def mandatory = column[Boolean]("mandatory")
 
+  def focus = column[Boolean]("focus")
+
   def recommendedSemester = column[List[Int]]("recommended_semester")
-
-  def moduleFk =
-    foreignKey("module", module, TableQuery[ModuleTable])(
-      _.id,
-      onUpdate = ForeignKeyAction.Restrict,
-      onDelete = ForeignKeyAction.Restrict
-    )
-
-  def studyProgramFk =
-    foreignKey("studyProgram", studyProgram, TableQuery[StudyProgramTable])(
-      _.id,
-      onUpdate = ForeignKeyAction.Restrict,
-      onDelete = ForeignKeyAction.Restrict
-    )
 
   def * = (
     id,
     module,
     studyProgram,
     mandatory,
+    focus,
     recommendedSemester
-  ) <> (ModuleInStudyProgram.tupled, ModuleInStudyProgram.unapply)
+  ) <> ((ModuleInStudyProgram.apply _).tupled, ModuleInStudyProgram.unapply)
 }

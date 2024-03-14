@@ -4,11 +4,9 @@ import database.repos.abstracts.{Create, Get}
 import database.tables.{
   ModuleInStudyProgramTable,
   ModuleRelationTable,
-  ModuleTable,
-  StudyProgramTable
+  ModuleTable
 }
-import models.{Module, ModuleInStudyProgram, ModulePart, Season, StudyProgram}
-import org.joda.time.LocalDate
+import models.{Module, ModuleInStudyProgram, ModulePart}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -21,52 +19,32 @@ final class ModuleInStudyProgramRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Get[
-      UUID,
-      ModuleInStudyProgram,
-      ModuleInStudyProgram,
-      ModuleInStudyProgramTable
-    ]
+    with Get[UUID, ModuleInStudyProgram, ModuleInStudyProgramTable]
     with Create[UUID, ModuleInStudyProgram, ModuleInStudyProgramTable] {
 
+  import database.tables.modulePartsColumnType
   import profile.api._
 
   protected val tableQuery = TableQuery[ModuleInStudyProgramTable]
 
-  override protected def retrieveAtom(
-      query: Query[ModuleInStudyProgramTable, ModuleInStudyProgram, Seq]
-  ): Future[Seq[ModuleInStudyProgram]] =
-    retrieveDefault(query)
+  def deleteAll() =
+    db.run(tableQuery.delete)
 
-  override protected def toUniqueEntity(
-      e: ModuleInStudyProgram
-  ): ModuleInStudyProgram = e
-
-  def deleteAll() = db.run(tableQuery.delete)
-
-  def allInSeason(
-      seasons: Seq[Season]
-  ): Future[Seq[((Module, ModuleInStudyProgram), StudyProgram)]] = {
-    import database.tables.{localDateColumnType, modulePartsColumnType}
-
-    val now = LocalDate.now()
-    val seasonIds = seasons.map(_.id)
-    val action = TableQuery[ModuleTable]
-      .filter(a =>
-        a.season.inSet(seasonIds) && !(a.parts === List
-          .empty[ModulePart]) && !TableQuery[ModuleRelationTable]
-          .filter(_.parent === a.id)
-          .exists
-      )
-      .join(tableQuery)
-      .on(_.id === _.module)
-      .join(
-        TableQuery[StudyProgramTable].filter(s =>
-          s.start <= now && (s.end.map(_ >= now) getOrElse true)
-        )
-      )
-      .on(_._2.studyProgram === _.id)
-      .result
-    db.run(action)
-  }
+  def allModulesInSeason(seasons: Seq[String]): Future[Seq[Module]] =
+    db.run(
+      TableQuery[ModuleTable]
+        .filter { module =>
+          val inSeason = module.season.inSet(seasons)
+          val hasParts = !(module.parts === List.empty[ModulePart])
+          val noParent = !TableQuery[ModuleRelationTable]
+            .filter(_.parent === module.id)
+            .exists
+          inSeason && hasParts && noParent
+        }
+        .join(tableQuery.map(_.module))
+        .on(_.id === _)
+        .map(_._1)
+        .distinctOn(_.id)
+        .result
+    )
 }

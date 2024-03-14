@@ -1,6 +1,6 @@
 package database.tables
 
-import database.cols.UUIDUniqueColumn
+import database.UUIDUniqueColumn
 import models.Campus
 import slick.jdbc.PostgresProfile.api._
 
@@ -12,5 +12,5 @@ final class CampusTable(tag: Tag)
 
   def abbrev = column[String]("abbrev")
 
-  def * = (id, label, abbrev) <> (Campus.tupled, Campus.unapply)
+  def * = (id, label, abbrev) <> ((Campus.apply _).tupled, Campus.unapply)
 }

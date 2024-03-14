@@ -1,6 +1,6 @@
 package database.tables
 
-import database.cols.UUIDUniqueColumn
+import database.UUIDUniqueColumn
 import models.Room
 import slick.jdbc.PostgresProfile.api._
 
@@ -27,5 +27,5 @@ final class RoomTable(tag: Tag)
     identifier,
     roomType,
     capacity
-  ) <> (Room.tupled, Room.unapply)
+  ) <> ((Room.apply _).tupled, Room.unapply)
 }

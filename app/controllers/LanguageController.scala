@@ -1,8 +1,8 @@
 package controllers
 
-import controllers.crud.{JsonHttpResponse, Read}
-import json.LanguageWrites
+import controllers.crud.Read
 import models.Language
+import play.api.libs.json.Writes
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.LanguageService
 
@@ -15,6 +15,6 @@ final class LanguageController @Inject() (
     val service: LanguageService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Read[String, Language]
-    with LanguageWrites
-    with JsonHttpResponse[Language]
+    with Read[String, Language] {
+  override implicit def writes: Writes[Language] = Language.writes
+}

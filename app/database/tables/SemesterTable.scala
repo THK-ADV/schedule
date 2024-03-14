@@ -1,6 +1,6 @@
 package database.tables
 
-import database.cols.UUIDUniqueColumn
+import database.UUIDUniqueColumn
 import models.Semester
 import org.joda.time.LocalDate
 import slick.jdbc.PostgresProfile.api._
@@ -31,5 +31,5 @@ final class SemesterTable(tag: Tag)
     end,
     lectureStart,
     lectureEnd
-  ) <> (Semester.tupled, Semester.unapply)
+  ) <> ((Semester.apply _).tupled, Semester.unapply)
 }

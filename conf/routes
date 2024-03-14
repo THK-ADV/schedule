@@ -7,20 +7,20 @@ GET         /                                 controllers.IndexController.index(
 
 POST        /bootstrap/faculties              controllers.bootstrap.MocogiBootstrapController.createFaculties()
 POST        /bootstrap/teachingUnits          controllers.bootstrap.SchedBootstrapController.createTeachingUnits()
-POST        /bootstrap/grades                 controllers.bootstrap.MocogiBootstrapController.createGrades()
+POST        /bootstrap/degrees                controllers.bootstrap.MocogiBootstrapController.createDegrees()
 POST        /bootstrap/studyPrograms          controllers.bootstrap.MocogiBootstrapController.createStudyPrograms()
 POST        /bootstrap/languages              controllers.bootstrap.MocogiBootstrapController.createLanguages()
 POST        /bootstrap/seasons                controllers.bootstrap.MocogiBootstrapController.createSeasons()
-POST        /bootstrap/people                 controllers.bootstrap.MocogiBootstrapController.createPeople()
+POST        /bootstrap/identities             controllers.bootstrap.MocogiBootstrapController.createIdentities()
 POST        /bootstrap/modules                controllers.bootstrap.MocogiBootstrapController.createModules()
 POST        /bootstrap/semesters              controllers.bootstrap.SchedBootstrapController.createSemesters()
-POST        /bootstrap/courses                controllers.bootstrap.SchedBootstrapController.createCourses()
 POST        /bootstrap/campus                 controllers.bootstrap.SchedBootstrapController.createCampus()
 POST        /bootstrap/rooms                  controllers.bootstrap.SchedBootstrapController.createRooms()
+POST        /bootstrap/courses                controllers.bootstrap.SchedBootstrapController.createCourses()
 POST        /bootstrap/scheduleEntry          controllers.bootstrap.SchedBootstrapController.createScheduleEntries()
 
-GET         /grades                           controllers.GradeController.all()
-GET         /grades/:id                       controllers.GradeController.get(id: java.lang.String)
+GET         /degrees                          controllers.DegreeController.all()
+GET         /degrees/:id                      controllers.DegreeController.get(id: java.lang.String)
 
 GET         /faculties                        controllers.FacultyController.all()
 GET         /faculties/:id                    controllers.FacultyController.get(id: java.lang.String)
@@ -29,7 +29,7 @@ GET         /teachingUnits                    controllers.TeachingUnitController
 GET         /teachingUnits/:id                controllers.TeachingUnitController.get(id: java.util.UUID)
 
 GET         /studyPrograms                    controllers.StudyProgramController.all()
-GET         /studyPrograms/:id                controllers.StudyProgramController.get(id: java.lang.String)
+GET         /studyPrograms/:id                controllers.StudyProgramController.get(id: java.util.UUID)
 
 GET         /languages                        controllers.LanguageController.all()
 GET         /languages/:id                    controllers.LanguageController.get(id: java.lang.String)
@@ -60,6 +60,7 @@ GET         /campus/:id                       controllers.CampusController.get(i
 GET         /rooms                            controllers.RoomController.all()
 GET         /rooms/:id                        controllers.RoomController.get(id: java.util.UUID)
 
+GET         /scheduleEntries                  controllers.ScheduleEntryController.all()
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                     controllers.Assets.versioned(path="/public", file: Asset)

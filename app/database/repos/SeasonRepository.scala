@@ -14,19 +14,12 @@ final class SeasonRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Get[String, Season, Season, SeasonTable]
+    with Get[String, Season, SeasonTable]
     with Create[String, Season, SeasonTable] {
 
   import profile.api._
 
   protected val tableQuery = TableQuery[SeasonTable]
-
-  override protected def retrieveAtom(
-      query: Query[SeasonTable, Season, Seq]
-  ) =
-    retrieveDefault(query)
-
-  override protected def toUniqueEntity(e: Season) = e
 
   override protected def makeFilter = { case ("deLabel", vs) =>
     _.deLabel === vs.head

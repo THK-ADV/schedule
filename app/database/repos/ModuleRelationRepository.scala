@@ -21,9 +21,10 @@ final class ModuleRelationRepository @Inject() (
   def createOrUpdateMany(
       elems: List[ModuleRelation]
   ): Future[Seq[ModuleRelation]] = {
-    for {
-      _ <- db.run(tableQuery.delete)
-      res <- db.run((tableQuery returning tableQuery) ++= elems)
+    val q = for {
+      _ <- tableQuery.delete
+      res <- (tableQuery returning tableQuery) ++= elems
     } yield res
+    db.run(q.transactionally)
   }
 }

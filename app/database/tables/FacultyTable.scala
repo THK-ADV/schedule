@@ -1,17 +1,20 @@
 package database.tables
 
-import database.cols.{LocalizedLabelColumn, StringUniqueColumn}
+import database.StringUniqueColumn
 import models.Faculty
 import slick.jdbc.PostgresProfile.api._
 
 class FacultyTable(tag: Tag)
     extends Table[Faculty](tag, "faculty")
-    with StringUniqueColumn
-    with LocalizedLabelColumn {
+    with StringUniqueColumn {
+
+  def deLabel = column[String]("de_label")
+
+  def enLabel = column[String]("en_label")
 
   def * = (
     id,
     deLabel,
     enLabel
-  ) <> (Faculty.tupled, Faculty.unapply)
+  ) <> ((Faculty.apply _).tupled, Faculty.unapply)
 }

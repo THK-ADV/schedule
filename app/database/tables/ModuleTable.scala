@@ -1,7 +1,7 @@
 package database.tables
 
-import database.cols._
-import models.{Module, ModulePart, ModuleType}
+import database.UUIDUniqueColumn
+import models.{Module, ModulePart}
 import slick.jdbc.PostgresProfile.api._
 
 final class ModuleTable(tag: Tag)
@@ -16,10 +16,6 @@ final class ModuleTable(tag: Tag)
 
   def season = column[String]("season")
 
-  def moduleType = column[ModuleType]("type")
-
-  def active = column[Boolean]("active")
-
   def parts = column[List[ModulePart]]("parts")
 
   def * = (
@@ -28,8 +24,6 @@ final class ModuleTable(tag: Tag)
     abbrev,
     language,
     season,
-    moduleType,
-    active,
     parts
-  ) <> (Module.tupled, Module.unapply)
+  ) <> ((Module.apply _).tupled, Module.unapply)
 }

@@ -8,24 +8,20 @@ import slick.jdbc.JdbcProfile
 
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 final class ModuleRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Get[UUID, Module, Module, ModuleTable]
+    with Get[UUID, Module, ModuleTable]
     with Create[UUID, Module, ModuleTable] {
 
   import profile.api._
 
   val tableQuery = TableQuery[ModuleTable]
 
-  override protected def retrieveAtom(
-      query: Query[ModuleTable, Module, Seq]
-  ): Future[Seq[Module]] =
-    retrieveDefault(query)
-
-  override protected def toUniqueEntity(e: Module): Module = e
+  def deleteAll() =
+    db.run(tableQuery.delete)
 }

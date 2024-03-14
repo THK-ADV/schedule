@@ -205,7 +205,7 @@ final class ScheduleRepositorySpec
             )
           )
         )
-        res <- repo.list(
+        res <- repo.allWithFilter(
           Map("courses" -> Seq(c1.id.toString)),
           atomic = false
         )

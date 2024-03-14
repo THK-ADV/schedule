@@ -14,17 +14,10 @@ final class FacultyRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Get[String, Faculty, Faculty, FacultyTable]
+    with Get[String, Faculty, FacultyTable]
     with Create[String, Faculty, FacultyTable] {
 
   import profile.api._
 
   protected val tableQuery = TableQuery[FacultyTable]
-
-  override protected def retrieveAtom(
-      query: Query[FacultyTable, Faculty, Seq]
-  ) =
-    retrieveDefault(query)
-
-  override protected def toUniqueEntity(e: Faculty) = e
 }

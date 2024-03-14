@@ -3,7 +3,7 @@ package controllers.bootstrap
 import database.repos._
 import database.repos.abstracts.Create
 import models._
-import play.api.libs.json.{JsValue, Json, Reads}
+import play.api.libs.json._
 import play.api.libs.ws.WSClient
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.TeachingUnitService
@@ -18,17 +18,17 @@ final class MocogiBootstrapController @Inject() (
     cc: ControllerComponents,
     ws: WSClient,
     facultyRepository: FacultyRepository,
-    gradeRepository: GradeRepository,
+    degreeRepository: DegreeRepository,
     studyProgramRepository: StudyProgramRepository,
-    studyProgramRelationRepository: StudyProgramRelationRepository,
     languageRepository: LanguageRepository,
     seasonRepository: SeasonRepository,
-    personRepository: PersonRepository,
+    identityRepository: IdentityRepository,
     moduleRepository: ModuleRepository,
     moduleInStudyProgramRepository: ModuleInStudyProgramRepository,
     moduleSupervisorRepository: ModuleSupervisorRepository,
     moduleRelationRepository: ModuleRelationRepository,
     teachingUnitService: TeachingUnitService,
+    specializationRepository: SpecializationRepository,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc) {
   private val url = "http://lwivs49.gm.fh-koeln.de:9001"
@@ -37,8 +37,8 @@ final class MocogiBootstrapController @Inject() (
     create("faculties", facultyRepository)
   }
 
-  def createGrades = Action.async { _ =>
-    create("grades", gradeRepository)
+  def createDegrees = Action.async { _ =>
+    create("degrees", degreeRepository)
   }
 
   def createLanguages = Action.async { _ =>
@@ -49,71 +49,46 @@ final class MocogiBootstrapController @Inject() (
     create("seasons", seasonRepository)
   }
 
-  def createPeople = Action.async { _ =>
-    create("persons", personRepository)
+  def createIdentities = Action.async { _ =>
+    create("identities", identityRepository)
   }
 
   def createStudyPrograms = Action.async { _ =>
     def makeStudyPrograms(
         sps: List[StudyProgramMocogi],
-        pos: List[POMocogi],
-        specs: List[SpecializationMocogi],
         tus: Seq[TeachingUnit]
     ) = {
       val studyPrograms = ListBuffer[StudyProgram]()
-      val relations = ListBuffer[StudyProgramRelation]()
-      pos.foreach { po =>
-        val sp = sps.find(_.abbrev == po.program).get
+      val specializations = ListBuffer[Specialization]()
+      sps.foreach { sp =>
         studyPrograms += StudyProgram(
-          po.abbrev,
-          tuMapping(sp.abbrev, tus),
-          sp.grade,
+          UUID.randomUUID(),
+          tuMapping(sp.id, tus),
+          sp.degree.id,
           sp.deLabel,
           sp.enLabel,
-          sp.externalAbbreviation,
-          po.version,
-          po.date,
-          po.dateTo
+          "TODO",
+          sp.po.id,
+          sp.po.version,
+          sp.specialization.map(_.id)
         )
+        sp.specialization.collect {
+          case spec if !specializations.exists(_.id == spec.id) =>
+            specializations += Specialization(spec.id, spec.deLabel)
+        }
       }
-      specs.foreach { spec =>
-        val po = pos.find(_.abbrev == spec.po).get
-        val sp = sps.find(_.abbrev == po.program).get
-
-        studyPrograms += StudyProgram(
-          spec.abbrev,
-          tuMapping(sp.abbrev, tus),
-          sp.grade,
-          s"${sp.deLabel} - ${spec.label}",
-          s"${sp.enLabel} - ${spec.label}",
-          sp.externalAbbreviation,
-          po.version,
-          po.date,
-          po.dateTo
-        )
-
-        relations += StudyProgramRelation(po.abbrev, spec.abbrev)
-      }
-      (studyPrograms.toList, relations.toList)
+      (studyPrograms.toList, specializations.toList)
     }
 
     for {
       sps <- ws
-        .url(s"$url/studyPrograms")
+        .url(s"$url/studyPrograms?extend=true")
         .get()
         .map(_.json.validate[List[StudyProgramMocogi]].get)
-      pos <- ws
-        .url(s"$url/pos")
-        .get()
-        .map(_.json.validate[List[POMocogi]].get)
-      specs <- ws
-        .url(s"$url/specializations")
-        .get()
-        .map(_.json.validate[List[SpecializationMocogi]].get)
-      tus <- teachingUnitService.all(atomic = false)
-      (studyPrograms, relations) = makeStudyPrograms(sps, pos, specs, tus)
+      tus <- teachingUnitService.all()
+      (studyPrograms, specs) = makeStudyPrograms(sps, tus)
+      ys <- specializationRepository.createOrUpdateMany(specs)
       xs <- studyProgramRepository.createOrUpdateMany(studyPrograms)
-      ys <- studyProgramRelationRepository.createOrUpdateMany(relations)
     } yield {
       val (createdSps, updatedSps) = xs.partition(_.isDefined)
       Ok(
@@ -127,7 +102,7 @@ final class MocogiBootstrapController @Inject() (
   }
 
   def createModules = Action.async { _ =>
-    def makeModules(ms: List[ModuleMocogi]) = {
+    def makeModules(ms: List[MocogiModule], sps: Seq[StudyProgram]) = {
       val modules = ListBuffer[Module]()
       val modulesInStudyProgram = ListBuffer[ModuleInStudyProgram]()
       val moduleSupervisor = ListBuffer[ModuleSupervisor]()
@@ -136,44 +111,58 @@ final class MocogiBootstrapController @Inject() (
       ms.foreach { m =>
         modules += Module(
           m.id,
-          m.title,
-          m.abbrev,
-          m.language,
-          m.season,
-          ModuleType(m.moduleType),
-          m.status == "active",
-          m.workload.collect {
+          m.metadata.title,
+          m.metadata.abbrev,
+          m.metadata.language,
+          m.metadata.season,
+          m.metadata.workload.collect {
             case (k, v)
                 if (k == "lecture" | k == "seminar" | k == "practical" | k == "exercise") && v > 0 =>
               ModulePart(k)
           }.toList
         )
 
-        m.po.mandatory.foreach { po =>
+        m.metadata.po.mandatory.foreach { po =>
+          val sp = sps.find { sp =>
+            po.specialization match {
+              case Some(spec) => sp.specializationId.contains(spec)
+              case None       => sp.poId == po.po
+            }
+          }.get
           modulesInStudyProgram += ModuleInStudyProgram(
             UUID.randomUUID(),
             m.id,
-            po.specialization.getOrElse(po.po),
+            sp.id,
             mandatory = true,
+            focus = false,
             po.recommendedSemester
           )
         }
 
-        m.po.optional.foreach { po =>
+        m.metadata.po.optional.foreach { po =>
+          val sp = sps.find { sp =>
+            po.specialization match {
+              case Some(spec) => sp.specializationId.contains(spec)
+              case None       => sp.poId == po.po
+            }
+          }.get
           modulesInStudyProgram += ModuleInStudyProgram(
             UUID.randomUUID(),
             m.id,
-            po.specialization.getOrElse(po.po),
+            sp.id,
             mandatory = false,
+            focus = false,
+            // TODO add when mocogi supports it
+//            focus = po.isFocus,
             po.recommendedSemester
           )
         }
 
-        m.moduleManagement.foreach { person =>
+        m.metadata.moduleManagement.foreach { person =>
           moduleSupervisor += ModuleSupervisor(m.id, person)
         }
 
-        m.moduleRelation.collect {
+        m.metadata.moduleRelation.collect {
           case MocogiModuleRelation.Parent(_, children) =>
             children.foreach(c => moduleRelations += ModuleRelation(m.id, c))
         }
@@ -189,13 +178,26 @@ final class MocogiBootstrapController @Inject() (
 
     for {
       ms <- ws
-        .url(s"$url/metadata")
+        .url(s"$url/modules?select=metadata")
         .get()
-        .map(_.json.validate[List[ModuleMocogi]].get)
+        .map(
+          _.json
+            .validate[List[MocogiModule]] match {
+            case JsSuccess(value, _) =>
+              value.filter(a =>
+                a.metadata.status == "active" && a.metadata.moduleType == "module"
+              )
+            case JsError(errors) =>
+              println(errors.mkString("\n"))
+              Nil
+          }
+        ) if ms.nonEmpty
+      sps <- studyProgramRepository.all()
       (modules, modulesInStudyPrograms, moduleSupervisor, moduleRelations) =
-        makeModules(ms)
-      xs <- moduleRepository.createOrUpdateMany(modules)
+        makeModules(ms, sps)
       _ <- moduleInStudyProgramRepository.deleteAll()
+      _ <- moduleRepository.deleteAll()
+      xs <- moduleRepository.createOrUpdateMany(modules)
       ys <- moduleInStudyProgramRepository.createMany(modulesInStudyPrograms)
       zs <- moduleSupervisorRepository.createOrUpdateMany(moduleSupervisor)
       as <- moduleRelationRepository.createOrUpdateMany(moduleRelations)
@@ -224,6 +226,7 @@ final class MocogiBootstrapController @Inject() (
   )(implicit reads: Reads[A]) =
     for {
       resp <- ws.url(s"$url/$resource").get()
+      _ = println(resp.json)
       elems = resp.json.validate[List[A]].get
       xs <- repo.createOrUpdateMany(elems)
     } yield {
@@ -234,25 +237,25 @@ final class MocogiBootstrapController @Inject() (
   implicit def facultyReads: Reads[Faculty] =
     (json: JsValue) =>
       for {
-        abbrev <- json.\("abbrev").validate[String]
+        abbrev <- json.\("id").validate[String]
         deLabel <- json.\("deLabel").validate[String]
         enLabel <- json.\("enLabel").validate[String]
       } yield Faculty(abbrev, deLabel, enLabel)
 
-  implicit def gradeReads: Reads[Grade] =
+  implicit def gradeReads: Reads[Degree] =
     (json: JsValue) =>
       for {
-        abbrev <- json.\("abbrev").validate[String]
+        abbrev <- json.\("id").validate[String]
         deLabel <- json.\("deLabel").validate[String]
         enLabel <- json.\("enLabel").validate[String]
         deDesc <- json.\("deDesc").validate[String]
         enDesc <- json.\("enDesc").validate[String]
-      } yield Grade(abbrev, deLabel, enLabel, deDesc, enDesc)
+      } yield Degree(abbrev, deLabel, enLabel, deDesc, enDesc)
 
   implicit def languageReads: Reads[Language] =
     (json: JsValue) =>
       for {
-        abbrev <- json.\("abbrev").validate[String]
+        abbrev <- json.\("id").validate[String]
         deLabel <- json.\("deLabel").validate[String]
         enLabel <- json.\("enLabel").validate[String]
       } yield Language(abbrev, deLabel, enLabel)
@@ -260,45 +263,40 @@ final class MocogiBootstrapController @Inject() (
   implicit def seasonReads: Reads[Season] =
     (json: JsValue) =>
       for {
-        abbrev <- json.\("abbrev").validate[String]
+        abbrev <- json.\("id").validate[String]
         deLabel <- json.\("deLabel").validate[String]
         enLabel <- json.\("enLabel").validate[String]
       } yield Season(abbrev, deLabel, enLabel)
 
-  implicit def personReads: Reads[Person] =
+  implicit def personReads: Reads[Identity] =
     (json: JsValue) =>
       for {
         id <- json.\("id").validate[String]
         kind <- json.\("kind").validate[String]
         person <- kind match {
-          case Person.DefaultKind =>
+          case Identity.PersonKind =>
             for {
               lastname <- json.\("lastname").validate[String]
               firstname <- json.\("firstname").validate[String]
-              title <- json
-                .\("title")
-                .validate[String]
-                .map(s => Option.unless(s == "--")(s))
+              title <- json.\("title").validate[String]
               abbreviation <- json.\("abbreviation").validate[String]
               campusId <- json.\("campusId").validate[String]
-              status <- json.\("status").validate[String].map(_ == "active")
-            } yield Person.Default(
+            } yield Identity.Person(
               id,
               lastname,
               firstname,
               title,
               abbreviation,
-              campusId,
-              status
+              campusId
             )
-          case Person.GroupKind =>
+          case Identity.GroupKind =>
             for {
               label <- json.\("label").validate[String]
-            } yield Person.Group(id, label)
-          case Person.UnknownKind =>
+            } yield Identity.Group(id, label)
+          case Identity.UnknownKind =>
             for {
               label <- json.\("label").validate[String]
-            } yield Person.Unknown(id, label)
+            } yield Identity.Unknown(id, label)
         }
       } yield person
 }

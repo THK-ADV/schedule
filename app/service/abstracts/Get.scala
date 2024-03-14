@@ -7,17 +7,16 @@ import scala.concurrent.Future
 
 trait Get[ID, Model <: UniqueEntity[ID]] {
 
-  def repo: repos.abstracts.Get[ID, Model, _, _]
+  def repo: repos.abstracts.Get[ID, Model, _]
 
-  final def all(
-      filter: Map[String, Seq[String]],
-      atomic: Boolean
+  final def allWithFilter(
+      filter: Map[String, Seq[String]]
   ): Future[Seq[Model]] =
-    repo.list(filter, atomic)
+    repo.allWithFilter(filter)
 
-  final def all(atomic: Boolean): Future[Seq[Model]] =
-    all(Map.empty, atomic)
+  final def all(): Future[Seq[Model]] =
+    repo.all()
 
-  def get(id: ID, atomic: Boolean): Future[Option[Model]] =
-    repo.get(id, atomic)
+  final def get(id: ID): Future[Option[Model]] =
+    repo.getOpt(id)
 }

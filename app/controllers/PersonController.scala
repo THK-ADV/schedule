@@ -1,8 +1,8 @@
 package controllers
 
-import controllers.crud.{JsonHttpResponse, Read}
-import json.PersonWrites
-import models.Person
+import controllers.crud.Read
+import models.Identity
+import play.api.libs.json.Writes
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.PersonService
 
@@ -15,6 +15,6 @@ final class PersonController @Inject() (
     val service: PersonService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Read[String, Person]
-    with PersonWrites
-    with JsonHttpResponse[Person]
+    with Read[String, Identity] {
+  override implicit def writes: Writes[Identity] = Identity.writes
+}

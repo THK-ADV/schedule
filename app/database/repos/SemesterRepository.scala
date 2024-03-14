@@ -15,23 +15,16 @@ final class SemesterRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Get[UUID, Semester, Semester, SemesterTable]
+    with Get[UUID, Semester, SemesterTable]
     with Create[UUID, Semester, SemesterTable] {
 
   import profile.api._
 
   protected val tableQuery = TableQuery[SemesterTable]
 
-  override protected def retrieveAtom(
-      query: Query[SemesterTable, Semester, Seq]
-  ) =
-    retrieveDefault(query)
-
   override protected def makeFilter = { case ("abbrev", vs) =>
     _.abbrev === vs.head
   }
-
-  override protected def toUniqueEntity(e: Semester) = e
 
   override protected def uniqueCols(elem: Semester) = {
     import database.tables.localDateColumnType

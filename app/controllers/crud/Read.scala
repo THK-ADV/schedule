@@ -1,25 +1,36 @@
 package controllers.crud
 
 import models.UniqueEntity
+import play.api.libs.json.{Json, Writes}
 import play.api.mvc.AbstractController
 import service.abstracts.Get
 
+import scala.concurrent.ExecutionContext
+
 trait Read[ID, Model <: UniqueEntity[ID]] {
-  self: AbstractController with JsonHttpResponse[Model] =>
+  self: AbstractController =>
+
+  implicit def ctx: ExecutionContext
+
+  implicit def writes: Writes[Model]
 
   def service: Get[ID, Model]
 
-  private def parseAtomic(f: Map[String, Seq[String]]): Boolean =
-    f.get("atomic")
-      .flatMap(_.headOption)
-      .flatMap(_.toBooleanOption)
-      .getOrElse(false)
-
   def all() =
-    Action.async(r =>
-      okSeq(service.all(r.queryString, parseAtomic(r.queryString)))
-    )
+    Action.async { r =>
+      val res =
+        if (r.queryString.isEmpty) service.all()
+        else service.allWithFilter(r.queryString)
+      res.map(xs => Ok(Json.toJson(xs)))
+    }
 
   def get(id: ID) =
-    Action.async(r => okOpt(service.get(id, parseAtomic(r.queryString))))
+    Action.async { r =>
+      service
+        .get(id)
+        .map {
+          case Some(a) => Ok(Json.toJson(a))
+          case None    => NotFound
+        }
+    }
 }

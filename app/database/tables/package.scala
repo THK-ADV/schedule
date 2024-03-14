@@ -1,6 +1,6 @@
 package database
 
-import models.{ModulePart, ModuleType}
+import models.ModulePart
 import org.joda.time.{LocalDate, LocalTime}
 import slick.jdbc.PostgresProfile.api._
 
@@ -19,15 +19,9 @@ package object tables {
       time => new LocalTime(time.getTime)
     )
 
-  implicit val moduleTypeColumnType: BaseColumnType[ModuleType] =
-    MappedColumnType.base[ModuleType, String](
-      _.value,
-      ModuleType.apply
-    )
-
   implicit val modulePartColumnType: BaseColumnType[ModulePart] =
     MappedColumnType.base[ModulePart, String](
-      _.value,
+      _.id,
       ModulePart.apply
     )
 

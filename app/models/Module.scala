@@ -1,5 +1,7 @@
 package models
 
+import play.api.libs.json.{Json, Writes}
+
 import java.util.UUID
 
 case class Module(
@@ -8,7 +10,9 @@ case class Module(
     abbrev: String,
     language: String,
     season: String,
-    moduleType: ModuleType,
-    active: Boolean,
     parts: List[ModulePart]
 ) extends UniqueEntity[UUID]
+
+object Module {
+  implicit def writes: Writes[Module] = Json.writes[Module]
+}

@@ -1,3 +1,5 @@
 package models
 
-case class StudyProgramRelation(parent: String, child: String)
+import java.util.UUID
+
+case class StudyProgramRelation(parent: UUID, child: UUID)

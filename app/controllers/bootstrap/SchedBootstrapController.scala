@@ -1,19 +1,19 @@
 package controllers.bootstrap
 
-import controllers.CourseController.CourseJson
+import database.repos.ScheduleEntryRepository
+import database.tables.ModuleStudyProgramScheduleEntry
 import models._
-import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
+import org.joda.time.{LocalDate, LocalTime}
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
-import pretty.PrettyPrinter
 import service._
 
-import java.nio.file.Files
-import java.util.{UUID, stream}
+import java.nio.file.{Files, Paths}
+import java.util.UUID
 import javax.inject.{Inject, Singleton}
-import scala.collection.mutable.ListBuffer
 import scala.concurrent.ExecutionContext
+import scala.jdk.CollectionConverters.IteratorHasAsScala
 
 @Singleton
 final class SchedBootstrapController @Inject() (
@@ -26,10 +26,19 @@ final class SchedBootstrapController @Inject() (
     moduleService: ModuleService,
     courseService: CourseService,
     studyProgramService: StudyProgramService,
+    moduleInStudyProgramService: ModuleInStudyProgramService,
+    scheduleEntryRepository: ScheduleEntryRepository,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc) {
 
-  import HOPSMapping._
+  case class ScheduleEntryProtocol(
+      moduleInStudyProgram: UUID,
+      course: UUID,
+      room: UUID,
+      date: LocalDate,
+      start: LocalTime,
+      end: LocalTime
+  )
 
   def createTeachingUnits = Action.async { _ =>
     val tus = List(
@@ -196,58 +205,40 @@ final class SchedBootstrapController @Inject() (
       .map(xs => Ok(Json.obj("created" -> xs.size)))
   }
 
-  def createCourses = Action.async { _ =>
-    for {
-      semesters <- semesterService.all(
-        Map("abbrev" -> Seq("WiSe 23 / 24")),
-        atomic = false
-      ) if semesters.size == 1
-      semester = semesters.head
-      courses <- coursePopulationService.populate(
-        semester
-      ) // TODO delete before
-    } yield Ok(Json.obj("created" -> courses.size))
-  }
-
   def createCampus = Action.async { _ =>
     val campus = List(
       Campus(UUID.randomUUID(), "Gummersbach", "gm"),
       Campus(UUID.randomUUID(), "Köln Deutz", "kdz"),
-      Campus(UUID.randomUUID(), "Köln Südstadt", "ksdt")
+      Campus(UUID.randomUUID(), "Köln Südstadt", "ksdt"),
+      Campus(UUID.randomUUID(), "Sonstige", "other")
     )
     campusService
       .createMany(campus)
       .map(xs => Ok(Json.obj("created" -> xs.size)))
   }
 
-  def toList[A](res: stream.Stream[Option[A]]): List[A] = {
-    val list = ListBuffer[A]()
-    res.forEach { a =>
-      if (a.isDefined)
-        list += a.get
-    }
-    list.toList
-  }
-
   def createRooms = Action(parse.temporaryFile).async { r =>
-    def parseRoom(line: String): Option[HOPSRoom] = {
+    def parseRoom(line: String): HOPSRoom = {
       val data = line.split(";").map(_.replace("\"", ""))
-      Some(
-        HOPSRoom(
-          data(0),
-          data(1),
-          data(2),
-          if (data.length > 3) data(3).toInt else 0
-        )
+      HOPSRoom(
+        data(0).trim,
+        data(1).trim,
+        data(2).trim,
+        if (data.length > 3) data(3).toInt else 0
       )
     }
     def toRoom(campus: Seq[Campus])(hopsRoom: HOPSRoom): Room = {
-      val (matchingCampus, label) = hopsRoom.label match {
-        case "Köln-Südstadt" =>
-          (campus.find(_.abbrev == "ksdt").get, hopsRoom.identifier)
-        case "Köln-Deutz" =>
-          (campus.find(_.abbrev == "kdz").get, hopsRoom.identifier)
-        case _ => (campus.find(_.abbrev == "gm").get, hopsRoom.label)
+      val (matchingCampus, label) = {
+        if (hopsRoom.label == "Zoom")
+          (campus.find(_.abbrev == "other").get, hopsRoom.label)
+        else
+          hopsRoom.label match {
+            case "Köln-Südstadt" =>
+              (campus.find(_.abbrev == "ksdt").get, hopsRoom.identifier)
+            case "Köln-Deutz" =>
+              (campus.find(_.abbrev == "kdz").get, hopsRoom.identifier)
+            case _ => (campus.find(_.abbrev == "gm").get, hopsRoom.label)
+          }
       }
       Room(
         UUID.randomUUID(),
@@ -258,39 +249,289 @@ final class SchedBootstrapController @Inject() (
         hopsRoom.capacity
       )
     }
+
     for {
-      campus <- campusService.all(atomic = false)
-      hopsRooms: List[HOPSRoom] = toList(
-        Files
-          .lines(r.body.path)
-          .skip(1)
-          .map(parseRoom)
-          .filter(_.isDefined)
-      ) if hopsRooms.size == 115
-      rooms = hopsRooms.map(toRoom(campus))
+      campus <- campusService.all()
+      rooms = Files
+        .lines(r.body.path)
+        .skip(1)
+        .iterator()
+        .asScala
+        .map(parseRoom _ andThen toRoom(campus))
+        .toList
       xs <- roomService.createMany(rooms)
     } yield Ok(Json.obj("created" -> xs.size))
   }
 
-  private def textParsingAction = Action(
-    parse.byteString.map(
-      _.utf8String
-    ) // this will fix the encoding issue encoding issue
-  )
-
-  def createMissingCourses = Action.async { _ =>
-    val ap1Tut =
-      List("inf2", "inf1", "inf1_flex", "itm2", "itm1", "mi4", "wi4", "wi5")
-        .map(po =>
-          CourseJson(
-            UUID.fromString("fe279f6f-711f-4434-aa8c-2a7900daa74f"),
-            UUID.fromString("dca56fa6-1952-4b47-bf60-3dcb32e86ada"),
-            po,
-            ModulePart.Tutorial
-          )
+  def createCourses = Action.async { _ =>
+    val semester = semesterService
+      .allWithFilter(Map("abbrev" -> Seq("WiSe 23 / 24")))
+      .map(_.head)
+    for {
+      semester <- semester
+      _ <- courseService.deleteAll()
+      courses <- coursePopulationService.populate(semester)
+      explicitCourses = List(
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/b126ec6a-0241-4f6b-90d6-c0ecad8e3dd4
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("b126ec6a-0241-4f6b-90d6-c0ecad8e3dd4"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/d4ad3104-c495-4acb-8ce0-a73881210650
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("d4ad3104-c495-4acb-8ce0-a73881210650"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/6716c404-632a-4918-85a1-0ba0051bacb5
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("6716c404-632a-4918-85a1-0ba0051bacb5"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/42123d0e-f9ee-4117-99f4-0c985aca1313
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("42123d0e-f9ee-4117-99f4-0c985aca1313"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/178d394f-0b03-4566-80b6-272fbd49f760
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("178d394f-0b03-4566-80b6-272fbd49f760"),
+          ModulePart.Seminar
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/5941afae-a356-4dce-9e9b-1b70371c8202
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("5941afae-a356-4dce-9e9b-1b70371c8202"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/e045b42f-f56b-4f2f-94e3-fa56f3660b89
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("e045b42f-f56b-4f2f-94e3-fa56f3660b89"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/d4ad3104-c495-4acb-8ce0-a73881210650
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("d4ad3104-c495-4acb-8ce0-a73881210650"),
+          ModulePart.Tutorial
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/5941afae-a356-4dce-9e9b-1b70371c8202
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("5941afae-a356-4dce-9e9b-1b70371c8202"),
+          ModulePart.Tutorial
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/315b421f-50fc-44a0-b584-8b38c9f53c87
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("315b421f-50fc-44a0-b584-8b38c9f53c87"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/03fa8ca0-4979-4514-a0aa-b0d2e73e07f8
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("03fa8ca0-4979-4514-a0aa-b0d2e73e07f8"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/dfabe6dd-6f9a-498d-912e-3bb84fe68bee
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("dfabe6dd-6f9a-498d-912e-3bb84fe68bee"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/9ae4f461-817e-479b-90e1-071ec82c2079
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("9ae4f461-817e-479b-90e1-071ec82c2079"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/9f464cde-5237-4832-a7ec-23afc46cf4eb
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("9f464cde-5237-4832-a7ec-23afc46cf4eb"),
+          ModulePart.Seminar
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/3a4077fa-fb35-4e83-a54f-1473522c57c9
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("3a4077fa-fb35-4e83-a54f-1473522c57c9"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/5b712502-14b2-49f1-9d77-a2ed852917c1
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("5b712502-14b2-49f1-9d77-a2ed852917c1"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/5232fe71-7bd2-4528-a0ff-9cca594120a5
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("5232fe71-7bd2-4528-a0ff-9cca594120a5"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/5d3d819a-22ba-4bf6-a2e2-e9feb7e3e71e
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("5d3d819a-22ba-4bf6-a2e2-e9feb7e3e71e"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/2c0d9243-3f16-43be-bec8-e85ec6e5153e
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("2c0d9243-3f16-43be-bec8-e85ec6e5153e"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/b694276e-de90-40e8-b2cd-ce1d22407fd3
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("b694276e-de90-40e8-b2cd-ce1d22407fd3"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/71105c23-d165-472c-8bcd-cab66c9a08f7
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("71105c23-d165-472c-8bcd-cab66c9a08f7"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/ca272b86-8a95-4e8d-b56f-4c63d389b51f
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("ca272b86-8a95-4e8d-b56f-4c63d389b51f"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/dca56fa6-1952-4b47-bf60-3dcb32e86ada
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("dca56fa6-1952-4b47-bf60-3dcb32e86ada"),
+          ModulePart.Tutorial
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/41ca9f81-63f1-4dba-9c33-adae878ee2ca
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("41ca9f81-63f1-4dba-9c33-adae878ee2ca"),
+          ModulePart.Exercise
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/3a5c00ce-c2a9-4d28-aa40-4968b7540448
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("3a5c00ce-c2a9-4d28-aa40-4968b7540448"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/069ab61c-b54a-48b5-815d-117fc9de829c
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("069ab61c-b54a-48b5-815d-117fc9de829c"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/66cdf64a-a164-46b1-a654-0c95564b563c
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("66cdf64a-a164-46b1-a654-0c95564b563c"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/c285df00-5cc3-4e89-8c9e-e5915b581e5d
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("c285df00-5cc3-4e89-8c9e-e5915b581e5d"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/15769d73-a0b6-49a5-9b47-3e155a063e20
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("15769d73-a0b6-49a5-9b47-3e155a063e20"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/fb968b0d-462c-4354-9322-02617ca801df
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("fb968b0d-462c-4354-9322-02617ca801df"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/f88e64e6-8344-4b7f-ad9a-8499fed4196f
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("f88e64e6-8344-4b7f-ad9a-8499fed4196f"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/65a319e8-788c-4469-ade1-a10566d87a4a
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("65a319e8-788c-4469-ade1-a10566d87a4a"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/876c5d42-f579-4a7c-953c-76895b731ff4
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("876c5d42-f579-4a7c-953c-76895b731ff4"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/072df25e-392e-49e7-98c1-400e3fc9f315
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("072df25e-392e-49e7-98c1-400e3fc9f315"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/70d904c0-93d8-4b54-a1a1-1f8ed02417ef
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("70d904c0-93d8-4b54-a1a1-1f8ed02417ef"),
+          ModulePart.Lecture
+        ),
+        // http://lwivs49.gm.fh-koeln.de:8081/modules/1cf030cd-f0e5-4fe6-9430-0a4b4fbb308c
+        Course(
+          UUID.randomUUID(),
+          semester.id,
+          UUID.fromString("1cf030cd-f0e5-4fe6-9430-0a4b4fbb308c"),
+          ModulePart.Lecture
         )
-    ???
+      )
+      _ <- courseService.createMany(courses.appendedAll(explicitCourses))
+    } yield Ok(Json.obj("created" -> courses.size))
   }
+
+  // this will fix the encoding issue encoding issue
+  private def textParsingAction =
+    Action(parse.byteString.map(_.utf8String))
 
   def createScheduleEntries = textParsingAction.async { r =>
     def parseScheduleEntry(line: String): Option[HOPSScheduleEntry] = {
@@ -314,79 +555,129 @@ final class SchedBootstrapController @Inject() (
       )
     }
 
+    val mapping = new HOPSMapping(Paths.get("bootstrap/Mapping.csv"))
+
     for {
-      modules <- moduleService.all(atomic = false)
-      rooms <- roomService.all(atomic = false)
-      courses <- courseService.all(atomic = false)
-      studyPrograms <- studyProgramService.all(atomic = false)
-      semesters <- semesterService.all(
-        Map("abbrev" -> Seq("WiSe 23 / 24")),
-        atomic = false
+      _ <- scheduleEntryRepository.deleteAll()
+      modules <- moduleService.all()
+      rooms <- roomService.all()
+      courses <- courseService.all()
+      studyPrograms <- studyProgramService.all()
+      moduleInStudyPrograms <- moduleInStudyProgramService.all()
+      semesters <- semesterService.allWithFilter(
+        Map("abbrev" -> Seq("WiSe 23 / 24"))
       ) if semesters.size == 1
       semester = semesters.head
       entries = r.body.linesIterator
         .drop(1)
         .map(parseScheduleEntry)
-        .filter(_.isDefined)
+        .collect { case Some(a) => a }
         .toList
-        .map(_.get)
         .distinct
-      res = entries
-        .filter(_.moduleLabel == "Algorithmen und Programmierung I")
-        .groupBy(_.moduleId)
-        .map { case (moduleId, entries) =>
-          val matchedModule = findModule(moduleId, modules)
-          println(matchedModule)
-          entries
-            .groupBy(a => (a.roomIdentifier, a.weekIndex, a.startStd, a.part))
-            .map {
-              case ((roomIdentifier, weekIndex, startStd, part), entries) =>
-                val matchedRoom = findRoom(roomIdentifier, rooms)
-                val date = findDate(weekIndex, semester)
-                val (start, end) = findTime(startStd)
-                val reservation = Reservation(
-                  UUID.randomUUID(),
-                  matchedRoom.id,
-                  date,
-                  start,
-                  end,
-                  "HOPS",
-                  "Stundenplaneintrag"
-                )
-                val scheduleEntries = entries.flatMap { scheduleEntry =>
-                  val matchedStudyPrograms =
-                    findStudyProgram(
-                      scheduleEntry.studyProgram,
-                      scheduleEntry.specialization,
-                      studyPrograms
+      (_, scheduleEntryProtocols) = entries
+        .filterNot(_.studyProgram == "TI_B")
+        .partitionMap { e =>
+          mapping.findModule(e.moduleId, e.course, modules) match {
+            case Some(module) =>
+              val matchedRoom = mapping.findRoom(e.roomIdentifier, rooms)
+              val date = mapping.findDate(e.weekIndex, semester)
+              val (start, end) = mapping.findTime(e.startStd)
+              val matchedStudyPrograms = mapping.findStudyProgram(
+                e.studyProgram,
+                e.specialization,
+                studyPrograms
+              )
+              mapping.findCourse(semester, module, e.part, courses) match {
+                case Some(course) =>
+                  val sps = moduleInStudyPrograms
+                    .filter(a =>
+                      matchedStudyPrograms.exists(
+                        _.id == a.studyProgram
+                      ) && a.module == module.id
                     )
-                  val matchedCourses = matchedStudyPrograms.map { sp =>
-                    findCourse(
-                      semester,
-                      matchedModule,
-                      part,
-                      sp,
-                      courses
+                  if (sps.isEmpty) {
+                    printErr(
+                      s"studyProgram associations not found ${(e.course, e.moduleId, e.part)}"
                     )
-                  }
-                  matchedCourses.map { course =>
-                    ScheduleEntry(
-                      UUID.randomUUID(),
-                      course.id,
-                      reservation.id
+                    Left(e)
+                  } else {
+                    Right(
+                      sps.map(a =>
+                        ScheduleEntryProtocol(
+                          a.id,
+                          course.id,
+                          matchedRoom.id,
+                          date,
+                          start,
+                          end
+                        )
+                      )
                     )
                   }
-                }
-                (reservation, scheduleEntries)
-            }
+
+                case None =>
+                  printErr(
+                    s"course not found ${(e.course, e.moduleId, e.part)}"
+                  )
+                  Left(e)
+              }
+            case None =>
+              printErr(s"module not found ${(e.course, e.moduleId, e.part)}")
+              Left(e)
+          }
         }
-        .toList
-        .flatten
-    } yield {
-      println(
-        PrettyPrinter.prettyPrint(res.sortBy(a => (a._1.date, a._1.start)))
+      scheduleEntriesWithStudyProgram = squash(
+        scheduleEntryProtocols.flatten.distinctBy { a =>
+          (a.course, a.moduleInStudyProgram, a.room, a.date, a.start, a.end)
+        }
       )
-      NoContent
-    }
+      scheduleEntries = scheduleEntriesWithStudyProgram.map(_._1)
+      studyProgramAssocs = scheduleEntriesWithStudyProgram.flatMap(_._2)
+      _ <- scheduleEntryRepository.createMany(
+        scheduleEntries,
+        studyProgramAssocs
+      )
+    } yield Ok(Json.obj("created" -> scheduleEntries.size))
   }
+
+  private def squash(
+      xs: List[ScheduleEntryProtocol]
+  ) = {
+    xs
+      .groupBy(a => (a.date, a.room, a.course, a.moduleInStudyProgram))
+      .flatMap { case ((date, room, course, moduleInStudyProgram), xs) =>
+        val range = xs.sortBy(_.start).flatMap(a => List(a.start, a.end))
+        val oneSlot = range.sliding(2).forall { xs =>
+          val res = xs.head.compareTo(xs.last)
+          res < 0 || res == 0
+        }
+        if (oneSlot) { // TODO only lecture
+          println(s"squashing ${xs.size} entries from $course")
+          List(
+            ScheduleEntryProtocol(
+              moduleInStudyProgram,
+              course,
+              room,
+              date,
+              range.head,
+              range.last
+            )
+          )
+        } else {
+          xs
+        }
+      }
+      .groupBy(a => (a.date, a.start, a.end, a.course, a.room))
+      .map { case ((date, start, end, course, room), xs) =>
+        val s = ScheduleEntry(UUID.randomUUID(), course, room, date, start, end)
+        val ss = xs.map(a =>
+          ModuleStudyProgramScheduleEntry(s.id, a.moduleInStudyProgram)
+        )
+        (s, ss)
+      }
+      .toList
+  }
+
+  private def printErr(s: String): Unit =
+    println(Console.RED + s + Console.RESET)
 }

@@ -1,2 +1,0 @@
-Master;MA
-Bachelor;BA

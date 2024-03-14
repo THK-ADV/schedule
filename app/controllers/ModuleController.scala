@@ -1,8 +1,8 @@
 package controllers
 
-import controllers.crud.{JsonHttpResponse, Read}
-import json.ModuleWrites
+import controllers.crud.Read
 import models.Module
+import play.api.libs.json.Writes
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.ModuleService
 
@@ -16,6 +16,6 @@ final class ModuleController @Inject() (
     val service: ModuleService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Read[UUID, Module]
-    with ModuleWrites
-    with JsonHttpResponse[Module]
+    with Read[UUID, Module] {
+  override implicit def writes: Writes[Module] = Module.writes
+}

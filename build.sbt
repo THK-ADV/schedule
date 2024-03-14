@@ -1,5 +1,6 @@
 val playSlickVersion = "5.1.0"
 val scalaTestVersion = "3.2.15"
+//val kafkaVersion = "3.4.0"
 
 lazy val `schedule` = (project in file("."))
   .enablePlugins(PlayScala)
@@ -23,7 +24,10 @@ lazy val `schedule` = (project in file("."))
       "GitHub Package Registry",
       "maven.pkg.github.com",
       "THK-ADV",
-      System.getenv("GITHUB_TOKEN")
+      sys.env.getOrElse("GITHUB_TOKEN", "")
+    ),
+    (Universal / javaOptions) ++= Seq(
+      "-Dpidfile.path=/dev/null"
     )
   )
 
@@ -58,3 +62,13 @@ lazy val keycloak = Seq(
 )
 
 lazy val filenameMacro = "de.th-koeln.inf.adv" %% "filename" % "0.1"
+
+// https://blog.rockthejvm.com/kafka-streams/
+// https://youtu.be/MYTFPTtOoLs
+// https://dev.to/psstepniewski/plain-kafka-consumer-in-play-framework-2a4a
+
+//lazy val kafka = Seq(
+//  "org.apache.kafka" % "kafka-clients" % kafkaVersion,
+//  "org.apache.kafka" % "kafka-streams" % kafkaVersion,
+//  "org.apache.kafka" %% "kafka-streams-scala" % kafkaVersion
+//)

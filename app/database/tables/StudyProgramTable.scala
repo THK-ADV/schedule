@@ -1,54 +1,40 @@
 package database.tables
 
-import database.cols._
+import database.UUIDUniqueColumn
 import models.StudyProgram
-import org.joda.time.LocalDate
 import slick.jdbc.PostgresProfile.api._
 
 import java.util.UUID
 
 final class StudyProgramTable(tag: Tag)
     extends Table[StudyProgram](tag, "study_program")
-    with StringUniqueColumn
-    with LocalizedLabelColumn {
-
-  import database.tables.localDateColumnType
+    with UUIDUniqueColumn {
 
   def teachingUnit = column[UUID]("teaching_unit")
 
-  def grade = column[String]("grade")
+  def degree = column[String]("degree")
 
   def abbrev = column[String]("abbrev")
 
   def poNumber = column[Int]("po_number")
 
-  def start = column[LocalDate]("start")
+  def poId = column[String]("po_id")
 
-  def end = column[Option[LocalDate]]("end")
+  def specializationId = column[Option[String]]("specialization_id")
 
-  def teachingUnitFk =
-    foreignKey("teachingUnit", teachingUnit, TableQuery[TeachingUnitTable])(
-      _.id,
-      onUpdate = ForeignKeyAction.Restrict,
-      onDelete = ForeignKeyAction.Restrict
-    )
+  def deLabel = column[String]("de_label")
 
-  def gradeFk =
-    foreignKey("grade", grade, TableQuery[GradeTable])(
-      _.id,
-      onUpdate = ForeignKeyAction.Restrict,
-      onDelete = ForeignKeyAction.Restrict
-    )
+  def enLabel = column[String]("en_label")
 
   def * = (
     id,
     teachingUnit,
-    grade,
+    degree,
     deLabel,
     enLabel,
     abbrev,
+    poId,
     poNumber,
-    start,
-    end
-  ) <> (StudyProgram.tupled, StudyProgram.unapply)
+    specializationId
+  ) <> ((StudyProgram.apply _).tupled, StudyProgram.unapply)
 }

@@ -1,7 +1,8 @@
 package database.tables
 
-import database.cols._
+import database.UUIDUniqueColumn
 import models.ScheduleEntry
+import org.joda.time.{LocalDate, LocalTime}
 import slick.jdbc.PostgresProfile.api._
 
 import java.util.UUID
@@ -10,24 +11,25 @@ final class ScheduleEntryTable(tag: Tag)
     extends Table[ScheduleEntry](tag, "schedule_entry")
     with UUIDUniqueColumn {
 
+  import database.tables.{localDateColumnType, localTimeColumnType}
+
   def course = column[UUID]("course")
 
-  def reservation = column[UUID]("reservation")
+  def room = column[UUID]("room")
 
-  def courseFk =
-    foreignKey("course", course, TableQuery[CourseTable])(
-      _.id,
-      onUpdate = ForeignKeyAction.Restrict,
-      onDelete = ForeignKeyAction.Restrict
-    )
+  def date = column[LocalDate]("date")
 
-  def reservationFk =
-    foreignKey("reservation", reservation, TableQuery[ReservationTable])(
-      _.id,
-      onUpdate = ForeignKeyAction.Restrict,
-      onDelete = ForeignKeyAction.Restrict
-    )
+  def start = column[LocalTime]("start")
+
+  def end = column[LocalTime]("end")
 
   def * =
-    (id, course, reservation) <> (ScheduleEntry.tupled, ScheduleEntry.unapply)
+    (
+      id,
+      course,
+      room,
+      date,
+      start,
+      end
+    ) <> (ScheduleEntry.tupled, ScheduleEntry.unapply)
 }

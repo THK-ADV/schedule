@@ -1,19 +1,23 @@
 package models
 
 import localization.LocalizedLabel
-import org.joda.time.LocalDate
+import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
 
 case class StudyProgram(
-    id: String,
+    id: UUID,
     teachingUnit: UUID,
-    grade: String,
+    degree: String,
     deLabel: String,
     enLabel: String,
     abbrev: String,
+    poId: String,
     poNumber: Int,
-    start: LocalDate,
-    end: Option[LocalDate]
-) extends UniqueEntity[String]
+    specializationId: Option[String]
+) extends UniqueEntity[UUID]
     with LocalizedLabel
+
+object StudyProgram {
+  implicit def writes: Writes[StudyProgram] = Json.writes[StudyProgram]
+}

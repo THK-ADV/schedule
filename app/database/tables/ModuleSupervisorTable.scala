@@ -12,20 +12,6 @@ final class ModuleSupervisorTable(tag: Tag)
 
   def supervisor = column[String]("supervisor", O.PrimaryKey)
 
-  def moduleFk =
-    foreignKey("module", module, TableQuery[ModuleTable])(
-      _.id,
-      onUpdate = ForeignKeyAction.Restrict,
-      onDelete = ForeignKeyAction.Restrict
-    )
-
-  def supervisorFk =
-    foreignKey("supervisor", supervisor, TableQuery[PersonTable])(
-      _.id,
-      onUpdate = ForeignKeyAction.Restrict,
-      onDelete = ForeignKeyAction.Restrict
-    )
-
   def * = (
     module,
     supervisor

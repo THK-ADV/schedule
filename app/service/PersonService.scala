@@ -1,11 +1,11 @@
 package service
 
-import database.repos.PersonRepository
-import models.Person
+import database.repos.IdentityRepository
+import models.Identity
 import service.abstracts.Get
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-final class PersonService @Inject() (val repo: PersonRepository)
-    extends Get[String, Person]
+final class PersonService @Inject() (val repo: IdentityRepository)
+    extends Get[String, Identity]

@@ -15,19 +15,12 @@ final class CampusRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Get[UUID, Campus, Campus, CampusTable]
+    with Get[UUID, Campus, CampusTable]
     with Create[UUID, Campus, CampusTable] {
 
   import profile.api._
 
   protected val tableQuery = TableQuery[CampusTable]
-
-  override protected def retrieveAtom(
-      query: Query[CampusTable, Campus, Seq]
-  ) =
-    retrieveDefault(query)
-
-  override protected def toUniqueEntity(e: Campus) = e
 
   override protected def uniqueCols(elem: Campus) =
     List(_.label === elem.label, _.abbrev === elem.abbrev)

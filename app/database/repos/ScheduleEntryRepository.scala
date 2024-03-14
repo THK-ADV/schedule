@@ -1,6 +1,6 @@
 package database.repos
 
-import database.repos.abstracts.{Create, Get}
+import database.repos.abstracts.Get
 import database.tables._
 import models._
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
@@ -15,17 +15,30 @@ final class ScheduleEntryRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Get[UUID, ScheduleEntry, ScheduleEntry, ScheduleEntryTable]
-    with Create[UUID, ScheduleEntry, ScheduleEntryTable] {
+    with Get[UUID, ScheduleEntry, ScheduleEntryTable] {
 
   import profile.api._
 
   protected val tableQuery = TableQuery[ScheduleEntryTable]
 
-  override protected def retrieveAtom(
-      query: Query[ScheduleEntryTable, ScheduleEntry, Seq]
-  ) =
-    retrieveDefault(query)
+  private val spTableQuery = TableQuery[ModuleStudyProgramScheduleEntryTable]
 
-  override protected def toUniqueEntity(e: ScheduleEntry) = e
+  def createMany(
+      entries: Seq[ScheduleEntry],
+      studyProgramAssoc: Seq[ModuleStudyProgramScheduleEntry]
+  ) = {
+    val q = for {
+      _ <- tableQuery ++= entries
+      _ <- spTableQuery ++= studyProgramAssoc
+    } yield ()
+    db.run(q.transactionally)
+  }
+
+  def deleteAll() = {
+    val q = for {
+      _ <- spTableQuery.delete
+      _ <- tableQuery.delete
+    } yield ()
+    db.run(q.transactionally)
+  }
 }
