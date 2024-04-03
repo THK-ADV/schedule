@@ -2,6 +2,7 @@ package database.repos
 
 import database.repos.abstracts.Get
 import database.tables._
+import database.view.ScheduleEntryViewRefresher
 import models._
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
@@ -15,7 +16,8 @@ final class ScheduleEntryRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Get[UUID, ScheduleEntry, ScheduleEntryTable] {
+    with Get[UUID, ScheduleEntry, ScheduleEntryTable]
+    with ScheduleEntryViewRefresher {
 
   import profile.api._
 
@@ -30,6 +32,7 @@ final class ScheduleEntryRepository @Inject() (
     val q = for {
       _ <- tableQuery ++= entries
       _ <- spTableQuery ++= studyProgramAssoc
+      _ <- refreshView()
     } yield ()
     db.run(q.transactionally)
   }
@@ -38,6 +41,7 @@ final class ScheduleEntryRepository @Inject() (
     val q = for {
       _ <- spTableQuery.delete
       _ <- tableQuery.delete
+      _ <- refreshView()
     } yield ()
     db.run(q.transactionally)
   }

@@ -1,6 +1,7 @@
 package database
 
 import models.ModulePart
+import ops.DateOps
 import org.joda.time.{LocalDate, LocalTime}
 import slick.jdbc.PostgresProfile.api._
 
@@ -9,13 +10,13 @@ import java.sql.{Date, Time}
 package object tables {
   implicit val localDateColumnType: BaseColumnType[LocalDate] =
     MappedColumnType.base[LocalDate, Date](
-      localDate => Date.valueOf(localDate.toString("yyyy-MM-dd")),
+      localDate => Date.valueOf(DateOps.print(localDate)),
       date => new LocalDate(date.getTime)
     )
 
   implicit val localTimeColumnType: BaseColumnType[LocalTime] =
     MappedColumnType.base[LocalTime, Time](
-      localTime => Time.valueOf(localTime.toString("HH:mm:ss")),
+      localTime => Time.valueOf(DateOps.print(localTime)),
       time => new LocalTime(time.getTime)
     )
 

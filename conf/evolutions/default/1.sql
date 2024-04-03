@@ -209,7 +209,7 @@ create table student_schedule_entry
     FOREIGN KEY (schedule_entry) REFERENCES schedule_entry (id)
 );
 
-create view schedule_entry_view as
+create materialized view schedule_entry_view as
 select schedule_entry.id                                 as s_id,
        schedule_entry.date                               as s_date,
        schedule_entry.start                              as s_start,
