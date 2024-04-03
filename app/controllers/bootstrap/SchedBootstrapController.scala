@@ -4,7 +4,7 @@ import database.repos.ScheduleEntryRepository
 import database.tables.ModuleStudyProgramScheduleEntry
 import models._
 import org.joda.time.format.DateTimeFormat
-import org.joda.time.{LocalDate, LocalTime}
+import org.joda.time.{LocalDate, LocalTime, Weeks}
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service._
@@ -12,6 +12,7 @@ import service._
 import java.nio.file.{Files, Paths}
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
+import scala.collection.mutable.ListBuffer
 import scala.concurrent.ExecutionContext
 import scala.jdk.CollectionConverters.IteratorHasAsScala
 
@@ -564,10 +565,9 @@ final class SchedBootstrapController @Inject() (
       courses <- courseService.all()
       studyPrograms <- studyProgramService.all()
       moduleInStudyPrograms <- moduleInStudyProgramService.all()
-      semesters <- semesterService.allWithFilter(
-        Map("abbrev" -> Seq("WiSe 23 / 24"))
-      ) if semesters.size == 1
-      semester = semesters.head
+      semesters <- semesterService.all()
+      wise = semesters.find(_.abbrev == "WiSe 23 / 24").get
+      sose = semesters.find(_.abbrev == "SoSe 24").get
       entries = r.body.linesIterator
         .drop(1)
         .map(parseScheduleEntry)
@@ -580,14 +580,14 @@ final class SchedBootstrapController @Inject() (
           mapping.findModule(e.moduleId, e.course, modules) match {
             case Some(module) =>
               val matchedRoom = mapping.findRoom(e.roomIdentifier, rooms)
-              val date = mapping.findDate(e.weekIndex, semester)
+              val date = mapping.findDate(e.weekIndex, sose)
               val (start, end) = mapping.findTime(e.startStd)
               val matchedStudyPrograms = mapping.findStudyProgram(
                 e.studyProgram,
                 e.specialization,
                 studyPrograms
               )
-              mapping.findCourse(semester, module, e.part, courses) match {
+              mapping.findCourse(wise, module, e.part, courses) match {
                 case Some(course) =>
                   val sps = moduleInStudyPrograms
                     .filter(a =>
@@ -626,10 +626,13 @@ final class SchedBootstrapController @Inject() (
               Left(e)
           }
         }
-      scheduleEntriesWithStudyProgram = squash(
-        scheduleEntryProtocols.flatten.distinctBy { a =>
-          (a.course, a.moduleInStudyProgram, a.room, a.date, a.start, a.end)
-        }
+      scheduleEntriesWithStudyProgram = extrapolate(
+        squash(
+          scheduleEntryProtocols.flatten.distinctBy { a =>
+            (a.course, a.moduleInStudyProgram, a.room, a.date, a.start, a.end)
+          }
+        ),
+        sose
       )
       scheduleEntries = scheduleEntriesWithStudyProgram.map(_._1)
       studyProgramAssocs = scheduleEntriesWithStudyProgram.flatMap(_._2)
@@ -639,6 +642,53 @@ final class SchedBootstrapController @Inject() (
       )
     } yield Ok(Json.obj("created" -> scheduleEntries.size))
   }
+
+  private def extrapolate(
+      xs: List[(ScheduleEntry, Iterable[ModuleStudyProgramScheduleEntry])],
+      s: Semester
+  ) = {
+    val weeks = Weeks.weeksBetween(s.lectureStart, s.lectureEnd)
+    val blockedDays = this.blockedDays
+    val result = ListBuffer
+      .empty[(ScheduleEntry, Iterable[ModuleStudyProgramScheduleEntry])]
+    (0 until weeks.getWeeks).foreach { week =>
+      xs.foreach { case (s, sps) =>
+        val newDate = s.date.plusWeeks(week)
+        if (!blockedDays.contains(newDate)) {
+          val newSchedule = s.copy(id = UUID.randomUUID, date = newDate)
+          val newSps = sps.map(sp => sp.copy(newSchedule.id))
+          result += ((newSchedule, newSps))
+        }
+      }
+    }
+    result.toList
+  }
+
+  private def blockedDays: List[LocalDate] =
+    List(
+      // holidays
+      LocalDate.parse("2024-05-01"),
+      LocalDate.parse("2024-05-09"),
+      LocalDate.parse("2024-05-20"),
+      LocalDate.parse("2024-05-30"),
+      // exam
+      LocalDate.parse("2024-04-08"),
+      LocalDate.parse("2024-04-09"),
+      LocalDate.parse("2024-04-10"),
+      LocalDate.parse("2024-04-11"),
+      LocalDate.parse("2024-04-12"),
+      LocalDate.parse("2024-07-22"),
+      LocalDate.parse("2024-07-23"),
+      LocalDate.parse("2024-07-24"),
+      LocalDate.parse("2024-07-25"),
+      LocalDate.parse("2024-07-26"),
+      // other
+      LocalDate.parse("2024-04-01"),
+      LocalDate.parse("2024-04-02"),
+      LocalDate.parse("2024-04-03"),
+      LocalDate.parse("2024-04-04"),
+      LocalDate.parse("2024-04-05")
+    )
 
   private def squash(
       xs: List[ScheduleEntryProtocol]
