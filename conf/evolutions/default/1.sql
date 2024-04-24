@@ -47,15 +47,6 @@ create table study_program
     FOREIGN KEY (specialization_id) REFERENCES specialization (id)
 );
 
-create table study_program_relation
-(
-    "parent" uuid not null,
-    "child"  uuid not null,
-    PRIMARY KEY (parent, child),
-    FOREIGN KEY (parent) REFERENCES study_program (id),
-    FOREIGN KEY (child) REFERENCES study_program (id)
-);
-
 create table language
 (
     "id"       text PRIMARY KEY,
@@ -209,7 +200,8 @@ create table student_schedule_entry
     FOREIGN KEY (schedule_entry) REFERENCES schedule_entry (id)
 );
 
-create materialized view schedule_entry_view as
+create
+materialized view schedule_entry_view as
 select schedule_entry.id                                 as s_id,
        schedule_entry.date                               as s_date,
        schedule_entry.start                              as s_start,
@@ -239,7 +231,8 @@ select schedule_entry.id                                 as s_id,
        module_in_study_program_q.degree_de_label         as degree_label,
        module_in_study_program_q.teaching_unit_id        as teaching_unit_id,
        module_in_study_program_q.teaching_unit_de_label  as teaching_unit_de_label,
-       module_in_study_program_q.teaching_unit_en_label  as teaching_unit_en_label
+       module_in_study_program_q.teaching_unit_en_label  as teaching_unit_en_label,
+       module_in_study_program_q.recommended_semester    as recommended_semester
 from schedule_entry
          join (select room.id         as id,
                       room.label      as label,
@@ -291,6 +284,16 @@ from schedule_entry
                         join identity on identity.id = module_supervisor.supervisor) module_supervisor_q
               on module_supervisor_q.module_id = module.id;
 
+create view module_view as
+select coalesce(json_agg(result), '[]'::json) as modules
+from (select m as module,
+             json_agg(json_build_object('id', sp.id, 'mandatory', msp.mandatory, 'focus', msp.focus)) as study_programs
+      from module as m
+          join module_in_study_program as msp
+      on m.id = msp.module
+          join study_program sp on sp.id = msp.study_program
+      group by m.id) as result
+
 -- !Downs
 
 drop view schedule_entry_view if exists;
@@ -310,7 +313,6 @@ drop table module_relation if exists;
 drop table module if exists;
 drop table season if exists;
 drop table language if exists;
-drop table study_program_relation if exists;
 drop table study_program if exists;
 drop table specialization if exists;
 drop table degree if exists;

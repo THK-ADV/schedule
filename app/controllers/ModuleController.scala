@@ -18,4 +18,16 @@ final class ModuleController @Inject() (
 ) extends AbstractController(cc)
     with Read[UUID, Module] {
   override implicit def writes: Writes[Module] = Module.writes
+
+  override def all() = Action.async { r =>
+    val extend = r
+      .getQueryString("extend")
+      .flatMap(_.toBooleanOption)
+      .getOrElse(false)
+    if (extend)
+      service.repo
+        .getAllFromView()
+        .map(Ok(_))
+    else super.all().apply(r)
+  }
 }

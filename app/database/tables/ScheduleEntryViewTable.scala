@@ -75,6 +75,8 @@ final class ScheduleEntryViewTable(tag: Tag)
 
   def focus = column[Boolean]("focus")
 
+  def recommendedSemester = column[String]("recommended_semester")
+
   override def * : ProvenShape[ScheduleEntryView.DB] = (
     id,
     date,
@@ -101,7 +103,8 @@ final class ScheduleEntryViewTable(tag: Tag)
     teachingUnitDeLabel,
     teachingUnitEnLabel,
     mandatory,
-    focus
+    focus,
+    recommendedSemester
   ) <> (mapRow, unmapRow)
 
   private def mapRow: (
@@ -125,7 +128,8 @@ final class ScheduleEntryViewTable(tag: Tag)
           String,
           String,
           Boolean,
-          Boolean
+          Boolean,
+          String
       )
   ) => ScheduleEntryView.DB = {
     case (
@@ -154,7 +158,8 @@ final class ScheduleEntryViewTable(tag: Tag)
           teachingUnitDeLabel,
           teachingUnitEnLabel,
           mandatory,
-          focus
+          focus,
+          recommendedSemester
         ) =>
       ScheduleEntryView(
         id,
@@ -183,7 +188,8 @@ final class ScheduleEntryViewTable(tag: Tag)
           teachingUnitDeLabel,
           teachingUnitEnLabel,
           mandatory,
-          focus
+          focus,
+          toRecommendedSemester(recommendedSemester)
         )
       )
   }
@@ -209,7 +215,8 @@ final class ScheduleEntryViewTable(tag: Tag)
         String,
         String,
         Boolean,
-        Boolean
+        Boolean,
+        String
     )
   ] = { a =>
     Option(
@@ -244,8 +251,16 @@ final class ScheduleEntryViewTable(tag: Tag)
         a.studyProgram.teachingUnitDeLabel,
         a.studyProgram.teachingUnitEnLabel,
         a.studyProgram.mandatory,
-        a.studyProgram.isFocus
+        a.studyProgram.isFocus,
+        fromRecommendedSemester(a.studyProgram.recommendedSemester)
       )
     )
   }
+
+  private def fromRecommendedSemester(xs: List[Int]): String =
+    if (xs.isEmpty) "" else xs.mkString(",")
+
+  private def toRecommendedSemester(s: String): List[Int] =
+    if (s.isEmpty) Nil
+    else s.split(",").map(_.toInt).toList
 }

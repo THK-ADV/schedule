@@ -76,6 +76,7 @@ object ScheduleEntryView {
       teachingUnitDeLabel: String,
       teachingUnitEnLabel: String,
       mandatory: Boolean,
-      isFocus: Boolean
+      isFocus: Boolean,
+      recommendedSemester: List[Int]
   )
 }
