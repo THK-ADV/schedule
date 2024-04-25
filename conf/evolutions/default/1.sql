@@ -285,14 +285,20 @@ from schedule_entry
               on module_supervisor_q.module_id = module.id;
 
 create view module_view as
-select coalesce(json_agg(result), '[]'::json) as modules
-from (select m as module,
-             json_agg(json_build_object('id', sp.id, 'mandatory', msp.mandatory, 'focus', msp.focus)) as study_programs
+(
+select coalesce(json_agg(json_build_object('id', data.module -> 'id', 'label', data.module -> 'label', 'parts',
+                                           data.module -> 'parts', 'abbrev', data.module -> 'abbrev', 'season',
+                                           data.module -> 'season', 'language', data.module -> 'language',
+                                           'studyPrograms', data.study_programs)), '[]' ::json) as modules
+from (select to_json(m) as module,
+             json_agg(json_build_object('id', sp.id, 'mandatory', msp.mandatory, 'focus',
+                                        msp.focus)) as study_programs
       from module as m
           join module_in_study_program as msp
       on m.id = msp.module
           join study_program sp on sp.id = msp.study_program
-      group by m.id) as result
+      group by m.id) as data
+    );
 
 -- !Downs
 
