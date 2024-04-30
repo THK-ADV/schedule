@@ -15,8 +15,6 @@ final class ScheduleEntryTable(tag: Tag)
 
   def course = column[UUID]("course")
 
-  def room = column[UUID]("room")
-
   def date = column[LocalDate]("date")
 
   def start = column[LocalTime]("start")
@@ -27,7 +25,6 @@ final class ScheduleEntryTable(tag: Tag)
     (
       id,
       course,
-      room,
       date,
       start,
       end

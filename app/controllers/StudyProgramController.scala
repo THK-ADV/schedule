@@ -18,4 +18,14 @@ final class StudyProgramController @Inject() (
 ) extends AbstractController(cc)
     with Read[UUID, StudyProgram] {
   override implicit def writes: Writes[StudyProgram] = StudyProgram.writes
+
+  override def all() =
+    Action.async { r =>
+      val extend = r
+        .getQueryString("extend")
+        .flatMap(_.toBooleanOption)
+        .getOrElse(false)
+      if (extend) service.repo.getAllFromView.map(Ok(_))
+      else super.all().apply(r)
+    }
 }

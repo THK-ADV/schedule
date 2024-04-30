@@ -1,7 +1,7 @@
 package controllers.bootstrap
 
 import database.repos.ScheduleEntryRepository
-import database.tables.ModuleStudyProgramScheduleEntry
+import database.tables.{ModuleStudyProgramScheduleEntry, ScheduleEntryRoom}
 import models._
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.{LocalDate, LocalTime, Weeks}
@@ -636,28 +636,43 @@ final class SchedBootstrapController @Inject() (
       )
       scheduleEntries = scheduleEntriesWithStudyProgram.map(_._1)
       studyProgramAssocs = scheduleEntriesWithStudyProgram.flatMap(_._2)
+      roomsAssocs = scheduleEntriesWithStudyProgram.flatMap(_._3)
       _ <- scheduleEntryRepository.createMany(
         scheduleEntries,
-        studyProgramAssocs
+        studyProgramAssocs,
+        roomsAssocs
       )
     } yield Ok(Json.obj("created" -> scheduleEntries.size))
   }
 
   private def extrapolate(
-      xs: List[(ScheduleEntry, Iterable[ModuleStudyProgramScheduleEntry])],
+      xs: List[
+        (
+            ScheduleEntry,
+            Iterable[ModuleStudyProgramScheduleEntry],
+            Seq[ScheduleEntryRoom]
+        )
+      ],
       s: Semester
   ) = {
     val weeks = Weeks.weeksBetween(s.lectureStart, s.lectureEnd)
     val blockedDays = this.blockedDays
     val result = ListBuffer
-      .empty[(ScheduleEntry, Iterable[ModuleStudyProgramScheduleEntry])]
+      .empty[
+        (
+            ScheduleEntry,
+            Iterable[ModuleStudyProgramScheduleEntry],
+            Iterable[ScheduleEntryRoom]
+        )
+      ]
     (0 until weeks.getWeeks).foreach { week =>
-      xs.foreach { case (s, sps) =>
+      xs.foreach { case (s, sps, rs) =>
         val newDate = s.date.plusWeeks(week)
         if (!blockedDays.contains(newDate)) {
           val newSchedule = s.copy(id = UUID.randomUUID, date = newDate)
-          val newSps = sps.map(sp => sp.copy(newSchedule.id))
-          result += ((newSchedule, newSps))
+          val newSps = sps.map(sp => sp.copy(scheduleEntry = newSchedule.id))
+          val newR = rs.map(r => r.copy(scheduleEntry = newSchedule.id))
+          result += ((newSchedule, newSps, newR))
         }
       }
     }
@@ -719,11 +734,12 @@ final class SchedBootstrapController @Inject() (
       }
       .groupBy(a => (a.date, a.start, a.end, a.course, a.room))
       .map { case ((date, start, end, course, room), xs) =>
-        val s = ScheduleEntry(UUID.randomUUID(), course, room, date, start, end)
+        val s = ScheduleEntry(UUID.randomUUID(), course, date, start, end)
         val ss = xs.map(a =>
           ModuleStudyProgramScheduleEntry(s.id, a.moduleInStudyProgram)
         )
-        (s, ss)
+        val r = Seq(ScheduleEntryRoom(s.id, room))
+        (s, ss, r)
       }
       .toList
   }

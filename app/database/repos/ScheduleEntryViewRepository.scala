@@ -55,7 +55,6 @@ final class ScheduleEntryViewRepository @Inject() (
           assert(date.size == 1)
           assert(start.size == 1)
           assert(end.size == 1)
-          assert(room.size == 1)
           assert(coursePart.size == 1)
           assert(module.size == 1)
 
@@ -64,7 +63,7 @@ final class ScheduleEntryViewRepository @Inject() (
             date.head,
             start.head,
             end.head,
-            room.head,
+            room.toList,
             coursePart.head,
             module.head,
             supervisors.toList,

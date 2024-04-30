@@ -25,13 +25,17 @@ final class ScheduleEntryRepository @Inject() (
 
   private val spTableQuery = TableQuery[ModuleStudyProgramScheduleEntryTable]
 
+  private val rTableQuery = TableQuery[ScheduleEntryRoomTable]
+
   def createMany(
       entries: Seq[ScheduleEntry],
-      studyProgramAssoc: Seq[ModuleStudyProgramScheduleEntry]
+      studyProgramAssoc: Seq[ModuleStudyProgramScheduleEntry],
+      rooms: Seq[ScheduleEntryRoom]
   ) = {
     val q = for {
       _ <- tableQuery ++= entries
       _ <- spTableQuery ++= studyProgramAssoc
+      _ <- rTableQuery ++= rooms
       _ <- refreshView()
     } yield ()
     db.run(q.transactionally)
@@ -39,6 +43,7 @@ final class ScheduleEntryRepository @Inject() (
 
   def deleteAll() = {
     val q = for {
+      _ <- rTableQuery.delete
       _ <- spTableQuery.delete
       _ <- tableQuery.delete
       _ <- refreshView()

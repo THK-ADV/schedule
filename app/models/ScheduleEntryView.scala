@@ -5,12 +5,12 @@ import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
 
-case class ScheduleEntryView[Supervisor, StudyProgram](
+case class ScheduleEntryView[Supervisor, StudyProgram, Room](
     id: UUID,
     date: LocalDate,
     start: LocalTime,
     end: LocalTime,
-    room: ScheduleEntryView.Room,
+    room: Room,
     coursePart: ModulePart,
     module: ScheduleEntryView.Module,
     supervisor: Supervisor,
@@ -18,8 +18,8 @@ case class ScheduleEntryView[Supervisor, StudyProgram](
 ) extends UniqueEntity[UUID]
 
 object ScheduleEntryView {
-  type DB = ScheduleEntryView[ModuleSupervisor, StudyProgram]
-  type View = ScheduleEntryView[List[ModuleSupervisor], List[StudyProgram]]
+  type DB = ScheduleEntryView[ModuleSupervisor, StudyProgram, Room]
+  type View = ScheduleEntryView[List[ModuleSupervisor], List[StudyProgram], List[Room]]
 
   implicit def supervisorWrites: Writes[ModuleSupervisor] = Json.writes
 
@@ -35,7 +35,7 @@ object ScheduleEntryView {
       "date" -> view.date,
       "start" -> view.start,
       "end" -> view.end,
-      "room" -> Json.toJson(view.room),
+      "rooms" -> Json.toJson(view.room),
       "coursePart" -> Json.toJson(view.coursePart),
       "module" -> Json.toJson(view.module),
       "supervisor" -> Json.toJson(view.supervisor),
