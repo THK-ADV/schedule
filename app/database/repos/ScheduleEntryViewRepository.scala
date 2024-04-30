@@ -1,7 +1,8 @@
 package database.repos
 
+import controllers.PreferredLanguage
 import database.tables.ScheduleEntryViewTable
-import models.{ModulePart, ScheduleEntryView}
+import models.ScheduleEntryView
 import org.joda.time.{LocalDate, LocalTime}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
@@ -23,7 +24,8 @@ final class ScheduleEntryViewRepository @Inject() (
 
   def all(
       from: LocalDate,
-      to: LocalDate
+      to: LocalDate,
+      lang: PreferredLanguage
   ): Future[Iterable[ScheduleEntryView.View]] = {
     import database.tables.localDateColumnType
     db.run(
@@ -35,27 +37,36 @@ final class ScheduleEntryViewRepository @Inject() (
           val start = ListBuffer.empty[LocalTime]
           val end = ListBuffer.empty[LocalTime]
           val room = ListBuffer.empty[Room]
-          val coursePart = ListBuffer.empty[ModulePart]
+          val courseLabel = ListBuffer.empty[String]
           val module = ListBuffer.empty[Module]
           val supervisors = ListBuffer.empty[ModuleSupervisor]
-          val studyPrograms = ListBuffer.empty[StudyProgram]
+          val studyPrograms = ListBuffer.empty[StudyProgram[String, String]]
 
           xs.foreach { x: ScheduleEntryView.DB =>
             if (!date.contains(x.date)) date += x.date
             if (!start.contains(x.start)) start += x.start
             if (!end.contains(x.end)) end += x.end
             if (!room.contains(x.room)) room += x.room
-            if (!coursePart.contains(x.coursePart)) coursePart += x.coursePart
+            val cl =
+              if (lang.value == "de") x.courseLabel._1 else x.courseLabel._2
+            if (!courseLabel.contains(cl)) courseLabel += cl
             if (!module.contains(x.module)) module += x.module
             if (!supervisors.contains(x.supervisor)) supervisors += x.supervisor
-            if (!studyPrograms.contains(x.studyProgram))
+            val spLabel =
+              if (lang.value == "de") x.studyProgram.label._1
+              else x.studyProgram.label._2
+            val tuLabel =
+              if (lang.value == "de") x.studyProgram.teachingUnitLabel._1
+              else x.studyProgram.teachingUnitLabel._2
+            if (!studyPrograms.exists(_.id == x.studyProgram.id))
               studyPrograms += x.studyProgram
+                .copy(label = spLabel, teachingUnitLabel = tuLabel)
           }
 
           assert(date.size == 1)
           assert(start.size == 1)
           assert(end.size == 1)
-          assert(coursePart.size == 1)
+          assert(courseLabel.size == 1)
           assert(module.size == 1)
 
           ScheduleEntryView(
@@ -64,7 +75,7 @@ final class ScheduleEntryViewRepository @Inject() (
             start.head,
             end.head,
             room.toList,
-            coursePart.head,
+            courseLabel.head,
             module.head,
             supervisors.toList,
             studyPrograms.toList

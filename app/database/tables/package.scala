@@ -1,6 +1,6 @@
 package database
 
-import models.ModulePart
+import models.CourseId
 import ops.DateOps
 import org.joda.time.{LocalDate, LocalTime}
 import slick.jdbc.PostgresProfile.api._
@@ -20,16 +20,16 @@ package object tables {
       time => new LocalTime(time.getTime)
     )
 
-  implicit val modulePartColumnType: BaseColumnType[ModulePart] =
-    MappedColumnType.base[ModulePart, String](
+  implicit val modulePartColumnType: BaseColumnType[CourseId] =
+    MappedColumnType.base[CourseId, String](
       _.id,
-      ModulePart.apply
+      CourseId.apply
     )
 
-  implicit val modulePartsColumnType: BaseColumnType[List[ModulePart]] =
-    MappedColumnType.base[List[ModulePart], String](
+  implicit val modulePartsColumnType: BaseColumnType[List[CourseId]] =
+    MappedColumnType.base[List[CourseId], String](
       xs => if (xs.isEmpty) "" else xs.mkString(","),
-      x => if (x.isEmpty) Nil else x.split(",").toList.map(ModulePart.apply)
+      x => if (x.isEmpty) Nil else x.split(",").toList.map(CourseId.apply)
     )
 
   implicit val intListColumnType: BaseColumnType[List[Int]] =

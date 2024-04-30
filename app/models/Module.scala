@@ -10,7 +10,7 @@ case class Module(
     abbrev: String,
     language: String,
     season: String,
-    parts: List[ModulePart]
+    parts: List[CourseId]
 ) extends UniqueEntity[UUID]
 
 object Module {

@@ -1,7 +1,7 @@
 package database.tables
 
 import database.UUIDUniqueColumn
-import models.{ModulePart, ScheduleEntryView}
+import models.ScheduleEntryView
 import org.joda.time.{LocalDate, LocalTime}
 import slick.jdbc.PostgresProfile.api._
 import slick.lifted.ProvenShape
@@ -31,7 +31,9 @@ final class ScheduleEntryViewTable(tag: Tag)
 
   def campusLabel = column[String]("campus_label")
 
-  def coursePart = column[ModulePart]("course_part")
+  def courseDeLabel = column[String]("course_de_label")
+
+  def courseEnLabel = column[String]("course_en_label")
 
   def moduleId = column[UUID]("module_id")
 
@@ -83,7 +85,7 @@ final class ScheduleEntryViewTable(tag: Tag)
     start,
     end,
     (roomId, roomIdentifier, campusId, campusLabel),
-    coursePart,
+    (courseDeLabel, courseEnLabel),
     (moduleId, moduleLabel, moduleAbbrev, moduleLanguage),
     (
       moduleLecturerId,
@@ -93,15 +95,13 @@ final class ScheduleEntryViewTable(tag: Tag)
       moduleLecturerTitle
     ),
     spId,
-    spDeLabel,
-    spEnLabel,
+    (spDeLabel, spEnLabel),
     poId,
     poNumber,
     degreeId,
     degreeLabel,
     teachingUnitId,
-    teachingUnitDeLabel,
-    teachingUnitEnLabel,
+    (teachingUnitDeLabel, teachingUnitEnLabel),
     mandatory,
     focus,
     recommendedSemester
@@ -114,19 +114,17 @@ final class ScheduleEntryViewTable(tag: Tag)
           LocalTime,
           LocalTime,
           (UUID, String, UUID, String),
-          ModulePart,
+          (String, String),
           (UUID, String, String, String),
           (String, String, String, String, String),
           UUID,
-          String,
-          String,
+          (String, String),
           String,
           Int,
           String,
           String,
           UUID,
-          String,
-          String,
+          (String, String),
           Boolean,
           Boolean,
           String
@@ -138,7 +136,7 @@ final class ScheduleEntryViewTable(tag: Tag)
           start,
           end,
           (roomId, roomIdentifier, campusId, campusLabel),
-          coursePart,
+          courseLabel,
           (moduleId, moduleLabel, moduleAbbrev, moduleLanguage),
           (
             moduleLecturerId,
@@ -148,15 +146,13 @@ final class ScheduleEntryViewTable(tag: Tag)
             moduleLecturerTitle
           ),
           spId,
-          spDeLabel,
-          spEnLabel,
+          spLabel,
           poId,
           poNumber,
           degreeId,
           degreeLabel,
           teachingUnitId,
-          teachingUnitDeLabel,
-          teachingUnitEnLabel,
+          teachingUnitLabel,
           mandatory,
           focus,
           recommendedSemester
@@ -167,7 +163,7 @@ final class ScheduleEntryViewTable(tag: Tag)
         start,
         end,
         Room(roomId, roomIdentifier, campusId, campusLabel),
-        coursePart,
+        courseLabel,
         Module(moduleId, moduleLabel, moduleAbbrev, moduleLanguage),
         ModuleSupervisor(
           moduleLecturerId,
@@ -178,15 +174,13 @@ final class ScheduleEntryViewTable(tag: Tag)
         ),
         StudyProgram(
           spId,
-          spDeLabel,
-          spEnLabel,
+          spLabel,
           poId,
           poNumber,
           degreeId,
           degreeLabel,
           teachingUnitId,
-          teachingUnitDeLabel,
-          teachingUnitEnLabel,
+          teachingUnitLabel,
           mandatory,
           focus,
           toRecommendedSemester(recommendedSemester)
@@ -201,19 +195,17 @@ final class ScheduleEntryViewTable(tag: Tag)
         LocalTime,
         LocalTime,
         (UUID, String, UUID, String),
-        ModulePart,
+        (String, String),
         (UUID, String, String, String),
         (String, String, String, String, String),
         UUID,
-        String,
-        String,
+        (String, String),
         String,
         Int,
         String,
         String,
         UUID,
-        String,
-        String,
+        (String, String),
         Boolean,
         Boolean,
         String
@@ -231,7 +223,7 @@ final class ScheduleEntryViewTable(tag: Tag)
           a.room.campusId,
           a.room.campusLabel
         ),
-        a.coursePart,
+        a.courseLabel,
         (a.module.id, a.module.label, a.module.abbrev, a.module.language),
         (
           a.supervisor.id,
@@ -241,15 +233,13 @@ final class ScheduleEntryViewTable(tag: Tag)
           a.supervisor.title
         ),
         a.studyProgram.id,
-        a.studyProgram.deLabel,
-        a.studyProgram.enLabel,
+        a.studyProgram.label,
         a.studyProgram.poId,
         a.studyProgram.poNumber,
         a.studyProgram.degreeId,
         a.studyProgram.degreeLabel,
         a.studyProgram.teachingUnitId,
-        a.studyProgram.teachingUnitDeLabel,
-        a.studyProgram.teachingUnitEnLabel,
+        a.studyProgram.teachingUnitLabel,
         a.studyProgram.mandatory,
         a.studyProgram.isFocus,
         fromRecommendedSemester(a.studyProgram.recommendedSemester)

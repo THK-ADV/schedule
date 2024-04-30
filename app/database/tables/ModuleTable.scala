@@ -1,7 +1,7 @@
 package database.tables
 
 import database.UUIDUniqueColumn
-import models.{Module, ModulePart}
+import models.{Module, CourseId}
 import slick.jdbc.PostgresProfile.api._
 
 final class ModuleTable(tag: Tag)
@@ -16,7 +16,7 @@ final class ModuleTable(tag: Tag)
 
   def season = column[String]("season")
 
-  def parts = column[List[ModulePart]]("parts")
+  def parts = column[List[CourseId]]("parts")
 
   def * = (
     id,

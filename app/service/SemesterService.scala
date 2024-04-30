@@ -25,12 +25,12 @@ final class SemesterService @Inject() (
         s"semester start should be before semester end, but was ${elem.start} - ${elem.end}"
       )
     ) orElse Option.unless(
-      elem.label.startsWith("Sommersemester") || elem.label.startsWith(
+      elem.deLabel.startsWith("Sommersemester") || elem.deLabel.startsWith(
         "Wintersemester"
       )
     )(
       new Throwable(
-        s"semester label must start with 'Sommersemester' or 'Wintersemester', but was ${elem.label}"
+        s"semester label must start with 'Sommersemester' or 'Wintersemester', but was ${elem.deLabel}"
       )
     )
 }

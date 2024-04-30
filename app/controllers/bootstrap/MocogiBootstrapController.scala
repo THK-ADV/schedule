@@ -118,7 +118,7 @@ final class MocogiBootstrapController @Inject() (
           m.metadata.workload.collect {
             case (k, v)
                 if (k == "lecture" | k == "seminar" | k == "practical" | k == "exercise") && v > 0 =>
-              ModulePart(k)
+              CourseId(k)
           }.toList
         )
 

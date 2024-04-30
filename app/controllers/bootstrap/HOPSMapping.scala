@@ -1,6 +1,6 @@
 package controllers.bootstrap
 
-import models.{Course, Module, ModulePart, Room, Semester, StudyProgram}
+import models.{Course, Module, CourseId, Room, Semester, StudyProgram}
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.{LocalDate, LocalTime}
 
@@ -144,16 +144,16 @@ class HOPSMapping(mappingCSV: Path) {
       courses: Seq[Course]
   ): Option[Course] = {
     val matchedPart = part match {
-      case "V"  => ModulePart.Lecture
-      case "P"  => ModulePart.Practical
-      case "UE" => ModulePart.Exercise
-      case "S"  => ModulePart.Seminar
-      case "T"  => ModulePart.Tutorial
+      case "V"  => CourseId.Lecture
+      case "P"  => CourseId.Practical
+      case "UE" => CourseId.Exercise
+      case "S"  => CourseId.Seminar
+      case "T"  => CourseId.Tutorial
       case _    => throw new Throwable(s"unknown part $part")
     }
     courses
       .find(c =>
-        c.semester == semester.id && c.module == module.id && c.part == matchedPart
+        c.semester == semester.id && c.module == module.id && c.courseId == matchedPart
       )
   }
 }

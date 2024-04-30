@@ -48,7 +48,6 @@ GET         /people/:id                       controllers.PersonController.get(i
 
 GET         /semesters                        controllers.SemesterController.all()
 GET         /semesters/:id                    controllers.SemesterController.get(id: java.util.UUID)
-POST        /semesters                        controllers.SemesterController.create()
 
 GET         /courses                          controllers.CourseController.all()
 GET         /courses/:id                      controllers.CourseController.get(id: java.util.UUID)

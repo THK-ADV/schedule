@@ -11,7 +11,9 @@ final class SemesterTable(tag: Tag)
 
   import database.tables.localDateColumnType
 
-  def label = column[String]("label")
+  def deLabel = column[String]("de_label")
+
+  def enLabel = column[String]("en_label")
 
   def abbrev = column[String]("abbrev")
 
@@ -25,7 +27,8 @@ final class SemesterTable(tag: Tag)
 
   def * = (
     id,
-    label,
+    deLabel,
+    enLabel,
     abbrev,
     start,
     end,

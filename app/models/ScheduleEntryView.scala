@@ -5,21 +5,31 @@ import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
 
-case class ScheduleEntryView[Supervisor, StudyProgram, Room](
+case class ScheduleEntryView[Supervisor, StudyProgram, Room, CourseLabel](
     id: UUID,
     date: LocalDate,
     start: LocalTime,
     end: LocalTime,
     room: Room,
-    coursePart: ModulePart,
+    courseLabel: CourseLabel,
     module: ScheduleEntryView.Module,
     supervisor: Supervisor,
     studyProgram: StudyProgram
 ) extends UniqueEntity[UUID]
 
 object ScheduleEntryView {
-  type DB = ScheduleEntryView[ModuleSupervisor, StudyProgram, Room]
-  type View = ScheduleEntryView[List[ModuleSupervisor], List[StudyProgram], List[Room]]
+  type DB = ScheduleEntryView[
+    ModuleSupervisor,
+    StudyProgram[(String, String), (String, String)],
+    Room,
+    (String, String)
+  ]
+  type View = ScheduleEntryView[
+    List[ModuleSupervisor],
+    List[StudyProgram[String, String]],
+    List[Room],
+    String
+  ]
 
   implicit def supervisorWrites: Writes[ModuleSupervisor] = Json.writes
 
@@ -27,7 +37,8 @@ object ScheduleEntryView {
 
   implicit def roomWrites: Writes[Room] = Json.writes
 
-  implicit def studyProgramWrites: Writes[StudyProgram] = Json.writes
+  implicit def studyProgramWrites: Writes[StudyProgram[String, String]] =
+    Json.writes
 
   implicit def writes: Writes[View] = view =>
     Json.obj(
@@ -36,7 +47,7 @@ object ScheduleEntryView {
       "start" -> view.start,
       "end" -> view.end,
       "rooms" -> Json.toJson(view.room),
-      "coursePart" -> Json.toJson(view.coursePart),
+      "courseLabel" -> view.courseLabel,
       "module" -> Json.toJson(view.module),
       "supervisor" -> Json.toJson(view.supervisor),
       "studyProgram" -> Json.toJson(view.studyProgram)
@@ -64,17 +75,15 @@ object ScheduleEntryView {
       campusLabel: String
   )
 
-  case class StudyProgram(
+  case class StudyProgram[Label, TeachingUnitLabel](
       id: UUID,
-      deLabel: String,
-      enLabel: String,
+      label: Label,
       poId: String,
       poNumber: Int,
       degreeId: String,
       degreeLabel: String,
       teachingUnitId: UUID,
-      teachingUnitDeLabel: String,
-      teachingUnitEnLabel: String,
+      teachingUnitLabel: TeachingUnitLabel,
       mandatory: Boolean,
       isFocus: Boolean,
       recommendedSemester: List[Int]

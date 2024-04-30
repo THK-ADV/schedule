@@ -67,6 +67,7 @@ final class SchedBootstrapController @Inject() (
       Semester(
         UUID.randomUUID(),
         "Sommersemester 2023",
+        "Summer Semester 2023",
         "SoSe 23",
         LocalDate.parse("01.03.2023", df),
         LocalDate.parse("31.08.2023", df),
@@ -76,6 +77,7 @@ final class SchedBootstrapController @Inject() (
       Semester(
         UUID.randomUUID(),
         "Wintersemester 2023 / 24",
+        "Winter Semester 2023 / 24",
         "WiSe 23 / 24",
         LocalDate.parse("01.09.2023", df),
         LocalDate.parse("29.02.2024", df),
@@ -85,6 +87,7 @@ final class SchedBootstrapController @Inject() (
       Semester(
         UUID.randomUUID(),
         "Sommersemester 2024",
+        "Summer Semester 2024",
         "SoSe 24",
         LocalDate.parse("01.03.2024", df),
         LocalDate.parse("31.08.2024", df),
@@ -94,6 +97,7 @@ final class SchedBootstrapController @Inject() (
       Semester(
         UUID.randomUUID(),
         "Wintersemester 2024 / 25",
+        "Winter Semester 2024 / 25",
         "WiSe 24 / 25",
         LocalDate.parse("01.09.2024", df),
         LocalDate.parse("28.02.2025", df),
@@ -103,6 +107,7 @@ final class SchedBootstrapController @Inject() (
       Semester(
         UUID.randomUUID(),
         "Sommersemester 2025",
+        "Summer Semester 2025",
         "SoSe 25",
         LocalDate.parse("01.03.2025", df),
         LocalDate.parse("31.08.2025", df),
@@ -112,6 +117,7 @@ final class SchedBootstrapController @Inject() (
       Semester(
         UUID.randomUUID(),
         "Wintersemester 2025 / 26",
+        "Winter Semester 2025 / 26",
         "WiSe 25 / 26",
         LocalDate.parse("01.09.2025", df),
         LocalDate.parse("28.02.2026", df),
@@ -121,6 +127,7 @@ final class SchedBootstrapController @Inject() (
       Semester(
         UUID.randomUUID(),
         "Sommersemester 2026",
+        "Summer Semester 2026",
         "SoSe 26",
         LocalDate.parse("01.03.2026", df),
         LocalDate.parse("31.08.2026", df),
@@ -130,6 +137,7 @@ final class SchedBootstrapController @Inject() (
       Semester(
         UUID.randomUUID(),
         "Wintersemester 2026 / 27",
+        "Winter Semester 2026 / 27",
         "WiSe 26 / 27",
         LocalDate.parse("01.09.2026", df),
         LocalDate.parse("28.02.2027", df),
@@ -139,6 +147,7 @@ final class SchedBootstrapController @Inject() (
       Semester(
         UUID.randomUUID(),
         "Sommersemester 2027",
+        "Summer Semester 2027",
         "SoSe 27",
         LocalDate.parse("01.03.2027", df),
         LocalDate.parse("31.08.2027", df),
@@ -148,6 +157,7 @@ final class SchedBootstrapController @Inject() (
       Semester(
         UUID.randomUUID(),
         "Wintersemester 2027 / 28",
+        "Winter Semester 2027 / 28",
         "WiSe 27 / 28",
         LocalDate.parse("01.09.2027", df),
         LocalDate.parse("29.02.2028", df),
@@ -157,6 +167,7 @@ final class SchedBootstrapController @Inject() (
       Semester(
         UUID.randomUUID(),
         "Sommersemester 2028",
+        "Summer Semester 2028",
         "SoSe 28",
         LocalDate.parse("01.03.2028", df),
         LocalDate.parse("31.08.2028", df),
@@ -166,6 +177,7 @@ final class SchedBootstrapController @Inject() (
       Semester(
         UUID.randomUUID(),
         "Wintersemester 2028 / 29",
+        "Winter Semester 2028 / 29",
         "WiSe 28 / 29",
         LocalDate.parse("01.09.2028", df),
         LocalDate.parse("28.02.2029", df),
@@ -175,6 +187,7 @@ final class SchedBootstrapController @Inject() (
       Semester(
         UUID.randomUUID(),
         "Sommersemester 2029",
+        "Summer Semester 2029",
         "SoSe 29",
         LocalDate.parse("01.03.2029", df),
         LocalDate.parse("31.08.2029", df),
@@ -184,6 +197,7 @@ final class SchedBootstrapController @Inject() (
       Semester(
         UUID.randomUUID(),
         "Wintersemester 2029 / 30",
+        "Winter Semester 2029 / 30",
         "WiSe 29 / 30",
         LocalDate.parse("01.09.2029", df),
         LocalDate.parse("28.02.2030", df),
@@ -193,6 +207,7 @@ final class SchedBootstrapController @Inject() (
       Semester(
         UUID.randomUUID(),
         "Sommersemester 2030",
+        "Summer Semester 2030",
         "SoSe 30",
         LocalDate.parse("01.03.2030", df),
         LocalDate.parse("31.08.2030", df),
@@ -278,252 +293,252 @@ final class SchedBootstrapController @Inject() (
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("b126ec6a-0241-4f6b-90d6-c0ecad8e3dd4"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/d4ad3104-c495-4acb-8ce0-a73881210650
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("d4ad3104-c495-4acb-8ce0-a73881210650"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/6716c404-632a-4918-85a1-0ba0051bacb5
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("6716c404-632a-4918-85a1-0ba0051bacb5"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/42123d0e-f9ee-4117-99f4-0c985aca1313
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("42123d0e-f9ee-4117-99f4-0c985aca1313"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/178d394f-0b03-4566-80b6-272fbd49f760
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("178d394f-0b03-4566-80b6-272fbd49f760"),
-          ModulePart.Seminar
+          CourseId.Seminar
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/5941afae-a356-4dce-9e9b-1b70371c8202
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("5941afae-a356-4dce-9e9b-1b70371c8202"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/e045b42f-f56b-4f2f-94e3-fa56f3660b89
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("e045b42f-f56b-4f2f-94e3-fa56f3660b89"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/d4ad3104-c495-4acb-8ce0-a73881210650
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("d4ad3104-c495-4acb-8ce0-a73881210650"),
-          ModulePart.Tutorial
+          CourseId.Tutorial
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/5941afae-a356-4dce-9e9b-1b70371c8202
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("5941afae-a356-4dce-9e9b-1b70371c8202"),
-          ModulePart.Tutorial
+          CourseId.Tutorial
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/315b421f-50fc-44a0-b584-8b38c9f53c87
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("315b421f-50fc-44a0-b584-8b38c9f53c87"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/03fa8ca0-4979-4514-a0aa-b0d2e73e07f8
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("03fa8ca0-4979-4514-a0aa-b0d2e73e07f8"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/dfabe6dd-6f9a-498d-912e-3bb84fe68bee
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("dfabe6dd-6f9a-498d-912e-3bb84fe68bee"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/9ae4f461-817e-479b-90e1-071ec82c2079
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("9ae4f461-817e-479b-90e1-071ec82c2079"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/9f464cde-5237-4832-a7ec-23afc46cf4eb
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("9f464cde-5237-4832-a7ec-23afc46cf4eb"),
-          ModulePart.Seminar
+          CourseId.Seminar
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/3a4077fa-fb35-4e83-a54f-1473522c57c9
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("3a4077fa-fb35-4e83-a54f-1473522c57c9"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/5b712502-14b2-49f1-9d77-a2ed852917c1
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("5b712502-14b2-49f1-9d77-a2ed852917c1"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/5232fe71-7bd2-4528-a0ff-9cca594120a5
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("5232fe71-7bd2-4528-a0ff-9cca594120a5"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/5d3d819a-22ba-4bf6-a2e2-e9feb7e3e71e
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("5d3d819a-22ba-4bf6-a2e2-e9feb7e3e71e"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/2c0d9243-3f16-43be-bec8-e85ec6e5153e
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("2c0d9243-3f16-43be-bec8-e85ec6e5153e"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/b694276e-de90-40e8-b2cd-ce1d22407fd3
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("b694276e-de90-40e8-b2cd-ce1d22407fd3"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/71105c23-d165-472c-8bcd-cab66c9a08f7
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("71105c23-d165-472c-8bcd-cab66c9a08f7"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/ca272b86-8a95-4e8d-b56f-4c63d389b51f
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("ca272b86-8a95-4e8d-b56f-4c63d389b51f"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/dca56fa6-1952-4b47-bf60-3dcb32e86ada
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("dca56fa6-1952-4b47-bf60-3dcb32e86ada"),
-          ModulePart.Tutorial
+          CourseId.Tutorial
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/41ca9f81-63f1-4dba-9c33-adae878ee2ca
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("41ca9f81-63f1-4dba-9c33-adae878ee2ca"),
-          ModulePart.Exercise
+          CourseId.Exercise
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/3a5c00ce-c2a9-4d28-aa40-4968b7540448
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("3a5c00ce-c2a9-4d28-aa40-4968b7540448"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/069ab61c-b54a-48b5-815d-117fc9de829c
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("069ab61c-b54a-48b5-815d-117fc9de829c"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/66cdf64a-a164-46b1-a654-0c95564b563c
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("66cdf64a-a164-46b1-a654-0c95564b563c"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/c285df00-5cc3-4e89-8c9e-e5915b581e5d
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("c285df00-5cc3-4e89-8c9e-e5915b581e5d"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/15769d73-a0b6-49a5-9b47-3e155a063e20
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("15769d73-a0b6-49a5-9b47-3e155a063e20"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/fb968b0d-462c-4354-9322-02617ca801df
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("fb968b0d-462c-4354-9322-02617ca801df"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/f88e64e6-8344-4b7f-ad9a-8499fed4196f
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("f88e64e6-8344-4b7f-ad9a-8499fed4196f"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/65a319e8-788c-4469-ade1-a10566d87a4a
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("65a319e8-788c-4469-ade1-a10566d87a4a"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/876c5d42-f579-4a7c-953c-76895b731ff4
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("876c5d42-f579-4a7c-953c-76895b731ff4"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/072df25e-392e-49e7-98c1-400e3fc9f315
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("072df25e-392e-49e7-98c1-400e3fc9f315"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/70d904c0-93d8-4b54-a1a1-1f8ed02417ef
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("70d904c0-93d8-4b54-a1a1-1f8ed02417ef"),
-          ModulePart.Lecture
+          CourseId.Lecture
         ),
         // http://lwivs49.gm.fh-koeln.de:8081/modules/1cf030cd-f0e5-4fe6-9430-0a4b4fbb308c
         Course(
           UUID.randomUUID(),
           semester.id,
           UUID.fromString("1cf030cd-f0e5-4fe6-9430-0a4b4fbb308c"),
-          ModulePart.Lecture
+          CourseId.Lecture
         )
       )
       _ <- courseService.createMany(courses.appendedAll(explicitCourses))

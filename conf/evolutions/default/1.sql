@@ -1,314 +1,428 @@
 -- !Ups
-
-create table faculty
+CREATE TABLE faculty
 (
-    "id"       text PRIMARY KEY,
-    "de_label" text not null,
-    "en_label" text not null
+  "id" text PRIMARY KEY,
+  "de_label" text NOT NULL,
+  "en_label" text NOT NULL
 );
-
-create table teaching_unit
+CREATE TABLE teaching_unit
 (
-    "id"       uuid PRIMARY KEY,
-    "faculty"  text not null,
-    "de_label" text not null,
-    "en_label" text not null,
-    FOREIGN KEY (faculty) REFERENCES faculty (id)
+  "id" uuid PRIMARY KEY,
+  "faculty" text NOT NULL,
+  "de_label" text NOT NULL,
+  "en_label" text NOT NULL,
+  FOREIGN KEY(faculty) REFERENCES FACULTY(id)
 );
-
-create table degree
+CREATE TABLE degree
 (
-    "id"       text PRIMARY KEY,
-    "de_label" text not null,
-    "de_desc"  text not null,
-    "en_label" text not null,
-    "en_desc"  text not null
+  "id" text PRIMARY KEY,
+  "de_label" text NOT NULL,
+  "de_desc" text NOT NULL,
+  "en_label" text NOT NULL,
+  "en_desc" text NOT NULL
 );
-
-create table specialization
+CREATE TABLE specialization
 (
-    "id"    text PRIMARY KEY,
-    "label" text not null
+  "id" text PRIMARY KEY,
+  "label" text NOT NULL
 );
-
-create table study_program
+CREATE TABLE study_program
 (
-    "id"                uuid PRIMARY KEY,
-    "teaching_unit"     uuid    not null,
-    "degree"            text    not null,
-    "de_label"          text    not null,
-    "en_label"          text    not null,
-    "abbrev"            text    not null,
-    "po_id"             text    not null,
-    "po_number"         integer not null,
-    "specialization_id" text null,
-    FOREIGN KEY (teaching_unit) REFERENCES teaching_unit (id),
-    FOREIGN KEY (degree) REFERENCES degree (id),
-    FOREIGN KEY (specialization_id) REFERENCES specialization (id)
+  "id" uuid PRIMARY KEY,
+  "teaching_unit" uuid NOT NULL,
+  "degree" text NOT NULL,
+  "de_label" text NOT NULL,
+  "en_label" text NOT NULL,
+  "abbrev" text NOT NULL,
+  "po_id" text NOT NULL,
+  "po_number" integer NOT NULL,
+  "specialization_id" text NULL,
+  FOREIGN KEY(teaching_unit) REFERENCES TEACHING_UNIT(id) ,
+  FOREIGN KEY(degree) REFERENCES DEGREE(id) ,
+  FOREIGN KEY(specialization_id) REFERENCES SPECIALIZATION(id)
 );
-
-create table language
+CREATE TABLE language
 (
-    "id"       text PRIMARY KEY,
-    "de_label" text not null,
-    "en_label" text not null
+  "id" text PRIMARY KEY,
+  "de_label" text NOT NULL,
+  "en_label" text NOT NULL
 );
-
-create table season
+CREATE TABLE season
 (
-    "id"       text PRIMARY KEY,
-    "de_label" text not null,
-    "en_label" text not null
+  "id" text PRIMARY KEY,
+  "de_label" text NOT NULL,
+  "en_label" text NOT NULL
 );
-
-create table module
+CREATE TABLE module
 (
-    "id"       uuid PRIMARY KEY,
-    "label"    text not null,
-    "abbrev"   text not null,
-    "language" text not null,
-    "season"   text not null,
-    "parts"    text not null,
-    FOREIGN KEY (language) REFERENCES language (id),
-    FOREIGN KEY (season) REFERENCES season (id)
+  "id" uuid PRIMARY KEY,
+  "label" text NOT NULL,
+  "abbrev" text NOT NULL,
+  "language" text NOT NULL,
+  "season" text NOT NULL,
+  "parts" text NOT NULL,
+  FOREIGN KEY(language) REFERENCES LANGUAGE(id) ,
+  FOREIGN KEY(season) REFERENCES SEASON(id)
 );
-
-create table module_relation
+CREATE TABLE module_relation
 (
-    "parent" uuid not null,
-    "child"  uuid not null,
-    PRIMARY KEY (parent, child),
-    FOREIGN KEY (parent) REFERENCES module (id),
-    FOREIGN KEY (child) REFERENCES module (id)
+  "parent" uuid NOT NULL,
+  "child" uuid NOT NULL,
+  PRIMARY KEY(parent, child),
+  FOREIGN KEY(parent) REFERENCES MODULE(id) ,
+  FOREIGN KEY(child) REFERENCES MODULE(id)
 );
-
-create table module_in_study_program
+CREATE TABLE module_in_study_program
 (
-    "id"                   uuid PRIMARY KEY,
-    "module"               uuid    not null,
-    "study_program"        uuid    not null,
-    "mandatory"            boolean not null,
-    "focus"                boolean not null,
-    "recommended_semester" text    not null,
-    FOREIGN KEY (module) REFERENCES module (id),
-    FOREIGN KEY (study_program) REFERENCES study_program (id)
+  "id" uuid PRIMARY KEY,
+  "module" uuid NOT NULL,
+  "study_program" uuid NOT NULL,
+  "mandatory" boolean NOT NULL,
+  "focus" boolean NOT NULL,
+  "recommended_semester" text NOT NULL,
+  FOREIGN KEY(module) REFERENCES MODULE(id) ,
+  FOREIGN KEY(study_program) REFERENCES STUDY_PROGRAM(id)
 );
-
-create table identity
+CREATE TABLE identity
 (
-    "id"        text PRIMARY KEY,
-    "firstname" text not null,
-    "lastname"  text not null,
-    "title"     text not null,
-    "abbrev"    text not null,
-    "kind"      text not null,
-    "campus_id" text not null
+  "id" text PRIMARY KEY,
+  "firstname" text NOT NULL,
+  "lastname" text NOT NULL,
+  "title" text NOT NULL,
+  "abbrev" text NOT NULL,
+  "kind" text NOT NULL,
+  "campus_id" text NOT NULL
 );
-
-create table module_supervisor
+CREATE TABLE module_supervisor
 (
-    "module"     uuid not null,
-    "supervisor" text not null,
-    PRIMARY KEY (module, supervisor),
-    FOREIGN KEY (module) REFERENCES module (id),
-    FOREIGN KEY (supervisor) REFERENCES identity (id)
+  "module" uuid NOT NULL,
+  "supervisor" text NOT NULL,
+  PRIMARY KEY(module, supervisor),
+  FOREIGN KEY(module) REFERENCES MODULE(id) ,
+  FOREIGN KEY(supervisor) REFERENCES IDENTITY(id)
 );
-
-create table semester
+CREATE TABLE semester
 (
-    "id"            uuid PRIMARY KEY,
-    "label"         text not null,
-    "abbrev"        text not null,
-    "start"         date not null,
-    "end"           date not null,
-    "lecture_start" date not null,
-    "lecture_end"   date not null
+  "id" uuid PRIMARY KEY,
+  "de_label" text NOT NULL,
+  "en_label" text NOT NULL,
+  "abbrev" text NOT NULL,
+  "start" date NOT NULL,
+  "end" date NOT NULL,
+  "lecture_start" date NOT NULL,
+  "lecture_end" date NOT NULL
 );
-
-create table course
+CREATE TYPE course_id AS ENUM('lecture','seminar','practical','exercise','tutorial') ;
+CREATE CAST (character varying AS course_id) WITH INOUT AS ASSIGNMENT;
+CREATE TABLE course_type
 (
-    "id"       uuid PRIMARY KEY,
-    "semester" uuid not null,
-    "module"   uuid not null,
-    "part"     text not null,
-    FOREIGN KEY (semester) REFERENCES semester (id),
-    FOREIGN KEY (module) REFERENCES module (id)
+  "id" course_id PRIMARY KEY,
+  "de_label" text NOT NULL,
+  "en_label" text NOT NULL
 );
-
-create table course_lecturer
+CREATE TABLE course
 (
-    "lecturer" text not null,
-    "course"   uuid not null,
-    PRIMARY KEY (lecturer, course),
-    FOREIGN KEY (lecturer) REFERENCES identity (id),
-    FOREIGN KEY (course) REFERENCES course (id)
+  "id" uuid PRIMARY KEY,
+  "semester" uuid NOT NULL,
+  "module" uuid NOT NULL,
+  "course_id" course_id NOT NULL,
+  FOREIGN KEY(semester) REFERENCES SEMESTER(id) ,
+  FOREIGN KEY(module) REFERENCES MODULE(id)
 );
-
-create table campus
+CREATE TABLE course_lecturer
 (
-    "id"     uuid PRIMARY KEY,
-    "label"  text not null,
-    "abbrev" text not null
+  "lecturer" text NOT NULL,
+  "course" uuid NOT NULL,
+  PRIMARY KEY(lecturer, course),
+  FOREIGN KEY(lecturer) REFERENCES IDENTITY(id) ,
+  FOREIGN KEY(course) REFERENCES COURSE(id)
 );
-
-create table room
+CREATE TABLE campus
 (
-    "id"         uuid PRIMARY KEY,
-    "campus"     uuid not null,
-    "label"      text not null,
-    "identifier" text not null,
-    "type"       text not null,
-    "capacity"   int  not null,
-    FOREIGN KEY (campus) REFERENCES campus (id)
+  "id" uuid PRIMARY KEY,
+  "label" text NOT NULL,
+  "abbrev" text NOT NULL
 );
-
-create table schedule_entry
+CREATE TABLE room
 (
-    "id"     uuid PRIMARY KEY,
-    "course" uuid not null,
-    "date"   date not null,
-    "start"  time without time zone not null,
-    "end"    time without time zone not null,
-    FOREIGN KEY (course) REFERENCES course (id)
+  "id" uuid PRIMARY KEY,
+  "campus" uuid NOT NULL,
+  "label" text NOT NULL,
+  "identifier" text NOT NULL,
+  "type" text NOT NULL,
+  "capacity" int NOT NULL,
+  FOREIGN KEY(campus) REFERENCES CAMPUS(id)
 );
-
-create table schedule_entry_room
+CREATE TABLE schedule_entry
 (
-    "schedule_entry" uuid not null,
-    "room"           uuid not null,
-    PRIMARY KEY (schedule_entry, room),
-    FOREIGN KEY (schedule_entry) REFERENCES schedule_entry (id),
-    FOREIGN KEY (room) REFERENCES room (id)
+  "id" uuid PRIMARY KEY,
+  "course" uuid NOT NULL,
+  "date" date NOT NULL,
+  "start" time without time zone NOT NULL,
+  "end" time without time zone NOT NULL,
+  FOREIGN KEY(course) REFERENCES COURSE(id)
 );
-
-create table module_in_study_program_placed_in_schedule_entry
+CREATE TABLE schedule_entry_room
 (
-    "module_in_study_program" uuid not null,
-    "schedule_entry"          uuid not null,
-    PRIMARY KEY (module_in_study_program, schedule_entry),
-    FOREIGN KEY (module_in_study_program) REFERENCES module_in_study_program (id),
-    FOREIGN KEY (schedule_entry) REFERENCES schedule_entry (id)
+  "schedule_entry" uuid NOT NULL,
+  "room" uuid NOT NULL,
+  PRIMARY KEY(schedule_entry, room),
+  FOREIGN KEY(schedule_entry) REFERENCES SCHEDULE_ENTRY(id) ,
+  FOREIGN KEY(room) REFERENCES ROOM(id)
 );
-
-create table schedule_entry_lecturer
+CREATE TABLE module_in_study_program_placed_in_schedule_entry
 (
-    "lecturer"       text not null,
-    "schedule_entry" uuid not null,
-    PRIMARY KEY (lecturer, schedule_entry),
-    FOREIGN KEY (lecturer) REFERENCES identity (id),
-    FOREIGN KEY (schedule_entry) REFERENCES schedule_entry (id)
+  "module_in_study_program" uuid NOT NULL,
+  "schedule_entry" uuid NOT NULL,
+  PRIMARY KEY(module_in_study_program, schedule_entry),
+  FOREIGN KEY(module_in_study_program) REFERENCES MODULE_IN_STUDY_PROGRAM(id) ,
+  FOREIGN KEY(schedule_entry) REFERENCES SCHEDULE_ENTRY(id)
 );
-
-create table student_schedule_entry
+CREATE TABLE schedule_entry_lecturer
 (
-    "id"             uuid PRIMARY KEY,
-    "student"        text not null,
-    "schedule_entry" uuid not null,
-    FOREIGN KEY (schedule_entry) REFERENCES schedule_entry (id)
+  "lecturer" text NOT NULL,
+  "schedule_entry" uuid NOT NULL,
+  PRIMARY KEY(lecturer, schedule_entry),
+  FOREIGN KEY(lecturer) REFERENCES IDENTITY(id) ,
+  FOREIGN KEY(schedule_entry) REFERENCES SCHEDULE_ENTRY(id)
 );
-
-create
-materialized view schedule_entry_view as
-select schedule_entry.id                                 as s_id,
-       schedule_entry.date                               as s_date,
-       schedule_entry.start                              as s_start,
-       schedule_entry.end                                as s_end,
-       room.id                                           as room_id,
-       room.identifier                                   as room_identifier,
-       campus.id                                         as campus_id,
-       campus.label                                      as campus_label,
-       course.part                                       as course_part,
-       module.id                                         as module_id,
-       module.label                                      as module_label,
-       module.abbrev                                     as module_abbrev,
-       module.language                                   as module_language,
-       module_supervisor_q.identity_id                   as module_lecturer_id,
-       module_supervisor_q.kind                          as module_lecturer_kind,
-       module_supervisor_q.firstname                     as module_lecturer_firstname,
-       module_supervisor_q.lastname                      as module_lecturer_lastname,
-       module_supervisor_q.title                         as module_lecturer_title,
-       module_in_study_program_q.mandatory               as mandatory,
-       module_in_study_program_q.focus                   as focus,
-       module_in_study_program_q.study_program_po_id     as po_id,
-       module_in_study_program_q.study_program_po_number as po_number,
-       module_in_study_program_q.study_program_id        as sp_id,
-       module_in_study_program_q.study_program_de_label  as sp_de_label,
-       module_in_study_program_q.study_program_en_label  as sp_en_label,
-       module_in_study_program_q.degree_id               as degree_id,
-       module_in_study_program_q.degree_de_label         as degree_label,
-       module_in_study_program_q.teaching_unit_id        as teaching_unit_id,
-       module_in_study_program_q.teaching_unit_de_label  as teaching_unit_de_label,
-       module_in_study_program_q.teaching_unit_en_label  as teaching_unit_en_label,
-       module_in_study_program_q.recommended_semester    as recommended_semester
-from schedule_entry
-         join schedule_entry_room on schedule_entry_room.schedule_entry = schedule_entry.id
-         join room on room.id = schedule_entry_room.room
-         join campus on room.campus = campus.id
-         join course on schedule_entry.course = course.id
-         left join (select course_lecturer.course as course_id,
-                           identity.id            as identity_id,
-                           identity.kind          as kind,
-                           identity.firstname     as firstname,
-                           identity.lastname      as lastname,
-                           identity.title         as title
-                    from course_lecturer
-                             join identity on identity.id = course_lecturer.lecturer) course_lecturer_q
-                   on course_lecturer_q.course_id = course.id
-         join module on course.module = module.id
-         join module_in_study_program_placed_in_schedule_entry
-              on module_in_study_program_placed_in_schedule_entry.schedule_entry = schedule_entry.id
-         join (select module_in_study_program.id                   as id,
-                      module_in_study_program.module               as module_id,
-                      module_in_study_program.mandatory            as mandatory,
-                      module_in_study_program.focus                as focus,
-                      module_in_study_program.recommended_semester as recommended_semester,
-                      study_program.id                             as study_program_id,
-                      study_program.de_label                       as study_program_de_label,
-                      study_program.en_label                       as study_program_en_label,
-                      study_program.po_id                          as study_program_po_id,
-                      study_program.po_number                      as study_program_po_number,
-                      degree.id                                    as degree_id,
-                      degree.de_label                              as degree_de_label,
-                      teaching_unit.id                             as teaching_unit_id,
-                      teaching_unit.de_label                       as teaching_unit_de_label,
-                      teaching_unit.en_label                       as teaching_unit_en_label
-               from module_in_study_program
-                        join study_program on module_in_study_program.study_program = study_program.id
-                        join degree on study_program.degree = degree.id
-                        join teaching_unit on study_program.teaching_unit = teaching_unit.id) module_in_study_program_q
-              on module_in_study_program_q.id = module_in_study_program_placed_in_schedule_entry.module_in_study_program
-         join (select module_supervisor.module as module_id,
-                      identity.id              as identity_id,
-                      identity.kind            as kind,
-                      identity.firstname       as firstname,
-                      identity.lastname        as lastname,
-                      identity.title           as title
-               from module_supervisor
-                        join identity on identity.id = module_supervisor.supervisor) module_supervisor_q
-              on module_supervisor_q.module_id = module.id;
-
+CREATE TABLE student_schedule_entry
+(
+  "id" uuid PRIMARY KEY,
+  "student" text NOT NULL,
+  "schedule_entry" uuid NOT NULL,
+  FOREIGN KEY(schedule_entry) REFERENCES SCHEDULE_ENTRY(id)
+);
+CREATE VIEW module_view AS
+SELECT
+  COALESCE(
+    JSON_AGG(
+      JSON_BUILD_OBJECT(
+        'id',
+        data.module->'id',
+        'label',
+        data.module->'label',
+        'parts',
+        data.module->'parts',
+        'abbrev',
+        data.module->'abbrev',
+        'season',
+        data.module->'season',
+        'language',
+        data.module->'language',
+        'studyPrograms',
+        data.study_programs
+      )
+    ),
+    '[]' :: json
+  ) AS modules
+FROM
+  (
+    SELECT
+      TO_JSON(m) AS module,
+      JSON_AGG(JSON_BUILD_OBJECT('id',sp.id,'mandatory',msp.mandatory,'focus',msp.focus)) AS study_programs
+    FROM
+      module AS m
+      JOIN module_in_study_program AS msp ON m.id = msp.module
+      JOIN study_program sp ON sp.id = msp.study_program
+    GROUP BY
+      m.id
+  ) AS data ;
+CREATE VIEW study_program_view AS
+SELECT
+  JSONB_BUILD_OBJECT(
+    'id',
+    study_program.id,
+    'deLabel',
+    study_program.de_label,
+    'enLabel',
+    study_program.en_label,
+    'poId',
+    study_program.po_id,
+    'poNumber',
+    study_program.po_number,
+    'teachingUnit',
+    study_program.teaching_unit,
+    'degree',
+    JSONB_BUILD_OBJECT('id',degree.id,'label',degree.de_label),
+    'specialization',
+    CASE
+      WHEN specialization.id IS NULL THEN NULL
+      ELSE JSONB_BUILD_OBJECT('id',specialization.id,'label',specialization.label)
+    END
+  ) AS study_programs
+FROM
+  study_program
+  JOIN degree ON study_program.degree = degree.id
+  LEFT JOIN specialization ON study_program.specialization_id = specialization.id;
+CREATE VIEW study_program_view_en AS
+SELECT
+  COALESCE(
+    JSON_AGG(TO_JSONB(study_programs) - 'deLabel' - 'enLabel' || JSONB_BUILD_OBJECT('label',study_programs->'enLabel')),
+    '[]' :: json
+  ) AS study_programs
+FROM
+  study_program_view AS study_programs ;
+CREATE VIEW study_program_view_de AS
+SELECT
+  COALESCE(
+    JSON_AGG(TO_JSONB(study_programs) - 'deLabel' - 'enLabel' || JSONB_BUILD_OBJECT('label',study_programs->'deLabel')),
+    '[]' :: json
+  ) AS study_programs
+FROM
+  study_program_view AS study_programs ;
+CREATE VIEW course_view AS
+SELECT
+  c.id AS id,
+  c.semester AS semester,
+  c.module AS module,
+  c.course_id AS course_id,
+  ct.de_label AS course_de_label,
+  ct.en_label AS course_en_label
+FROM
+  course c
+  JOIN course_type ct ON c.course_id = ct.id;
+CREATE materialized VIEW schedule_entry_view AS
+SELECT
+  schedule_entry.id AS s_id,
+  schedule_entry.date AS s_date,
+  schedule_entry.start AS s_start,
+  schedule_entry.end AS s_end,
+  room.id AS room_id,
+  room.identifier AS room_identifier,
+  campus.id AS campus_id,
+  campus.label AS campus_label,
+  course_view.course_de_label AS course_de_label,
+  course_view.course_en_label AS course_en_label,
+  module.id AS module_id,
+  module.label AS module_label,
+  module.abbrev AS module_abbrev,
+  module.language AS module_language,
+  module_supervisor_q.identity_id AS module_lecturer_id,
+  module_supervisor_q.kind AS module_lecturer_kind,
+  module_supervisor_q.firstname AS module_lecturer_firstname,
+  module_supervisor_q.lastname AS module_lecturer_lastname,
+  module_supervisor_q.title AS module_lecturer_title,
+  module_in_study_program_q.mandatory AS mandatory,
+  module_in_study_program_q.focus AS focus,
+  module_in_study_program_q.study_program_po_id AS po_id,
+  module_in_study_program_q.study_program_po_number AS po_number,
+  module_in_study_program_q.study_program_id AS sp_id,
+  module_in_study_program_q.study_program_de_label AS sp_de_label,
+  module_in_study_program_q.study_program_en_label AS sp_en_label,
+  module_in_study_program_q.degree_id AS degree_id,
+  module_in_study_program_q.degree_de_label AS degree_label,
+  module_in_study_program_q.teaching_unit_id AS teaching_unit_id,
+  module_in_study_program_q.teaching_unit_de_label AS teaching_unit_de_label,
+  module_in_study_program_q.teaching_unit_en_label AS teaching_unit_en_label,
+  module_in_study_program_q.recommended_semester AS recommended_semester
+FROM
+  schedule_entry
+  JOIN schedule_entry_room ON schedule_entry_room.schedule_entry = schedule_entry.id
+  JOIN room ON room.id = schedule_entry_room.room
+  JOIN campus ON room.campus = campus.id
+  JOIN course_view ON schedule_entry.course = course_view.id
+  LEFT JOIN (
+    SELECT
+      course_lecturer.course AS course_id,
+      identity.id AS identity_id,
+      identity.kind AS kind,
+      identity.firstname AS firstname,
+      identity.lastname AS lastname,
+      identity.title AS title
+    FROM
+      course_lecturer
+      JOIN identity ON identity.id = course_lecturer.lecturer
+  ) course_lecturer_q ON course_lecturer_q.course_id = course_view.id
+  JOIN module ON course_view.module = module.id
+  JOIN module_in_study_program_placed_in_schedule_entry ON module_in_study_program_placed_in_schedule_entry.schedule_entry = schedule_entry.id
+  JOIN (
+    SELECT
+      module_in_study_program.id AS id,
+      module_in_study_program.module AS module_id,
+      module_in_study_program.mandatory AS mandatory,
+      module_in_study_program.focus AS focus,
+      module_in_study_program.recommended_semester AS recommended_semester,
+      study_program.id AS study_program_id,
+      study_program.de_label AS study_program_de_label,
+      study_program.en_label AS study_program_en_label,
+      study_program.po_id AS study_program_po_id,
+      study_program.po_number AS study_program_po_number,
+      degree.id AS degree_id,
+      degree.de_label AS degree_de_label,
+      teaching_unit.id AS teaching_unit_id,
+      teaching_unit.de_label AS teaching_unit_de_label,
+      teaching_unit.en_label AS teaching_unit_en_label
+    FROM
+      module_in_study_program
+      JOIN study_program ON module_in_study_program.study_program = study_program.id
+      JOIN degree ON study_program.degree = degree.id
+      JOIN teaching_unit ON study_program.teaching_unit = teaching_unit.id
+  ) module_in_study_program_q ON module_in_study_program_q.id = module_in_study_program_placed_in_schedule_entry.module_in_study_program
+  JOIN (
+    SELECT
+      module_supervisor.module AS module_id,
+      identity.id AS identity_id,
+      identity.kind AS kind,
+      identity.firstname AS firstname,
+      identity.lastname AS lastname,
+      identity.title AS title
+    FROM
+      module_supervisor
+      JOIN identity ON identity.id = module_supervisor.supervisor
+  ) module_supervisor_q ON module_supervisor_q.module_id = module.id;
+INSERT INTO course_type VALUES
+(
+  'lecture',
+  'Vorlesung',
+  'Lecture'
+)
+,
+(
+  'seminar',
+  'Seminar',
+  'Seminar'
+)
+,
+(
+  'practical',
+  'Praktikum',
+  'Lab'
+)
+,
+(
+  'exercise',
+  'Übung',
+  'Exercise'
+)
+,
+(
+  'tutorial',
+  'Tutorium',
+  'Tutorial'
+);
 -- !Downs
-drop
-materialized view if exists schedule_entry_view;
-drop table student_schedule_entry if exists;
-drop table schedule_entry_lecturer if exists;
-drop table module_in_study_program_placed_in_schedule_entry if exists;
-drop table schedule_entry_room if exists;
-drop table schedule_entry if exists;
-drop table room if exists;
-drop table campus if exists;
-drop table course_lecturer if exists;
-drop table course if exists;
-drop table semester if exists;
-drop table module_supervisor if exists;
-drop table identity if exists;
-drop table module_in_study_program if exists;
-drop table module_relation if exists;
-drop table module if exists;
-drop table season if exists;
-drop table language if exists;
-drop table study_program if exists;
-drop table specialization if exists;
-drop table degree if exists;
-drop table teaching_unit if exists;
-drop table faculty if exists;
+DROP materialized VIEW IF EXISTS schedule_entry_view;
+DROP TABLE student_schedule_entry IF EXISTS;
+DROP TABLE schedule_entry_lecturer IF EXISTS;
+DROP TABLE module_in_study_program_placed_in_schedule_entry IF EXISTS;
+DROP TABLE schedule_entry_room IF EXISTS;
+DROP TABLE schedule_entry IF EXISTS;
+DROP TABLE room IF EXISTS;
+DROP TABLE campus IF EXISTS;
+DROP TABLE course_lecturer IF EXISTS;
+DROP TABLE course_type IF EXISTS;
+DROP TABLE course IF EXISTS;
+DROP TABLE semester IF EXISTS;
+DROP TABLE module_supervisor IF EXISTS;
+DROP TABLE identity IF EXISTS;
+DROP TABLE module_in_study_program IF EXISTS;
+DROP TABLE module_relation IF EXISTS;
+DROP TABLE module IF EXISTS;
+DROP TABLE season IF EXISTS;
+DROP TABLE language IF EXISTS;
+DROP TABLE study_program IF EXISTS;
+DROP TABLE specialization IF EXISTS;
+DROP TABLE degree IF EXISTS;
+DROP TABLE teaching_unit IF EXISTS;
+DROP TABLE faculty IF EXISTS

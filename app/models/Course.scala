@@ -8,7 +8,7 @@ case class Course(
     id: UUID,
     semester: UUID,
     module: UUID,
-    part: ModulePart
+    courseId: CourseId
 ) extends UniqueEntity[UUID]
 
 object Course {

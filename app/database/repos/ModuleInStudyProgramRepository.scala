@@ -6,7 +6,7 @@ import database.tables.{
   ModuleRelationTable,
   ModuleTable
 }
-import models.{Module, ModuleInStudyProgram, ModulePart}
+import models.{Module, ModuleInStudyProgram, CourseId}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -35,7 +35,7 @@ final class ModuleInStudyProgramRepository @Inject() (
       TableQuery[ModuleTable]
         .filter { module =>
           val inSeason = module.season.inSet(seasons)
-          val hasParts = !(module.parts === List.empty[ModulePart])
+          val hasParts = !(module.parts === List.empty[CourseId])
           val noParent = !TableQuery[ModuleRelationTable]
             .filter(_.parent === module.id)
             .exists

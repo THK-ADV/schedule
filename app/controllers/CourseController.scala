@@ -2,7 +2,7 @@ package controllers
 
 import controllers.CourseController.CourseJson
 import controllers.crud.{Create, Read}
-import models.{Course, ModulePart}
+import models.{Course, CourseId}
 import play.api.libs.json.{Json, Reads, Writes}
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.CourseService
@@ -20,8 +20,8 @@ final class CourseController @Inject() (
     with Read[UUID, Course]
     with Create[Course, CourseJson] {
 
-  implicit val modulePartReads: Reads[ModulePart] =
-    Reads.of[String].map(ModulePart.apply)
+  implicit val modulePartReads: Reads[CourseId] =
+    Reads.of[String].map(CourseId.apply)
 
   override implicit val reads: Reads[CourseJson] = Json.reads
 
@@ -40,6 +40,6 @@ object CourseController {
   case class CourseJson(
       semester: UUID,
       module: UUID,
-      part: ModulePart
+      part: CourseId
   )
 }

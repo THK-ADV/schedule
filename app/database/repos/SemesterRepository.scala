@@ -29,7 +29,8 @@ final class SemesterRepository @Inject() (
   override protected def uniqueCols(elem: Semester) = {
     import database.tables.localDateColumnType
     List(
-      _.label === elem.label,
+      _.deLabel === elem.deLabel,
+      _.enLabel === elem.enLabel,
       _.abbrev === elem.abbrev,
       _.start === elem.start,
       _.end === elem.end

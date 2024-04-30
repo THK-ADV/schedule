@@ -27,7 +27,7 @@ final class CourseRepository @Inject() (
     List(
       _.semester === elem.semester,
       _.module === elem.module,
-      _.modulePart === elem.part
+      _.courseId === elem.courseId
     )
   }
 

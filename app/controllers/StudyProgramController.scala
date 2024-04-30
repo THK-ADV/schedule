@@ -20,12 +20,14 @@ final class StudyProgramController @Inject() (
   override implicit def writes: Writes[StudyProgram] = StudyProgram.writes
 
   override def all() =
-    Action.async { r =>
-      val extend = r
+    Action.async { request =>
+      val extend = request
         .getQueryString("extend")
         .flatMap(_.toBooleanOption)
         .getOrElse(false)
-      if (extend) service.repo.getAllFromView.map(Ok(_))
-      else super.all().apply(r)
+      val lang = preferredLanguage(request)
+      if (extend)
+        service.repo.getAllFromView(lang).map(Ok(_))
+      else super.all().apply(request)
     }
 }

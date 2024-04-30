@@ -28,13 +28,14 @@ final class ScheduleEntryController @Inject() (
         .getQueryString("extend")
         .flatMap(_.toBooleanOption)
         .getOrElse(false)
+      val lang = preferredLanguage
       if (!extend) {
         Future.successful(NoContent)
       } else {
         (parseDate("from"), parseDate("to")) match {
           case (Some(Success(from)), Some(Success(to))) =>
             if (from.isBefore(to)) {
-              viewRepo.all(from, to).map(xs => Ok(Json.toJson(xs)))
+              viewRepo.all(from, to, lang).map(xs => Ok(Json.toJson(xs)))
             } else {
               val err =
                 s"invalid date range: ${DateOps.print(from)} < ${DateOps.print(to)}"
@@ -42,16 +43,16 @@ final class ScheduleEntryController @Inject() (
             }
           case (Some(Success(from)), None) =>
             viewRepo
-              .all(from, from.plusMonths(1))
+              .all(from, from.plusMonths(1), lang)
               .map(xs => Ok(Json.toJson(xs)))
           case (None, Some(Success(to))) =>
             viewRepo
-              .all(to.minusMonths(1), to)
+              .all(to.minusMonths(1), to, lang)
               .map(xs => Ok(Json.toJson(xs)))
           case (None, None) =>
             val now = LocalDate.now()
             viewRepo
-              .all(now.minusMonths(1), now.plusMonths(1))
+              .all(now.minusMonths(1), now.plusMonths(1), lang)
               .map(xs => Ok(Json.toJson(xs)))
           case (from, to) =>
             Future.successful(
