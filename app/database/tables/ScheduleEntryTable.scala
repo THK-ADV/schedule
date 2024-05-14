@@ -2,7 +2,7 @@ package database.tables
 
 import database.UUIDUniqueColumn
 import models.ScheduleEntry
-import org.joda.time.{LocalDate, LocalTime}
+import org.joda.time.LocalDateTime
 import slick.jdbc.PostgresProfile.api._
 
 import java.util.UUID
@@ -11,21 +11,18 @@ final class ScheduleEntryTable(tag: Tag)
     extends Table[ScheduleEntry](tag, "schedule_entry")
     with UUIDUniqueColumn {
 
-  import database.tables.{localDateColumnType, localTimeColumnType}
+  import database.tables.localDateTimeColumnType
 
   def course = column[UUID]("course")
 
-  def date = column[LocalDate]("date")
+  def start = column[LocalDateTime]("start")
 
-  def start = column[LocalTime]("start")
-
-  def end = column[LocalTime]("end")
+  def end = column[LocalDateTime]("end")
 
   def * =
     (
       id,
       course,
-      date,
       start,
       end
     ) <> (ScheduleEntry.tupled, ScheduleEntry.unapply)

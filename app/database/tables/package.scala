@@ -2,10 +2,10 @@ package database
 
 import models.CourseId
 import ops.DateOps
-import org.joda.time.{LocalDate, LocalTime}
+import org.joda.time.{LocalDate, LocalDateTime, LocalTime}
 import slick.jdbc.PostgresProfile.api._
 
-import java.sql.{Date, Time}
+import java.sql.{Date, Time, Timestamp}
 
 package object tables {
   implicit val localDateColumnType: BaseColumnType[LocalDate] =
@@ -18,6 +18,12 @@ package object tables {
     MappedColumnType.base[LocalTime, Time](
       localTime => Time.valueOf(DateOps.print(localTime)),
       time => new LocalTime(time.getTime)
+    )
+
+  implicit val localDateTimeColumnType: BaseColumnType[LocalDateTime] =
+    MappedColumnType.base[LocalDateTime, Timestamp](
+      localDateTime => Timestamp.valueOf(DateOps.print(localDateTime)),
+      timestamp => new LocalDateTime(timestamp.getTime)
     )
 
   implicit val modulePartColumnType: BaseColumnType[CourseId] =

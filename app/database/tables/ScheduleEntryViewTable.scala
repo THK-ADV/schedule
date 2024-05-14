@@ -2,7 +2,7 @@ package database.tables
 
 import database.UUIDUniqueColumn
 import models.ScheduleEntryView
-import org.joda.time.{LocalDate, LocalTime}
+import org.joda.time.LocalDateTime
 import slick.jdbc.PostgresProfile.api._
 import slick.lifted.ProvenShape
 
@@ -13,15 +13,13 @@ final class ScheduleEntryViewTable(tag: Tag)
     with UUIDUniqueColumn {
 
   import ScheduleEntryView._
-  import database.tables.{localDateColumnType, localTimeColumnType}
+  import database.tables.localDateTimeColumnType
 
   override def id = column[UUID]("s_id", O.PrimaryKey)
 
-  def date = column[LocalDate]("s_date")
+  def start = column[LocalDateTime]("s_start")
 
-  def start = column[LocalTime]("s_start")
-
-  def end = column[LocalTime]("s_end")
+  def end = column[LocalDateTime]("s_end")
 
   def roomId = column[UUID]("room_id")
 
@@ -81,7 +79,6 @@ final class ScheduleEntryViewTable(tag: Tag)
 
   override def * : ProvenShape[ScheduleEntryView.DB] = (
     id,
-    date,
     start,
     end,
     (roomId, roomIdentifier, campusId, campusLabel),
@@ -110,9 +107,8 @@ final class ScheduleEntryViewTable(tag: Tag)
   private def mapRow: (
       (
           UUID,
-          LocalDate,
-          LocalTime,
-          LocalTime,
+          LocalDateTime,
+          LocalDateTime,
           (UUID, String, UUID, String),
           (String, String),
           (UUID, String, String, String),
@@ -132,7 +128,6 @@ final class ScheduleEntryViewTable(tag: Tag)
   ) => ScheduleEntryView.DB = {
     case (
           id,
-          date,
           start,
           end,
           (roomId, roomIdentifier, campusId, campusLabel),
@@ -159,7 +154,6 @@ final class ScheduleEntryViewTable(tag: Tag)
         ) =>
       ScheduleEntryView(
         id,
-        date,
         start,
         end,
         Room(roomId, roomIdentifier, campusId, campusLabel),
@@ -191,9 +185,8 @@ final class ScheduleEntryViewTable(tag: Tag)
   private def unmapRow: ScheduleEntryView.DB => Option[
     (
         UUID,
-        LocalDate,
-        LocalTime,
-        LocalTime,
+        LocalDateTime,
+        LocalDateTime,
         (UUID, String, UUID, String),
         (String, String),
         (UUID, String, String, String),
@@ -214,7 +207,6 @@ final class ScheduleEntryViewTable(tag: Tag)
     Option(
       (
         a.id,
-        a.date,
         a.start,
         a.end,
         (

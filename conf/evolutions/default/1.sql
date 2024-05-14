@@ -157,9 +157,8 @@ CREATE TABLE schedule_entry
 (
   "id" uuid PRIMARY KEY,
   "course" uuid NOT NULL,
-  "date" date NOT NULL,
-  "start" time without time zone NOT NULL,
-  "end" time without time zone NOT NULL,
+  "start" timestamp without time zone NOT NULL,
+  "end" timestamp without time zone NOT NULL,
   FOREIGN KEY(course) REFERENCES COURSE(id)
 );
 CREATE TABLE schedule_entry_room
@@ -285,7 +284,6 @@ FROM
 CREATE materialized VIEW schedule_entry_view AS
 SELECT
   schedule_entry.id AS s_id,
-  schedule_entry.date AS s_date,
   schedule_entry.start AS s_start,
   schedule_entry.end AS s_end,
   room.id AS room_id,

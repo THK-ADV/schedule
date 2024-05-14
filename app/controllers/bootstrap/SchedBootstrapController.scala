@@ -682,9 +682,13 @@ final class SchedBootstrapController @Inject() (
       ]
     (0 until weeks.getWeeks).foreach { week =>
       xs.foreach { case (s, sps, rs) =>
-        val newDate = s.date.plusWeeks(week)
-        if (!blockedDays.contains(newDate)) {
-          val newSchedule = s.copy(id = UUID.randomUUID, date = newDate)
+        val newStart = s.start.plusWeeks(week)
+        if (!blockedDays.contains(newStart.toLocalDate)) {
+          val newSchedule = s.copy(
+            id = UUID.randomUUID,
+            start = newStart,
+            end = s.end.plusWeeks(week)
+          )
           val newSps = sps.map(sp => sp.copy(scheduleEntry = newSchedule.id))
           val newR = rs.map(r => r.copy(scheduleEntry = newSchedule.id))
           result += ((newSchedule, newSps, newR))
@@ -749,7 +753,12 @@ final class SchedBootstrapController @Inject() (
       }
       .groupBy(a => (a.date, a.start, a.end, a.course, a.room))
       .map { case ((date, start, end, course, room), xs) =>
-        val s = ScheduleEntry(UUID.randomUUID(), course, date, start, end)
+        val s = ScheduleEntry(
+          UUID.randomUUID(),
+          course,
+          date.toLocalDateTime(start),
+          date.toLocalDateTime(end)
+        )
         val ss = xs.map(a =>
           ModuleStudyProgramScheduleEntry(s.id, a.moduleInStudyProgram)
         )

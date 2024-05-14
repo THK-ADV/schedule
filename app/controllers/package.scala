@@ -9,4 +9,10 @@ package object controllers {
       .headOption
       .map(a => PreferredLanguage(a.split('-').head))
       .getOrElse(PreferredLanguage.Default)
+
+  def isExtended(implicit request: Request[AnyContent]): Boolean =
+    request
+      .getQueryString("extend")
+      .flatMap(_.toBooleanOption)
+      .getOrElse(false)
 }

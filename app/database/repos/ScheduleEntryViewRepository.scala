@@ -3,7 +3,7 @@ package database.repos
 import controllers.PreferredLanguage
 import database.tables.ScheduleEntryViewTable
 import models.ScheduleEntryView
-import org.joda.time.{LocalDate, LocalTime}
+import org.joda.time.LocalDateTime
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -23,19 +23,18 @@ final class ScheduleEntryViewRepository @Inject() (
   protected val tableQuery = TableQuery[ScheduleEntryViewTable]
 
   def all(
-      from: LocalDate,
-      to: LocalDate,
+      from: LocalDateTime,
+      to: LocalDateTime,
       lang: PreferredLanguage
   ): Future[Iterable[ScheduleEntryView.View]] = {
-    import database.tables.localDateColumnType
+    import database.tables.localDateTimeColumnType
     db.run(
       tableQuery
-        .filter(a => a.date >= from && a.date <= to)
+        .filter(a => a.start >= from && a.end <= to)
         .result
         .map(_.groupBy(_.id).map { case (id, xs) =>
-          val date = ListBuffer.empty[LocalDate]
-          val start = ListBuffer.empty[LocalTime]
-          val end = ListBuffer.empty[LocalTime]
+          val start = ListBuffer.empty[LocalDateTime]
+          val end = ListBuffer.empty[LocalDateTime]
           val room = ListBuffer.empty[Room]
           val courseLabel = ListBuffer.empty[String]
           val module = ListBuffer.empty[Module]
@@ -43,7 +42,6 @@ final class ScheduleEntryViewRepository @Inject() (
           val studyPrograms = ListBuffer.empty[StudyProgram[String, String]]
 
           xs.foreach { x: ScheduleEntryView.DB =>
-            if (!date.contains(x.date)) date += x.date
             if (!start.contains(x.start)) start += x.start
             if (!end.contains(x.end)) end += x.end
             if (!room.contains(x.room)) room += x.room
@@ -63,7 +61,6 @@ final class ScheduleEntryViewRepository @Inject() (
                 .copy(label = spLabel, teachingUnitLabel = tuLabel)
           }
 
-          assert(date.size == 1)
           assert(start.size == 1)
           assert(end.size == 1)
           assert(courseLabel.size == 1)
@@ -71,7 +68,6 @@ final class ScheduleEntryViewRepository @Inject() (
 
           ScheduleEntryView(
             id,
-            date.head,
             start.head,
             end.head,
             room.toList,

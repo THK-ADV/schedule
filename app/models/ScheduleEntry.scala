@@ -1,13 +1,12 @@
 package models
 
-import org.joda.time.{LocalDate, LocalTime}
+import org.joda.time.LocalDateTime
 
 import java.util.UUID
 
 case class ScheduleEntry(
     id: UUID,
     course: UUID,
-    date: LocalDate,
-    start: LocalTime,
-    end: LocalTime
+    start: LocalDateTime,
+    end: LocalDateTime
 ) extends UniqueEntity[UUID]

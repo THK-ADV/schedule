@@ -1,5 +1,5 @@
 import ops.DateOps
-import org.joda.time.{LocalDate, LocalTime}
+import org.joda.time.{LocalDate, LocalDateTime, LocalTime}
 import play.api.libs.json.Format
 
 package object models {
@@ -12,4 +12,9 @@ package object models {
     Format
       .of[String]
       .bimap[LocalTime](DateOps.parseTime, DateOps.print)
+
+  implicit def localDateTimeFmt: Format[LocalDateTime] =
+    Format
+      .of[String]
+      .bimap[LocalDateTime](DateOps.parseDateTime, DateOps.print)
 }

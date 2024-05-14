@@ -20,12 +20,9 @@ final class ModuleController @Inject() (
   override implicit def writes: Writes[Module] = Module.writes
 
   override def all() =
-    Action.async { r =>
-      val extend = r
-        .getQueryString("extend")
-        .flatMap(_.toBooleanOption)
-        .getOrElse(false)
+    Action.async { request =>
+      val extend = isExtended(request)
       if (extend) service.repo.getAllFromView.map(Ok(_))
-      else super.all().apply(r)
+      else super.all().apply(request)
     }
 }

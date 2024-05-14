@@ -2,7 +2,7 @@ package controllers
 
 import database.repos.ScheduleEntryViewRepository
 import ops.DateOps
-import org.joda.time.LocalDate
+import org.joda.time.LocalDateTime
 import play.api.libs.json.Json
 import play.api.mvc.{
   AbstractController,
@@ -23,11 +23,8 @@ final class ScheduleEntryController @Inject() (
 ) extends AbstractController(cc) {
 
   def all() =
-    Action.async { implicit r =>
-      val extend = r
-        .getQueryString("extend")
-        .flatMap(_.toBooleanOption)
-        .getOrElse(false)
+    Action.async { implicit request =>
+      val extend = isExtended
       val lang = preferredLanguage
       if (!extend) {
         Future.successful(NoContent)
@@ -50,7 +47,7 @@ final class ScheduleEntryController @Inject() (
               .all(to.minusMonths(1), to, lang)
               .map(xs => Ok(Json.toJson(xs)))
           case (None, None) =>
-            val now = LocalDate.now()
+            val now = LocalDateTime.now()
             viewRepo
               .all(now.minusMonths(1), now.plusMonths(1), lang)
               .map(xs => Ok(Json.toJson(xs)))
@@ -70,6 +67,6 @@ final class ScheduleEntryController @Inject() (
 
   def parseDate(key: String)(implicit
       r: Request[AnyContent]
-  ): Option[Try[LocalDate]] =
-    r.getQueryString(key).map(a => Try(DateOps.parseDate(a)))
+  ): Option[Try[LocalDateTime]] =
+    r.getQueryString(key).map(a => Try(DateOps.parseDateTime(a)))
 }

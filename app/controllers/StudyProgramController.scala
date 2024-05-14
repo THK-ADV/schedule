@@ -21,13 +21,9 @@ final class StudyProgramController @Inject() (
 
   override def all() =
     Action.async { request =>
-      val extend = request
-        .getQueryString("extend")
-        .flatMap(_.toBooleanOption)
-        .getOrElse(false)
+      val extend = isExtended(request)
       val lang = preferredLanguage(request)
-      if (extend)
-        service.repo.getAllFromView(lang).map(Ok(_))
+      if (extend) service.repo.getAllFromView(lang).map(Ok(_))
       else super.all().apply(request)
     }
 }

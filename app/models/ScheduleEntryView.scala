@@ -1,15 +1,14 @@
 package models
 
-import org.joda.time.{LocalDate, LocalTime}
+import org.joda.time.LocalDateTime
 import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
 
 case class ScheduleEntryView[Supervisor, StudyProgram, Room, CourseLabel](
     id: UUID,
-    date: LocalDate,
-    start: LocalTime,
-    end: LocalTime,
+    start: LocalDateTime,
+    end: LocalDateTime,
     room: Room,
     courseLabel: CourseLabel,
     module: ScheduleEntryView.Module,
@@ -43,7 +42,6 @@ object ScheduleEntryView {
   implicit def writes: Writes[View] = view =>
     Json.obj(
       "id" -> view.id,
-      "date" -> view.date,
       "start" -> view.start,
       "end" -> view.end,
       "rooms" -> Json.toJson(view.room),
