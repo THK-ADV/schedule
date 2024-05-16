@@ -1,6 +1,6 @@
 package database
 
-import models.CourseId
+import models.{CourseId, SemesterPlanEntryType}
 import ops.DateOps
 import org.joda.time.{LocalDate, LocalDateTime, LocalTime}
 import slick.jdbc.PostgresProfile.api._
@@ -30,6 +30,13 @@ package object tables {
     MappedColumnType.base[CourseId, String](
       _.id,
       CourseId.apply
+    )
+
+  implicit val semesterPlanEntryTypeColumnType
+      : BaseColumnType[SemesterPlanEntryType] =
+    MappedColumnType.base[SemesterPlanEntryType, String](
+      _.id,
+      SemesterPlanEntryType.apply
     )
 
   implicit val modulePartsColumnType: BaseColumnType[List[CourseId]] =

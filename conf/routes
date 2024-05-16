@@ -14,6 +14,7 @@ POST        /bootstrap/seasons                controllers.bootstrap.MocogiBootst
 POST        /bootstrap/identities             controllers.bootstrap.MocogiBootstrapController.createIdentities()
 POST        /bootstrap/modules                controllers.bootstrap.MocogiBootstrapController.createModules()
 POST        /bootstrap/semesters              controllers.bootstrap.SchedBootstrapController.createSemesters()
+POST        /bootstrap/semesterPlan           controllers.bootstrap.SchedBootstrapController.createSemesterPlan()
 POST        /bootstrap/campus                 controllers.bootstrap.SchedBootstrapController.createCampus()
 POST        /bootstrap/rooms                  controllers.bootstrap.SchedBootstrapController.createRooms()
 POST        /bootstrap/courses                controllers.bootstrap.SchedBootstrapController.createCourses()
@@ -60,6 +61,11 @@ GET         /rooms                            controllers.RoomController.all()
 GET         /rooms/:id                        controllers.RoomController.get(id: java.util.UUID)
 
 GET         /scheduleEntries                  controllers.ScheduleEntryController.all()
+
+# from - to
+# GET         /holidays
+# [from - to], teaching unit, [semesterIndex]
+# GET         /semesterPlan
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                     controllers.Assets.versioned(path="/public", file: Asset)

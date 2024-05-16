@@ -3,8 +3,9 @@ package controllers.bootstrap
 import database.repos.ScheduleEntryRepository
 import database.tables.{ModuleStudyProgramScheduleEntry, ScheduleEntryRoom}
 import models._
+import ops.DateOps
 import org.joda.time.format.DateTimeFormat
-import org.joda.time.{LocalDate, LocalTime, Weeks}
+import org.joda.time.{LocalDate, LocalDateTime, LocalTime, Weeks}
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service._
@@ -29,6 +30,8 @@ final class SchedBootstrapController @Inject() (
     studyProgramService: StudyProgramService,
     moduleInStudyProgramService: ModuleInStudyProgramService,
     scheduleEntryRepository: ScheduleEntryRepository,
+    semesterPlanEntryService: SemesterPlanEntryService,
+    legalHolidayService: LegalHolidayService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc) {
 
@@ -216,9 +219,169 @@ final class SchedBootstrapController @Inject() (
       )
     )
 
-    semesterService
-      .createMany(semesters)
-      .map(xs => Ok(Json.obj("created" -> xs.size)))
+    for {
+      semester <- semesterService.createMany(semesters)
+      _ <- legalHolidayService.recreate(2024)
+    } yield Ok(Json.obj("semester" -> semester.size))
+  }
+
+  def createSemesterPlan = Action.async { _ =>
+    for {
+      tus <- teachingUnitService.all()
+      semester <- semesterService.all()
+      inf = tus.find(_.deLabel == "Informatik").get.id
+      ing = tus.find(_.deLabel == "Ingenieurwesen").get.id
+      sose24 = semester.find(_.abbrev == "SoSe 24").get.id
+      xs = List(
+        // inf sose 2024
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-04-01"),
+          DateOps.parseDateTime("2024-04-05"),
+          SemesterPlanEntryType.Block,
+          sose24,
+          Some(inf),
+          None
+        ),
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-05-13"),
+          DateOps.parseDateTime("2024-05-17"),
+          SemesterPlanEntryType.Block,
+          sose24,
+          Some(inf),
+          None
+        ),
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-04-08"),
+          DateOps.parseDateTime("2024-04-12"),
+          SemesterPlanEntryType.Exam,
+          sose24,
+          Some(inf),
+          None
+        ),
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-07-22"),
+          DateOps.parseDateTime("2024-07-26"),
+          SemesterPlanEntryType.Exam,
+          sose24,
+          Some(inf),
+          None
+        ),
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-04-15"),
+          DateOps.parseDateTime("2024-07-19"),
+          SemesterPlanEntryType.Lecture,
+          sose24,
+          Some(inf),
+          None
+        ),
+        // ing sose 2024
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-04-15"),
+          DateOps.parseDateTime("2025-07-19"),
+          SemesterPlanEntryType.Lecture,
+          sose24,
+          Some(ing),
+          None
+        ),
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-07-22"),
+          DateOps.parseDateTime("2025-08-02"),
+          SemesterPlanEntryType.Exam,
+          sose24,
+          Some(ing),
+          None
+        ),
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-04-08"),
+          DateOps.parseDateTime("2025-04-12"),
+          SemesterPlanEntryType.Exam,
+          sose24,
+          Some(ing),
+          Some("2,3,4,5,6,7")
+        ),
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-05-13"),
+          DateOps.parseDateTime("2025-05-17"),
+          SemesterPlanEntryType.Block,
+          sose24,
+          Some(ing),
+          Some("1,3,4,5,6,7")
+        ),
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-06-10"),
+          DateOps.parseDateTime("2025-06-14"),
+          SemesterPlanEntryType.Block,
+          sose24,
+          Some(ing),
+          Some("1,3,4,5,6,7")
+        ),
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-07-01"),
+          DateOps.parseDateTime("2025-07-05"),
+          SemesterPlanEntryType.Block,
+          sose24,
+          Some(ing),
+          Some("1,3,4,5,6,7")
+        ),
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-05-06"),
+          DateOps.parseDateTime("2025-05-10"),
+          SemesterPlanEntryType.Block,
+          sose24,
+          Some(ing),
+          Some("2")
+        ),
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-06-03"),
+          DateOps.parseDateTime("2025-06-07"),
+          SemesterPlanEntryType.Block,
+          sose24,
+          Some(ing),
+          Some("2")
+        ),
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-06-24"),
+          DateOps.parseDateTime("2025-06-28"),
+          SemesterPlanEntryType.Block,
+          sose24,
+          Some(ing),
+          Some("2")
+        ),
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-04-01"),
+          DateOps.parseDateTime("2025-04-05"),
+          SemesterPlanEntryType.Block,
+          sose24,
+          Some(ing),
+          Some("2,3,4,5,6,7")
+        ),
+        SemesterPlanEntry(
+          UUID.randomUUID(),
+          DateOps.parseDateTime("2024-04-01"),
+          DateOps.parseDateTime("2025-04-12"),
+          SemesterPlanEntryType.Block,
+          sose24,
+          Some(ing),
+          Some("1")
+        )
+      )
+      res <- semesterPlanEntryService.createManyForce(xs)
+    } yield Ok(Json.obj("created" -> res.size))
   }
 
   def createCampus = Action.async { _ =>
