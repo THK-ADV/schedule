@@ -1,4 +1,7 @@
 -- !Ups
+
+-- Tables
+
 CREATE TABLE faculty
 (
     "id"       text PRIMARY KEY,
@@ -233,14 +236,9 @@ create table school_holiday
     "label" text                        not null,
     PRIMARY KEY ("start", "end", "label")
 );
---  semester_plan_entry = start, end, type, teaching unit, semester
---     type = prüfungswoche | vorlesungszeit | blockwoche | projektwoche | gebäude geschlossen
---     teaching unit & semester = prüfungswoche | blockwoche | projektwoche
---     null & null = vorlesungszeit | gebäude geschlossen
---
---  legal_holiday = label, start, end
---  campus_event = label, start, end
---  school_holiday = label, start, end
+
+-- Views
+
 CREATE VIEW module_view AS
 SELECT COALESCE(
                JSON_AGG(
@@ -263,8 +261,19 @@ SELECT COALESCE(
                ),
                '[]' :: json
        ) AS modules
-FROM (SELECT TO_JSON(m)                                                                               AS module,
-             JSON_AGG(JSON_BUILD_OBJECT('id', sp.id, 'mandatory', msp.mandatory, 'focus', msp.focus)) AS study_programs
+FROM (SELECT TO_JSON(m) AS module,
+             JSON_AGG(
+                     JSON_BUILD_OBJECT(
+                             'id',
+                             sp.id,
+                             'teachingUnit',
+                             sp.teaching_unit,
+                             'mandatory',
+                             msp.mandatory,
+                             'focus',
+                             msp.focus
+                     )
+             )          AS study_programs
       FROM module AS m
                JOIN module_in_study_program AS msp ON m.id = msp.module
                JOIN study_program sp ON sp.id = msp.study_program
@@ -308,6 +317,27 @@ SELECT COALESCE(
                '[]' :: json
        ) AS study_programs
 FROM study_program_view AS study_programs;
+CREATE VIEW teaching_unit_view AS
+SELECT
+    TO_JSONB(tu) AS teaching_units
+FROM
+    teaching_unit AS tu ;
+CREATE VIEW teaching_unit_view_en AS
+SELECT
+    COALESCE(
+            JSON_AGG(TO_JSONB(teaching_units) - 'de_label' - 'en_label' || JSONB_BUILD_OBJECT('label',teaching_units->'en_label')),
+            '[]' :: json
+    ) AS teaching_units
+FROM
+    teaching_unit_view AS teaching_unit ;
+CREATE VIEW teaching_unit_view_de AS
+SELECT
+    COALESCE(
+            JSON_AGG(TO_JSONB(teaching_units) - 'de_label' - 'en_label' || JSONB_BUILD_OBJECT('label',teaching_units->'de_label')),
+            '[]' :: json
+    ) AS teaching_units
+FROM
+    teaching_unit_view AS teaching_unit ;
 CREATE VIEW course_view AS
 SELECT c.id        AS id,
        c.semester  AS semester,
@@ -395,6 +425,9 @@ FROM schedule_entry
                FROM module_supervisor
                         JOIN identity ON identity.id = module_supervisor.supervisor) module_supervisor_q
               ON module_supervisor_q.module_id = module.id;
+
+-- Inserts
+
 INSERT INTO course_type
 VALUES ('lecture',
         'Vorlesung',
@@ -435,8 +468,18 @@ VALUES ('exam',
        ('closed_building',
         'Gebäude geschlossen',
         'Building closed');
+
 -- !Downs
-DROP materialized VIEW schedule_entry_view;
+
+DROP MATERIALIZED VIEW schedule_entry_view;
+DROP VIEW course_view;
+DROP VIEW teaching_unit_view_de;
+DROP VIEW teaching_unit_view_en;
+DROP VIEW teaching_unit_view;
+DROP VIEW study_program_view_de;
+DROP VIEW study_program_view_en;
+DROP VIEW study_program_view;
+DROP VIEW module_view;
 DROP TABLE student_schedule_entry;
 DROP TABLE schedule_entry_lecturer;
 DROP TABLE module_in_study_program_placed_in_schedule_entry;
