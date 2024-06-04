@@ -1,25 +1,28 @@
 package controllers
 
-import json.ModuleFormat
-import models.{Module, ModuleJson}
-import play.api.libs.json.{Reads, Writes}
+import controllers.crud.Read
+import models.Module
+import play.api.libs.json.Writes
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.ModuleService
 
+import java.util.UUID
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class ModuleController @Inject() (
+final class ModuleController @Inject() (
     cc: ControllerComponents,
     val service: ModuleService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Controller[ModuleJson, Module]
-    with ModuleFormat {
-  override protected implicit val writes: Writes[Module] =
-    moduleWrites
+    with Read[UUID, Module] {
+  override implicit def writes: Writes[Module] = Module.writes
 
-  override protected implicit val reads: Reads[ModuleJson] =
-    moduleJsonFmt
+  override def all() =
+    Action.async { request =>
+      val extend = isExtended(request)
+      if (extend) service.repo.allFromView().map(Ok(_))
+      else super.all().apply(request)
+    }
 }

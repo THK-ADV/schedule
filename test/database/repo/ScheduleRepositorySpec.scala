@@ -1,6 +1,6 @@
 package database.repo
 
-import database.repos.ScheduleRepository
+import database.repos.ScheduleEntryRepository
 import database.tables._
 import date.DateFormatPattern.{datePattern, timePattern}
 import models._
@@ -16,7 +16,7 @@ final class ScheduleRepositorySpec
     with FakeApplication
     with DatabaseSuite {
 
-  val repo = app.injector.instanceOf(classOf[ScheduleRepository])
+  val repo = app.injector.instanceOf(classOf[ScheduleEntryRepository])
 
   import slick.jdbc.PostgresProfile.api._
 
@@ -205,7 +205,7 @@ final class ScheduleRepositorySpec
             )
           )
         )
-        res <- repo.list(
+        res <- repo.allWithFilter(
           Map("courses" -> Seq(c1.id.toString)),
           atomic = false
         )

@@ -3,7 +3,7 @@ version: '3.8'
 services:
   psql:
     container_name: schedule-db
-    image: postgres:13.2
+    image: postgres:14.4-alpine
     restart: always
     expose:
       - 5432
@@ -22,22 +22,24 @@ services:
       - "9000:9000"
     volumes:
       - backend_logs_vol:/schedule/logs
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        GITHUB_TOKEN: ${GITHUB_TOKEN}
     depends_on:
       - psql
 
-  frontend:
-    container_name: schedule-frontend
-    image: schedule-frontend
+  calendar:
+    container_name: schedule-cal
+    image: schedule-cal
     restart: always
     ports:
-      - "8080:80"
-      - "4433:443"
-    volumes:
-      - nginx_cert_vol:/etc/cert
-      - nginx_config_vol:/etc/nginx/conf.d
+      - "8080:3000"
+    build:
+      context: ../calendar-ui
+      dockerfile: Dockerfile
 
 volumes:
   psql_vol:
   backend_logs_vol:
-  nginx_cert_vol:
-  nginx_config_vol:

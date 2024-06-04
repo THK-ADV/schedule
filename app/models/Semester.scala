@@ -1,30 +1,23 @@
 package models
 
-import database.SQLDateConverter
-import database.tables.SemesterDbEntry
+import localization.LocalizedLabel
 import org.joda.time.LocalDate
+import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
 
 case class Semester(
-    label: String,
-    abbreviation: String,
+    id: UUID,
+    deLabel: String,
+    enLabel: String,
+    abbrev: String,
     start: LocalDate,
     end: LocalDate,
     lectureStart: LocalDate,
-    lectureEnd: LocalDate,
-    id: UUID
-) extends UniqueEntity
+    lectureEnd: LocalDate
+) extends UniqueEntity[UUID]
+    with LocalizedLabel
 
-object Semester extends SQLDateConverter {
-  def apply(db: SemesterDbEntry): Semester =
-    Semester(
-      db.label,
-      db.abbreviation,
-      db.start,
-      db.end,
-      db.lectureStart,
-      db.lectureEnd,
-      db.id
-    )
+object Semester {
+  implicit def writes: Writes[Semester] = Json.writes
 }

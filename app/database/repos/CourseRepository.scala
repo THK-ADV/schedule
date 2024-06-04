@@ -1,54 +1,36 @@
 package database.repos
 
-import database.repos.filter.UUIDParser
-import database.tables._
+import database.repos.abstracts.{Create, Get}
+import database.tables.CourseTable
 import models.Course
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
+import java.util.UUID
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CourseRepository @Inject() (
+final class CourseRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Repository[Course, CourseDbEntry, CourseTable]
-    with UUIDParser {
+    with Get[UUID, Course, CourseTable]
+    with Create[UUID, Course, CourseTable] {
 
   import profile.api._
 
   protected val tableQuery = TableQuery[CourseTable]
 
-  override protected def makeFilter = {
-    case ("lecturer", vs)  => t => parseUUID(vs, t.user)
-    case ("semester", vs)  => t => parseUUID(vs, t.semester)
-    case ("subModule", vs) => t => parseUUID(vs, t.subModule)
+  override protected def uniqueCols(elem: Course) = {
+    import database.tables.modulePartColumnType
+    List(
+      _.semester === elem.semester,
+      _.module === elem.module,
+      _.courseId === elem.courseId
+    )
   }
 
-  def collectDependencies(t: CourseTable) =
-    for {
-      q <- tableQuery.filter(_.id === t.id)
-      u <- q.userFk
-      s <- q.semesterFk
-      sm <- q.subModuleFk
-    } yield (q, u, s, sm)
-
-  def makeAtom(
-      c: (CourseDbEntry, UserDbEntry, SemesterDbEntry, SubModuleDbEntry)
-  ) =
-    Course.atom(c._1, c._2, c._3, c._4)
-
-  override protected def retrieveAtom(
-      query: Query[CourseTable, CourseDbEntry, Seq]
-  ) =
-    db.run {
-      query
-        .flatMap(collectDependencies)
-        .result
-        .map(_.map(makeAtom))
-    }
-
-  override protected def toUniqueEntity(e: CourseDbEntry) = Course(e)
+  def deleteAll(): Future[Int] =
+    db.run(tableQuery.delete)
 }

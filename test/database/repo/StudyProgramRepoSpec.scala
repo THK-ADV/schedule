@@ -33,7 +33,7 @@ class StudyProgramRepoSpec
           graduations += g,
           studyPrograms ++= sps
         )
-        sps <- repo.list(Map.empty, atomic = true)
+        sps <- repo.allWithFilter(Map.empty, atomic = true)
       } yield sps
 
       await(res).forall(_.parentId.isEmpty) shouldBe true
@@ -78,7 +78,7 @@ class StudyProgramRepoSpec
           graduations += g,
           studyPrograms ++= sps
         )
-        sps <- repo.list(Map.empty, atomic = true)
+        sps <- repo.allWithFilter(Map.empty, atomic = true)
       } yield sps
 
       val Seq(s1, s2, s3, s4) = await(res).map(_.asInstanceOf[StudyProgramAtom])

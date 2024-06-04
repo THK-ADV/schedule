@@ -1,25 +1,21 @@
 package controllers
 
-import json.CampusFormat
-import models.{Campus, CampusJson}
-import play.api.libs.json.{Reads, Writes}
+import controllers.crud.Read
+import models.Campus
+import play.api.libs.json.Writes
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.CampusService
 
+import java.util.UUID
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class CampusController @Inject() (
+final class CampusController @Inject() (
     cc: ControllerComponents,
     val service: CampusService,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Controller[CampusJson, Campus]
-    with CampusFormat {
-  override protected implicit val writes: Writes[Campus] =
-    campusFmt
-
-  override protected implicit val reads: Reads[CampusJson] =
-    campusJsonFmt
+    with Read[UUID, Campus] {
+  override implicit def writes: Writes[Campus] = Campus.writes
 }

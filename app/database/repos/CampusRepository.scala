@@ -1,33 +1,27 @@
 package database.repos
 
-import database.tables.{CampusDbEntry, CampusTable}
+import database.repos.abstracts.{Create, Get}
+import database.tables.CampusTable
 import models.Campus
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
+import java.util.UUID
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class CampusRepository @Inject() (
+final class CampusRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Repository[Campus, CampusDbEntry, CampusTable] {
+    with Get[UUID, Campus, CampusTable]
+    with Create[UUID, Campus, CampusTable] {
 
   import profile.api._
 
   protected val tableQuery = TableQuery[CampusTable]
 
-  override protected def makeFilter = {
-    case ("label", vs)        => t => t.hasLabel(vs.head)
-    case ("abbreviation", vs) => t => t.hasAbbreviation(vs.head)
-  }
-
-  override protected def retrieveAtom(
-      query: Query[CampusTable, CampusDbEntry, Seq]
-  ) =
-    retrieveDefault(query)
-
-  override protected def toUniqueEntity(e: CampusDbEntry) = Campus(e)
+  override protected def uniqueCols(elem: Campus) =
+    List(_.label === elem.label, _.abbrev === elem.abbrev)
 }

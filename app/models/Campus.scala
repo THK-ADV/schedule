@@ -1,13 +1,12 @@
 package models
 
-import database.tables.CampusDbEntry
+import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID
 
-case class Campus(label: String, abbreviation: String, id: UUID)
-    extends UniqueEntity
+case class Campus(id: UUID, label: String, abbrev: String)
+    extends UniqueEntity[UUID]
 
 object Campus {
-  def apply(db: CampusDbEntry): Campus =
-    Campus(db.label, db.abbreviation, db.id)
+  implicit def writes: Writes[Campus] = Json.writes
 }

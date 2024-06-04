@@ -27,15 +27,17 @@ object CollisionType {
     override val label = "Geblockter Tag"
   }
 
-  def apply(label: String): Try[CollisionType] = label match {
-    case "Parallele Raumnutzung mehrerer Kurse"        => Success(CourseRoom)
-    case "Kursüberschneidung im Studiengang"           => Success(StudyPathCourse)
-    case "Raumüberschneidung im Studiengang"           => Success(CourseMultipleRoom)
-    case "Lehrender lehrt zeitgleich mehrere Kurse"    => Success(LecturerCourse)
-    case "Lehrender ist zeitgleich in mehreren Räumen" => Success(LecturerRoom)
-    case "Geblockter Tag"                              => Success(BlockedDay)
-    case _                                             => Failure(new Throwable(s"unknown collision type $label"))
-  }
+  def apply(label: String): Try[CollisionType] =
+    label match {
+      case "Parallele Raumnutzung mehrerer Kurse"     => Success(CourseRoom)
+      case "Kursüberschneidung im Studiengang"        => Success(StudyPathCourse)
+      case "Raumüberschneidung im Studiengang"        => Success(CourseMultipleRoom)
+      case "Lehrender lehrt zeitgleich mehrere Kurse" => Success(LecturerCourse)
+      case "Lehrender ist zeitgleich in mehreren Räumen" =>
+        Success(LecturerRoom)
+      case "Geblockter Tag" => Success(BlockedDay)
+      case _                => Failure(new Throwable(s"unknown collision type $label"))
+    }
 
   def all(): List[CollisionType] = List(
     CourseRoom,

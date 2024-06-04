@@ -1,37 +1,32 @@
 package database.repos
 
-import database.repos.filter.UUIDParser
-import database.tables.{TeachingUnitDbEntry, TeachingUnitTable}
+import controllers.PreferredLanguage
+import database.repos.abstracts.{Create, Get}
+import database.tables.TeachingUnitTable
+import database.view.JsonView
 import models.TeachingUnit
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
+import java.util.UUID
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class TeachingUnitRepository @Inject() (
+final class TeachingUnitRepository @Inject() (
     val dbConfigProvider: DatabaseConfigProvider,
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-    with Repository[TeachingUnit, TeachingUnitDbEntry, TeachingUnitTable]
-    with UUIDParser {
+    with Get[UUID, TeachingUnit, TeachingUnitTable]
+    with Create[UUID, TeachingUnit, TeachingUnitTable]
+    with JsonView {
 
   import profile.api._
 
   protected val tableQuery = TableQuery[TeachingUnitTable]
 
-  override protected def makeFilter = {
-    case ("label", vs)        => t => t.hasLabel(vs.head)
-    case ("abbreviation", vs) => t => t.hasAbbreviation(vs.head)
-    case ("faculty", vs)      => t => parseUUID(vs, t.hasFaculty)
-  }
+  override protected def name: String = "teaching_unit_view"
 
-  override protected def retrieveAtom(
-      query: Query[TeachingUnitTable, TeachingUnitDbEntry, Seq]
-  ) =
-    retrieveDefault(query)
-
-  override protected def toUniqueEntity(e: TeachingUnitDbEntry) =
-    TeachingUnit(e.faculty, e.label, e.abbreviation, e.number, e.id)
+  def allFromView(lang: PreferredLanguage) =
+    getAllFromView(lang)
 }

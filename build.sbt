@@ -1,5 +1,7 @@
 val playSlickVersion = "5.1.0"
 val scalaTestVersion = "3.2.15"
+//val kafkaVersion = "3.4.0"
+val guiceVersion = "5.1.0"
 
 lazy val `schedule` = (project in file("."))
   .enablePlugins(PlayScala)
@@ -7,8 +9,9 @@ lazy val `schedule` = (project in file("."))
     name := "schedule",
     maintainer := "Alexander Dobrynin <alexander.dobrynin@th-koeln.de>",
     version := "1.0",
-    scalaVersion := "2.13.8",
+    scalaVersion := "2.13.10",
     libraryDependencies ++= play,
+    libraryDependencies ++= guiceDeps,
     libraryDependencies ++= database,
     libraryDependencies ++= date,
     libraryDependencies ++= test,
@@ -23,21 +26,30 @@ lazy val `schedule` = (project in file("."))
       "GitHub Package Registry",
       "maven.pkg.github.com",
       "THK-ADV",
-      System.getenv("GITHUB_TOKEN")
+      sys.env.getOrElse("GITHUB_TOKEN", "")
+    ),
+    (Universal / javaOptions) ++= Seq(
+      "-Dpidfile.path=/dev/null"
     )
   )
 
 lazy val play = Seq(
   specs2 % Test,
-  guice,
+  ehcache,
   ws,
   "com.typesafe.play" %% "play-json" % "2.9.4"
+)
+
+lazy val guiceDeps = Seq(
+  guice,
+  "com.google.inject" % "guice" % guiceVersion,
+  "com.google.inject.extensions" % "guice-assistedinject" % guiceVersion
 )
 
 lazy val database = Seq(
   "com.typesafe.play" %% "play-slick" % playSlickVersion,
   "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion,
-  "org.postgresql" % "postgresql" % "42.5.3"
+  "org.postgresql" % "postgresql" % "42.7.2"
 )
 
 lazy val date = Seq(
@@ -58,3 +70,13 @@ lazy val keycloak = Seq(
 )
 
 lazy val filenameMacro = "de.th-koeln.inf.adv" %% "filename" % "0.1"
+
+// https://blog.rockthejvm.com/kafka-streams/
+// https://youtu.be/MYTFPTtOoLs
+// https://dev.to/psstepniewski/plain-kafka-consumer-in-play-framework-2a4a
+
+//lazy val kafka = Seq(
+//  "org.apache.kafka" % "kafka-clients" % kafkaVersion,
+//  "org.apache.kafka" % "kafka-streams" % kafkaVersion,
+//  "org.apache.kafka" %% "kafka-streams-scala" % kafkaVersion
+//)

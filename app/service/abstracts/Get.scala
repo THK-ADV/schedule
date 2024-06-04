@@ -1,23 +1,22 @@
 package service.abstracts
 
-import database.UniqueDbEntry
+import database.repos
 import models.UniqueEntity
 
-import java.util.UUID
 import scala.concurrent.Future
 
-trait Get[Json, Model <: UniqueEntity, DbEntry <: UniqueDbEntry] {
-  self: Core[Model, DbEntry, _] =>
+trait Get[ID, Model <: UniqueEntity[ID]] {
 
-  def all(
-      filter: Map[String, Seq[String]],
-      atomic: Boolean
+  def repo: repos.abstracts.Get[ID, Model, _]
+
+  final def allWithFilter(
+      filter: Map[String, Seq[String]]
   ): Future[Seq[Model]] =
-    repo.list(filter, atomic)
+    repo.allWithFilter(filter)
 
-  def all(atomic: Boolean): Future[Seq[Model]] =
-    all(Map.empty, atomic)
+  final def all(): Future[Seq[Model]] =
+    repo.all()
 
-  def get(id: UUID, atomic: Boolean): Future[Option[Model]] =
-    repo.get(id, atomic)
+  final def get(id: ID): Future[Option[Model]] =
+    repo.getOpt(id)
 }

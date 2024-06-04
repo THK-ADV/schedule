@@ -1,36 +1,36 @@
 package service
 
-import database.SQLDateConverter
 import database.repos.SemesterRepository
-import database.tables.{SemesterDbEntry, SemesterTable}
-import models.{Semester, SemesterJson}
-import service.abstracts.Service
+import models.Semester
+import service.abstracts.{Create, Get}
 
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext
 
 @Singleton
-class SemesterService @Inject() (val repo: SemesterRepository)
-    extends SQLDateConverter
-    with Service[SemesterJson, Semester, SemesterDbEntry, SemesterTable] {
+final class SemesterService @Inject() (
+    val repo: SemesterRepository,
+    implicit val ctx: ExecutionContext
+) extends Get[UUID, Semester]
+    with Create[Semester] {
 
-  override protected def toUniqueDbEntry(json: SemesterJson, id: Option[UUID]) =
-    SemesterDbEntry(
-      json.label,
-      json.abbreviation,
-      json.start,
-      json.end,
-      json.lectureStart,
-      json.lectureEnd,
-      now(),
-      id getOrElse UUID.randomUUID
+  override protected def validate(elem: Semester) =
+    Option.when(
+      elem.end.isBefore(elem.start) && elem.lectureEnd.isBefore(
+        elem.lectureStart
+      )
+    )(
+      new Throwable(
+        s"semester start should be before semester end, but was ${elem.start} - ${elem.end}"
+      )
+    ) orElse Option.unless(
+      elem.deLabel.startsWith("Sommersemester") || elem.deLabel.startsWith(
+        "Wintersemester"
+      )
+    )(
+      new Throwable(
+        s"semester label must start with 'Sommersemester' or 'Wintersemester', but was ${elem.deLabel}"
+      )
     )
-
-  override protected def validate(json: SemesterJson) = Option.when(
-    json.end.isBefore(json.start) && json.lectureEnd.isBefore(json.lectureStart)
-  )(
-    new Throwable(
-      s"semester start should be before semester end, but was ${json.start} - ${json.end}"
-    )
-  )
 }
