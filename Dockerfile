@@ -7,5 +7,7 @@ RUN sbt clean stage
 
 FROM openjdk:17.0.2-slim
 WORKDIR /schedule
+RUN mkdir bootstrap
 COPY --from=sbt /schedule/target/universal/stage .
+COPY --from=sbt /schedule/bootstrap/Mapping.csv bootstrap/Mapping.csv
 CMD bin/schedule -Dconfig.file=conf/application-prod.conf

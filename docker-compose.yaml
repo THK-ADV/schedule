@@ -30,27 +30,15 @@ services:
     depends_on:
       - psql
 
-  frontend:
-    container_name: schedule-frontend
-    image: schedule-frontend
+  calendar:
+    container_name: schedule-cal
+    image: schedule-cal
     restart: always
     ports:
-      - "8080:80"
-      - "4433:443"
+      - "8080:3000"
     build:
-      context: ../schedule-ui
+      context: ../calendar-ui
       dockerfile: Dockerfile
-    configs:
-      - source: nginx_conf
-        target: /etc/nginx/conf.d/default.conf
-        mode: 0440
-    secrets:
-      - source: server_cert_pem
-        target: /etc/cert/cert.pem
-        mode: 0440
-      - source: server_cert_key
-        target: /etc/cert/cert.key
-        mode: 0440
 
 volumes:
   psql_vol:
