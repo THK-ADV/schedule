@@ -1,12 +1,7 @@
 package database.tables
+import models.LegalHoliday
 import org.joda.time.LocalDate
 import slick.jdbc.PostgresProfile.api._
-
-case class LegalHoliday(
-    label: String,
-    date: LocalDate,
-    year: Int
-)
 
 final class LegalHolidayTable(tag: Tag)
     extends Table[LegalHoliday](tag, "legal_holiday") {

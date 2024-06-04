@@ -22,7 +22,7 @@ final class ModuleController @Inject() (
   override def all() =
     Action.async { request =>
       val extend = isExtended(request)
-      if (extend) service.repo.getAllFromView.map(Ok(_))
+      if (extend) service.repo.allFromView().map(Ok(_))
       else super.all().apply(request)
     }
 }

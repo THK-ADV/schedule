@@ -5,11 +5,11 @@ import database.tables.ModuleTable
 import database.view.JsonView
 import models.Module
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.jdbc.{GetResult, JdbcProfile}
+import slick.jdbc.JdbcProfile
 
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 final class ModuleRepository @Inject() (
@@ -28,4 +28,7 @@ final class ModuleRepository @Inject() (
 
   def deleteAll() =
     db.run(tableQuery.delete)
+
+  def allFromView() =
+    getAllFromView
 }

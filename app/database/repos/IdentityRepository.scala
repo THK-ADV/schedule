@@ -20,4 +20,8 @@ final class IdentityRepository @Inject() (
   import profile.api._
 
   protected val tableQuery = TableQuery[IdentityTable]
+
+  override protected def makeFilter = {
+    case ("kind", xs) if xs.nonEmpty => _.kind === xs.head
+  }
 }

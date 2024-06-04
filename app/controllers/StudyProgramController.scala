@@ -23,7 +23,7 @@ final class StudyProgramController @Inject() (
     Action.async { request =>
       val extend = isExtended(request)
       val lang = preferredLanguage(request)
-      if (extend) service.repo.getAllFromView(lang).map(Ok(_))
+      if (extend) service.repo.allFromView(lang).map(Ok(_))
       else super.all().apply(request)
     }
 }

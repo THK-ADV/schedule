@@ -22,6 +22,6 @@ final class TeachingUnitController @Inject() (
   override def all() =
     Action.async { implicit request =>
       val lang = preferredLanguage
-      service.repo.getAllFromView(lang).map(Ok(_))
+      service.repo.allFromView(lang).map(Ok(_))
     }
 }

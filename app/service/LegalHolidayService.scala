@@ -1,9 +1,8 @@
 package service
 
 import database.repos.LegalHolidayRepository
-import database.tables.LegalHoliday
 import ops.DateOps
-import org.joda.time.LocalDate
+import org.joda.time.{LocalDate, LocalDateTime}
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
 
@@ -28,6 +27,9 @@ final class LegalHolidayService @Inject() (
         }
       )
 
+  def all(from: LocalDateTime, to: LocalDateTime) =
+    repo.all(from.toLocalDate, to.toLocalDate)
+
   def recreate(year: Int) = {
     def parse(js: JsValue) =
       js.\("feiertage")
@@ -38,7 +40,7 @@ final class LegalHolidayService @Inject() (
               for {
                 date <- day.\("date").validate[LocalDate]
                 label <- day.\("fname").validate[String]
-              } yield LegalHoliday(
+              } yield models.LegalHoliday(
                 label,
                 date,
                 year

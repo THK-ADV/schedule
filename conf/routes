@@ -62,6 +62,10 @@ GET         /rooms/:id                        controllers.RoomController.get(id:
 
 GET         /scheduleEntries                  controllers.ScheduleEntryController.all()
 
+GET         /holidays                         controllers.LegalHolidayController.all()
+
+GET         /semesterPlan                     controllers.SemesterPlanController.all()
+
 # from - to
 # GET         /holidays
 # [from - to], teaching unit, [semesterIndex]

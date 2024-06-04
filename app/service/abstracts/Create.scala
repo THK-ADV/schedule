@@ -23,7 +23,4 @@ trait Create[E <: UniqueEntity[_]] {
 
   def createMany(elems: Iterable[E]) =
     Future.sequence(elems.map(create))
-
-  def createManyForce(elems: List[E]): Future[Seq[E]] =
-    repo.createMany(elems)
 }

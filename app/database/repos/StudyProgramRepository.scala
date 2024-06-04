@@ -1,5 +1,6 @@
 package database.repos
 
+import controllers.PreferredLanguage
 import database.repos.abstracts.{Create, Get}
 import database.tables.StudyProgramTable
 import database.view.JsonView
@@ -25,4 +26,7 @@ final class StudyProgramRepository @Inject() (
   val tableQuery = TableQuery[StudyProgramTable]
 
   override protected def name: String = "study_program_view"
+
+  def allFromView(lang: PreferredLanguage) =
+    getAllFromView(lang)
 }

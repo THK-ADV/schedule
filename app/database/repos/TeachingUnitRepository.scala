@@ -1,5 +1,6 @@
 package database.repos
 
+import controllers.PreferredLanguage
 import database.repos.abstracts.{Create, Get}
 import database.tables.TeachingUnitTable
 import database.view.JsonView
@@ -25,4 +26,7 @@ final class TeachingUnitRepository @Inject() (
   protected val tableQuery = TableQuery[TeachingUnitTable]
 
   override protected def name: String = "teaching_unit_view"
+
+  def allFromView(lang: PreferredLanguage) =
+    getAllFromView(lang)
 }

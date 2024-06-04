@@ -2,23 +2,21 @@ package database.view
 
 import controllers.PreferredLanguage
 import play.api.db.slick.HasDatabaseConfigProvider
-import slick.jdbc.{GetResult, JdbcProfile}
+import slick.jdbc.JdbcProfile
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
 
-trait JsonView { self: HasDatabaseConfigProvider[JdbcProfile] =>
+trait JsonView extends JsonViewGetResult {
+  self: HasDatabaseConfigProvider[JdbcProfile] =>
   import profile.api._
 
   protected def name: String
 
-  implicit def jsonResult: GetResult[String] =
-    GetResult(_.nextString())
-
-  def getAllFromView(implicit ctx: ExecutionContext): Future[String] =
+  protected def getAllFromView(implicit ctx: ExecutionContext): Future[String] =
     db.run(sql"select * from #$name".as).map(_.head)
 
-  def getAllFromView(
+  protected def getAllFromView(
       lang: PreferredLanguage
   )(implicit ctx: ExecutionContext): Future[String] = {
     def go(lang: PreferredLanguage, retries: Int): Future[String] =
