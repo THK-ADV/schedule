@@ -1,8 +1,8 @@
 package models
 
-import org.joda.time.LocalDateTime
 import play.api.libs.json.{Json, Writes}
 
+import java.time.LocalDateTime
 import java.util.UUID
 
 case class ScheduleEntryView[Supervisor, StudyProgram, Room, CourseLabel](

@@ -1,9 +1,9 @@
 package models
 
 import localization.LocalizedLabel
-import org.joda.time.LocalDate
 import play.api.libs.json.{Json, Writes}
 
+import java.time.LocalDate
 import java.util.UUID
 
 case class Semester(

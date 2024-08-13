@@ -2,10 +2,10 @@ package database.repos
 
 import database.tables.LegalHolidayTable
 import models.LegalHoliday
-import org.joda.time.LocalDate
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
+import java.time.LocalDate
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
@@ -25,8 +25,6 @@ final class LegalHolidayRepository @Inject() (
   def delete(year: Int) =
     db.run(tableQuery.filter(_.year === year).delete)
 
-  def all(from: LocalDate, to: LocalDate) = {
-    import database.tables.localDateColumnType
+  def all(from: LocalDate, to: LocalDate) =
     db.run(tableQuery.filter(a => a.date >= from && a.date <= to).result)
-  }
 }

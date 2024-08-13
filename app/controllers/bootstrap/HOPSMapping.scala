@@ -1,12 +1,12 @@
 package controllers.bootstrap
 
-import models.{Course, Module, CourseId, Room, Semester, StudyProgram}
-import org.joda.time.format.DateTimeFormat
-import org.joda.time.{LocalDate, LocalTime}
+import models.{Course, CourseId, Module, Room, Semester, StudyProgram}
+import ops.DateOps
 
 import java.nio.file.{Files, Path}
+import java.time.{LocalDate, LocalTime}
 import java.util.UUID
-import scala.collection.JavaConverters.asScalaIteratorConverter
+import scala.jdk.CollectionConverters.IteratorHasAsScala
 
 class HOPSMapping(mappingCSV: Path) {
 
@@ -45,8 +45,6 @@ class HOPSMapping(mappingCSV: Path) {
 
   val moduleMapping = parseModules
 
-  val timeFmt = DateTimeFormat.forPattern("HH:mm:ss")
-
   def findModule(
       number: Int,
       fachkuerz: String,
@@ -83,8 +81,8 @@ class HOPSMapping(mappingCSV: Path) {
     val baseStd = 7
     val std1 = baseStd + startStd
     val std2 = std1 + 1
-    val start = LocalTime.parse(s"$std1:00:00", timeFmt)
-    val end = LocalTime.parse(s"$std2:00:00", timeFmt)
+    val start = LocalTime.parse(s"$std1:00:00", DateOps.timeFormatter)
+    val end = LocalTime.parse(s"$std2:00:00", DateOps.timeFormatter)
     (start, end)
   }
 

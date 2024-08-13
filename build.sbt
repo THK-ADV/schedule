@@ -1,5 +1,5 @@
-val playSlickVersion = "5.1.0"
-val scalaTestVersion = "3.2.15"
+val playSlickVersion = "5.3.0"
+val scalaTestVersion = "3.2.19"
 val guiceVersion = "5.1.0"
 
 lazy val `schedule` = (project in file("."))
@@ -8,11 +8,9 @@ lazy val `schedule` = (project in file("."))
     name := "schedule",
     maintainer := "Alexander Dobrynin <alexander.dobrynin@th-koeln.de>",
     version := "1.0",
-    scalaVersion := "2.13.10",
+    scalaVersion := "2.13.14",
     libraryDependencies ++= play,
-    libraryDependencies ++= guiceDeps,
     libraryDependencies ++= database,
-    libraryDependencies ++= date,
     libraryDependencies ++= test,
     libraryDependencies ++= keycloak,
     libraryDependencies += filenameMacro,
@@ -37,30 +35,20 @@ lazy val play = Seq(
   specs2 % Test,
   ehcache,
   ws,
-  "com.typesafe.play" %% "play-json" % "2.9.4"
-)
-
-lazy val guiceDeps = Seq(
-  guice,
-  "com.google.inject" % "guice" % guiceVersion,
-  "com.google.inject.extensions" % "guice-assistedinject" % guiceVersion
+  guice
 )
 
 lazy val database = Seq(
   "com.typesafe.play" %% "play-slick" % playSlickVersion,
   "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion,
-  "org.postgresql" % "postgresql" % "42.7.2"
-)
-
-lazy val date = Seq(
-  "joda-time" % "joda-time" % "2.12.2"
+  "org.postgresql" % "postgresql" % "42.7.3"
 )
 
 lazy val test = Seq(
   "org.scalactic" %% "scalactic" % scalaTestVersion,
   "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
   "org.scalatest" %% "scalatest-wordspec" % scalaTestVersion % "test",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % "test"
+  "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.1" % "test"
 )
 
 lazy val keycloak = Seq(

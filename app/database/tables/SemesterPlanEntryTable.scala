@@ -1,17 +1,16 @@
 package database.tables
 
 import database.UUIDUniqueColumn
+import database.tables.localDateTimeColumnType
 import models.{SemesterPlanEntry, SemesterPlanEntryType}
-import org.joda.time.LocalDateTime
 import slick.jdbc.PostgresProfile.api._
 
+import java.time.LocalDateTime
 import java.util.UUID
 
 final class SemesterPlanEntryTable(tag: Tag)
     extends Table[SemesterPlanEntry](tag, "semester_plan_entry")
     with UUIDUniqueColumn {
-
-  import database.tables.localDateTimeColumnType
 
   def start = column[LocalDateTime]("start")(localDateTimeColumnType)
 

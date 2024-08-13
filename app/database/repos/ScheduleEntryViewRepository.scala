@@ -3,10 +3,10 @@ package database.repos
 import controllers.PreferredLanguage
 import database.tables.ScheduleEntryViewTable
 import models.ScheduleEntryView
-import org.joda.time.LocalDateTime
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
+import java.time.LocalDateTime
 import javax.inject.{Inject, Singleton}
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.{ExecutionContext, Future}

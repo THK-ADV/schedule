@@ -1,15 +1,23 @@
 package ops
 
-import org.joda.time.format.DateTimeFormat
-import org.joda.time.{LocalDate, LocalDateTime, LocalTime}
+import java.time.format.{DateTimeFormatter, DateTimeFormatterBuilder}
+import java.time.temporal.ChronoField
+import java.time.{LocalDate, LocalDateTime, LocalTime}
 
 object DateOps {
-  private val datePattern = "yyyy-MM-dd"
-  private val dateFormatter = DateTimeFormat.forPattern(datePattern)
-  private val timePattern = "HH:mm:ss"
-  private val timeFormatter = DateTimeFormat.forPattern(timePattern)
-  private val dateTimePattern = "yyyy-MM-dd HH:mm:ss"
-  private val dateTimeFormatter = DateTimeFormat.forPattern(dateTimePattern)
+  val datePattern = "yyyy-MM-dd"
+  val dateFormatter = DateTimeFormatter.ofPattern(datePattern)
+  val timePattern = "HH:mm"
+  val timeFormatter = DateTimeFormatter.ofPattern(timePattern)
+
+  val dateTimeFormatter = new DateTimeFormatterBuilder()
+    .appendPattern(datePattern)
+    .optionalStart()
+    .appendPattern(s" $timePattern")
+    .optionalEnd()
+    .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+    .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+    .toFormatter()
 
   def parseDate(string: String): LocalDate =
     LocalDate.parse(string, dateFormatter)
@@ -18,15 +26,16 @@ object DateOps {
     LocalTime.parse(string, timeFormatter)
 
   // Parsing without formatting makes the time part optional
-  def parseDateTime(string: String): LocalDateTime =
-    LocalDateTime.parse(string)
+  def parseDateTime(string: String): LocalDateTime = {
+    LocalDateTime.parse(string, dateTimeFormatter)
+  }
 
   def print(localDate: LocalDate): String =
-    localDate.toString(dateFormatter)
+    localDate.format(dateFormatter)
 
   def print(localTime: LocalTime): String =
-    localTime.toString(timeFormatter)
+    localTime.format(timeFormatter)
 
   def print(localDateTime: LocalDateTime): String =
-    localDateTime.toString(dateTimeFormatter)
+    localDateTime.format(dateTimeFormatter)
 }

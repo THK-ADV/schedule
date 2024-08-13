@@ -1,12 +1,12 @@
 package database.tables
+import database.tables.localDateColumnType
 import models.LegalHoliday
-import org.joda.time.LocalDate
 import slick.jdbc.PostgresProfile.api._
+
+import java.time.LocalDate
 
 final class LegalHolidayTable(tag: Tag)
     extends Table[LegalHoliday](tag, "legal_holiday") {
-
-  import database.tables.localDateColumnType
 
   def label = column[String]("label", O.PrimaryKey)
 
