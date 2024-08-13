@@ -1,6 +1,6 @@
 package suite
 
-import akka.stream.Materializer
+import org.apache.pekko.stream.Materializer
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Configuration
 import play.api.inject.guice.{GuiceApplicationBuilder, GuiceableModule}

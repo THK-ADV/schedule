@@ -1,4 +1,4 @@
-val playSlickVersion = "5.3.0"
+val playSlickVersion = "6.1.1"
 val scalaTestVersion = "3.2.19"
 val guiceVersion = "5.1.0"
 
@@ -39,8 +39,8 @@ lazy val play = Seq(
 )
 
 lazy val database = Seq(
-  "com.typesafe.play" %% "play-slick" % playSlickVersion,
-  "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion,
+  "org.playframework" %% "play-slick" % playSlickVersion,
+  "org.playframework" %% "play-slick-evolutions" % playSlickVersion,
   "org.postgresql" % "postgresql" % "42.7.3"
 )
 

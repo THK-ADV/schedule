@@ -1,13 +1,9 @@
 package kafka
 
-import akka.Done
-import akka.actor.CoordinatedShutdown
-import org.apache.kafka.clients.consumer.{
-  ConsumerConfig,
-  ConsumerRecord,
-  KafkaConsumer
-}
+import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRecord, KafkaConsumer}
 import org.apache.kafka.common.serialization.StringDeserializer
+import org.apache.pekko.Done
+import org.apache.pekko.actor.CoordinatedShutdown
 import play.api.Logging
 import play.api.libs.json.Json
 
