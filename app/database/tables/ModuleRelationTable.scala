@@ -15,5 +15,5 @@ final class ModuleRelationTable(tag: Tag)
   def * = (
     parent,
     child
-  ) <> (ModuleRelation.tupled, ModuleRelation.unapply)
+  ) <> (ModuleRelation.apply, ModuleRelation.unapply)
 }

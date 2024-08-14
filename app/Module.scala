@@ -1,13 +1,14 @@
-import auth.OAuthAuthorization
+import auth.{Authorization, UserToken}
 import com.google.inject.{AbstractModule, TypeLiteral}
 import kafka.Consumer
-import provider.{ConsumerProvider, OAuthAuthorizationProvider, UserToken}
+import provider.{AuthorizationProvider, ConsumerProvider}
 
 class Module extends AbstractModule {
 
   override def configure(): Unit = {
-    bind(new TypeLiteral[OAuthAuthorization[UserToken]] {})
-      .toProvider(classOf[OAuthAuthorizationProvider])
+    bind(new TypeLiteral[Authorization[UserToken]] {})
+      .toProvider(classOf[AuthorizationProvider])
+      .asEagerSingleton()
     bind(classOf[Consumer])
       .toProvider(classOf[ConsumerProvider])
       .asEagerSingleton()

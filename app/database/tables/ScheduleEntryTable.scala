@@ -24,5 +24,5 @@ final class ScheduleEntryTable(tag: Tag)
       course,
       start,
       end
-    ) <> (ScheduleEntry.tupled, ScheduleEntry.unapply)
+    ) <> (ScheduleEntry.apply, ScheduleEntry.unapply)
 }

@@ -17,5 +17,5 @@ final class ScheduleEntryRoomTable(tag: Tag)
   override def * : ProvenShape[ScheduleEntryRoom] = (
     scheduleEntry,
     room
-  ) <> (ScheduleEntryRoom.tupled, ScheduleEntryRoom.unapply)
+  ) <> (ScheduleEntryRoom.apply, ScheduleEntryRoom.unapply)
 }

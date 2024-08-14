@@ -13,4 +13,4 @@ final class CampusService @Inject() (
     val repo: CampusRepository,
     implicit val ctx: ExecutionContext
 ) extends Get[UUID, Campus]
-    with Create[Campus]
+    with Create[UUID, Campus]

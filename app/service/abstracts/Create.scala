@@ -5,9 +5,9 @@ import models.UniqueEntity
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait Create[E <: UniqueEntity[_]] {
+trait Create[ID, E <: UniqueEntity[ID]] {
 
-  def repo: repos.abstracts.Create[_, E, _]
+  def repo: repos.abstracts.Create[ID, E, ?]
 
   implicit def ctx: ExecutionContext
 

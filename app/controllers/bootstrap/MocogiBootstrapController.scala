@@ -220,9 +220,9 @@ final class MocogiBootstrapController @Inject() (
        tus.find(_.deLabel == "Informatik")
      else tus.find(_.deLabel == "Ingenieurwesen")).get.id
 
-  private def create[A <: UniqueEntity[_]](
+  private def create[ID, A <: UniqueEntity[ID]](
       resource: String,
-      repo: Create[_, A, _]
+      repo: Create[ID, A, ?]
   )(implicit reads: Reads[A]) =
     for {
       resp <- ws.url(s"$url/$resource").get()

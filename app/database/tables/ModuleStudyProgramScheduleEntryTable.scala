@@ -23,5 +23,5 @@ final class ModuleStudyProgramScheduleEntryTable(tag: Tag)
   def * = (
     scheduleEntry,
     moduleInStudyProgram
-  ) <> (ModuleStudyProgramScheduleEntry.tupled, ModuleStudyProgramScheduleEntry.unapply)
+  ) <> (ModuleStudyProgramScheduleEntry.apply, ModuleStudyProgramScheduleEntry.unapply)
 }

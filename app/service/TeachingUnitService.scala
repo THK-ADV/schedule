@@ -13,4 +13,4 @@ final class TeachingUnitService @Inject() (
     val repo: TeachingUnitRepository,
     implicit val ctx: ExecutionContext
 ) extends Get[UUID, TeachingUnit]
-    with Create[TeachingUnit]
+    with Create[UUID, TeachingUnit]

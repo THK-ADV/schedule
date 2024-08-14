@@ -13,7 +13,7 @@ final class CourseService @Inject() (
     val repo: CourseRepository,
     implicit val ctx: ExecutionContext
 ) extends Get[UUID, Course]
-    with Create[Course] {
+    with Create[UUID, Course] {
   // TODO bootstrap only
   def deleteAll() = repo.deleteAll()
 }

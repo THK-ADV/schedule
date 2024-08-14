@@ -41,7 +41,7 @@ final class ScheduleEntryViewRepository @Inject() (
           val supervisors = ListBuffer.empty[ModuleSupervisor]
           val studyPrograms = ListBuffer.empty[StudyProgram[String, String]]
 
-          xs.foreach { x: ScheduleEntryView.DB =>
+          xs.foreach { (x: ScheduleEntryView.DB) =>
             if (!start.contains(x.start)) start += x.start
             if (!end.contains(x.end)) end += x.end
             if (!room.contains(x.room)) room += x.room

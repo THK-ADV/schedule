@@ -1,6 +1,7 @@
 val playSlickVersion = "6.1.1"
 val scalaTestVersion = "3.2.19"
 val guiceVersion = "5.1.0"
+val keycloakVersion = "24.0.3"
 
 lazy val `schedule` = (project in file("."))
   .enablePlugins(PlayScala)
@@ -8,12 +9,11 @@ lazy val `schedule` = (project in file("."))
     name := "schedule",
     maintainer := "Alexander Dobrynin <alexander.dobrynin@th-koeln.de>",
     version := "1.0",
-    scalaVersion := "2.13.14",
+    scalaVersion := "3.3.3",
     libraryDependencies ++= play,
     libraryDependencies ++= database,
     libraryDependencies ++= test,
     libraryDependencies ++= keycloak,
-    libraryDependencies += filenameMacro,
     libraryDependencies += kafka,
     resolvers += "Akka Snapshot Repository" at "https://repo.akka.io/snapshots/",
     externalResolvers ++= Seq(
@@ -35,7 +35,9 @@ lazy val play = Seq(
   specs2 % Test,
   ehcache,
   ws,
-  guice
+  guice,
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.17.1",
+  "com.fasterxml.jackson.core" % "jackson-databind" % "2.17.1",
 )
 
 lazy val database = Seq(
@@ -51,12 +53,10 @@ lazy val test = Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.1" % "test"
 )
 
-lazy val keycloak = Seq(
-  "de.th-koeln.inf.adv" %% "keycloak-validation" % "0.1",
-  "org.jboss.logging" % "jboss-logging" % "3.3.0.Final",
-  "org.apache.httpcomponents" % "httpclient" % "4.5.14"
+val keycloak = Seq(
+  "org.keycloak" % "keycloak-core" % keycloakVersion,
+  "org.keycloak" % "keycloak-adapter-core" % keycloakVersion,
+  "org.jboss.logging" % "jboss-logging" % "3.5.3.Final"
 )
-
-lazy val filenameMacro = "de.th-koeln.inf.adv" %% "filename" % "0.1"
 
 lazy val kafka = "org.apache.kafka" % "kafka-clients" % "3.8.0"

@@ -13,4 +13,4 @@ final class RoomService @Inject() (
     val repo: RoomRepository,
     implicit val ctx: ExecutionContext
 ) extends Get[UUID, Room]
-    with Create[Room]
+    with Create[UUID, Room]

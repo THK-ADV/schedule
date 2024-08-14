@@ -7,7 +7,7 @@ import service.abstracts.{Create => C}
 
 import scala.concurrent.ExecutionContext
 
-trait Create[Model <: UniqueEntity[_], Json] {
+trait Create[ID, Model <: UniqueEntity[ID], Json] {
   self: AbstractController =>
 
   implicit def reads: Reads[Json]
@@ -16,7 +16,7 @@ trait Create[Model <: UniqueEntity[_], Json] {
 
   implicit def writes: Writes[Model]
 
-  def service: C[Model]
+  def service: C[ID, Model]
 
   def toModel(json: Json): Model
 
