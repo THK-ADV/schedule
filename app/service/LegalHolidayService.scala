@@ -1,11 +1,12 @@
 package service
 
 import database.repos.LegalHolidayRepository
+import models.LegalHoliday
 import ops.DateOps
-import org.joda.time.{LocalDate, LocalDateTime}
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
 
+import java.time.{LocalDate, LocalDateTime}
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 import scala.util.control.NonFatal
@@ -40,7 +41,7 @@ final class LegalHolidayService @Inject() (
               for {
                 date <- day.\("date").validate[LocalDate]
                 label <- day.\("fname").validate[String]
-              } yield models.LegalHoliday(
+              } yield LegalHoliday(
                 label,
                 date,
                 year

@@ -1,6 +1,5 @@
-package controllers.action
+package auth
 
-import provider.UserToken
 import play.api.mvc.{Request, WrappedRequest}
 
 case class UserTokenRequest[A](unwrapped: Request[A], token: UserToken)

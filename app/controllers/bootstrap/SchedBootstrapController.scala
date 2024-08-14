@@ -4,13 +4,14 @@ import database.repos.ScheduleEntryRepository
 import database.tables.{ModuleStudyProgramScheduleEntry, ScheduleEntryRoom}
 import models._
 import ops.DateOps
-import org.joda.time.format.DateTimeFormat
-import org.joda.time.{LocalDate, LocalDateTime, LocalTime, Weeks}
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service._
 
 import java.nio.file.{Files, Paths}
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.time.{LocalDate, LocalDateTime, LocalTime}
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
 import scala.collection.mutable.ListBuffer
@@ -65,7 +66,7 @@ final class SchedBootstrapController @Inject() (
   }
 
   def createSemesters() = Action.async { _ =>
-    val df = DateTimeFormat.forPattern("dd.MM.yyyy")
+    val df = DateTimeFormatter.ofPattern("dd.MM.yyyy")
     val semesters = List(
       Semester(
         UUID.randomUUID(),
@@ -833,7 +834,7 @@ final class SchedBootstrapController @Inject() (
       ],
       s: Semester
   ) = {
-    val weeks = Weeks.weeksBetween(s.lectureStart, s.lectureEnd)
+    val weeks = ChronoUnit.WEEKS.between(s.lectureStart, s.lectureEnd)
     val blockedDays = this.blockedDays
     val result = ListBuffer
       .empty[
@@ -843,9 +844,9 @@ final class SchedBootstrapController @Inject() (
             Iterable[ScheduleEntryRoom]
         )
       ]
-    (0 until weeks.getWeeks).foreach { week =>
+    (0L until weeks).foreach { week =>
       xs.foreach { case (s, sps, rs) =>
-        val newStart = s.start.plusWeeks(week)
+        val newStart = ChronoUnit.WEEKS.addTo(s.start, week)
         if (!blockedDays.contains(newStart.toLocalDate)) {
           val newSchedule = s.copy(
             id = UUID.randomUUID,
@@ -919,8 +920,8 @@ final class SchedBootstrapController @Inject() (
         val s = ScheduleEntry(
           UUID.randomUUID(),
           course,
-          date.toLocalDateTime(start),
-          date.toLocalDateTime(end)
+          LocalDateTime.of(date, start),
+          LocalDateTime.of(date, end)
         )
         val ss = xs.map(a =>
           ModuleStudyProgramScheduleEntry(s.id, a.moduleInStudyProgram)

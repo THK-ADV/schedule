@@ -13,7 +13,7 @@ final class SemesterService @Inject() (
     val repo: SemesterRepository,
     implicit val ctx: ExecutionContext
 ) extends Get[UUID, Semester]
-    with Create[Semester] {
+    with Create[UUID, Semester] {
 
   override protected def validate(elem: Semester) =
     Option.when(

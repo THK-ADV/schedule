@@ -1,7 +1,6 @@
 package models
 
-import org.joda.time.LocalDateTime
-
+import java.time.LocalDateTime
 import java.util.UUID
 
 case class SemesterPlanEntry(

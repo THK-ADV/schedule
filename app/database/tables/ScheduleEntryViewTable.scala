@@ -2,10 +2,10 @@ package database.tables
 
 import database.UUIDUniqueColumn
 import models.ScheduleEntryView
-import org.joda.time.LocalDateTime
 import slick.jdbc.PostgresProfile.api._
 import slick.lifted.ProvenShape
 
+import java.time.LocalDateTime
 import java.util.UUID
 
 final class ScheduleEntryViewTable(tag: Tag)

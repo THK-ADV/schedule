@@ -18,7 +18,7 @@ final class CourseController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Read[UUID, Course]
-    with Create[Course, CourseJson] {
+    with Create[UUID, Course, CourseJson] {
 
   implicit val modulePartReads: Reads[CourseId] =
     Reads.of[String].map(CourseId.apply)

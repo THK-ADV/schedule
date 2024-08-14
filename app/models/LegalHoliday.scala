@@ -1,7 +1,8 @@
 package models
 
-import org.joda.time.LocalDate
 import play.api.libs.json.{Json, Writes}
+
+import java.time.LocalDate
 
 case class LegalHoliday(
     label: String,

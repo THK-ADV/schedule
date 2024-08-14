@@ -1,6 +1,7 @@
-val playSlickVersion = "5.1.0"
-val scalaTestVersion = "3.2.15"
+val playSlickVersion = "6.1.1"
+val scalaTestVersion = "3.2.19"
 val guiceVersion = "5.1.0"
+val keycloakVersion = "24.0.3"
 
 lazy val `schedule` = (project in file("."))
   .enablePlugins(PlayScala)
@@ -8,14 +9,11 @@ lazy val `schedule` = (project in file("."))
     name := "schedule",
     maintainer := "Alexander Dobrynin <alexander.dobrynin@th-koeln.de>",
     version := "1.0",
-    scalaVersion := "2.13.10",
+    scalaVersion := "3.3.3",
     libraryDependencies ++= play,
-    libraryDependencies ++= guiceDeps,
     libraryDependencies ++= database,
-    libraryDependencies ++= date,
     libraryDependencies ++= test,
     libraryDependencies ++= keycloak,
-    libraryDependencies += filenameMacro,
     libraryDependencies += kafka,
     resolvers += "Akka Snapshot Repository" at "https://repo.akka.io/snapshots/",
     externalResolvers ++= Seq(
@@ -37,38 +35,28 @@ lazy val play = Seq(
   specs2 % Test,
   ehcache,
   ws,
-  "com.typesafe.play" %% "play-json" % "2.9.4"
-)
-
-lazy val guiceDeps = Seq(
   guice,
-  "com.google.inject" % "guice" % guiceVersion,
-  "com.google.inject.extensions" % "guice-assistedinject" % guiceVersion
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.17.1",
+  "com.fasterxml.jackson.core" % "jackson-databind" % "2.17.1",
 )
 
 lazy val database = Seq(
-  "com.typesafe.play" %% "play-slick" % playSlickVersion,
-  "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion,
-  "org.postgresql" % "postgresql" % "42.7.2"
-)
-
-lazy val date = Seq(
-  "joda-time" % "joda-time" % "2.12.2"
+  "org.playframework" %% "play-slick" % playSlickVersion,
+  "org.playframework" %% "play-slick-evolutions" % playSlickVersion,
+  "org.postgresql" % "postgresql" % "42.7.3"
 )
 
 lazy val test = Seq(
   "org.scalactic" %% "scalactic" % scalaTestVersion,
   "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
   "org.scalatest" %% "scalatest-wordspec" % scalaTestVersion % "test",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % "test"
+  "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.1" % "test"
 )
 
-lazy val keycloak = Seq(
-  "de.th-koeln.inf.adv" %% "keycloak-validation" % "0.1",
-  "org.jboss.logging" % "jboss-logging" % "3.3.0.Final",
-  "org.apache.httpcomponents" % "httpclient" % "4.5.14"
+val keycloak = Seq(
+  "org.keycloak" % "keycloak-core" % keycloakVersion,
+  "org.keycloak" % "keycloak-adapter-core" % keycloakVersion,
+  "org.jboss.logging" % "jboss-logging" % "3.5.3.Final"
 )
-
-lazy val filenameMacro = "de.th-koeln.inf.adv" %% "filename" % "0.1"
 
 lazy val kafka = "org.apache.kafka" % "kafka-clients" % "3.8.0"

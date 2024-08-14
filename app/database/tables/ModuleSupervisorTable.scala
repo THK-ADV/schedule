@@ -15,5 +15,5 @@ final class ModuleSupervisorTable(tag: Tag)
   def * = (
     module,
     supervisor
-  ) <> (ModuleSupervisor.tupled, ModuleSupervisor.unapply)
+  ) <> (ModuleSupervisor.apply, ModuleSupervisor.unapply)
 }

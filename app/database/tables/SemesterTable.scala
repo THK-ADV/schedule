@@ -2,14 +2,14 @@ package database.tables
 
 import database.UUIDUniqueColumn
 import models.Semester
-import org.joda.time.LocalDate
 import slick.jdbc.PostgresProfile.api._
+
+import java.time.LocalDate
+import database.tables.localDateColumnType
 
 final class SemesterTable(tag: Tag)
     extends Table[Semester](tag, "semester")
     with UUIDUniqueColumn {
-
-  import database.tables.localDateColumnType
 
   def deLabel = column[String]("de_label")
 

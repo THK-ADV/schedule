@@ -3,10 +3,10 @@ package database.repos
 import controllers.PreferredLanguage
 import database.tables.ScheduleEntryViewTable
 import models.ScheduleEntryView
-import org.joda.time.LocalDateTime
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
+import java.time.LocalDateTime
 import javax.inject.{Inject, Singleton}
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.{ExecutionContext, Future}
@@ -41,7 +41,7 @@ final class ScheduleEntryViewRepository @Inject() (
           val supervisors = ListBuffer.empty[ModuleSupervisor]
           val studyPrograms = ListBuffer.empty[StudyProgram[String, String]]
 
-          xs.foreach { x: ScheduleEntryView.DB =>
+          xs.foreach { (x: ScheduleEntryView.DB) =>
             if (!start.contains(x.start)) start += x.start
             if (!end.contains(x.end)) end += x.end
             if (!room.contains(x.room)) room += x.room

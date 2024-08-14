@@ -1,8 +1,8 @@
 package provider
 
-import akka.actor.CoordinatedShutdown
 import kafka.Consumer
 import ops.ConfigurationOps.Ops
+import org.apache.pekko.actor.CoordinatedShutdown
 import play.api.Configuration
 
 import java.time.Duration
