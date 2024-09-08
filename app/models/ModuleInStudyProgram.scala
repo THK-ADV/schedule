@@ -10,7 +10,8 @@ case class ModuleInStudyProgram(
     studyProgram: UUID,
     mandatory: Boolean,
     focus: Boolean,
-    recommendedSemester: List[Int]
+    recommendedSemester: List[Int],
+    active: Boolean
 ) extends UniqueEntity[UUID]
 
 object ModuleInStudyProgram {

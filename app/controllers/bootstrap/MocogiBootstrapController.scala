@@ -1,9 +1,10 @@
 package controllers.bootstrap
 
-import database.repos._
+import database.repos.*
 import database.repos.abstracts.Create
-import models._
-import play.api.libs.json._
+import models.*
+import play.api.Logging
+import play.api.libs.json.*
 import play.api.libs.ws.WSClient
 import play.api.mvc.{AbstractController, ControllerComponents}
 import service.TeachingUnitService
@@ -12,6 +13,8 @@ import java.util.UUID
 import javax.inject.{Inject, Singleton}
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.ExecutionContext
+
+// TODO migrate bootstrap controller to new architecture
 
 @Singleton
 final class MocogiBootstrapController @Inject() (
@@ -30,7 +33,8 @@ final class MocogiBootstrapController @Inject() (
     teachingUnitService: TeachingUnitService,
     specializationRepository: SpecializationRepository,
     implicit val ctx: ExecutionContext
-) extends AbstractController(cc) {
+) extends AbstractController(cc)
+    with Logging {
   private val url = "http://lwivs49.gm.fh-koeln.de:9001"
 
   def createFaculties = Action.async { _ =>
@@ -128,15 +132,23 @@ final class MocogiBootstrapController @Inject() (
               case Some(spec) => sp.specializationId.contains(spec)
               case None       => sp.poId == po.po
             }
-          }.get
-          modulesInStudyProgram += ModuleInStudyProgram(
-            UUID.randomUUID(),
-            m.id,
-            sp.id,
-            mandatory = true,
-            focus = false,
-            po.recommendedSemester
-          )
+          }
+
+          sp match
+            case Some(sp) =>
+              modulesInStudyProgram += ModuleInStudyProgram(
+                UUID.randomUUID(),
+                m.id,
+                sp.id,
+                mandatory = true,
+                focus = false,
+                po.recommendedSemester,
+                active = true
+              )
+            case None =>
+              logger.error(
+                s"unable to find po ${po.po} for module ${m.id} (${m.metadata.title})"
+              )
         }
 
         m.metadata.po.optional.foreach { po =>
@@ -154,7 +166,8 @@ final class MocogiBootstrapController @Inject() (
             focus = false,
             // TODO add when mocogi supports it
 //            focus = po.isFocus,
-            po.recommendedSemester
+            po.recommendedSemester,
+            active = true
           )
         }
 
@@ -200,7 +213,7 @@ final class MocogiBootstrapController @Inject() (
       xs <- moduleRepository.createOrUpdateMany(modules)
       ys <- moduleInStudyProgramRepository.createMany(modulesInStudyPrograms)
       zs <- moduleSupervisorRepository.createOrUpdateMany(moduleSupervisor)
-      as <- moduleRelationRepository.createOrUpdateMany(moduleRelations)
+//      as <- moduleRelationRepository.createOrUpdateMany(moduleRelations)
     } yield {
       val (createdMods, updatedMods) = xs.partition(_.isDefined)
       Ok(
@@ -208,8 +221,8 @@ final class MocogiBootstrapController @Inject() (
           "createdMods" -> createdMods.size,
           "updatedMods" -> updatedMods.size,
           "createdModsInSps" -> ys.size,
-          "createdModsSups" -> zs.size,
-          "createdModsRels" -> as.size
+          "createdModsSups" -> zs,
+//          "createdModsRels" -> as
         )
       )
     }

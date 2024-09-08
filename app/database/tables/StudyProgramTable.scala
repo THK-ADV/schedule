@@ -25,6 +25,9 @@ final class StudyProgramTable(tag: Tag)
   def deLabel = column[String]("de_label")
 
   def enLabel = column[String]("en_label")
+  
+  def isPO(poId: String, specializationId: Option[String]) =
+    this.poId === poId && this.specializationId === specializationId 
 
   def * = (
     id,

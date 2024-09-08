@@ -15,6 +15,7 @@ lazy val `schedule` = (project in file("."))
     libraryDependencies ++= test,
     libraryDependencies ++= keycloak,
     libraryDependencies += kafka,
+    libraryDependencies += "org.typelevel" %% "cats-core" % "2.12.0",
     resolvers += "Akka Snapshot Repository" at "https://repo.akka.io/snapshots/",
     externalResolvers ++= Seq(
       "GitHub <THK-ADV> filename" at "https://maven.pkg.github.com/THK-ADV/filename",
@@ -37,7 +38,7 @@ lazy val play = Seq(
   ws,
   guice,
   "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.17.1",
-  "com.fasterxml.jackson.core" % "jackson-databind" % "2.17.1",
+  "com.fasterxml.jackson.core" % "jackson-databind" % "2.17.1"
 )
 
 lazy val database = Seq(
@@ -47,7 +48,7 @@ lazy val database = Seq(
 )
 
 lazy val test = Seq(
-  "org.scalactic" %% "scalactic" % scalaTestVersion,
+//  "org.scalactic" %% "scalactic" % scalaTestVersion,
   "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
   "org.scalatest" %% "scalatest-wordspec" % scalaTestVersion % "test",
   "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.1" % "test"

@@ -16,5 +16,5 @@ final class DegreeController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Read[String, Degree] {
-  override implicit def writes: Writes[Degree] = Degree.writes
+  override implicit def writes: Writes[Degree] = Degree.given_Format_Degree
 }

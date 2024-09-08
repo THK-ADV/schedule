@@ -14,17 +14,21 @@ final class ModuleSupervisorRepository @Inject() (
     implicit val ctx: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile] {
 
-  import profile.api._
+  import profile.api.*
 
   protected val tableQuery = TableQuery[ModuleSupervisorTable]
 
   def createOrUpdateMany(
       elems: List[ModuleSupervisor]
-  ): Future[Seq[ModuleSupervisor]] = {
-    val q = for {
-      _ <- tableQuery.delete
-      res <- (tableQuery returning tableQuery) ++= elems
-    } yield res
-    db.run(q.transactionally)
+  ): Future[Int] = {
+    val distinct = elems.distinct
+    val modules = distinct.map(_.module)
+    val query = for
+      _ <- tableQuery.filter(_.module.inSet(modules)).delete
+      num <-
+        if distinct.nonEmpty then tableQuery.insertAll(distinct)
+        else DBIO.successful(None)
+    yield num.getOrElse(0)
+    db.run(query.transactionally)
   }
 }

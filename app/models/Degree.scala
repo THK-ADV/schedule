@@ -1,7 +1,7 @@
 package models
 
 import localization.{LocalizedDescription, LocalizedLabel}
-import play.api.libs.json.{Json, Writes}
+import play.api.libs.json.{Format, Json, Writes}
 
 case class Degree(
     id: String,
@@ -14,5 +14,5 @@ case class Degree(
     with LocalizedDescription
 
 object Degree {
-  implicit def writes: Writes[Degree] = Json.writes[Degree]
+  given Format[Degree] = Json.format
 }

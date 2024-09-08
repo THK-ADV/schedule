@@ -20,12 +20,20 @@ final class ModuleInStudyProgramTable(tag: Tag)
 
   def recommendedSemester = column[List[Int]]("recommended_semester")
 
+  def active = column[Boolean]("active")
+
+  def studyProgramFk =
+    foreignKey("study_program", studyProgram, TableQuery[StudyProgramTable])(
+      _.id
+    )
+
   def * = (
     id,
     module,
     studyProgram,
     mandatory,
     focus,
-    recommendedSemester
+    recommendedSemester,
+    active
   ) <> ((ModuleInStudyProgram.apply _).tupled, ModuleInStudyProgram.unapply)
 }

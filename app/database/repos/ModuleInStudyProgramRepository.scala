@@ -4,9 +4,10 @@ import database.repos.abstracts.{Create, Get}
 import database.tables.{
   ModuleInStudyProgramTable,
   ModuleRelationTable,
-  ModuleTable
+  ModuleTable,
+  StudyProgramTable
 }
-import models.{Module, ModuleInStudyProgram, CourseId}
+import models.{CourseId, Module, ModuleInStudyProgram, StudyProgram}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -22,8 +23,9 @@ final class ModuleInStudyProgramRepository @Inject() (
     with Get[UUID, ModuleInStudyProgram, ModuleInStudyProgramTable]
     with Create[UUID, ModuleInStudyProgram, ModuleInStudyProgramTable] {
 
+  import ModuleInStudyProgramRepository.Update
   import database.tables.modulePartsColumnType
-  import profile.api._
+  import profile.api.*
 
   protected val tableQuery = TableQuery[ModuleInStudyProgramTable]
 
@@ -47,4 +49,23 @@ final class ModuleInStudyProgramRepository @Inject() (
         .distinctOn(_.id)
         .result
     )
+
+  def allFromModule(
+      module: UUID
+  ): Future[Seq[(ModuleInStudyProgram, StudyProgram)]] = {
+    val query = for
+      q <- tableQuery if q.module === module
+      sp <- q.studyProgramFk
+    yield (q, sp)
+    db.run(query.result)
+  }
 }
+
+object ModuleInStudyProgramRepository:
+  case class Update(
+      poId: String,
+      specializationId: Option[String],
+      mandatory: Boolean,
+      focus: Boolean,
+      active: Boolean
+  )

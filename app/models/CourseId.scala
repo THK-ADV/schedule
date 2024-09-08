@@ -2,31 +2,16 @@ package models
 
 import play.api.libs.json.Writes
 
-sealed trait CourseId {
-  def id: String
+enum CourseId(val id: String):
   override def toString = id
-}
 
-object CourseId {
-  implicit def writes: Writes[CourseId] =
-    Writes.of[String].contramap(_.id)
+  case Lecture extends CourseId("lecture")
+  case Seminar extends CourseId("seminar")
+  case Practical extends CourseId("practical")
+  case Exercise extends CourseId("exercise")
+  case Tutorial extends CourseId("tutorial")
 
-  case object Lecture extends CourseId {
-    override def id: String = "lecture"
-  }
-  case object Seminar extends CourseId {
-    override def id: String = "seminar"
-  }
-  case object Practical extends CourseId {
-    override def id: String = "practical"
-  }
-  case object Exercise extends CourseId {
-    override def id: String = "exercise"
-  }
-  case object Tutorial extends CourseId {
-    override def id: String = "tutorial"
-  }
-
+object CourseId:
   def apply(id: String): CourseId =
     id match {
       case "lecture"   => Lecture
@@ -35,4 +20,6 @@ object CourseId {
       case "exercise"  => Exercise
       case "tutorial"  => Tutorial
     }
-}
+
+  given Writes[CourseId] =
+    Writes.of[String].contramap(_.id)

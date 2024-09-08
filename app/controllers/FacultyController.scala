@@ -16,5 +16,5 @@ final class FacultyController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Read[String, Faculty] {
-  override implicit def writes: Writes[Faculty] = Faculty.writes
+  override implicit def writes: Writes[Faculty] = Faculty.given_Format_Faculty
 }

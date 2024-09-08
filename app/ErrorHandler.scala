@@ -1,11 +1,12 @@
 import play.api.http.HttpErrorHandler
 import play.api.libs.json.Json
-import play.api.mvc.Results._
-import play.api.mvc._
+import play.api.mvc.*
+import play.api.mvc.Results.*
 
+import java.io.{PrintWriter, StringWriter}
 import javax.inject.Singleton
 import scala.annotation.unused
-import scala.concurrent._
+import scala.concurrent.*
 
 @unused
 @Singleton
@@ -29,14 +30,20 @@ class ErrorHandler extends HttpErrorHandler {
   def onServerError(
       request: RequestHeader,
       exception: Throwable
-  ): Future[Result] =
+  ): Future[Result] = {
+    val writer = StringWriter()
+    val printWriter = PrintWriter(writer)
+    exception.printStackTrace(printWriter)
+
     Future.successful(
       InternalServerError(
         Json.obj(
           "type" -> "server error",
           "request" -> request.toString(),
-          "message" -> exception.getMessage
+          "message" -> exception.getMessage,
+          "trace" -> writer.toString
         )
       )
     )
+  }
 }

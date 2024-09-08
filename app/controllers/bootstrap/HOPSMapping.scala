@@ -81,8 +81,8 @@ class HOPSMapping(mappingCSV: Path) {
     val baseStd = 7
     val std1 = baseStd + startStd
     val std2 = std1 + 1
-    val start = LocalTime.parse(s"$std1:00:00", DateOps.timeFormatter)
-    val end = LocalTime.parse(s"$std2:00:00", DateOps.timeFormatter)
+    val start = LocalTime.of(std1, 0, 0)
+    val end = LocalTime.of(std2, 0, 0)
     (start, end)
   }
 
@@ -107,16 +107,16 @@ class HOPSMapping(mappingCSV: Path) {
       case ("EIW_B", Some("AUI"))  => List("ing_een4")
       case ("EIW_B", Some("ELI"))  => List("ing_een4")
       case ("EIW_B", None)         => List("ing_een4")
-      case ("AI_B", None)          => List("inf_inf1", "inf_inf2", "inf_inf1_flex")
-      case ("MI_B", None)          => List("inf_mi4")
-      case ("WI_B", None)          => List("inf_wi4", "inf_wi5")
-      case ("ITM_B", None)         => List("inf_itm1", "inf_itm2")
-      case ("MI_M", None)          => List("inf_mim4")
-      case ("TI_B", None)          => Nil
-      case ("DS_M", None)          => List("inf_dsi1")
-      case ("WEB_M", None)         => List("inf_wsc1")
-      case ("BDE_M", None)         => List("ing_pdpd3", "ing_pdpd4", "ing_pdpd5")
-      case ("AIT_M", None)         => List("ing_ait1", "ing_ait3")
+      case ("AI_B", None)  => List("inf_inf1", "inf_inf2", "inf_inf1_flex")
+      case ("MI_B", None)  => List("inf_mi4")
+      case ("WI_B", None)  => List("inf_wi4", "inf_wi5")
+      case ("ITM_B", None) => List("inf_itm1", "inf_itm2")
+      case ("MI_M", None)  => List("inf_mim4")
+      case ("TI_B", None)  => Nil
+      case ("DS_M", None)  => List("inf_dsi1")
+      case ("WEB_M", None) => List("inf_wsc1")
+      case ("BDE_M", None) => List("ing_pdpd3", "ing_pdpd4", "ing_pdpd5")
+      case ("AIT_M", None) => List("ing_ait1", "ing_ait3")
       case ("WIN_M", Some("WIER")) => List("ing_wiwm1", "ing_wiwm2")
       case ("WIN_M", Some("WIT"))  => List("ing_wiwm1", "ing_wiwm2")
     }

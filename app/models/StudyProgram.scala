@@ -16,7 +16,14 @@ case class StudyProgram(
     poNumber: Int,
     specializationId: Option[String]
 ) extends UniqueEntity[UUID]
-    with LocalizedLabel
+    with LocalizedLabel {
+  def isSamePO(po: String, specialization: Option[String]) = {
+    val samePo = this.poId == po
+    if this.specializationId.isDefined && specialization.isDefined
+    then samePo && this.specializationId.get == specialization.get
+    else samePo
+  }
+}
 
 object StudyProgram {
   implicit def writes: Writes[StudyProgram] = Json.writes[StudyProgram]
