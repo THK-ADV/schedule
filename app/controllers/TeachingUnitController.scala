@@ -1,27 +1,28 @@
 package controllers
 
-import controllers.crud.Read
-import models.TeachingUnit
-import play.api.libs.json.Writes
-import play.api.mvc.{AbstractController, ControllerComponents}
-import service.TeachingUnitService
+import javax.inject.Inject
+import javax.inject.Singleton
 
-import java.util.UUID
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
+
+import play.api.cache.Cached
+import play.api.mvc.AbstractController
+import play.api.mvc.ControllerComponents
+import service.TeachingUnitService
 
 @Singleton
 final class TeachingUnitController @Inject() (
     cc: ControllerComponents,
-    val service: TeachingUnitService,
+    cached: Cached,
+    service: TeachingUnitService,
     implicit val ctx: ExecutionContext
-) extends AbstractController(cc)
-    with Read[UUID, TeachingUnit] {
-  override implicit def writes: Writes[TeachingUnit] = TeachingUnit.writes
+) extends AbstractController(cc) {
 
-  override def all() =
-    Action.async { implicit request =>
-      val lang = preferredLanguage
-      service.repo.allFromView(lang).map(Ok(_))
+  def all() =
+    cached.status(_.toString, 200, 3600) {
+      Action.async { implicit request =>
+        val lang = preferredLanguage
+        service.repo.allFromView(lang).map(Ok(_))
+      }
     }
 }

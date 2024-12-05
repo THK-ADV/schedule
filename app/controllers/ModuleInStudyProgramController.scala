@@ -1,22 +1,25 @@
 package controllers
 
-import controllers.crud.Read
-import models.ModuleInStudyProgram
-import play.api.libs.json.Writes
-import play.api.mvc.{AbstractController, ControllerComponents}
-import service.ModuleInStudyProgramService
+import javax.inject.Inject
+import javax.inject.Singleton
 
-import java.util.UUID
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
+
+import play.api.cache.Cached
+import play.api.libs.json.Json
+import play.api.libs.json.Writes
+import play.api.mvc.AbstractController
+import play.api.mvc.ControllerComponents
+import service.ModuleInStudyProgramService
 
 @Singleton
 final class ModuleInStudyProgramController @Inject() (
     cc: ControllerComponents,
-    val service: ModuleInStudyProgramService,
+    service: ModuleInStudyProgramService,
+    cached: Cached,
     implicit val ctx: ExecutionContext
-) extends AbstractController(cc)
-    with Read[UUID, ModuleInStudyProgram] {
-  override implicit def writes: Writes[ModuleInStudyProgram] =
-    ModuleInStudyProgram.writes
+) extends AbstractController(cc) {
+  def all() = cached.status(_.toString, 200, 3600)(
+    Action.async(_ => service.all().map(xs => Ok(Json.toJson(xs))))
+  )
 }

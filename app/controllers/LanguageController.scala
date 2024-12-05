@@ -1,20 +1,25 @@
 package controllers
 
-import controllers.crud.Read
-import models.Language
-import play.api.libs.json.Writes
-import play.api.mvc.{AbstractController, ControllerComponents}
-import service.LanguageService
+import javax.inject.Inject
+import javax.inject.Singleton
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
+
+import play.api.cache.Cached
+import play.api.libs.json.Json
+import play.api.libs.json.Writes
+import play.api.mvc.AbstractController
+import play.api.mvc.ControllerComponents
+import service.LanguageService
 
 @Singleton
 final class LanguageController @Inject() (
     cc: ControllerComponents,
-    val service: LanguageService,
+    service: LanguageService,
+    cached: Cached,
     implicit val ctx: ExecutionContext
-) extends AbstractController(cc)
-    with Read[String, Language] {
-  override implicit def writes: Writes[Language] = Language.writes
+) extends AbstractController(cc) {
+  def all() = cached.status(_.toString, 200, 3600)(
+    Action.async(service.all().map(xs => Ok(Json.toJson(xs))))
+  )
 }

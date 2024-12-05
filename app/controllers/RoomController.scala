@@ -1,21 +1,26 @@
 package controllers
 
-import controllers.crud.Read
-import models.Room
-import play.api.libs.json.Writes
-import play.api.mvc.{AbstractController, ControllerComponents}
-import service.RoomService
+import javax.inject.Inject
+import javax.inject.Singleton
 
-import java.util.UUID
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
+
+import models.Room
+import play.api.cache.Cached
+import play.api.libs.json.Json
+import play.api.libs.json.Writes
+import play.api.mvc.AbstractController
+import play.api.mvc.ControllerComponents
+import service.RoomService
 
 @Singleton
 final class RoomController @Inject() (
     cc: ControllerComponents,
-    val service: RoomService,
+    service: RoomService,
+    cached: Cached,
     implicit val ctx: ExecutionContext
-) extends AbstractController(cc)
-    with Read[UUID, Room] {
-  override implicit def writes: Writes[Room] = Room.writes
+) extends AbstractController(cc) {
+  def all() = cached.status(_.toString, 200, 3600)(
+    Action.async(_ => service.all().map(xs => Ok(Json.toJson(xs))))
+  )
 }

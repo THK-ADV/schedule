@@ -1,29 +1,36 @@
 package controllers
 
-import controllers.CourseController.CourseJson
-import controllers.crud.{Create, Read}
-import models.{Course, CourseId}
-import play.api.libs.json.{Json, Reads, Writes}
-import play.api.mvc.{AbstractController, ControllerComponents}
-import service.CourseService
-
 import java.util.UUID
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
+import javax.inject.Singleton
+
 import scala.concurrent.ExecutionContext
+
+import controllers.crud.Create
+import controllers.CourseController.CourseJson
+import models.Course
+import models.CourseId
+import play.api.cache.Cached
+import play.api.libs.json.Json
+import play.api.libs.json.Reads
+import play.api.libs.json.Writes
+import play.api.mvc.AbstractController
+import play.api.mvc.ControllerComponents
+import service.CourseService
 
 @Singleton
 final class CourseController @Inject() (
     cc: ControllerComponents,
     val service: CourseService,
+    cached: Cached,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
-    with Read[UUID, Course]
     with Create[UUID, Course, CourseJson] {
 
   implicit val modulePartReads: Reads[CourseId] =
     Reads.of[String].map(CourseId.apply)
 
-  override implicit val reads: Reads[CourseJson] = Json.reads
+  implicit override val reads: Reads[CourseJson] = Json.reads
 
   override def toModel(json: CourseJson): Course =
     Course(
@@ -33,7 +40,11 @@ final class CourseController @Inject() (
       json.part
     )
 
-  override implicit def writes: Writes[Course] = Course.writes
+  implicit override def writes: Writes[Course] = Course.writes
+
+  def all() = cached.status(_.toString, 200, 3600)(
+    Action.async(_ => service.all().map(xs => Ok(Json.toJson(xs))))
+  )
 }
 
 object CourseController {

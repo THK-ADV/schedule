@@ -9,8 +9,8 @@ class Module extends AbstractModule {
     bind(new TypeLiteral[Authorization[UserToken]] {})
       .toProvider(classOf[AuthorizationProvider])
       .asEagerSingleton()
-    bind(classOf[Consumer])
-      .toProvider(classOf[ConsumerProvider])
-      .asEagerSingleton()
+//    bind(classOf[Consumer])
+//      .toProvider(classOf[ConsumerProvider])
+//      .asEagerSingleton()
   }
 }
