@@ -238,7 +238,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-04-01"),
-          DateOps.parseDateTime("2024-04-05"),
+          DateOps.parseDateTime("2024-04-06"),
           SemesterPlanEntryType.Block,
           sose24,
           Some(inf),
@@ -247,7 +247,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-05-13"),
-          DateOps.parseDateTime("2024-05-17"),
+          DateOps.parseDateTime("2024-05-18"),
           SemesterPlanEntryType.Block,
           sose24,
           Some(inf),
@@ -256,7 +256,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-04-08"),
-          DateOps.parseDateTime("2024-04-12"),
+          DateOps.parseDateTime("2024-04-13"),
           SemesterPlanEntryType.Exam,
           sose24,
           Some(inf),
@@ -265,7 +265,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-07-22"),
-          DateOps.parseDateTime("2024-07-26"),
+          DateOps.parseDateTime("2024-07-27"),
           SemesterPlanEntryType.Exam,
           sose24,
           Some(inf),
@@ -274,7 +274,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-04-15"),
-          DateOps.parseDateTime("2024-07-19"),
+          DateOps.parseDateTime("2024-07-20"),
           SemesterPlanEntryType.Lecture,
           sose24,
           Some(inf),
@@ -284,7 +284,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-04-15"),
-          DateOps.parseDateTime("2024-07-19"),
+          DateOps.parseDateTime("2024-07-20"),
           SemesterPlanEntryType.Lecture,
           sose24,
           Some(ing),
@@ -293,7 +293,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-07-22"),
-          DateOps.parseDateTime("2024-08-02"),
+          DateOps.parseDateTime("2024-08-03"),
           SemesterPlanEntryType.Exam,
           sose24,
           Some(ing),
@@ -302,7 +302,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-04-08"),
-          DateOps.parseDateTime("2024-04-12"),
+          DateOps.parseDateTime("2024-04-13"),
           SemesterPlanEntryType.Exam,
           sose24,
           Some(ing),
@@ -311,7 +311,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-05-13"),
-          DateOps.parseDateTime("2024-05-17"),
+          DateOps.parseDateTime("2024-05-18"),
           SemesterPlanEntryType.Block,
           sose24,
           Some(ing),
@@ -320,7 +320,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-06-10"),
-          DateOps.parseDateTime("2024-06-14"),
+          DateOps.parseDateTime("2024-06-15"),
           SemesterPlanEntryType.Block,
           sose24,
           Some(ing),
@@ -329,7 +329,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-07-01"),
-          DateOps.parseDateTime("2024-07-05"),
+          DateOps.parseDateTime("2024-07-06"),
           SemesterPlanEntryType.Block,
           sose24,
           Some(ing),
@@ -338,7 +338,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-05-06"),
-          DateOps.parseDateTime("2024-05-10"),
+          DateOps.parseDateTime("2024-05-11"),
           SemesterPlanEntryType.Block,
           sose24,
           Some(ing),
@@ -347,7 +347,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-06-03"),
-          DateOps.parseDateTime("2024-06-07"),
+          DateOps.parseDateTime("2024-06-08"),
           SemesterPlanEntryType.Block,
           sose24,
           Some(ing),
@@ -356,7 +356,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-06-24"),
-          DateOps.parseDateTime("2024-06-28"),
+          DateOps.parseDateTime("2024-06-29"),
           SemesterPlanEntryType.Block,
           sose24,
           Some(ing),
@@ -365,7 +365,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-04-01"),
-          DateOps.parseDateTime("2024-04-05"),
+          DateOps.parseDateTime("2024-04-06"),
           SemesterPlanEntryType.Block,
           sose24,
           Some(ing),
@@ -374,7 +374,7 @@ final class SchedBootstrapController @Inject() (
         SemesterPlanEntry(
           UUID.randomUUID(),
           DateOps.parseDateTime("2024-04-01"),
-          DateOps.parseDateTime("2024-04-12"),
+          DateOps.parseDateTime("2024-04-13"),
           SemesterPlanEntryType.Block,
           sose24,
           Some(ing),
