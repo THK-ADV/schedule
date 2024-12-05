@@ -1,21 +1,26 @@
 package controllers
 
-import controllers.crud.Read
-import models.Semester
-import play.api.libs.json.Writes
-import play.api.mvc.{AbstractController, ControllerComponents}
-import service.SemesterService
+import javax.inject.Inject
+import javax.inject.Singleton
 
-import java.util.UUID
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
+
+import models.Semester
+import play.api.cache.Cached
+import play.api.libs.json.Json
+import play.api.libs.json.Writes
+import play.api.mvc.AbstractController
+import play.api.mvc.ControllerComponents
+import service.SemesterService
 
 @Singleton
 final class SemesterController @Inject() (
     cc: ControllerComponents,
-    val service: SemesterService,
+    service: SemesterService,
+    cached: Cached,
     implicit val ctx: ExecutionContext
-) extends AbstractController(cc)
-    with Read[UUID, Semester] {
-  override implicit def writes: Writes[Semester] = Semester.writes
+) extends AbstractController(cc) {
+  def all() = cached.status(_.toString, 200, 3600)(
+    Action.async(_ => service.all().map(xs => Ok(Json.toJson(xs))))
+  )
 }

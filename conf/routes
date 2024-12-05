@@ -27,44 +27,21 @@ GET         /faculties                        controllers.FacultyController.all(
 GET         /faculties/:id                    controllers.FacultyController.get(id: java.lang.String)
 
 GET         /teachingUnits                    controllers.TeachingUnitController.all()
-GET         /teachingUnits/:id                controllers.TeachingUnitController.get(id: java.util.UUID)
-
 GET         /studyPrograms                    controllers.StudyProgramController.all()
-GET         /studyPrograms/:id                controllers.StudyProgramController.get(id: java.util.UUID)
-
 GET         /languages                        controllers.LanguageController.all()
-GET         /languages/:id                    controllers.LanguageController.get(id: java.lang.String)
-
 GET         /seasons                          controllers.SeasonController.all()
-GET         /seasons/:id                      controllers.SeasonController.get(id: java.lang.String)
-
 GET         /modules                          controllers.ModuleController.all()
-GET         /modules/:id                      controllers.ModuleController.get(id: java.util.UUID)
-
 GET         /modulesInStudyProgram            controllers.ModuleInStudyProgramController.all()
-GET         /modulesInStudyProgram/:id        controllers.ModuleInStudyProgramController.get(id: java.util.UUID)
-
 GET         /people                           controllers.PersonController.all()
-GET         /people/:id                       controllers.PersonController.get(id: java.lang.String)
-
 GET         /semesters                        controllers.SemesterController.all()
-GET         /semesters/:id                    controllers.SemesterController.get(id: java.util.UUID)
+GET         /campus                           controllers.CampusController.all()
+GET         /rooms                            controllers.RoomController.all()
+GET         /scheduleEntries                  controllers.ScheduleEntryController.all()
+GET         /holidays                         controllers.LegalHolidayController.all()
+GET         /semesterPlan                     controllers.SemesterPlanController.all()
 
 GET         /courses                          controllers.CourseController.all()
-GET         /courses/:id                      controllers.CourseController.get(id: java.util.UUID)
 POST        /courses                          controllers.CourseController.create()
-
-GET         /campus                           controllers.CampusController.all()
-GET         /campus/:id                       controllers.CampusController.get(id: java.util.UUID)
-
-GET         /rooms                            controllers.RoomController.all()
-GET         /rooms/:id                        controllers.RoomController.get(id: java.util.UUID)
-
-GET         /scheduleEntries                  controllers.ScheduleEntryController.all()
-
-GET         /holidays                         controllers.LegalHolidayController.all()
-
-GET         /semesterPlan                     controllers.SemesterPlanController.all()
 
 # from - to
 # GET         /holidays

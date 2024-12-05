@@ -1,20 +1,26 @@
 package controllers
 
-import play.api.libs.json.Json
-import play.api.mvc.{AbstractController, ControllerComponents}
-import service.LegalHolidayService
+import javax.inject.Inject
+import javax.inject.Singleton
 
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+
+import play.api.cache.Cached
+import play.api.libs.json.Json
+import play.api.mvc.AbstractController
+import play.api.mvc.ControllerComponents
+import service.LegalHolidayService
 
 @Singleton
 final class LegalHolidayController @Inject() (
     cc: ControllerComponents,
-    val service: LegalHolidayService,
+    service: LegalHolidayService,
+    cached: Cached,
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc) {
 
-  def all() =
+  def all() = cached.status(_.toString, 200, 3600) {
     Action.async { implicit request =>
       parseFromToDate match {
         case Right((from, to)) =>
@@ -23,4 +29,5 @@ final class LegalHolidayController @Inject() (
           Future.successful(BadRequest(Json.obj("message" -> err)))
       }
     }
+  }
 }
