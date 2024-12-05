@@ -22,7 +22,7 @@ final class SemesterPlanEntryRepository @Inject() (
     with Create[UUID, SemesterPlanEntry, SemesterPlanEntryTable]
     with JsonViewGetResult {
 
-  import profile.api._
+  import profile.api.*
 
   protected val tableQuery = TableQuery[SemesterPlanEntryTable]
 
@@ -31,14 +31,15 @@ final class SemesterPlanEntryRepository @Inject() (
       pp.setTimestamp(Timestamp.valueOf(v))
 
   def allFromView(
-      referenceDate: LocalDateTime,
+      from: LocalDateTime,
+      to: LocalDateTime,
       lang: PreferredLanguage
   ) = {
     val typeLabel = if (lang.isDe) "view.de_label" else "view.en_label"
     val semesterLabel =
       if (lang.isDe) "view.semester_de_label" else "view.semester_en_label"
     val sql =
-      sql"""SELECT COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', view.id, 'start', view.start, 'end', view."end", 'type', JSON_BUILD_OBJECT('id',view.type,'label',#$typeLabel), 'semester', JSON_BUILD_OBJECT('id',view.semester,'index',view.semester_index,'label',#$semesterLabel), 'teachingUnit', view.teaching_unit)), '[]' :: json) AS semester_plan_entry FROM semester_plan_entry_view AS VIEW WHERE $referenceDate >= view.semester_start and $referenceDate <= view.semester_end""".as
+      sql"""SELECT COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', view.id, 'start', view.start, 'end', view."end", 'type', JSON_BUILD_OBJECT('id',view.type,'label',#$typeLabel), 'semester', JSON_BUILD_OBJECT('id',view.semester,'index',view.semester_index,'label',#$semesterLabel), 'teachingUnit', view.teaching_unit)), '[]' :: json) AS semester_plan_entry FROM semester_plan_entry_view AS VIEW WHERE $to >= view.start and $from <= view.end""".as
     db.run(sql).map(_.head)
   }
 }

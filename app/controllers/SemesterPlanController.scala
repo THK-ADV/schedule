@@ -6,7 +6,6 @@ import service.SemesterPlanEntryService
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Success
 
 @Singleton
 final class SemesterPlanController @Inject() (
@@ -17,19 +16,13 @@ final class SemesterPlanController @Inject() (
 
   def all() =
     Action.async { implicit request =>
-      parseDate("today") match {
-        case Some(Success(today)) =>
+      parseFromToDate match {
+        case Right((from, to)) =>
           service.repo
-            .allFromView(today, preferredLanguage)
-            .map(Ok(_))
-        case _ =>
-          Future.successful(
-            BadRequest(
-              Json.obj(
-                "message" -> "needs 'today' query parameter to indicate semester bounds"
-              )
-            )
-          )
+            .allFromView(from, to, preferredLanguage)
+            .map(xs => Ok(Json.toJson(xs)))
+        case Left(err) =>
+          Future.successful(BadRequest(Json.obj("message" -> err)))
       }
     }
 }
