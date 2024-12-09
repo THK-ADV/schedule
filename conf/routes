@@ -21,11 +21,7 @@ POST        /bootstrap/courses                controllers.bootstrap.SchedBootstr
 POST        /bootstrap/scheduleEntry          controllers.bootstrap.SchedBootstrapController.createScheduleEntries()
 
 GET         /degrees                          controllers.DegreeController.all()
-GET         /degrees/:id                      controllers.DegreeController.get(id: java.lang.String)
-
 GET         /faculties                        controllers.FacultyController.all()
-GET         /faculties/:id                    controllers.FacultyController.get(id: java.lang.String)
-
 GET         /teachingUnits                    controllers.TeachingUnitController.all()
 GET         /studyPrograms                    controllers.StudyProgramController.all()
 GET         /languages                        controllers.LanguageController.all()
