@@ -1,10 +1,15 @@
 package database
 
-import models.{CourseId, SemesterPlanEntryType}
-import slick.jdbc.PostgresProfile.api._
+import java.sql.Date
+import java.sql.Time
+import java.sql.Timestamp
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
-import java.sql.{Date, Time, Timestamp}
-import java.time.{LocalDate, LocalDateTime, LocalTime}
+import models.CourseId
+import models.SemesterPlanEntryType
+import slick.jdbc.PostgresProfile.api._
 
 package object tables {
   implicit val localDateColumnType: BaseColumnType[LocalDate] =
@@ -31,8 +36,7 @@ package object tables {
       CourseId.apply
     )
 
-  implicit val semesterPlanEntryTypeColumnType
-      : BaseColumnType[SemesterPlanEntryType] =
+  implicit val semesterPlanEntryTypeColumnType: BaseColumnType[SemesterPlanEntryType] =
     MappedColumnType.base[SemesterPlanEntryType, String](
       _.id,
       SemesterPlanEntryType.apply

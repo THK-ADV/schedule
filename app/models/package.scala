@@ -1,7 +1,9 @@
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+
 import ops.DateOps
 import play.api.libs.json.Format
-
-import java.time.{LocalDate, LocalDateTime, LocalTime}
 
 package object models {
   implicit def localDateFmt: Format[LocalDate] =

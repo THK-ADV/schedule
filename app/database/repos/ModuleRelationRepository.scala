@@ -1,12 +1,16 @@
 package database.repos
 
+import javax.inject.Inject
+import javax.inject.Singleton
+
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+
 import database.tables.ModuleRelationTable
 import models.ModuleRelation
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
+import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
-
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 final class ModuleRelationRepository @Inject() (
@@ -22,8 +26,8 @@ final class ModuleRelationRepository @Inject() (
       elems: List[ModuleRelation]
   ): Future[Seq[ModuleRelation]] = {
     val q = for {
-      _ <- tableQuery.delete
-      res <- (tableQuery returning tableQuery) ++= elems
+      _   <- tableQuery.delete
+      res <- (tableQuery.returning(tableQuery)) ++= elems
     } yield res
     db.run(q.transactionally)
   }

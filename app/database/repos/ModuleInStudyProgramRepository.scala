@@ -1,18 +1,23 @@
 package database.repos
 
-import database.repos.abstracts.{Create, Get}
-import database.tables.{
-  ModuleInStudyProgramTable,
-  ModuleRelationTable,
-  ModuleTable
-}
-import models.{Module, ModuleInStudyProgram, CourseId}
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.jdbc.JdbcProfile
-
 import java.util.UUID
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import javax.inject.Inject
+import javax.inject.Singleton
+
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+
+import database.repos.abstracts.Create
+import database.repos.abstracts.Get
+import database.tables.ModuleInStudyProgramTable
+import database.tables.ModuleRelationTable
+import database.tables.ModuleTable
+import models.CourseId
+import models.Module
+import models.ModuleInStudyProgram
+import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.HasDatabaseConfigProvider
+import slick.jdbc.JdbcProfile
 
 @Singleton
 final class ModuleInStudyProgramRepository @Inject() (

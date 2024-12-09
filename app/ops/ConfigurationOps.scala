@@ -3,7 +3,7 @@ package ops
 import play.api.Configuration
 
 object ConfigurationOps {
-  implicit final class Ops(private val self: Configuration) extends AnyVal {
+  final implicit class Ops(private val self: Configuration) extends AnyVal {
     def nonEmptyString(key: String): String =
       self.getOptional[String](key) match {
         case Some(value) if value.nonEmpty => value

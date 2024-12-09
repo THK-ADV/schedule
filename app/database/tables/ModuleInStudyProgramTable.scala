@@ -1,10 +1,10 @@
 package database.tables
 
+import java.util.UUID
+
 import database.UUIDUniqueColumn
 import models.ModuleInStudyProgram
 import slick.jdbc.PostgresProfile.api._
-
-import java.util.UUID
 
 final class ModuleInStudyProgramTable(tag: Tag)
     extends Table[ModuleInStudyProgram](tag, "module_in_study_program")
@@ -27,5 +27,5 @@ final class ModuleInStudyProgramTable(tag: Tag)
     mandatory,
     focus,
     recommendedSemester
-  ) <> ((ModuleInStudyProgram.apply _).tupled, ModuleInStudyProgram.unapply)
+  ) <> (ModuleInStudyProgram.apply, ModuleInStudyProgram.unapply)
 }

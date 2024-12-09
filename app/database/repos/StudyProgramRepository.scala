@@ -1,16 +1,20 @@
 package database.repos
 
+import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
+
+import scala.concurrent.ExecutionContext
+
 import controllers.PreferredLanguage
-import database.repos.abstracts.{Create, Get}
+import database.repos.abstracts.Create
+import database.repos.abstracts.Get
 import database.tables.StudyProgramTable
 import database.view.JsonView
 import models.StudyProgram
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
+import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
-
-import java.util.UUID
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
 
 @Singleton
 final class StudyProgramRepository @Inject() (
@@ -25,7 +29,7 @@ final class StudyProgramRepository @Inject() (
 
   val tableQuery = TableQuery[StudyProgramTable]
 
-  override protected def name: String = "study_program_view"
+  protected override def name: String = "study_program_view"
 
   def allFromView(lang: PreferredLanguage) =
     getAllFromView(lang)

@@ -1,9 +1,11 @@
 package controllers.bootstrap
 
-import controllers.JsonNullWritable
-import play.api.libs.json.{JsValue, Json, Reads}
-
 import java.util.UUID
+
+import controllers.JsonNullWritable
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
+import play.api.libs.json.Reads
 
 case class POMocogi(
     id: String,
@@ -46,9 +48,8 @@ case class PO(mandatory: List[POMandatory], optional: List[POOptional])
 sealed trait MocogiModuleRelation
 
 object MocogiModuleRelation {
-  case class Child(kind: String, parent: UUID) extends MocogiModuleRelation
-  case class Parent(kind: String, children: List[UUID])
-      extends MocogiModuleRelation
+  case class Child(kind: String, parent: UUID)          extends MocogiModuleRelation
+  case class Parent(kind: String, children: List[UUID]) extends MocogiModuleRelation
 
   def childReads: Reads[Child] = Json.reads
 

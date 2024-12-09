@@ -4,9 +4,7 @@ import database.StringUniqueColumn
 import models.Season
 import slick.jdbc.PostgresProfile.api._
 
-final class SeasonTable(tag: Tag)
-    extends Table[Season](tag, "season")
-    with StringUniqueColumn {
+final class SeasonTable(tag: Tag) extends Table[Season](tag, "season") with StringUniqueColumn {
 
   def deLabel = column[String]("de_label")
 
@@ -16,5 +14,5 @@ final class SeasonTable(tag: Tag)
     id,
     deLabel,
     enLabel
-  ) <> ((Season.apply _).tupled, Season.unapply)
+  ) <> (Season.apply, Season.unapply)
 }

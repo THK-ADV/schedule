@@ -1,12 +1,20 @@
 package controllers.bootstrap
 
-import models.{Course, CourseId, Module, Room, Semester, StudyProgram}
-import ops.DateOps
-
-import java.nio.file.{Files, Path}
-import java.time.{LocalDate, LocalTime}
+import java.nio.file.Files
+import java.nio.file.Path
+import java.time.LocalDate
+import java.time.LocalTime
 import java.util.UUID
+
 import scala.jdk.CollectionConverters.IteratorHasAsScala
+
+import models.Course
+import models.CourseId
+import models.Module
+import models.Room
+import models.Semester
+import models.StudyProgram
+import ops.DateOps
 
 class HOPSMapping(mappingCSV: Path) {
 
@@ -79,10 +87,10 @@ class HOPSMapping(mappingCSV: Path) {
 
   def findTime(startStd: Int): (LocalTime, LocalTime) = {
     val baseStd = 7
-    val std1 = baseStd + startStd
-    val std2 = std1 + 1
-    val start = LocalTime.parse(s"$std1:00:00", DateOps.timeFormatter)
-    val end = LocalTime.parse(s"$std2:00:00", DateOps.timeFormatter)
+    val std1    = baseStd + startStd
+    val std2    = std1 + 1
+    val start   = LocalTime.parse(s"$std1:00:00", DateOps.timeFormatter)
+    val end     = LocalTime.parse(s"$std2:00:00", DateOps.timeFormatter)
     (start, end)
   }
 
@@ -119,6 +127,7 @@ class HOPSMapping(mappingCSV: Path) {
       case ("AIT_M", None)         => List("ing_ait1", "ing_ait3")
       case ("WIN_M", Some("WIER")) => List("ing_wiwm1", "ing_wiwm2")
       case ("WIN_M", Some("WIT"))  => List("ing_wiwm1", "ing_wiwm2")
+      case (a, b)                  => throw Exception(s"unhandled case ($a, $b)")
     }
     if (pos.isEmpty)
       throw new Throwable(
@@ -150,8 +159,6 @@ class HOPSMapping(mappingCSV: Path) {
       case _    => throw new Throwable(s"unknown part $part")
     }
     courses
-      .find(c =>
-        c.semester == semester.id && c.module == module.id && c.courseId == matchedPart
-      )
+      .find(c => c.semester == semester.id && c.module == module.id && c.courseId == matchedPart)
   }
 }

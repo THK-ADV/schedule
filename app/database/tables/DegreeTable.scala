@@ -4,9 +4,7 @@ import database.StringUniqueColumn
 import models.Degree
 import slick.jdbc.PostgresProfile.api._
 
-final class DegreeTable(tag: Tag)
-    extends Table[Degree](tag, "degree")
-    with StringUniqueColumn {
+final class DegreeTable(tag: Tag) extends Table[Degree](tag, "degree") with StringUniqueColumn {
 
   def deLabel = column[String]("de_label")
 
@@ -22,5 +20,5 @@ final class DegreeTable(tag: Tag)
     enLabel,
     deDesc,
     enDesc
-  ) <> ((Degree.apply _).tupled, Degree.unapply)
+  ) <> (Degree.apply, Degree.unapply)
 }

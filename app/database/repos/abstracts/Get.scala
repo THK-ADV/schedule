@@ -1,17 +1,17 @@
 package database.repos.abstracts
 
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+
 import database.UniqueEntityColumn
 import models.UniqueEntity
 import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
-import slick.jdbc.PostgresProfile.api.Table
-
-import scala.concurrent.{ExecutionContext, Future}
 
 trait Get[
     ID,
     E <: UniqueEntity[ID],
-    T <: Table[E] with UniqueEntityColumn[ID]
+    T <: slick.jdbc.PostgresProfile.api.Table[E] & UniqueEntityColumn[ID]
 ] { self: HasDatabaseConfigProvider[JdbcProfile] =>
   import profile.api._
 
@@ -21,8 +21,7 @@ trait Get[
 
   protected def tableQuery: TableQuery[T]
 
-  protected def makeFilter
-      : PartialFunction[(String, Seq[String]), T => Rep[Boolean]] =
+  protected def makeFilter: PartialFunction[(String, Seq[String]), T => Rep[Boolean]] =
     PartialFunction.empty
 
   final def allWithFilter(filter: Filter): Future[Seq[E]] =
@@ -40,7 +39,7 @@ trait Get[
           case 1 =>
             DBIO.successful(xs.head)
           case 0 =>
-            DBIO.failed(new Throwable(s"expected one element, but found none"))
+            DBIO.failed(new Throwable("expected one element, but found none"))
           case _ =>
             DBIO.failed(new Throwable(s"expected one element, but found: $xs"))
         }
@@ -53,9 +52,7 @@ trait Get[
   private final def combineFilter(
       xs: List[T => Rep[Boolean]]
   ): T => Rep[Boolean] =
-    xs.reduceLeftOption[T => Rep[Boolean]]((lhs, rhs) =>
-      t => lhs.apply(t) && rhs.apply(t)
-    ).getOrElse(_ => true)
+    xs.reduceLeftOption[T => Rep[Boolean]]((lhs, rhs) => t => lhs.apply(t) && rhs.apply(t)).getOrElse(_ => true)
 
   private def parseFilter(
       filter: Filter
@@ -66,8 +63,6 @@ trait Get[
           xs.map(makeFilter.apply(x) :: _)
         else
           xs
-      case _ =>
-        None
     }
   }
 }

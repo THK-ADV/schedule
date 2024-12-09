@@ -1,13 +1,17 @@
 package database.repos
 
-import database.repos.abstracts.{Create, Get}
+import javax.inject.Inject
+import javax.inject.Singleton
+
+import scala.concurrent.ExecutionContext
+
+import database.repos.abstracts.Create
+import database.repos.abstracts.Get
 import database.tables.SeasonTable
 import models.Season
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
+import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
-
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
 
 @Singleton
 final class SeasonRepository @Inject() (
@@ -21,7 +25,8 @@ final class SeasonRepository @Inject() (
 
   protected val tableQuery = TableQuery[SeasonTable]
 
-  override protected def makeFilter = { case ("deLabel", vs) =>
-    _.deLabel === vs.head
+  protected override def makeFilter = {
+    case ("deLabel", vs) =>
+      _.deLabel === vs.head
   }
 }

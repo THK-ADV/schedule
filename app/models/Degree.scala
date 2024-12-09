@@ -1,7 +1,9 @@
 package models
 
-import localization.{LocalizedDescription, LocalizedLabel}
-import play.api.libs.json.{Json, Writes}
+import localization.LocalizedDescription
+import localization.LocalizedLabel
+import play.api.libs.json.Json
+import play.api.libs.json.Writes
 
 case class Degree(
     id: String,

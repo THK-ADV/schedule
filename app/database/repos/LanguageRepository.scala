@@ -1,13 +1,17 @@
 package database.repos
 
-import database.repos.abstracts.{Create, Get}
+import javax.inject.Inject
+import javax.inject.Singleton
+
+import scala.concurrent.ExecutionContext
+
+import database.repos.abstracts.Create
+import database.repos.abstracts.Get
 import database.tables.LanguageTable
 import models.Language
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
+import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
-
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
 
 @Singleton
 final class LanguageRepository @Inject() (

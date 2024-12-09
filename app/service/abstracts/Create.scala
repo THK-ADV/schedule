@@ -1,9 +1,10 @@
 package service.abstracts
 
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+
 import database.repos
 import models.UniqueEntity
-
-import scala.concurrent.{ExecutionContext, Future}
 
 trait Create[ID, E <: UniqueEntity[ID]] {
 

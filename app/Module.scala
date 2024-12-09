@@ -1,7 +1,8 @@
-import auth.{Authorization, UserToken}
-import com.google.inject.{AbstractModule, TypeLiteral}
-import kafka.Consumer
-import provider.{AuthorizationProvider, ConsumerProvider}
+import auth.Authorization
+import auth.UserToken
+import com.google.inject.AbstractModule
+import com.google.inject.TypeLiteral
+import provider.AuthorizationProvider
 
 class Module extends AbstractModule {
 

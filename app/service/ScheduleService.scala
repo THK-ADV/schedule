@@ -1,12 +1,14 @@
 package service
 
+import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
+
+import scala.concurrent.ExecutionContext
+
 import database.repos.ScheduleEntryRepository
 import models.ScheduleEntry
 import service.abstracts.Get
-
-import java.util.UUID
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
 
 @Singleton
 final class ScheduleService @Inject() (

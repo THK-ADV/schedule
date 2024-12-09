@@ -2,8 +2,7 @@ package database
 
 import pretty.PrettyPrinter
 
-case class ModelAlreadyExistsException[A](entity: A, existing: A)
-    extends Throwable {
+case class ModelAlreadyExistsException[A](entity: A, existing: A) extends Throwable {
   override def getMessage =
     s"""Model already exists
        |existing: ${PrettyPrinter.prettyPrint(existing)}

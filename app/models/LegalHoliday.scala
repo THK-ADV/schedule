@@ -1,8 +1,9 @@
 package models
 
-import play.api.libs.json.{Json, Writes}
-
 import java.time.LocalDate
+
+import play.api.libs.json.Json
+import play.api.libs.json.Writes
 
 case class LegalHoliday(
     label: String,

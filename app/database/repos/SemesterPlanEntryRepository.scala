@@ -1,18 +1,23 @@
 package database.repos
 
+import java.sql.Timestamp
+import java.time.LocalDateTime
+import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
+
+import scala.concurrent.ExecutionContext
+
 import controllers.PreferredLanguage
 import database.repos.abstracts.Create
 import database.tables.SemesterPlanEntryTable
 import database.view.JsonViewGetResult
 import models.SemesterPlanEntry
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.jdbc.{JdbcProfile, PositionedParameters, SetParameter}
-
-import java.sql.Timestamp
-import java.time.LocalDateTime
-import java.util.UUID
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.HasDatabaseConfigProvider
+import slick.jdbc.JdbcProfile
+import slick.jdbc.PositionedParameters
+import slick.jdbc.SetParameter
 
 @Singleton
 final class SemesterPlanEntryRepository @Inject() (
@@ -27,8 +32,7 @@ final class SemesterPlanEntryRepository @Inject() (
   protected val tableQuery = TableQuery[SemesterPlanEntryTable]
 
   implicit val setLocalDateTime: SetParameter[LocalDateTime] =
-    (v: LocalDateTime, pp: PositionedParameters) =>
-      pp.setTimestamp(Timestamp.valueOf(v))
+    (v: LocalDateTime, pp: PositionedParameters) => pp.setTimestamp(Timestamp.valueOf(v))
 
   def allFromView(
       from: LocalDateTime,

@@ -1,9 +1,12 @@
 package controllers
 
-import play.api.libs.json.Json
-import play.api.mvc.{AbstractController, ControllerComponents}
+import javax.inject.Inject
+import javax.inject.Provider
+import javax.inject.Singleton
 
-import javax.inject.{Inject, Provider, Singleton}
+import play.api.libs.json.Json
+import play.api.mvc.AbstractController
+import play.api.mvc.ControllerComponents
 
 @Singleton
 class IndexController @Inject() (
@@ -13,7 +16,7 @@ class IndexController @Inject() (
   def index() = Action {
     Ok(
       Json.obj(
-        "msg" -> "it works",
+        "msg"    -> "it works",
         "routes" -> router.get().documentation.map(t => (t._1, t._2))
       )
     )

@@ -1,17 +1,18 @@
 package database.repos.abstracts
 
-import database.{ModelAlreadyExistsException, UniqueEntityColumn}
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+
+import database.ModelAlreadyExistsException
+import database.UniqueEntityColumn
 import models.UniqueEntity
 import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
-import slick.jdbc.PostgresProfile.api.Table
-
-import scala.concurrent.{ExecutionContext, Future}
 
 trait Create[
     ID,
     E <: UniqueEntity[ID],
-    T <: Table[E] with UniqueEntityColumn[ID]
+    T <: slick.jdbc.PostgresProfile.api.Table[E] & UniqueEntityColumn[ID]
 ] {
   self: HasDatabaseConfigProvider[JdbcProfile] =>
 
@@ -24,7 +25,7 @@ trait Create[
   protected def uniqueCols(elem: E): List[T => Rep[Boolean]] = Nil
 
   final def create(elem: E): Future[E] = {
-    def go() = tableQuery returning tableQuery += elem
+    def go() = tableQuery.returning(tableQuery) += elem
 
     val uniqueCols = this.uniqueCols(elem)
     val action =
@@ -45,7 +46,7 @@ trait Create[
   }
 
   final def createMany(elems: List[E]): Future[Seq[E]] =
-    db.run(tableQuery returning tableQuery ++= elems)
+    db.run(tableQuery.returning(tableQuery) ++= elems)
 
   final def createOrUpdate(elem: E): Future[Option[E]] =
     db.run(createOrUpdateQuery(elem))
@@ -56,5 +57,5 @@ trait Create[
   // None => Update
   // Some => Create
   private def createOrUpdateQuery(elem: E) =
-    (tableQuery returning tableQuery).insertOrUpdate(elem)
+    tableQuery.returning(tableQuery).insertOrUpdate(elem)
 }

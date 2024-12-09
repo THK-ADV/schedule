@@ -1,11 +1,16 @@
 package service
 
-import database.repos.ModuleInStudyProgramRepository
-import models.{Course, Season, Semester}
-
 import java.util.UUID
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import javax.inject.Inject
+import javax.inject.Singleton
+
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+
+import database.repos.ModuleInStudyProgramRepository
+import models.Course
+import models.Season
+import models.Semester
 
 @Singleton
 final class CoursePopulationService @Inject() (
@@ -28,6 +33,6 @@ final class CoursePopulationService @Inject() (
       modules <- moduleInStudyProgramRepository.allModulesInSeason(seasons)
     } yield for {
       module <- modules
-      part <- module.parts
+      part   <- module.parts
     } yield Course(UUID.randomUUID(), semester.id, module.id, part)
 }
