@@ -5,8 +5,8 @@ import javax.inject.Singleton
 
 import scala.concurrent.ExecutionContext
 
-import controllers.crud.Read
-import models.Degree
+import play.api.cache.Cached
+import play.api.libs.json.Json
 import play.api.libs.json.Writes
 import play.api.mvc.AbstractController
 import play.api.mvc.ControllerComponents
@@ -15,9 +15,11 @@ import service.DegreeService
 @Singleton
 final class DegreeController @Inject() (
     cc: ControllerComponents,
-    val service: DegreeService,
+    service: DegreeService,
+    cached: Cached,
     implicit val ctx: ExecutionContext
-) extends AbstractController(cc)
-    with Read[String, Degree] {
-  implicit override def writes: Writes[Degree] = Degree.writes
+) extends AbstractController(cc) {
+  def all() = cached.status(_.toString, 200, 3600)(
+    Action.async(service.all().map(xs => Ok(Json.toJson(xs))))
+  )
 }
