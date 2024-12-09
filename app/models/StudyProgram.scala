@@ -1,9 +1,10 @@
 package models
 
-import localization.LocalizedLabel
-import play.api.libs.json.{Json, Writes}
-
 import java.util.UUID
+
+import localization.LocalizedLabel
+import play.api.libs.json.Json
+import play.api.libs.json.Writes
 
 case class StudyProgram(
     id: UUID,

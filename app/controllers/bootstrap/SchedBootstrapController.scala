@@ -1,22 +1,29 @@
 package controllers.bootstrap
 
-import database.repos.ScheduleEntryRepository
-import database.tables.{ModuleStudyProgramScheduleEntry, ScheduleEntryRoom}
-import models._
-import ops.DateOps
-import play.api.libs.json.Json
-import play.api.mvc.{AbstractController, ControllerComponents}
-import service._
-
-import java.nio.file.{Files, Paths}
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
-import java.time.{LocalDate, LocalDateTime, LocalTime}
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.util.UUID
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
+import javax.inject.Singleton
+
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.ExecutionContext
 import scala.jdk.CollectionConverters.IteratorHasAsScala
+
+import database.repos.ScheduleEntryRepository
+import database.tables.ModuleStudyProgramScheduleEntry
+import database.tables.ScheduleEntryRoom
+import models._
+import ops.DateOps
+import play.api.libs.json.Json
+import play.api.mvc.AbstractController
+import play.api.mvc.ControllerComponents
+import service._
 
 @Singleton
 final class SchedBootstrapController @Inject() (
@@ -222,16 +229,16 @@ final class SchedBootstrapController @Inject() (
 
     for {
       semester <- semesterService.createMany(semesters)
-      _ <- legalHolidayService.recreate(2024)
+      _        <- legalHolidayService.recreate(2024)
     } yield Ok(Json.obj("semester" -> semester.size))
   }
 
   def createSemesterPlan = Action.async { _ =>
     for {
-      tus <- teachingUnitService.all()
+      tus      <- teachingUnitService.all()
       semester <- semesterService.all()
-      inf = tus.find(_.deLabel == "Informatik").get.id
-      ing = tus.find(_.deLabel == "Ingenieurwesen").get.id
+      inf    = tus.find(_.deLabel == "Informatik").get.id
+      ing    = tus.find(_.deLabel == "Ingenieurwesen").get.id
       sose24 = semester.find(_.abbrev == "SoSe 24").get.id
       xs = List(
         // inf sose 2024
@@ -437,7 +444,7 @@ final class SchedBootstrapController @Inject() (
         .skip(1)
         .iterator()
         .asScala
-        .map(parseRoom _ andThen toRoom(campus))
+        .map(parseRoom.andThen(toRoom(campus)))
         .toList
       xs <- roomService.createMany(rooms)
     } yield Ok(Json.obj("created" -> xs.size))
@@ -449,8 +456,8 @@ final class SchedBootstrapController @Inject() (
       .map(_.head)
     for {
       semester <- semester
-      _ <- courseService.deleteAll()
-      courses <- coursePopulationService.populate(semester)
+      _        <- courseService.deleteAll()
+      courses  <- coursePopulationService.populate(semester)
       explicitCourses = List(
         // http://lwivs49.gm.fh-koeln.de:8081/modules/b126ec6a-0241-4f6b-90d6-c0ecad8e3dd4
         Course(
@@ -738,13 +745,13 @@ final class SchedBootstrapController @Inject() (
     val mapping = new HOPSMapping(Paths.get("bootstrap/Mapping.csv"))
 
     for {
-      _ <- scheduleEntryRepository.deleteAll()
-      modules <- moduleService.all()
-      rooms <- roomService.all()
-      courses <- courseService.all()
-      studyPrograms <- studyProgramService.all()
+      _                     <- scheduleEntryRepository.deleteAll()
+      modules               <- moduleService.all()
+      rooms                 <- roomService.all()
+      courses               <- courseService.all()
+      studyPrograms         <- studyProgramService.all()
       moduleInStudyPrograms <- moduleInStudyProgramService.all()
-      semesters <- semesterService.all()
+      semesters             <- semesterService.all()
       wise = semesters.find(_.abbrev == "WiSe 23 / 24").get
       sose = semesters.find(_.abbrev == "SoSe 24").get
       entries = r.body.linesIterator
@@ -758,8 +765,8 @@ final class SchedBootstrapController @Inject() (
         .partitionMap { e =>
           mapping.findModule(e.moduleId, e.course, modules) match {
             case Some(module) =>
-              val matchedRoom = mapping.findRoom(e.roomIdentifier, rooms)
-              val date = mapping.findDate(e.weekIndex, sose)
+              val matchedRoom  = mapping.findRoom(e.roomIdentifier, rooms)
+              val date         = mapping.findDate(e.weekIndex, sose)
               val (start, end) = mapping.findTime(e.startStd)
               val matchedStudyPrograms = mapping.findStudyProgram(
                 e.studyProgram,
@@ -813,9 +820,9 @@ final class SchedBootstrapController @Inject() (
         ),
         sose
       )
-      scheduleEntries = scheduleEntriesWithStudyProgram.map(_._1)
+      scheduleEntries    = scheduleEntriesWithStudyProgram.map(_._1)
       studyProgramAssocs = scheduleEntriesWithStudyProgram.flatMap(_._2)
-      roomsAssocs = scheduleEntriesWithStudyProgram.flatMap(_._3)
+      roomsAssocs        = scheduleEntriesWithStudyProgram.flatMap(_._3)
       _ <- scheduleEntryRepository.createMany(
         scheduleEntries,
         studyProgramAssocs,
@@ -834,7 +841,7 @@ final class SchedBootstrapController @Inject() (
       ],
       s: Semester
   ) = {
-    val weeks = ChronoUnit.WEEKS.between(s.lectureStart, s.lectureEnd)
+    val weeks       = ChronoUnit.WEEKS.between(s.lectureStart, s.lectureEnd)
     val blockedDays = this.blockedDays
     val result = ListBuffer
       .empty[
@@ -845,18 +852,19 @@ final class SchedBootstrapController @Inject() (
         )
       ]
     (0L until weeks).foreach { week =>
-      xs.foreach { case (s, sps, rs) =>
-        val newStart = ChronoUnit.WEEKS.addTo(s.start, week)
-        if (!blockedDays.contains(newStart.toLocalDate)) {
-          val newSchedule = s.copy(
-            id = UUID.randomUUID,
-            start = newStart,
-            end = s.end.plusWeeks(week)
-          )
-          val newSps = sps.map(sp => sp.copy(scheduleEntry = newSchedule.id))
-          val newR = rs.map(r => r.copy(scheduleEntry = newSchedule.id))
-          result += ((newSchedule, newSps, newR))
-        }
+      xs.foreach {
+        case (s, sps, rs) =>
+          val newStart = ChronoUnit.WEEKS.addTo(s.start, week)
+          if (!blockedDays.contains(newStart.toLocalDate)) {
+            val newSchedule = s.copy(
+              id = UUID.randomUUID,
+              start = newStart,
+              end = s.end.plusWeeks(week)
+            )
+            val newSps = sps.map(sp => sp.copy(scheduleEntry = newSchedule.id))
+            val newR   = rs.map(r => r.copy(scheduleEntry = newSchedule.id))
+            result += ((newSchedule, newSps, newR))
+          }
       }
     }
     result.toList
@@ -893,41 +901,41 @@ final class SchedBootstrapController @Inject() (
   ) = {
     xs
       .groupBy(a => (a.date, a.room, a.course, a.moduleInStudyProgram))
-      .flatMap { case ((date, room, course, moduleInStudyProgram), xs) =>
-        val range = xs.sortBy(_.start).flatMap(a => List(a.start, a.end))
-        val oneSlot = range.sliding(2).forall { xs =>
-          val res = xs.head.compareTo(xs.last)
-          res < 0 || res == 0
-        }
-        if (oneSlot) { // TODO only lecture
-          println(s"squashing ${xs.size} entries from $course")
-          List(
-            ScheduleEntryProtocol(
-              moduleInStudyProgram,
-              course,
-              room,
-              date,
-              range.head,
-              range.last
+      .flatMap {
+        case ((date, room, course, moduleInStudyProgram), xs) =>
+          val range = xs.sortBy(_.start).flatMap(a => List(a.start, a.end))
+          val oneSlot = range.sliding(2).forall { xs =>
+            val res = xs.head.compareTo(xs.last)
+            res < 0 || res == 0
+          }
+          if (oneSlot) { // TODO only lecture
+            println(s"squashing ${xs.size} entries from $course")
+            List(
+              ScheduleEntryProtocol(
+                moduleInStudyProgram,
+                course,
+                room,
+                date,
+                range.head,
+                range.last
+              )
             )
-          )
-        } else {
-          xs
-        }
+          } else {
+            xs
+          }
       }
       .groupBy(a => (a.date, a.start, a.end, a.course, a.room))
-      .map { case ((date, start, end, course, room), xs) =>
-        val s = ScheduleEntry(
-          UUID.randomUUID(),
-          course,
-          LocalDateTime.of(date, start),
-          LocalDateTime.of(date, end)
-        )
-        val ss = xs.map(a =>
-          ModuleStudyProgramScheduleEntry(s.id, a.moduleInStudyProgram)
-        )
-        val r = Seq(ScheduleEntryRoom(s.id, room))
-        (s, ss, r)
+      .map {
+        case ((date, start, end, course, room), xs) =>
+          val s = ScheduleEntry(
+            UUID.randomUUID(),
+            course,
+            LocalDateTime.of(date, start),
+            LocalDateTime.of(date, end)
+          )
+          val ss = xs.map(a => ModuleStudyProgramScheduleEntry(s.id, a.moduleInStudyProgram))
+          val r  = Seq(ScheduleEntryRoom(s.id, room))
+          (s, ss, r)
       }
       .toList
   }

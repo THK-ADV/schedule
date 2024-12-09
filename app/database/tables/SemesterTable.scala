@@ -1,15 +1,13 @@
 package database.tables
 
+import java.time.LocalDate
+
+import database.tables.localDateColumnType
 import database.UUIDUniqueColumn
 import models.Semester
 import slick.jdbc.PostgresProfile.api._
 
-import java.time.LocalDate
-import database.tables.localDateColumnType
-
-final class SemesterTable(tag: Tag)
-    extends Table[Semester](tag, "semester")
-    with UUIDUniqueColumn {
+final class SemesterTable(tag: Tag) extends Table[Semester](tag, "semester") with UUIDUniqueColumn {
 
   def deLabel = column[String]("de_label")
 
@@ -34,5 +32,5 @@ final class SemesterTable(tag: Tag)
     end,
     lectureStart,
     lectureEnd
-  ) <> ((Semester.apply _).tupled, Semester.unapply)
+  ) <> (Semester.apply, Semester.unapply)
 }

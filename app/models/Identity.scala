@@ -1,7 +1,10 @@
 package models
 
 import controllers.JsonNullWritable
-import play.api.libs.json.{JsObject, JsString, Json, Writes}
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsString
+import play.api.libs.json.Json
+import play.api.libs.json.Writes
 
 sealed trait Identity extends UniqueEntity[String] {
   def id: String
@@ -11,8 +14,8 @@ sealed trait Identity extends UniqueEntity[String] {
 }
 
 object Identity extends JsonNullWritable {
-  val PersonKind = "person"
-  val GroupKind = "group"
+  val PersonKind  = "person"
+  val GroupKind   = "group"
   val UnknownKind = "unknown"
 
   case class Person(
@@ -30,15 +33,15 @@ object Identity extends JsonNullWritable {
   }
 
   case class Group(id: String, label: String) extends Identity {
-    override val kind = GroupKind
+    override val kind                     = GroupKind
     override def username: Option[String] = None
-    override def fullName: String = label
+    override def fullName: String         = label
   }
 
   case class Unknown(id: String, label: String) extends Identity {
-    override val kind = UnknownKind
+    override val kind                     = UnknownKind
     override def username: Option[String] = None
-    override def fullName: String = label
+    override def fullName: String         = label
   }
 
   def apply(

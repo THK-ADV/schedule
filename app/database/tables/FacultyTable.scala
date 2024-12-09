@@ -4,9 +4,7 @@ import database.StringUniqueColumn
 import models.Faculty
 import slick.jdbc.PostgresProfile.api._
 
-class FacultyTable(tag: Tag)
-    extends Table[Faculty](tag, "faculty")
-    with StringUniqueColumn {
+class FacultyTable(tag: Tag) extends Table[Faculty](tag, "faculty") with StringUniqueColumn {
 
   def deLabel = column[String]("de_label")
 
@@ -16,5 +14,5 @@ class FacultyTable(tag: Tag)
     id,
     deLabel,
     enLabel
-  ) <> ((Faculty.apply _).tupled, Faculty.unapply)
+  ) <> (Faculty.apply, Faculty.unapply)
 }

@@ -1,17 +1,20 @@
 package controllers.bootstrap
 
+import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
+
+import scala.collection.mutable.ListBuffer
+import scala.concurrent.ExecutionContext
+
 import database.repos._
 import database.repos.abstracts.Create
 import models._
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.AbstractController
+import play.api.mvc.ControllerComponents
 import service.TeachingUnitService
-
-import java.util.UUID
-import javax.inject.{Inject, Singleton}
-import scala.collection.mutable.ListBuffer
-import scala.concurrent.ExecutionContext
 
 @Singleton
 final class MocogiBootstrapController @Inject() (
@@ -58,7 +61,7 @@ final class MocogiBootstrapController @Inject() (
         sps: List[StudyProgramMocogi],
         tus: Seq[TeachingUnit]
     ) = {
-      val studyPrograms = ListBuffer[StudyProgram]()
+      val studyPrograms   = ListBuffer[StudyProgram]()
       val specializations = ListBuffer[Specialization]()
       sps.foreach { sp =>
         studyPrograms += StudyProgram(
@@ -93,8 +96,8 @@ final class MocogiBootstrapController @Inject() (
       val (createdSps, updatedSps) = xs.partition(_.isDefined)
       Ok(
         Json.obj(
-          "createdMods" -> createdSps.size,
-          "updatedMods" -> updatedSps.size,
+          "createdMods"     -> createdSps.size,
+          "updatedMods"     -> updatedSps.size,
           "createdModsInSp" -> ys.size
         )
       )
@@ -103,10 +106,10 @@ final class MocogiBootstrapController @Inject() (
 
   def createModules = Action.async { _ =>
     def makeModules(ms: List[MocogiModule], sps: Seq[StudyProgram]) = {
-      val modules = ListBuffer[Module]()
+      val modules               = ListBuffer[Module]()
       val modulesInStudyProgram = ListBuffer[ModuleInStudyProgram]()
-      val moduleSupervisor = ListBuffer[ModuleSupervisor]()
-      val moduleRelations = ListBuffer[ModuleRelation]()
+      val moduleSupervisor      = ListBuffer[ModuleSupervisor]()
+      val moduleRelations       = ListBuffer[ModuleRelation]()
 
       ms.foreach { m =>
         modules += Module(
@@ -116,8 +119,7 @@ final class MocogiBootstrapController @Inject() (
           m.metadata.language,
           m.metadata.season,
           m.metadata.workload.collect {
-            case (k, v)
-                if (k == "lecture" | k == "seminar" | k == "practical" | k == "exercise") && v > 0 =>
+            case (k, v) if (k == "lecture" | k == "seminar" | k == "practical" | k == "exercise") && v > 0 =>
               CourseId(k)
           }.toList
         )
@@ -184,9 +186,7 @@ final class MocogiBootstrapController @Inject() (
           _.json
             .validate[List[MocogiModule]] match {
             case JsSuccess(value, _) =>
-              value.filter(a =>
-                a.metadata.status == "active" && a.metadata.moduleType == "module"
-              )
+              value.filter(a => a.metadata.status == "active" && a.metadata.moduleType == "module")
             case JsError(errors) =>
               println(errors.mkString("\n"))
               Nil
@@ -195,8 +195,8 @@ final class MocogiBootstrapController @Inject() (
       sps <- studyProgramRepository.all()
       (modules, modulesInStudyPrograms, moduleSupervisor, moduleRelations) =
         makeModules(ms, sps)
-      _ <- moduleInStudyProgramRepository.deleteAll()
-      _ <- moduleRepository.deleteAll()
+      _  <- moduleInStudyProgramRepository.deleteAll()
+      _  <- moduleRepository.deleteAll()
       xs <- moduleRepository.createOrUpdateMany(modules)
       ys <- moduleInStudyProgramRepository.createMany(modulesInStudyPrograms)
       zs <- moduleSupervisorRepository.createOrUpdateMany(moduleSupervisor)
@@ -205,11 +205,11 @@ final class MocogiBootstrapController @Inject() (
       val (createdMods, updatedMods) = xs.partition(_.isDefined)
       Ok(
         Json.obj(
-          "createdMods" -> createdMods.size,
-          "updatedMods" -> updatedMods.size,
+          "createdMods"      -> createdMods.size,
+          "updatedMods"      -> updatedMods.size,
           "createdModsInSps" -> ys.size,
-          "createdModsSups" -> zs.size,
-          "createdModsRels" -> as.size
+          "createdModsSups"  -> zs.size,
+          "createdModsRels"  -> as.size
         )
       )
     }
@@ -226,7 +226,7 @@ final class MocogiBootstrapController @Inject() (
   )(implicit reads: Reads[A]) =
     for {
       resp <- ws.url(s"$url/$resource").get()
-      _ = println(resp.json)
+      _     = println(resp.json)
       elems = resp.json.validate[List[A]].get
       xs <- repo.createOrUpdateMany(elems)
     } yield {
@@ -237,7 +237,7 @@ final class MocogiBootstrapController @Inject() (
   implicit def facultyReads: Reads[Faculty] =
     (json: JsValue) =>
       for {
-        abbrev <- json.\("id").validate[String]
+        abbrev  <- json.\("id").validate[String]
         deLabel <- json.\("deLabel").validate[String]
         enLabel <- json.\("enLabel").validate[String]
       } yield Faculty(abbrev, deLabel, enLabel)
@@ -245,17 +245,17 @@ final class MocogiBootstrapController @Inject() (
   implicit def gradeReads: Reads[Degree] =
     (json: JsValue) =>
       for {
-        abbrev <- json.\("id").validate[String]
+        abbrev  <- json.\("id").validate[String]
         deLabel <- json.\("deLabel").validate[String]
         enLabel <- json.\("enLabel").validate[String]
-        deDesc <- json.\("deDesc").validate[String]
-        enDesc <- json.\("enDesc").validate[String]
+        deDesc  <- json.\("deDesc").validate[String]
+        enDesc  <- json.\("enDesc").validate[String]
       } yield Degree(abbrev, deLabel, enLabel, deDesc, enDesc)
 
   implicit def languageReads: Reads[Language] =
     (json: JsValue) =>
       for {
-        abbrev <- json.\("id").validate[String]
+        abbrev  <- json.\("id").validate[String]
         deLabel <- json.\("deLabel").validate[String]
         enLabel <- json.\("enLabel").validate[String]
       } yield Language(abbrev, deLabel, enLabel)
@@ -263,7 +263,7 @@ final class MocogiBootstrapController @Inject() (
   implicit def seasonReads: Reads[Season] =
     (json: JsValue) =>
       for {
-        abbrev <- json.\("id").validate[String]
+        abbrev  <- json.\("id").validate[String]
         deLabel <- json.\("deLabel").validate[String]
         enLabel <- json.\("enLabel").validate[String]
       } yield Season(abbrev, deLabel, enLabel)
@@ -271,16 +271,16 @@ final class MocogiBootstrapController @Inject() (
   implicit def personReads: Reads[Identity] =
     (json: JsValue) =>
       for {
-        id <- json.\("id").validate[String]
+        id   <- json.\("id").validate[String]
         kind <- json.\("kind").validate[String]
         person <- kind match {
           case Identity.PersonKind =>
             for {
-              lastname <- json.\("lastname").validate[String]
-              firstname <- json.\("firstname").validate[String]
-              title <- json.\("title").validate[String]
+              lastname     <- json.\("lastname").validate[String]
+              firstname    <- json.\("firstname").validate[String]
+              title        <- json.\("title").validate[String]
               abbreviation <- json.\("abbreviation").validate[String]
-              campusId <- json.\("campusId").validate[String]
+              campusId     <- json.\("campusId").validate[String]
             } yield Identity.Person(
               id,
               lastname,

@@ -4,9 +4,7 @@ import database.StringUniqueColumn
 import models.Language
 import slick.jdbc.PostgresProfile.api._
 
-final class LanguageTable(tag: Tag)
-    extends Table[Language](tag, "language")
-    with StringUniqueColumn {
+final class LanguageTable(tag: Tag) extends Table[Language](tag, "language") with StringUniqueColumn {
 
   def deLabel = column[String]("de_label")
 
@@ -16,5 +14,5 @@ final class LanguageTable(tag: Tag)
     id,
     deLabel,
     enLabel
-  ) <> ((Language.apply _).tupled, Language.unapply)
+  ) <> (Language.apply, Language.unapply)
 }

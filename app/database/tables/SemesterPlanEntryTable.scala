@@ -1,12 +1,13 @@
 package database.tables
 
-import database.UUIDUniqueColumn
-import database.tables.localDateTimeColumnType
-import models.{SemesterPlanEntry, SemesterPlanEntryType}
-import slick.jdbc.PostgresProfile.api._
-
 import java.time.LocalDateTime
 import java.util.UUID
+
+import database.tables.localDateTimeColumnType
+import database.UUIDUniqueColumn
+import models.SemesterPlanEntry
+import models.SemesterPlanEntryType
+import slick.jdbc.PostgresProfile.api._
 
 final class SemesterPlanEntryTable(tag: Tag)
     extends Table[SemesterPlanEntry](tag, "semester_plan_entry")
@@ -33,5 +34,5 @@ final class SemesterPlanEntryTable(tag: Tag)
     semester,
     teachingUnit,
     semesterIndex
-  ) <> ((SemesterPlanEntry.apply _).tupled, SemesterPlanEntry.unapply)
+  ) <> (SemesterPlanEntry.apply, SemesterPlanEntry.unapply)
 }

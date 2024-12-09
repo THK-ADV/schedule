@@ -1,13 +1,16 @@
 package ops
 
-import java.time.format.{DateTimeFormatter, DateTimeFormatterBuilder}
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoField
-import java.time.{LocalDate, LocalDateTime, LocalTime}
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 object DateOps {
-  val datePattern = "yyyy-MM-dd"
+  val datePattern   = "yyyy-MM-dd"
   val dateFormatter = DateTimeFormatter.ofPattern(datePattern)
-  val timePattern = "HH:mm"
+  val timePattern   = "HH:mm"
   val timeFormatter = DateTimeFormatter.ofPattern(timePattern)
 
   val dateTimeFormatter = new DateTimeFormatterBuilder()

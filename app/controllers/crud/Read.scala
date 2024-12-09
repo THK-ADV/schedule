@@ -1,11 +1,12 @@
 package controllers.crud
 
+import scala.concurrent.ExecutionContext
+
 import models.UniqueEntity
-import play.api.libs.json.{Json, Writes}
+import play.api.libs.json.Json
+import play.api.libs.json.Writes
 import play.api.mvc.AbstractController
 import service.abstracts.Get
-
-import scala.concurrent.ExecutionContext
 
 trait Read[ID, Model <: UniqueEntity[ID]] {
   self: AbstractController =>

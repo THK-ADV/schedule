@@ -1,21 +1,27 @@
 package kafka
 
-import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRecord, KafkaConsumer}
-import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.pekko.Done
-import org.apache.pekko.actor.CoordinatedShutdown
-import play.api.Logging
-import play.api.libs.json.Json
-
 import java.time.Duration
 import java.util
-import java.util.Properties
-import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import java.util.concurrent.Executors
+import java.util.Properties
+import javax.inject.Inject
+import javax.inject.Singleton
+
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 import scala.jdk.CollectionConverters.IterableHasAsScala
-import scala.util.{Failure, Success}
+import scala.util.Failure
+import scala.util.Success
+
+import org.apache.kafka.clients.consumer.ConsumerConfig
+import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.apache.kafka.clients.consumer.KafkaConsumer
+import org.apache.kafka.common.serialization.StringDeserializer
+import org.apache.pekko.actor.CoordinatedShutdown
+import org.apache.pekko.Done
+import play.api.libs.json.Json
+import play.api.Logging
 
 @Singleton
 final class Consumer @Inject() (

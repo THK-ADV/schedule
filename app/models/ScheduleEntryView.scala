@@ -1,9 +1,10 @@
 package models
 
-import play.api.libs.json.{Json, Writes}
-
 import java.time.LocalDateTime
 import java.util.UUID
+
+import play.api.libs.json.Json
+import play.api.libs.json.Writes
 
 case class ScheduleEntryView[Supervisor, StudyProgram, Room, CourseLabel](
     id: UUID,
@@ -41,13 +42,13 @@ object ScheduleEntryView {
 
   implicit def writes: Writes[View] = view =>
     Json.obj(
-      "id" -> view.id,
-      "start" -> view.start,
-      "end" -> view.end,
-      "rooms" -> Json.toJson(view.room),
-      "courseLabel" -> view.courseLabel,
-      "module" -> Json.toJson(view.module),
-      "supervisor" -> Json.toJson(view.supervisor),
+      "id"           -> view.id,
+      "start"        -> view.start,
+      "end"          -> view.end,
+      "rooms"        -> Json.toJson(view.room),
+      "courseLabel"  -> view.courseLabel,
+      "module"       -> Json.toJson(view.module),
+      "supervisor"   -> Json.toJson(view.supervisor),
       "studyProgram" -> Json.toJson(view.studyProgram)
     )
 

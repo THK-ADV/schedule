@@ -1,8 +1,8 @@
 package database.tables
 
-import slick.jdbc.PostgresProfile.api._
-
 import java.util.UUID
+
+import slick.jdbc.PostgresProfile.api._
 
 case class ModuleStudyProgramScheduleEntry(
     scheduleEntry: UUID,

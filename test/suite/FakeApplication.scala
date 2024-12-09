@@ -24,6 +24,6 @@ trait FakeApplication {
 
   override def fakeApplication() = new GuiceApplicationBuilder()
     .configure(fakeDbConfig)
-    .overrides(bindings: _*)
+    .overrides(bindings*)
     .build()
 }

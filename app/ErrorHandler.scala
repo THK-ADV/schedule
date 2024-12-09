@@ -1,11 +1,12 @@
-import play.api.http.HttpErrorHandler
-import play.api.libs.json.Json
-import play.api.mvc.Results._
-import play.api.mvc._
-
 import javax.inject.Singleton
+
 import scala.annotation.unused
 import scala.concurrent._
+
+import play.api.http.HttpErrorHandler
+import play.api.libs.json.Json
+import play.api.mvc._
+import play.api.mvc.Results._
 
 @unused
 @Singleton
@@ -19,7 +20,7 @@ class ErrorHandler extends HttpErrorHandler {
     Future.successful(
       Status(statusCode)(
         Json.obj(
-          "type" -> "client error",
+          "type"    -> "client error",
           "request" -> request.toString(),
           "message" -> message
         )
@@ -33,7 +34,7 @@ class ErrorHandler extends HttpErrorHandler {
     Future.successful(
       InternalServerError(
         Json.obj(
-          "type" -> "server error",
+          "type"    -> "server error",
           "request" -> request.toString(),
           "message" -> exception.getMessage
         )

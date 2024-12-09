@@ -1,8 +1,9 @@
 package models
 
-import play.api.libs.json.{Json, Writes}
-
 import java.util.UUID
+
+import play.api.libs.json.Json
+import play.api.libs.json.Writes
 
 case class Course(
     id: UUID,

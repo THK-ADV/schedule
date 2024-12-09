@@ -1,11 +1,12 @@
 package database.view
 
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+import scala.util.control.NonFatal
+
 import controllers.PreferredLanguage
 import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
-
-import scala.concurrent.{ExecutionContext, Future}
-import scala.util.control.NonFatal
 
 trait JsonView extends JsonViewGetResult {
   self: HasDatabaseConfigProvider[JdbcProfile] =>

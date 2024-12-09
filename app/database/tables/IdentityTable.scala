@@ -4,9 +4,7 @@ import database.StringUniqueColumn
 import models.Identity
 import slick.jdbc.PostgresProfile.api._
 
-final class IdentityTable(tag: Tag)
-    extends Table[Identity](tag, "identity")
-    with StringUniqueColumn {
+final class IdentityTable(tag: Tag) extends Table[Identity](tag, "identity") with StringUniqueColumn {
 
   def campusId = column[String]("campus_id")
 

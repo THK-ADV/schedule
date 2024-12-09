@@ -1,12 +1,11 @@
 package database.tables
 
+import java.util.UUID
+
 import models.ModuleRelation
 import slick.jdbc.PostgresProfile.api._
 
-import java.util.UUID
-
-final class ModuleRelationTable(tag: Tag)
-    extends Table[ModuleRelation](tag, "module_relation") {
+final class ModuleRelationTable(tag: Tag) extends Table[ModuleRelation](tag, "module_relation") {
 
   def parent = column[UUID]("parent", O.PrimaryKey)
 

@@ -1,12 +1,14 @@
 package provider
 
+import java.time.Duration
+import javax.inject.Inject
+import javax.inject.Provider
+import javax.inject.Singleton
+
 import kafka.Consumer
 import ops.ConfigurationOps.Ops
 import org.apache.pekko.actor.CoordinatedShutdown
 import play.api.Configuration
-
-import java.time.Duration
-import javax.inject.{Inject, Provider, Singleton}
 
 @Singleton
 final class ConsumerProvider @Inject() (

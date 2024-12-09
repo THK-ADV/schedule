@@ -1,11 +1,11 @@
 package service
 
+import javax.inject.Inject
+import javax.inject.Singleton
+
 import database.repos.SeasonRepository
 import models.Season
 import service.abstracts.Get
 
-import javax.inject.{Inject, Singleton}
-
 @Singleton
-final class SeasonService @Inject() (val repo: SeasonRepository)
-    extends Get[String, Season]
+final class SeasonService @Inject() (val repo: SeasonRepository) extends Get[String, Season]

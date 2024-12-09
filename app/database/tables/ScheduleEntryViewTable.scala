@@ -1,19 +1,19 @@
 package database.tables
 
+import java.time.LocalDateTime
+import java.util.UUID
+
 import database.UUIDUniqueColumn
 import models.ScheduleEntryView
 import slick.jdbc.PostgresProfile.api._
 import slick.lifted.ProvenShape
 
-import java.time.LocalDateTime
-import java.util.UUID
-
 final class ScheduleEntryViewTable(tag: Tag)
     extends Table[ScheduleEntryView.DB](tag, "schedule_entry_view")
     with UUIDUniqueColumn {
 
-  import ScheduleEntryView._
   import database.tables.localDateTimeColumnType
+  import ScheduleEntryView._
 
   override def id = column[UUID]("s_id", O.PrimaryKey)
 

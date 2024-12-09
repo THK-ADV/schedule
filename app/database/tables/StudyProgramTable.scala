@@ -1,14 +1,12 @@
 package database.tables
 
+import java.util.UUID
+
 import database.UUIDUniqueColumn
 import models.StudyProgram
 import slick.jdbc.PostgresProfile.api._
 
-import java.util.UUID
-
-final class StudyProgramTable(tag: Tag)
-    extends Table[StudyProgram](tag, "study_program")
-    with UUIDUniqueColumn {
+final class StudyProgramTable(tag: Tag) extends Table[StudyProgram](tag, "study_program") with UUIDUniqueColumn {
 
   def teachingUnit = column[UUID]("teaching_unit")
 
@@ -36,5 +34,5 @@ final class StudyProgramTable(tag: Tag)
     poId,
     poNumber,
     specializationId
-  ) <> ((StudyProgram.apply _).tupled, StudyProgram.unapply)
+  ) <> (StudyProgram.apply, StudyProgram.unapply)
 }

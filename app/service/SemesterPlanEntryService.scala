@@ -1,10 +1,13 @@
 package service
 
+import javax.inject.Inject
+import javax.inject.Singleton
+
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+
 import database.repos.SemesterPlanEntryRepository
 import models.SemesterPlanEntry
-
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 final class SemesterPlanEntryService @Inject() (

@@ -1,6 +1,8 @@
 package collision
 
-import scala.util.{Failure, Success, Try}
+import scala.util.Failure
+import scala.util.Success
+import scala.util.Try
 
 sealed trait CollisionType {
   def label: String

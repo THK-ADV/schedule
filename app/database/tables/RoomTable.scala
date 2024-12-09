@@ -1,14 +1,12 @@
 package database.tables
 
+import java.util.UUID
+
 import database.UUIDUniqueColumn
 import models.Room
 import slick.jdbc.PostgresProfile.api._
 
-import java.util.UUID
-
-final class RoomTable(tag: Tag)
-    extends Table[Room](tag, "room")
-    with UUIDUniqueColumn {
+final class RoomTable(tag: Tag) extends Table[Room](tag, "room") with UUIDUniqueColumn {
 
   def campus = column[UUID]("campus")
 
@@ -27,5 +25,5 @@ final class RoomTable(tag: Tag)
     identifier,
     roomType,
     capacity
-  ) <> ((Room.apply _).tupled, Room.unapply)
+  ) <> (Room.apply, Room.unapply)
 }

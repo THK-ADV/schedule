@@ -1,13 +1,16 @@
 package controllers
 
+import javax.inject.Inject
+import javax.inject.Singleton
+
+import scala.concurrent.ExecutionContext
+
 import controllers.crud.Read
 import models.Faculty
 import play.api.libs.json.Writes
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.AbstractController
+import play.api.mvc.ControllerComponents
 import service.FacultyService
-
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
 
 @Singleton
 final class FacultyController @Inject() (
@@ -16,5 +19,5 @@ final class FacultyController @Inject() (
     implicit val ctx: ExecutionContext
 ) extends AbstractController(cc)
     with Read[String, Faculty] {
-  override implicit def writes: Writes[Faculty] = Faculty.writes
+  implicit override def writes: Writes[Faculty] = Faculty.writes
 }

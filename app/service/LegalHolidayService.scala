@@ -1,15 +1,18 @@
 package service
 
+import java.time.LocalDate
+import java.time.LocalDateTime
+import javax.inject.Inject
+import javax.inject.Singleton
+
+import scala.concurrent.ExecutionContext
+import scala.util.control.NonFatal
+
 import database.repos.LegalHolidayRepository
 import models.LegalHoliday
 import ops.DateOps
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
-
-import java.time.{LocalDate, LocalDateTime}
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
-import scala.util.control.NonFatal
 
 @Singleton
 final class LegalHolidayService @Inject() (
@@ -39,7 +42,7 @@ final class LegalHolidayService @Inject() (
           holidays.value
             .map { day =>
               for {
-                date <- day.\("date").validate[LocalDate]
+                date  <- day.\("date").validate[LocalDate]
                 label <- day.\("fname").validate[String]
               } yield LegalHoliday(
                 label,
@@ -57,7 +60,7 @@ final class LegalHolidayService @Inject() (
         .url(s"https://get.api-feiertage.de?years=$year&states=nw")
         .get()
         .map(resp => parse(resp.json))
-      _ <- repo.delete(year)
+      _   <- repo.delete(year)
       res <- repo.createMany(holidays)
     } yield res
   }

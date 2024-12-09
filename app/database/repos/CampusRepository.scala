@@ -1,14 +1,18 @@
 package database.repos
 
-import database.repos.abstracts.{Create, Get}
+import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
+
+import scala.concurrent.ExecutionContext
+
+import database.repos.abstracts.Create
+import database.repos.abstracts.Get
 import database.tables.CampusTable
 import models.Campus
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
+import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
-
-import java.util.UUID
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
 
 @Singleton
 final class CampusRepository @Inject() (
@@ -22,6 +26,6 @@ final class CampusRepository @Inject() (
 
   protected val tableQuery = TableQuery[CampusTable]
 
-  override protected def uniqueCols(elem: Campus) =
+  protected override def uniqueCols(elem: Campus) =
     List(_.label === elem.label, _.abbrev === elem.abbrev)
 }
